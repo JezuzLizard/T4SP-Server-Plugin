@@ -7,7 +7,9 @@
 
 namespace gsc
 {
-	std::unordered_map<unsigned int, std::pair<std::string, void*>> functions;
+	std::unordered_map<std::string, game::BuiltinFunction> functions;
+
+	std::unordered_map<std::string, game::BuiltinMethod> methods;
 
 	namespace
 	{
@@ -15,32 +17,45 @@ namespace gsc
 
 		void* original_scr_get_method_funcs_call_loc;
 
-		void ebic_func()
+		game::BuiltinFunction find_function(const std::string& name)
 		{
-			game::Com_PrintF(game::CON_CHANNEL_SERVER, "Oof \n");
+			auto itr = functions.find(name);
+			if (itr == functions.end())
+			{
+				return 0;
+			}
+
+			return itr->second;
 		}
 
-		game::BuiltinFunction plutonium_scr_get_gsc_funcs_stub(const char** pName, int* type)
+		game::BuiltinMethod find_method(const std::string& name)
 		{
-			//printf( "%s %d\n", * pName, * type);
-			/*
-			if (*pName == "isdefined"s)
+			auto itr = methods.find(name);
+			if (itr == methods.end())
 			{
-				return &ebic_func;
+				return 0;
 			}
-			*/
+
+			return itr->second;
+		}
+
+		game::BuiltinFunction scr_get_funcs_stub(const char** pName, int* type)
+		{
+			const auto func = find_function(*pName);
+			if (func)
+			{
+				return func;
+			}
 			return 0;
 		}
 
-		game::BuiltinMethod plutonium_scr_get_gsc_methods_stub(const char** pName, int* type)
+		game::BuiltinMethod scr_get_methods_stub(const char** pName, int* type)
 		{
-			printf("%s %d\n", *pName, *type);
-			/*
-			if (*pName == "isdefined"s)
+			const auto meth = find_method(*pName);
+			if (meth)
 			{
-				return &ebic_func;
+				return meth;
 			}
-			*/
 			return 0;
 		}
 
@@ -54,7 +69,7 @@ namespace gsc
 				lea eax, [esp + 0x24 + 0x2C - 0x1C];
 				push eax;
 				push edx;
-				call plutonium_scr_get_gsc_funcs_stub;
+				call scr_get_funcs_stub;
 				add esp, 8;
 
 				mov[esp + 0x20], eax;
@@ -87,7 +102,7 @@ namespace gsc
 
 				push edi;
 				push esi;
-				call plutonium_scr_get_gsc_methods_stub;
+				call scr_get_methods_stub;
 				add esp, 8;
 				mov[esp + 0x20], eax; // move answer into eax when pop happens
 
@@ -107,25 +122,19 @@ namespace gsc
 		}
 	}
 
-	unsigned int find_function(const std::string& name)
-	{
-		for (const auto& function : functions)
-		{
-			if (function.second.first == name)
-			{
-				return function.first;
-			}
-		}
-
-		return 0;
-	}
-
 	namespace function
 	{
-		void add(const std::string& name, const void*& function)
+		void add(const std::string& name, const game::BuiltinFunction function)
 		{
-			const auto id = functions.size() + 1;
-			//functions[id] = std::make_pair(name, function);
+			functions.insert_or_assign(name, function);
+		}
+	}
+
+	namespace method
+	{
+		void add(const std::string& name, const game::BuiltinMethod method)
+		{
+			methods.insert_or_assign(name, method);
 		}
 	}
 
@@ -138,6 +147,18 @@ namespace gsc
 			original_scr_get_method_funcs_call_loc = utils::hook::get_displacement_addr(0x683043);
 			utils::hook::jump(0x682D99, original_scr_get_gsc_funcs_hook);
 			utils::hook::call(0x683043, original_scr_get_method_funcs_hook);
+
+			function::add("funny_func", []()
+				{
+					printf("How funny\n");
+					printf("You found the funny monkey funkey\n");
+				});
+
+			method::add("is_monkey", [](game::scr_entref_s ent)
+				{
+					printf("Monkey number %d\n", ent.entnum);
+
+				});
 		}
 
 	private:
