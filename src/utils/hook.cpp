@@ -244,4 +244,9 @@ namespace utils::hook
 
 		return result;
 	}
+
+	void* get_displacement_addr(int original)
+	{
+		return reinterpret_cast<void*>(*reinterpret_cast<int*>(original + 1) + original + 5);
+	}
 }

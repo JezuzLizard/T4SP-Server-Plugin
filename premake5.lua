@@ -30,7 +30,7 @@ end
 
 dependencies.load()
 
-workspace "t6-gsc-utils"
+workspace "t4sp-server-plugin"
 	location "./build"
 	objdir "%{wks.location}/obj/%{cfg.buildcfg}"
 	targetdir "%{wks.location}/bin/%{cfg.buildcfg}"
@@ -66,9 +66,9 @@ workspace "t6-gsc-utils"
 		defines { "DEBUG", "_DEBUG" }
 	filter {}
 
-	startproject "t6-gsc-utils"
+	startproject "t4sp-server-plugin"
 
-	project "t6-gsc-utils"
+	project "t4sp-server-plugin"
 		kind "SharedLib"
 		language "C++"
 

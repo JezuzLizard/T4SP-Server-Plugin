@@ -125,6 +125,8 @@ namespace utils::hook
 
 	void* assemble(const std::function<void(assembler&)>& asm_function);
 
+	void* get_displacement_addr(int original);
+
 	template <typename T>
 	T extract(void* address)
 	{

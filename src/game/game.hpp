@@ -21,6 +21,13 @@ namespace game
 		bool t4sp();
 	}
 
+	const char* Cmd_Argv(int index);
+	unsigned int Cmd_Argc();
+	void Cmd_AddCommand(const char* name, void(__cdecl* function)());
+
+	dvar_s* Dvar_RegisterInt(const char* name, int value, int min, int max, DvarFlags flags, const char* desc);
+	dvar_s* Dvar_RegisterString(const char* name, const char* value, DvarFlags flags, const char* desc);
+
 	template <typename T>
 	class symbol
 	{

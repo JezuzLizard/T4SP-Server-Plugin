@@ -53,4 +53,10 @@
 #pragma comment(lib, "iphlpapi.lib")
 #pragma comment(lib, "Crypt32.lib")
 
+#include "game/structs.hpp"
+#include "game/game.hpp"
+
+#define printf(__fmt__, ...) \
+	game::Com_PrintF(game::CON_CHANNEL_SERVER, __fmt__, __VA_ARGS__)
+
 using namespace std::literals;
