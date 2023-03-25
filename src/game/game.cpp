@@ -83,7 +83,7 @@ namespace game
 
 	char* Scr_GetString(game::scriptInstance_t inst, unsigned int arg_index)
 	{
-		static const auto call_addr = SELECT(0x0, 0x699F30);
+		static const auto call_addr = SELECT(0x0, 0x69A0D0);
 		char* answer;
 
 		__asm
@@ -114,7 +114,7 @@ namespace game
 	{
 		static const auto call_addr = SELECT(0x0, 0x69A1A0); //Scr_GetConstIString
 
-		unsigned short id;
+		int id;
 
 		__asm
 		{
@@ -148,7 +148,7 @@ namespace game
 			push arg_index;
 			mov eax, inst;
 			call call_addr;
-			mov answer, eax;
+			mov answer, cx;
 			add esp, 4;
 		}
 
@@ -161,7 +161,7 @@ namespace game
 
 		__asm
 		{
-			mov esi, id;
+			mov si, id;
 			mov eax, inst;
 			call call_addr;
 		}
@@ -232,9 +232,36 @@ namespace game
 		}
 	}
 
-	int Scr_GetEntityId@<eax>(int entNum@<eax>, scriptInstance_t inst, classNum_e classnum, unsigned __int16 clientnum)
+	unsigned int Scr_GetEntityId(scriptInstance_t inst, int entNum, classNum_e classnum, unsigned int clientnum)
 	{
+		static const auto call_addr = SELECT(0x0, 0x692520);
 
+		unsigned int answer;
+
+		__asm
+		{
+			push clientnum;
+			push classnum;
+			push inst;
+			mov eax, entNum;
+			call call_addr;
+			add esp, 0xC;
+			mov answer, eax;
+		}
+
+		return answer;
+	}
+
+	void Scr_AddEntityNum(scriptInstance_t inst, unsigned short entid)
+	{
+		static const auto call_addr = SELECT(0x0, 0x69A770);
+
+		__asm
+		{
+			movzx esi, entid;
+			mov eax, inst;
+			call call_addr;
+		}
 	}
 
 	//Only supports getting the first argument as a path node
@@ -255,9 +282,12 @@ namespace game
 
 	void Scr_AddPathnode(scriptInstance_t inst, pathnode_t* node)
 	{
+		printf("Scr_AddPathnode Targetname %s\n", SL_ConvertToString(game::SCRIPTINSTANCE_SERVER, node->constant.targetname));
 		int entnum = node - (*gameWorldCurrent)->path.nodes;
-		int entid = Scr_GetEntityId(entnum >> 7, SCRIPTINSTANCE_SERVER, CLASS_NUM_PATHNODE, 0);
-		Scr_AddEntityNum(SCRIPTINSTANCE_SERVER, entid);
+		printf("1 entnum: %d\n", entnum);
+		int entid = Scr_GetEntityId(inst, entnum, CLASS_NUM_PATHNODE, 0);
+		printf("2 entid: %d\n", entid);
+		Scr_AddEntityNum(inst, entid);
 	}
 
 	void Scr_MakeArray(scriptInstance_t inst)
@@ -278,14 +308,14 @@ namespace game
 		__asm
 		{
 			mov edi, inst;
-			mov cx, id;
+			movzx ecx, id;
 			call call_addr;
 		}
 	}
 
-	const char* SL_ConvertToString(scriptInstance_t inst, unsigned short id)
+	const char* SL_ConvertToString(scriptInstance_t inst, int id)
 	{
-		static const auto call_addr = SELECT(0x0, 0x699F30);
+		static const auto call_addr = SELECT(0x0, 0x68D950);
 		const char* answer;
 
 		__asm

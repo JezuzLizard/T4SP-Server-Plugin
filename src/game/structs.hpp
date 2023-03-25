@@ -13,6 +13,8 @@ namespace game
 	struct tagInfo_s;
 	union gentity_u;
 	struct animscripted_s;
+	union pathnode_tree_info_t;
+	struct pathnode_tree_t;
 
 	typedef float vec_t;
 	typedef vec_t vec2_t[2];
@@ -181,7 +183,7 @@ namespace game
 		SCRIPT_INSTANCE_MAX = 0x2,
 	};
 
-	enum classNum_e
+	enum classNum_e : unsigned int
 	{
 		CLASS_NUM_ENTITY = 0x0,
 		CLASS_NUM_HUDELEM = 0x1,
@@ -1514,7 +1516,6 @@ namespace game
 		int nodeCount;
 		unsigned __int16* nodes;
 	};
-
 
 	union __declspec(align(4)) pathnode_tree_info_t
 	{

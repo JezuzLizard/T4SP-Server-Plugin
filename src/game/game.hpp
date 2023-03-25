@@ -28,27 +28,28 @@ namespace game
 	dvar_s* Dvar_RegisterInt(const char* name, int value, int min, int max, DvarFlags flags, const char* desc);
 	dvar_s* Dvar_RegisterString(const char* name, const char* value, DvarFlags flags, const char* desc);
 
-	int Scr_GetInt(game::scriptInstance_t inst, unsigned int arg_index);
-	void Scr_AddInt(game::scriptInstance_t inst, int value);
-	float Scr_GetFloat(game::scriptInstance_t inst, unsigned int arg_index);
-	void Scr_AddFloat(game::scriptInstance_t inst, float value);
-	char* Scr_GetString(game::scriptInstance_t inst, unsigned int arg_index);
-	void Scr_AddString(game::scriptInstance_t inst, const char* string);
-	const char* Scr_GetIString(game::scriptInstance_t inst, unsigned int arg_index);
-	void Scr_AddIString(game::scriptInstance_t inst, const char* string);
-	unsigned short Scr_GetConstString(game::scriptInstance_t inst, unsigned int arg_index);
-	void Scr_AddConstString(game::scriptInstance_t inst, unsigned short id);
-	void Scr_GetVector(game::scriptInstance_t inst, unsigned int arg_index, float* value);
-	void Scr_AddVector(game::scriptInstance_t inst, float* value);
-	void Scr_AddUndefined(game::scriptInstance_t inst);
-	gentity_s* Scr_GetEntity(unsigned int arg_index);
-	void Scr_AddEntity(game::scriptInstance_t inst, gentity_s* ent);
-	int Scr_GetEntityId(int entNum, scriptInstance_t inst, classNum_e classnum, unsigned __int16 clientnum);
-	pathnode_t* Scr_GetPathnode(scriptInstance_t inst);
-	void Scr_AddPathnode(scriptInstance_t inst, pathnode_t* node);
-	void Scr_MakeArray(scriptInstance_t inst);
-	void Scr_AddArrayStringIndexed(scriptInstance_t inst, unsigned short id);
-	const char* SL_ConvertToString(scriptInstance_t inst, unsigned short id);
+	int Scr_GetInt(game::scriptInstance_t inst, unsigned int arg_index); //testing
+	void Scr_AddInt(game::scriptInstance_t inst, int value); //testing
+	float Scr_GetFloat(game::scriptInstance_t inst, unsigned int arg_index); //testing
+	void Scr_AddFloat(game::scriptInstance_t inst, float value); //testing
+	char* Scr_GetString(game::scriptInstance_t inst, unsigned int arg_index); //testing
+	void Scr_AddString(game::scriptInstance_t inst, const char* string); //testing
+	const char* Scr_GetIString(game::scriptInstance_t inst, unsigned int arg_index); //testing
+	void Scr_AddIString(game::scriptInstance_t inst, const char* string); //testing
+	unsigned short Scr_GetConstString(game::scriptInstance_t inst, unsigned int arg_index); //testing
+	void Scr_AddConstString(game::scriptInstance_t inst, unsigned short id); //testing
+	void Scr_GetVector(game::scriptInstance_t inst, unsigned int arg_index, float* value); //testing
+	void Scr_AddVector(game::scriptInstance_t inst, float* value); //testing
+	void Scr_AddUndefined(game::scriptInstance_t inst); //testing
+	gentity_s* Scr_GetEntity(unsigned int arg_index); //testing
+	void Scr_AddEntity(game::scriptInstance_t inst, gentity_s* ent); //testing
+	unsigned int Scr_GetEntityId(scriptInstance_t inst, int entNum, classNum_e classnum, unsigned int clientnum); //testing
+	void Scr_AddEntityNum(scriptInstance_t inst, unsigned short entid); //testing
+	pathnode_t* Scr_GetPathnode(scriptInstance_t inst); //testing
+	void Scr_AddPathnode(scriptInstance_t inst, pathnode_t* node); //testing
+	void Scr_MakeArray(scriptInstance_t inst); //testing
+	void Scr_AddArrayStringIndexed(scriptInstance_t inst, unsigned short id); //testing
+	const char* SL_ConvertToString(scriptInstance_t inst, int id); //testing
 
 	template <typename T>
 	class symbol
