@@ -7,7 +7,7 @@
 
 BOOL APIENTRY DllMain(HMODULE /*module_*/, DWORD ul_reason_for_call, LPVOID /*reserved_*/)
 {
-	if (ul_reason_for_call == DLL_PROCESS_ATTACH)
+	if (ul_reason_for_call == DLL_PROCESS_ATTACH && game::environment::t4sp())
 	{
 		component_loader::post_unpack();
 	}

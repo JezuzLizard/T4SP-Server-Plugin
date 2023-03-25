@@ -23,6 +23,135 @@ namespace game
 		}
 	}
 
+	int Scr_GetInt(game::scriptInstance_t inst, unsigned int arg_index)
+	{
+		static const auto call_addr = SELECT(0x0, 0x699C50);
+		int answer;
+
+		__asm
+		{
+			mov ecx, arg_index;
+			mov eax, inst;
+			call call_addr;
+			mov answer, eax;
+		}
+
+		return answer;
+	}
+
+	float Scr_GetFloat(game::scriptInstance_t inst, unsigned int arg_index)
+	{
+		static const auto call_addr = SELECT(0x0, 0x699E90);
+		float answer;
+
+		__asm
+		{
+			mov ecx, arg_index;
+			mov eax, inst;
+			call call_addr;
+			mov answer, eax;
+		}
+
+		return answer;
+	}
+
+	char* Scr_GetString(game::scriptInstance_t inst, unsigned int arg_index)
+	{
+		static const auto call_addr = SELECT(0x0, 0x699F30);
+		char* answer;
+
+		__asm
+		{
+			mov ecx, arg_index;
+			mov eax, inst;
+			call call_addr;
+			mov answer, eax;
+		}
+
+		return answer;
+	}
+
+	gentity_s* Scr_GetEntity(unsigned int arg_index)
+	{
+		static const auto call_addr = SELECT(0x0, 0x546E30);
+		gentity_s* answer;
+
+		__asm
+		{
+			mov eax, arg_index;
+			call call_addr;
+			mov answer, eax;
+		}
+
+		return answer;
+	}
+
+	void Scr_AddEntity(game::scriptInstance_t inst, gentity_s* ent)
+	{
+		static const auto call_addr = SELECT(0x0, 0x546D90);
+
+		__asm
+		{
+			mov edi, inst;
+			mov eax, ent;
+			call call_addr;
+		}
+	}
+
+	pathnode_t* Scr_GetPathnode(scriptInstance_t inst)
+	{
+		static const auto call_addr = SELECT(0x0, 0x559E20);
+		pathnode_t* answer;
+
+		__asm
+		{
+			mov eax, inst;
+			call call_addr;
+			mov answer, eax;
+		}
+
+		return answer;
+	}
+
+	void Scr_MakeArray(scriptInstance_t inst)
+	{
+		static const auto call_addr = SELECT(0x0, 0x69A9D0);
+
+		__asm
+		{
+			mov eax, inst;
+			call call_addr;
+		}
+	}
+
+	void Scr_AddArrayStringIndexed(scriptInstance_t inst, unsigned short id)
+	{
+		static const auto call_addr = SELECT(0x0, 0x69AAF0);
+
+		__asm
+		{
+			mov edi, inst;
+			mov cx, id;
+			call call_addr;
+		}
+	}
+
+	const char* SL_ConvertToString(scriptInstance_t inst, unsigned short id)
+	{
+		static const auto call_addr = SELECT(0x0, 0x699F30);
+		const char* answer;
+
+		__asm
+		{
+			mov ecx, inst;
+			mov eax, id;
+			call call_addr;
+			mov answer, eax;
+		}
+
+		return answer;
+	}
+
 	const char* Cmd_Argv(int index)
 	{
 		static const auto call_addr = SELECT(0x0, 0x435CE0);
