@@ -1502,4 +1502,51 @@ namespace game
 		unsigned __int8 negotiationLink;
 		unsigned __int8 ubBadPlaceCount[4];
 	};
+
+	struct pathbasenode_t
+	{
+		float vOrigin[3];
+		unsigned int type;
+	};
+
+	struct pathnode_tree_nodes_t
+	{
+		int nodeCount;
+		unsigned __int16* nodes;
+	};
+
+
+	union __declspec(align(4)) pathnode_tree_info_t
+	{
+		pathnode_tree_t* child[2];
+		pathnode_tree_nodes_t s[8];
+	};
+
+	struct pathnode_tree_t
+	{
+		int axis;
+		float dist;
+		pathnode_tree_info_t u;
+	};
+
+	struct PathData
+	{
+		unsigned int nodeCount;
+		pathnode_t* nodes;
+		pathbasenode_t* basenodes;
+		unsigned int chainNodeCount;
+		unsigned __int16* chainNodeForNode;
+		unsigned __int16* nodeForChainNode;
+		int visBytes;
+		unsigned __int8* pathVis;
+		int nodeTreeCount;
+		pathnode_tree_t* nodeTree;
+	};
+
+	struct __declspec(align(4)) GameWorldSp
+	{
+		const char* name;
+		PathData path;
+	};
+
 }

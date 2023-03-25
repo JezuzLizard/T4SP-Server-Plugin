@@ -17,6 +17,8 @@ namespace game
 	WEAK symbol<cmd_function_s*> cmd_functions{ 0x0, 0x1F416F4 };
 	WEAK symbol<CmdArgs> cmd_args{ 0x0, 0x1F41670 };
 
+	WEAK symbol<GameWorldSp*> gameWorldCurrent{0x0, 0x8E1D80 };
+
 	namespace plutonium
 	{
 	}

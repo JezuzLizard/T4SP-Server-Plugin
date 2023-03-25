@@ -39,6 +39,19 @@ namespace game
 		return answer;
 	}
 
+	void Scr_AddInt(game::scriptInstance_t inst, int value)
+	{
+		static const auto call_addr = SELECT(0x0, 0x69A610);
+
+		__asm
+		{
+			push value;
+			mov eax, inst;
+			call call_addr;
+			add esp, 4;
+		}
+	}
+
 	float Scr_GetFloat(game::scriptInstance_t inst, unsigned int arg_index)
 	{
 		static const auto call_addr = SELECT(0x0, 0x699E90);
@@ -49,10 +62,23 @@ namespace game
 			mov ecx, arg_index;
 			mov eax, inst;
 			call call_addr;
-			mov answer, eax;
+			movss answer, xmm0;
 		}
 
 		return answer;
+	}
+
+	void Scr_AddFloat(game::scriptInstance_t inst, float value)
+	{
+		static const auto call_addr = SELECT(0x0, 0x69A670);
+
+		__asm
+		{
+			push value;
+			mov eax, inst;
+			call call_addr;
+			add esp, 4;
+		}
 	}
 
 	char* Scr_GetString(game::scriptInstance_t inst, unsigned int arg_index)
@@ -62,13 +88,121 @@ namespace game
 
 		__asm
 		{
-			mov ecx, arg_index;
-			mov eax, inst;
+			mov esi, inst;
+			mov eax, arg_index;
 			call call_addr;
 			mov answer, eax;
 		}
 
 		return answer;
+	}
+
+	void Scr_AddString(game::scriptInstance_t inst, const char* string)
+	{
+		static const auto call_addr = SELECT(0x0, 0x69A7E0);
+
+		__asm
+		{
+			push string;
+			mov eax, inst;
+			call call_addr;
+			add esp, 4;
+		}
+	}
+
+	const char* Scr_GetIString(game::scriptInstance_t inst, unsigned int arg_index)
+	{
+		static const auto call_addr = SELECT(0x0, 0x69A1A0); //Scr_GetConstIString
+
+		unsigned short id;
+
+		__asm
+		{
+			mov eax, arg_index;
+			call call_addr;
+			mov id, eax;
+		}
+
+		return SL_ConvertToString(inst, id);
+	}
+
+	void Scr_AddIString(game::scriptInstance_t inst, const char* string)
+	{
+		static const auto call_addr = SELECT(0x0, 0x69A860);
+
+		__asm
+		{
+			mov esi, string;
+			call call_addr;
+		}
+	}
+
+	unsigned short Scr_GetConstString(game::scriptInstance_t inst, unsigned int arg_index)
+	{
+		static const auto call_addr = SELECT(0x0, 0x699F30);
+
+		unsigned short answer;
+
+		__asm
+		{
+			push arg_index;
+			mov eax, inst;
+			call call_addr;
+			mov answer, eax;
+			add esp, 4;
+		}
+
+		return answer;
+	}
+
+	void Scr_AddConstString(game::scriptInstance_t inst, unsigned short id)
+	{
+		static const auto call_addr = SELECT(0x0, 0x69A8D0);
+
+		__asm
+		{
+			mov esi, id;
+			mov eax, inst;
+			call call_addr;
+		}
+	}
+
+	void Scr_GetVector(game::scriptInstance_t inst, unsigned int arg_index, float* value)
+	{
+		static const auto call_addr = SELECT(0x0, 0x69A220);
+
+		__asm
+		{
+			push arg_index;
+			mov ecx, value;
+			mov eax, inst;
+			call call_addr;
+			add esp, 4;
+		}
+	}
+
+	void Scr_AddVector(game::scriptInstance_t inst, float* value)
+	{
+		static const auto call_addr = SELECT(0x0, 0x69A940);
+
+		__asm
+		{
+			push value;
+			mov eax, inst;
+			call call_addr;
+			add esp, 4;
+		}
+	}
+
+	void Scr_AddUndefined(game::scriptInstance_t inst)
+	{
+		static const auto call_addr = SELECT(0x0, 0x69A720);
+
+		__asm
+		{
+			mov eax, inst;
+			call call_addr;
+		}
 	}
 
 	gentity_s* Scr_GetEntity(unsigned int arg_index)
@@ -98,6 +232,12 @@ namespace game
 		}
 	}
 
+	int Scr_GetEntityId@<eax>(int entNum@<eax>, scriptInstance_t inst, classNum_e classnum, unsigned __int16 clientnum)
+	{
+
+	}
+
+	//Only supports getting the first argument as a path node
 	pathnode_t* Scr_GetPathnode(scriptInstance_t inst)
 	{
 		static const auto call_addr = SELECT(0x0, 0x559E20);
@@ -111,6 +251,13 @@ namespace game
 		}
 
 		return answer;
+	}
+
+	void Scr_AddPathnode(scriptInstance_t inst, pathnode_t* node)
+	{
+		int entnum = node - (*gameWorldCurrent)->path.nodes;
+		int entid = Scr_GetEntityId(entnum >> 7, SCRIPTINSTANCE_SERVER, CLASS_NUM_PATHNODE, 0);
+		Scr_AddEntityNum(SCRIPTINSTANCE_SERVER, entid);
 	}
 
 	void Scr_MakeArray(scriptInstance_t inst)
