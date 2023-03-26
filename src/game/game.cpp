@@ -282,11 +282,8 @@ namespace game
 
 	void Scr_AddPathnode(scriptInstance_t inst, pathnode_t* node)
 	{
-		printf("Scr_AddPathnode Targetname %s\n", SL_ConvertToString(game::SCRIPTINSTANCE_SERVER, node->constant.targetname));
 		int entnum = node - (*gameWorldCurrent)->path.nodes;
-		printf("1 entnum: %d\n", entnum);
 		int entid = Scr_GetEntityId(inst, entnum, CLASS_NUM_PATHNODE, 0);
-		printf("2 entid: %d\n", entid);
 		Scr_AddEntityNum(inst, entid);
 	}
 
@@ -378,6 +375,26 @@ namespace game
 		DvarValue dvar_value;
 		dvar_value.string = value;
 		return Dvar_RegisterVariant(name, game::DVAR_TYPE_STRING, flags, dvar_value, limits, desc);
+	}
+
+	int Path_FindPath(path_t* pPath, team_t eTeam, float* vStartPos, float* vGoalPos, int bAllowNegotiationLinks)
+	{
+		static const auto call_addr = SELECT(0x0, 0x4CF280);
+
+		int answer;
+
+		__asm
+		{
+			push bAllowNegotiationLinks;
+			push vGoalPos;
+			push vStartPos;
+			mov edx, eTeam;
+			mov ecx, pPath;
+			call call_addr;
+			mov answer, eax;
+		}
+
+		return answer;
 	}
 
 	namespace plutonium

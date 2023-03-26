@@ -51,6 +51,8 @@ namespace game
 	void Scr_AddArrayStringIndexed(scriptInstance_t inst, unsigned short id); //testing
 	const char* SL_ConvertToString(scriptInstance_t inst, int id); //testing
 
+	int Path_FindPath(path_t* pPath, team_t eTeam, float* vStartPos, float* vGoalPos, int bAllowNegotiationLinks);
+
 	template <typename T>
 	class symbol
 	{

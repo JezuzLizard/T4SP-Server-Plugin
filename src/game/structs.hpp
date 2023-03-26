@@ -1417,7 +1417,7 @@ namespace game
 		float fOrientLerp;
 	};
 
-	enum nodeType : __int32
+	enum nodeType
 	{
 		NODE_BADNODE = 0x0,
 		NODE_PATHNODE = 0x1,
@@ -1550,4 +1550,41 @@ namespace game
 		PathData path;
 	};
 
+	struct PathLinkInfo
+	{
+		unsigned __int16 from;
+		unsigned __int16 to;
+		unsigned __int16 prev;
+		unsigned __int16 next;
+	};
+
+	struct pathsort_t
+	{
+		pathnode_t* node;
+		float metric;
+		float distMetric;
+	};
+
+	struct pathlocal_t_circle
+	{
+		float origin[3];
+		float maxDist;
+		float maxDistSq;
+		float maxHeight;
+		float maxHeightSq;
+		int typeFlags;
+		pathsort_t* nodes;
+		int maxNodes;
+		int nodeCount;
+	};
+
+	struct __declspec(align(128)) pathlocal_t
+	{
+		PathLinkInfo pathLinkInfoArray[2048];
+		int pathLinkInfoArrayInited;
+		unsigned int actualNodeCount;
+		unsigned int extraNodes;
+		unsigned int originErrors;
+		pathlocal_t_circle circle;
+	};
 }

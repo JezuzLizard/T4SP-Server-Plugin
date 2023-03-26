@@ -188,7 +188,6 @@ namespace gsc
 					std::string string(answer);
 
 					string += " haha funny"s;
-					printf((string + "\n"s).data());
 					game::Scr_AddIString(game::SCRIPTINSTANCE_SERVER, string.data());
 				});
 
@@ -209,13 +208,6 @@ namespace gsc
 			function::add("pathnodetest", []()
 				{
 					game::pathnode_t* node = game::Scr_GetPathnode(game::SCRIPTINSTANCE_SERVER);
-
-					printf("Node: %d\n" + node->constant.type);
-					printf("Node: %f\n", node->constant.fRadius);
-
-					printf("Node Targetname %s\n", SL_ConvertToString( game::SCRIPTINSTANCE_SERVER, node->constant.targetname));
-
-					printf("0\n");
 
 					game::Scr_AddPathnode(game::SCRIPTINSTANCE_SERVER, node);
 				});
@@ -256,7 +248,7 @@ namespace gsc
 
 			method::add("entitytest", [](game::scr_entref_s ent)
 				{
-					if (ent.classnum != 0)
+					if (ent.classnum != game::CLASS_NUM_ENTITY)
 					{
 						return;
 					}
@@ -265,6 +257,86 @@ namespace gsc
 
 					game::Scr_AddEntity(game::SCRIPTINSTANCE_SERVER, ent2);
 				});
+
+			method::add("getlinkednodes", [](game::scr_entref_s ent)
+				{
+					if (ent.classnum != game::CLASS_NUM_PATHNODE)
+					{
+						return;
+					}
+
+					auto primary_node = &(*game::gameWorldCurrent)->path.nodes[ent.entnum];
+
+					game::Scr_MakeArray(game::SCRIPTINSTANCE_SERVER);
+
+					for (auto i = 0; i < primary_node->constant.totalLinkCount; i++)
+					{
+						auto linked_node = &(*game::gameWorldCurrent)->path.nodes[primary_node->constant.Links[i].nodeNum];
+
+						game::Scr_AddPathnode(game::SCRIPTINSTANCE_SERVER, linked_node);
+						game::Scr_AddArray(game::SCRIPTINSTANCE_SERVER);
+					}
+				});
+
+			method::add("getnodenumber", [](game::scr_entref_s ent)
+				{
+					if (ent.classnum != game::CLASS_NUM_PATHNODE)
+					{
+						return;
+					}
+
+					auto node = &(*game::gameWorldCurrent)->path.nodes[ent.entnum];
+
+					auto entnum = node - (*game::gameWorldCurrent)->path.nodes;
+
+					game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, entnum);
+				});
+
+			function::add("getnodebynumber", []()
+				{
+					auto node_num = game::Scr_GetInt(game::SCRIPTINSTANCE_SERVER, 0);
+
+					if (node_num < 0 || node_num >= game::g_path->actualNodeCount)
+					{
+						return;
+					}
+
+					auto node = &(*game::gameWorldCurrent)->path.nodes[node_num];
+
+					game::Scr_AddPathnode(game::SCRIPTINSTANCE_SERVER, node);
+				});
+
+			function::add("generatepath", []()
+				{
+					auto path = std::make_unique<game::path_t>();
+
+					float start_pos[3] = {};
+
+					float goal_pos[3] = {};
+
+					auto team = game::TEAM_ALLIES;
+
+					game::Scr_GetVector(game::SCRIPTINSTANCE_SERVER, 0, start_pos);
+					game::Scr_GetVector(game::SCRIPTINSTANCE_SERVER, 1, goal_pos);
+
+					auto success = game::Path_FindPath(path.get(), team, start_pos, goal_pos, true);
+
+					if (!success)
+					{
+						return;
+					}
+
+					game::Scr_MakeArray(game::SCRIPTINSTANCE_SERVER);
+
+					for (auto i = 0; i < path->wPathLen; i++)
+					{
+						auto node_in_path = &(*game::gameWorldCurrent)->path.nodes[path->pts[i].iNodeNum];
+
+						game::Scr_AddPathnode(game::SCRIPTINSTANCE_SERVER, node_in_path);
+						game::Scr_AddArray(game::SCRIPTINSTANCE_SERVER);
+					}
+				});
+			
 		}
 
 	private:

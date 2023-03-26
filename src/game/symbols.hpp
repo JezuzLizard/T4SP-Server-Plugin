@@ -19,6 +19,8 @@ namespace game
 
 	WEAK symbol<GameWorldSp*> gameWorldCurrent{ 0x0, 0x8E1D80 };
 
+	WEAK symbol<pathlocal_t> g_path{ 0x0, 0x1F2F700 };
+
 	WEAK symbol<gentity_s> g_entities{ 0x0, 0x176C6F0 };
 
 	namespace plutonium
