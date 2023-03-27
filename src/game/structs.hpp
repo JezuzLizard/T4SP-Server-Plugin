@@ -15,6 +15,8 @@ namespace game
 	struct animscripted_s;
 	union pathnode_tree_info_t;
 	struct pathnode_tree_t;
+	struct VariableValue;
+	struct function_frame_t;
 
 	typedef float vec_t;
 	typedef vec_t vec2_t[2];
@@ -396,7 +398,7 @@ namespace game
 		int duration;
 	};
 
-	enum team_t : __int32
+	enum team_t
 	{
 		TEAM_FREE = 0x0,
 		TEAM_BAD = 0x0,
@@ -407,14 +409,14 @@ namespace game
 		TEAM_NUM_TEAMS = 0x5,
 	};
 
-	enum MissileStage : __int32
+	enum MissileStage
 	{
 		MISSILESTAGE_SOFTLAUNCH = 0x0,
 		MISSILESTAGE_ASCENT = 0x1,
 		MISSILESTAGE_DESCENT = 0x2,
 	};
 
-	enum MissileFlightMode : __int32
+	enum MissileFlightMode
 	{
 		MISSILEFLIGHTMODE_TOP = 0x0,
 		MISSILEFLIGHTMODE_DIRECT = 0x1,
@@ -1586,5 +1588,90 @@ namespace game
 		unsigned int extraNodes;
 		unsigned int originErrors;
 		pathlocal_t_circle circle;
+	};
+
+	enum VariableType
+	{
+		VAR_UNDEFINED = 0x0,
+		VAR_BEGIN_REF = 0x1,
+		VAR_POINTER = 0x1,
+		VAR_STRING = 0x2,
+		VAR_ISTRING = 0x3,
+		VAR_VECTOR = 0x4,
+		VAR_END_REF = 0x5,
+		VAR_FLOAT = 0x5,
+		VAR_INTEGER = 0x6,
+		VAR_CODEPOS = 0x7,
+		VAR_PRECODEPOS = 0x8,
+		VAR_FUNCTION = 0x9,
+		VAR_BUILTIN_FUNCTION = 0xA,
+		VAR_BUILTIN_METHOD = 0xB,
+		VAR_STACK = 0xC,
+		VAR_ANIMATION = 0xD,
+		VAR_PRE_ANIMATION = 0xE,
+		VAR_THREAD = 0xF,
+		VAR_NOTIFY_THREAD = 0x10,
+		VAR_TIME_THREAD = 0x11,
+		VAR_CHILD_THREAD = 0x12,
+		VAR_OBJECT = 0x13,
+		VAR_DEAD_ENTITY = 0x14,
+		VAR_ENTITY = 0x15,
+		VAR_ARRAY = 0x16,
+		VAR_DEAD_THREAD = 0x17,
+		VAR_COUNT = 0x18,
+		VAR_FREE = 0x18,
+		VAR_THREAD_LIST = 0x19,
+		VAR_ENDON_LIST = 0x1A,
+		VAR_TOTAL_COUNT = 0x1B,
+	};
+
+	union VariableUnion
+	{
+		int intValue;
+		float floatValue;
+		unsigned int stringValue;
+		const float* vectorValue;
+		const char* codePosValue;
+		unsigned int pointerValue;
+		char* stackValue;
+		unsigned int entityOffset;
+	};
+
+	struct VariableValue
+	{
+		VariableUnion u;
+		VariableType type;
+	};
+
+	struct function_stack_t
+	{
+		const char* pos;
+		unsigned int localId;
+		unsigned int localVarCount;
+		VariableValue* top;
+		VariableValue* startTop;
+	};
+
+	struct function_frame_t
+	{
+		function_stack_t fs;
+		int topType;
+	};
+
+	struct __declspec(align(4)) scrVmPub_t
+	{
+		int* localVars;
+		VariableValue* maxstack;
+		int function_count;
+		function_frame_t* function_frame;
+		VariableValue* top;
+		bool debugCode;
+		bool abort_on_error;
+		char terminal_error;
+		char field_17;
+		unsigned int inparamcount;
+		unsigned int outparamcount;
+		function_frame_t function_frame_start[32];
+		VariableValue stack[2048];
 	};
 }

@@ -23,6 +23,15 @@ namespace game
 		}
 	}
 
+	std::map<std::string, team_t> team_map =
+	{
+		{ "free", TEAM_FREE },
+		{ "axis", TEAM_AXIS },
+		{ "allies", TEAM_ALLIES },
+		{ "neutral", TEAM_NEUTRAL },
+		{ "dead", TEAM_DEAD }
+	};
+
 	int Scr_GetInt(game::scriptInstance_t inst, unsigned int arg_index)
 	{
 		static const auto call_addr = SELECT(0x0, 0x699C50);
@@ -252,13 +261,13 @@ namespace game
 		return answer;
 	}
 
-	void Scr_AddEntityNum(scriptInstance_t inst, unsigned short entid)
+	void Scr_AddEntityNum(scriptInstance_t inst, unsigned int entid)
 	{
 		static const auto call_addr = SELECT(0x0, 0x69A770);
 
 		__asm
 		{
-			movzx esi, entid;
+			mov esi, entid;
 			mov eax, inst;
 			call call_addr;
 		}
@@ -282,8 +291,8 @@ namespace game
 
 	void Scr_AddPathnode(scriptInstance_t inst, pathnode_t* node)
 	{
-		int entnum = node - (*gameWorldCurrent)->path.nodes;
-		int entid = Scr_GetEntityId(inst, entnum, CLASS_NUM_PATHNODE, 0);
+		unsigned int entnum = node - (*gameWorldCurrent)->path.nodes;
+		auto entid = Scr_GetEntityId(inst, entnum, CLASS_NUM_PATHNODE, 0);
 		Scr_AddEntityNum(inst, entid);
 	}
 
@@ -307,6 +316,41 @@ namespace game
 			mov edi, inst;
 			movzx ecx, id;
 			call call_addr;
+		}
+	}
+
+	unsigned int Scr_GetNumParam(scriptInstance_t inst)
+	{
+		return scrVmPub[inst].outparamcount;
+	}
+
+	VariableType Scr_GetType(scriptInstance_t inst, unsigned int index)
+	{
+		static const auto call_addr = SELECT(0x0, 0x69A4E0);
+		VariableType answer;
+
+		__asm
+		{
+			mov eax, inst;
+			mov ecx, index;
+			call call_addr;
+			mov answer, eax;
+		}
+
+		return answer;
+	}
+
+	void Scr_Error(const char* err, scriptInstance_t inst, bool is_terminal)
+	{
+		static const auto call_addr = SELECT(0x0, 0x69AB70);
+
+		__asm
+		{
+			push is_terminal;
+			mov edi, inst;
+			mov ecx, err;
+			call call_addr;
+			add esp, 4;
 		}
 	}
 

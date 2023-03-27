@@ -4,6 +4,7 @@
 #include <json.hpp>
 #include <utils/io.hpp>
 #include <utils/hook.hpp>
+#include <utils/string.hpp>
 
 namespace gsc
 {
@@ -250,6 +251,7 @@ namespace gsc
 				{
 					if (ent.classnum != game::CLASS_NUM_ENTITY)
 					{
+						game::Scr_Error("Not an entity", game::SCRIPTINSTANCE_SERVER, false);
 						return;
 					}
 
@@ -262,6 +264,7 @@ namespace gsc
 				{
 					if (ent.classnum != game::CLASS_NUM_PATHNODE)
 					{
+						game::Scr_Error("Not a pathnode", game::SCRIPTINSTANCE_SERVER, false);
 						return;
 					}
 
@@ -282,6 +285,7 @@ namespace gsc
 				{
 					if (ent.classnum != game::CLASS_NUM_PATHNODE)
 					{
+						game::Scr_Error("Not a pathnode", game::SCRIPTINSTANCE_SERVER, false);
 						return;
 					}
 
@@ -296,8 +300,15 @@ namespace gsc
 				{
 					auto node_num = game::Scr_GetInt(game::SCRIPTINSTANCE_SERVER, 0);
 
-					if (node_num < 0 || node_num >= game::g_path->actualNodeCount)
+					if (node_num == game::g_path->actualNodeCount)
 					{
+						game::Scr_AddUndefined(game::SCRIPTINSTANCE_SERVER);
+						return;
+					}
+
+					if (node_num < 0 || node_num > game::g_path->actualNodeCount)
+					{
+						game::Scr_Error(utils::string::va("Number %d is not valid for a node", node_num), game::SCRIPTINSTANCE_SERVER, false);
 						return;
 					}
 
@@ -314,15 +325,39 @@ namespace gsc
 
 					float goal_pos[3] = {};
 
-					auto team = game::TEAM_ALLIES;
+					auto team = "neutral"s;
+
+					auto allow_negotiation_links = false;
 
 					game::Scr_GetVector(game::SCRIPTINSTANCE_SERVER, 0, start_pos);
 					game::Scr_GetVector(game::SCRIPTINSTANCE_SERVER, 1, goal_pos);
 
-					auto success = game::Path_FindPath(path.get(), team, start_pos, goal_pos, true);
+					if (game::Scr_GetNumParam(game::SCRIPTINSTANCE_SERVER) >= 3)
+					{
+						if (game::Scr_GetType(game::SCRIPTINSTANCE_SERVER, 2) != game::VAR_UNDEFINED)
+						{
+							team = game::Scr_GetString(game::SCRIPTINSTANCE_SERVER, 2);
+						}
+						
+						if (game::Scr_GetNumParam(game::SCRIPTINSTANCE_SERVER) >= 4)
+						{
+							allow_negotiation_links = game::Scr_GetInt(game::SCRIPTINSTANCE_SERVER, 3);
+						}
+					}
+
+					if (!game::team_map.contains(team))
+					{
+						game::Scr_Error(utils::string::va("Team %s is not valid", team.data()), game::SCRIPTINSTANCE_SERVER, false);
+						return;
+					}
+
+					auto eTeam = game::team_map.at(team);
+
+					auto success = game::Path_FindPath(path.get(), eTeam, start_pos, goal_pos, allow_negotiation_links);
 
 					if (!success)
 					{
+						game::Scr_AddUndefined(game::SCRIPTINSTANCE_SERVER);
 						return;
 					}
 
@@ -330,9 +365,8 @@ namespace gsc
 
 					for (auto i = 0; i < path->wPathLen; i++)
 					{
-						auto node_in_path = &(*game::gameWorldCurrent)->path.nodes[path->pts[i].iNodeNum];
-
-						game::Scr_AddPathnode(game::SCRIPTINSTANCE_SERVER, node_in_path);
+						//Return the number of the node instead of the node itself because of spooky GSC VM corruption
+						game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, path->pts[i].iNodeNum);
 						game::Scr_AddArray(game::SCRIPTINSTANCE_SERVER);
 					}
 				});

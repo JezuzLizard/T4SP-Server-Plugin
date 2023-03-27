@@ -23,6 +23,8 @@ namespace game
 
 	WEAK symbol<gentity_s> g_entities{ 0x0, 0x176C6F0 };
 
+	WEAK symbol<scrVmPub_t> scrVmPub{ 0x0, 0x3BD4700 };
+
 	namespace plutonium
 	{
 	}
