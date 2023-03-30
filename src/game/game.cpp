@@ -441,6 +441,55 @@ namespace game
 		return answer;
 	}
 
+	pathnode_t* Path_NearestNodeNotCrossPlanes(float maxDistSq, float maxHeightSq, float* vOrigin, pathsort_t* nodes, float a5, int a6, int a7, int a8, int* returnCount, int a10)
+	{
+		static const auto call_addr = SELECT(0x0, 0x55C210);
+
+		pathnode_t* answer;
+
+		__asm
+		{
+			push a10;
+			push returnCount;
+			push a8;
+			push a7;
+			push a6;
+			push a5;
+			push nodes;
+			push vOrigin;
+			movss xmm0, maxHeightSq;
+			movss xmm1, maxDistSq;
+			call call_addr;
+			add esp, 0x20;
+			mov answer, eax;
+		}
+
+		return answer;
+	}
+
+	int Path_FindPathFromTo(float* startPos, pathnode_t* pNodeTo, path_t* pPath, team_t eTeam, pathnode_t* pNodeFrom, float* vGoalPos, int bAllowNegotiationLinks, int bIgnoreBadplaces)
+	{
+		static const auto call_addr = SELECT(0x0, 0x4CF3F0);
+
+		int answer;
+
+		__asm
+		{
+			push bIgnoreBadplaces;
+			push bAllowNegotiationLinks;
+			push vGoalPos;
+			push pNodeFrom;
+			push eTeam;
+			push pPath;
+			mov edx, pNodeTo;
+			mov eax, startPos;
+			call call_addr;
+			mov answer, eax;
+		}
+
+		return answer;
+	}
+
 	namespace plutonium
 	{
 	}

@@ -12,6 +12,8 @@ namespace game
 	WEAK symbol<void(scriptInstance_t inst)> Scr_AddArray { 0x0, 0x69AA50 };
 	WEAK symbol<unsigned int(scriptInstance_t inst, char* string, int user, unsigned int len)> SL_GetStringOfSize { 0x0, 0x68DE50 };
 
+	WEAK symbol<int(path_t* pPath, team_t eTeam, const float* vStartPos, pathnode_t* pNodeFrom, const float* vGoalPos, int bAllowNegotiationLinks, CustomSearchInfo_FindPath* custom, int bIncludeGoalInPath, pathnode_t* bIgnoreBadPlaces)> Path_AStarAlgorithm_CustomSearchInfo_FindPath_{ 0x0, 0x4D3190 };
+
 	// Variables
 
 	WEAK symbol<cmd_function_s*> cmd_functions{ 0x0, 0x1F416F4 };
@@ -24,6 +26,8 @@ namespace game
 	WEAK symbol<gentity_s> g_entities{ 0x0, 0x176C6F0 };
 
 	WEAK symbol<scrVmPub_t> scrVmPub{ 0x0, 0x3BD4700 };
+
+	WEAK symbol<dvar_s*> ai_pathNegotiationOverlapCost{ 0x0, 0x18FB224 };
 
 	namespace plutonium
 	{

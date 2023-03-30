@@ -1590,6 +1590,14 @@ namespace game
 		pathlocal_t_circle circle;
 	};
 
+	struct CustomSearchInfo_FindPath
+	{
+		pathnode_t* m_pNodeTo;
+		float startPos[3];
+		float negotiationOverlapCost;
+	};
+
+
 	enum VariableType
 	{
 		VAR_UNDEFINED = 0x0,
