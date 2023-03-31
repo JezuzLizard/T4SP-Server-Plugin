@@ -1572,12 +1572,12 @@ namespace game
 		float origin[3];
 		float maxDist;
 		float maxDistSq;
-		float maxHeight;
 		float maxHeightSq;
 		int typeFlags;
 		pathsort_t* nodes;
 		int maxNodes;
 		int nodeCount;
+		float maxHeight;
 	};
 
 	struct __declspec(align(128)) pathlocal_t
@@ -1585,9 +1585,9 @@ namespace game
 		PathLinkInfo pathLinkInfoArray[2048];
 		int pathLinkInfoArrayInited;
 		unsigned int actualNodeCount;
+		pathlocal_t_circle circle;
 		unsigned int extraNodes;
 		unsigned int originErrors;
-		pathlocal_t_circle circle;
 	};
 
 	struct CustomSearchInfo_FindPath
@@ -1597,6 +1597,11 @@ namespace game
 		float negotiationOverlapCost;
 	};
 
+	enum nearestNodeHeightCheck
+	{
+		NEAREST_NODE_DO_HEIGHT_CHECK = 0x0,
+		NEAREST_NODE_DONT_DO_HEIGHT_CHECK = 0x1,
+	};
 
 	enum VariableType
 	{

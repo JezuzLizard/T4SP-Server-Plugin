@@ -57,7 +57,7 @@ namespace game
 	const char* SL_ConvertToString(scriptInstance_t inst, int id);
 
 	int Path_FindPath(path_t* pPath, team_t eTeam, float* vStartPos, float* vGoalPos, int bAllowNegotiationLinks);
-	pathnode_t* Path_NearestNodeNotCrossPlanes(float maxDistSq, float maxHeightSq, float* vOrigin, pathsort_t* nodes, float a5, int a6, int a7, int a8, int* returnCount, int a10);
+	pathnode_t* Path_NearestNodeNotCrossPlanes(int typeFlags, int maxNodes, float* vOrigin, pathsort_t* nodes, float fMaxDist, float a6, float a7, int iPlaneCount, int* returnCount, nearestNodeHeightCheck heightCheck);
 	int Path_FindPathFromTo(float* startPos, pathnode_t* pNodeTo, path_t* pPath, team_t eTeam, pathnode_t* pNodeFrom, float* vGoalPos, int bAllowNegotiationLinks, int bIgnoreBadplaces);
 
 	template <typename T>

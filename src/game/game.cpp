@@ -441,7 +441,7 @@ namespace game
 		return answer;
 	}
 
-	pathnode_t* Path_NearestNodeNotCrossPlanes(float maxDistSq, float maxHeightSq, float* vOrigin, pathsort_t* nodes, float a5, int a6, int a7, int a8, int* returnCount, int a10)
+	pathnode_t* Path_NearestNodeNotCrossPlanes(int typeFlags, int maxNodes, float* vOrigin, pathsort_t* nodes, float fMaxDist, float a6, float a7, int iPlaneCount, int* returnCount, nearestNodeHeightCheck heightCheck)
 	{
 		static const auto call_addr = SELECT(0x0, 0x55C210);
 
@@ -449,16 +449,16 @@ namespace game
 
 		__asm
 		{
-			push a10;
+			push heightCheck;
 			push returnCount;
-			push a8;
+			push iPlaneCount;
 			push a7;
 			push a6;
-			push a5;
+			push fMaxDist;
 			push nodes;
 			push vOrigin;
-			movss xmm0, maxHeightSq;
-			movss xmm1, maxDistSq;
+			mov ecx, maxNodes;
+			mov edx, typeFlags;
 			call call_addr;
 			add esp, 0x20;
 			mov answer, eax;

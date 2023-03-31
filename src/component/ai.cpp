@@ -223,20 +223,23 @@ namespace ai
 		{
 			int result; // eax
 			int returnCount = 0; // [esp+2Ch] [ebp-304h] BYREF
-			//game::pathsort_t nodes[64] = {}; // [esp+30h] [ebp-300h] BYREF
-
 			std::unique_ptr<game::pathsort_t[], void (*)(game::pathsort_t*)> nodes(new game::pathsort_t[64], [](game::pathsort_t* ptr) { delete[] ptr; });
+			const int maxNodes = 64;
 
-			const float maxHeightSq = 8.0f * 8.0f;
-
-			//printf("Path_FindPath_stub() \n");
-
-			game::pathnode_t* pNodeTo = game::Path_NearestNodeNotCrossPlanes(NAN, maxHeightSq, vGoalPos, nodes.get(), 192.0, 0, 0, 0, &returnCount, 0);
-			game::pathnode_t* pNodeFrom = game::Path_NearestNodeNotCrossPlanes(NAN, maxHeightSq, vStartPos, nodes.get(), 192.0, 0, 0, 0, &returnCount, 0);
-			if (pNodeTo && pNodeFrom != 0)
-				result = Path_FindPathFromTo_custom(vStartPos, pNodeTo, pPath, eTeam, pNodeFrom, vGoalPos, bAllowNegotiationLinks, 0);
+			game::pathnode_t* pNodeTo = game::Path_NearestNodeNotCrossPlanes(-2, maxNodes, vGoalPos, nodes.get(), 192.0f, 0.0f, 0.0f, 0.0f, &returnCount, game::NEAREST_NODE_DO_HEIGHT_CHECK);
+			if (!pNodeTo)
+			{
+				printf("Couldn't find the node to\n");
+			}
+			game::pathnode_t* pNodeFrom = game::Path_NearestNodeNotCrossPlanes(-2, maxNodes, vStartPos, nodes.get(), 192.0f, 0.0f, 0.0f, 0.0f, &returnCount, game::NEAREST_NODE_DO_HEIGHT_CHECK);
+			if (pNodeTo && pNodeFrom)
+			{
+				result = game::Path_FindPathFromTo(vStartPos, pNodeTo, pPath, eTeam, pNodeFrom, vGoalPos, bAllowNegotiationLinks, 0);
+			}
 			else
+			{
 				result = 0;
+			}
 			return result;
 		}
 	}
