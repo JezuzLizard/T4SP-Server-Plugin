@@ -18,16 +18,31 @@ namespace game
 
 	WEAK symbol<cmd_function_s*> cmd_functions{ 0x0, 0x1F416F4 };
 	WEAK symbol<CmdArgs> cmd_args{ 0x0, 0x1F41670 };
-
 	WEAK symbol<GameWorldSp*> gameWorldCurrent{ 0x0, 0x8E1D80 };
-
 	WEAK symbol<pathlocal_t> g_path{ 0x0, 0x1F2F700 };
-
 	WEAK symbol<gentity_s> g_entities{ 0x0, 0x176C6F0 };
+	//WEAK symbol<scrVarPub_t> scrVarPub{ 0x0, 0x3882B70 };
+	WEAK symbol<scrVmPub_t> gScrVmPub{ 0x0, 0x3BD4700 };
+	WEAK symbol<level_locals_s> level{ 0x0, 0x18F5D88 };
+	WEAK symbol<float*> g_pathAttemptGoalPos{ 0x0, 0x16CFD6C };
+	//WEAK symbol<scrParserPub_t> scrParserPub{ 0x0, 0x3882B00 };
+	//WEAK symbol<scrVarGlob_t> gScrVarGlob{ 0x0, 0x3914700 };
 
-	WEAK symbol<scrVmPub_t> scrVmPub{ 0x0, 0x3BD4700 };
+	WEAK symbol<function_stack_t> function_stack{ 0x0, 0x3BDDDD0 };
+	WEAK symbol<scr_const_t> scr_const{0x0, 0x1F33B90};
 
+	// Dvars
+
+	WEAK symbol<dvar_s*> com_developer{ 0x0, 0x1F55288 };
+	WEAK symbol<dvar_s*> com_logfile{ 0x0, 0x1F552BC };
+	WEAK symbol<dvar_s*> com_developer_script{ 0x0, 0x1F9646C };
 	WEAK symbol<dvar_s*> ai_pathNegotiationOverlapCost{ 0x0, 0x18FB224 };
+	WEAK symbol<dvar_s*> fs_homepath{ 0x0, 0x2123C1C };
+	WEAK symbol<dvar_s*> fs_game{ 0x0, 0x2122B00 };
+	WEAK symbol<dvar_s*> useFastFile{ 0x0, 0x1F552FC };
+	WEAK symbol<dvar_s*> sv_running{ 0x0, 0x1F552DC };
+	WEAK symbol<dvar_s*> g_connectpaths{ 0x0, 0x18ECF8C };
+	WEAK symbol<dvar_s*> r_reflectionProbeGenerate{ 0x0, 0x3BFD478 };
 
 	namespace plutonium
 	{

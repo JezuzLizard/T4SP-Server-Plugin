@@ -260,6 +260,25 @@ namespace gsc
 					game::Scr_AddEntity(game::SCRIPTINSTANCE_SERVER, ent2);
 				});
 			
+			function::add("writefile", []()
+				{
+					const auto path = game::Scr_GetString(game::SCRIPTINSTANCE_SERVER, 0);
+					const auto data = game::Scr_GetString(game::SCRIPTINSTANCE_SERVER, 1);
+
+					auto append = false;
+					if (game::Scr_GetNumParam(game::SCRIPTINSTANCE_SERVER) > 2)
+					{
+						append = game::Scr_GetInt(game::SCRIPTINSTANCE_SERVER, 2);
+					}
+
+					game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, utils::io::write_file(path, data, append));
+				});
+
+			gsc::function::add("readfile", []()
+				{
+					const auto path = game::Scr_GetString(game::SCRIPTINSTANCE_SERVER, 0);
+					game::Scr_AddString(game::SCRIPTINSTANCE_SERVER, utils::io::read_file(path).c_str());
+				});
 		}
 
 	private:

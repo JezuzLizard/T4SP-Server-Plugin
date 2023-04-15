@@ -32,6 +32,20 @@ namespace game
 		{ "dead", TEAM_DEAD }
 	};
 
+	void Scr_PrintPrevCodePos(const char* codepos, int scriptInstance, con_channel_e channel, int index)
+	{
+		static const auto call_addr = SELECT(0x0, 0x68B340);
+
+		__asm
+		{
+			push index;
+			push channel;
+			push scriptInstance;
+			mov eax, codepos;
+			call call_addr;
+		}
+	}
+
 	int Scr_GetInt(game::scriptInstance_t inst, unsigned int arg_index)
 	{
 		static const auto call_addr = SELECT(0x0, 0x699C50);
@@ -321,7 +335,7 @@ namespace game
 
 	unsigned int Scr_GetNumParam(scriptInstance_t inst)
 	{
-		return scrVmPub[inst].outparamcount;
+		return gScrVmPub[inst].outparamcount;
 	}
 
 	VariableType Scr_GetType(scriptInstance_t inst, unsigned int index)
@@ -467,6 +481,7 @@ namespace game
 		return answer;
 	}
 
+	//This is a __userpurge, which automatically cleans up the stack by itself so do not do add esp
 	int Path_FindPathFromTo(float* startPos, pathnode_t* pNodeTo, path_t* pPath, team_t eTeam, pathnode_t* pNodeFrom, float* vGoalPos, int bAllowNegotiationLinks, int bIgnoreBadplaces)
 	{
 		static const auto call_addr = SELECT(0x0, 0x4CF3F0);
@@ -483,6 +498,30 @@ namespace game
 			push pPath;
 			mov edx, pNodeTo;
 			mov eax, startPos;
+			call call_addr;
+			mov answer, eax;
+		}
+
+		return answer;
+	}
+
+	//This is a __userpurge, which automatically cleans up the stack by itself so do not do add esp
+	int Path_GeneratePath(path_t* pPath, team_t eTeam, const float* vStartPos, float* vGoalPos, pathnode_t* pNodeFrom, pathnode_t* pNodeTo, int bIncludeGoalPos, int bAllowNegotiationLinks)
+	{
+		static const auto call_addr = SELECT(0x0, 0x4CED90);
+
+		int answer;
+
+		__asm
+		{
+			push bAllowNegotiationLinks;
+			push bIncludeGoalPos;
+			push pNodeTo;
+			push pNodeFrom;
+			push vGoalPos;
+			push vStartPos;
+			push eTeam;
+			mov eax, pPath;
 			call call_addr;
 			mov answer, eax;
 		}
