@@ -54,7 +54,6 @@ namespace test
 
 			gscr_spawn_hook.invoke<void>();
 		}
-	}
 
 		bool our_funny_call(game::pathnode_t* begin_node, game::pathnode_t* end_node, bool allowNeg)
 		{
