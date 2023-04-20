@@ -259,118 +259,26 @@ namespace gsc
 
 					game::Scr_AddEntity(game::SCRIPTINSTANCE_SERVER, ent2);
 				});
-
-			method::add("getlinkednodes", [](game::scr_entref_s ent)
-				{
-					if (ent.classnum != game::CLASS_NUM_PATHNODE)
-					{
-						game::Scr_Error("Not a pathnode", game::SCRIPTINSTANCE_SERVER, false);
-						return;
-					}
-
-					auto primary_node = &(*game::gameWorldCurrent)->path.nodes[ent.entnum];
-
-					game::Scr_MakeArray(game::SCRIPTINSTANCE_SERVER);
-
-					for (auto i = 0; i < primary_node->constant.totalLinkCount; i++)
-					{
-						auto linked_node = &(*game::gameWorldCurrent)->path.nodes[primary_node->constant.Links[i].nodeNum];
-
-						game::Scr_AddPathnode(game::SCRIPTINSTANCE_SERVER, linked_node);
-						game::Scr_AddArray(game::SCRIPTINSTANCE_SERVER);
-					}
-				});
-
-			method::add("getnodenumber", [](game::scr_entref_s ent)
-				{
-					if (ent.classnum != game::CLASS_NUM_PATHNODE)
-					{
-						game::Scr_Error("Not a pathnode", game::SCRIPTINSTANCE_SERVER, false);
-						return;
-					}
-
-					auto node = &(*game::gameWorldCurrent)->path.nodes[ent.entnum];
-
-					auto entnum = node - (*game::gameWorldCurrent)->path.nodes;
-
-					game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, entnum);
-				});
-
-			function::add("getnodebynumber", []()
-				{
-					auto node_num = game::Scr_GetInt(game::SCRIPTINSTANCE_SERVER, 0);
-
-					if (node_num == game::g_path->actualNodeCount)
-					{
-						game::Scr_AddUndefined(game::SCRIPTINSTANCE_SERVER);
-						return;
-					}
-
-					if (node_num < 0 || node_num > game::g_path->actualNodeCount)
-					{
-						game::Scr_Error(utils::string::va("Number %d is not valid for a node", node_num), game::SCRIPTINSTANCE_SERVER, false);
-						return;
-					}
-
-					auto node = &(*game::gameWorldCurrent)->path.nodes[node_num];
-
-					game::Scr_AddPathnode(game::SCRIPTINSTANCE_SERVER, node);
-				});
-
-			function::add("generatepath", []()
-				{
-					auto path = std::make_unique<game::path_t>();
-
-					float start_pos[3] = {};
-
-					float goal_pos[3] = {};
-
-					auto team = "neutral"s;
-
-					auto allow_negotiation_links = false;
-
-					game::Scr_GetVector(game::SCRIPTINSTANCE_SERVER, 0, start_pos);
-					game::Scr_GetVector(game::SCRIPTINSTANCE_SERVER, 1, goal_pos);
-
-					if (game::Scr_GetNumParam(game::SCRIPTINSTANCE_SERVER) >= 3)
-					{
-						if (game::Scr_GetType(game::SCRIPTINSTANCE_SERVER, 2) != game::VAR_UNDEFINED)
-						{
-							team = game::Scr_GetString(game::SCRIPTINSTANCE_SERVER, 2);
-						}
-						
-						if (game::Scr_GetNumParam(game::SCRIPTINSTANCE_SERVER) >= 4)
-						{
-							allow_negotiation_links = game::Scr_GetInt(game::SCRIPTINSTANCE_SERVER, 3);
-						}
-					}
-
-					if (!game::team_map.contains(team))
-					{
-						game::Scr_Error(utils::string::va("Team %s is not valid", team.data()), game::SCRIPTINSTANCE_SERVER, false);
-						return;
-					}
-
-					auto eTeam = game::team_map.at(team);
-
-					auto success = game::Path_FindPath(path.get(), eTeam, start_pos, goal_pos, allow_negotiation_links);
-
-					if (!success)
-					{
-						game::Scr_AddUndefined(game::SCRIPTINSTANCE_SERVER);
-						return;
-					}
-
-					game::Scr_MakeArray(game::SCRIPTINSTANCE_SERVER);
-
-					for (auto i = 0; i < path->wPathLen; i++)
-					{
-						//Return the number of the node instead of the node itself because of spooky GSC VM corruption
-						game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, path->pts[i].iNodeNum);
-						game::Scr_AddArray(game::SCRIPTINSTANCE_SERVER);
-					}
-				});
 			
+			function::add("writefile", []()
+				{
+					const auto path = game::Scr_GetString(game::SCRIPTINSTANCE_SERVER, 0);
+					const auto data = game::Scr_GetString(game::SCRIPTINSTANCE_SERVER, 1);
+
+					auto append = false;
+					if (game::Scr_GetNumParam(game::SCRIPTINSTANCE_SERVER) > 2)
+					{
+						append = game::Scr_GetInt(game::SCRIPTINSTANCE_SERVER, 2);
+					}
+
+					game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, utils::io::write_file(path, data, append));
+				});
+
+			gsc::function::add("readfile", []()
+				{
+					const auto path = game::Scr_GetString(game::SCRIPTINSTANCE_SERVER, 0);
+					game::Scr_AddString(game::SCRIPTINSTANCE_SERVER, utils::io::read_file(path).c_str());
+				});
 		}
 
 	private:

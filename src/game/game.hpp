@@ -23,6 +23,8 @@ namespace game
 
 	extern std::map<std::string, team_t> team_map;
 
+	void Scr_PrintPrevCodePos(const char* codepos, int scriptInstance, con_channel_e channel, int index);
+
 	const char* Cmd_Argv(int index);
 	unsigned int Cmd_Argc();
 	void Cmd_AddCommand(const char* name, void(__cdecl* function)());
@@ -57,6 +59,9 @@ namespace game
 	const char* SL_ConvertToString(scriptInstance_t inst, int id);
 
 	int Path_FindPath(path_t* pPath, team_t eTeam, float* vStartPos, float* vGoalPos, int bAllowNegotiationLinks);
+	pathnode_t* Path_NearestNodeNotCrossPlanes(int typeFlags, int maxNodes, float* vOrigin, pathsort_t* nodes, float fMaxDist, float a6, float a7, int iPlaneCount, int* returnCount, nearestNodeHeightCheck heightCheck);
+	int Path_FindPathFromTo(float* startPos, pathnode_t* pNodeTo, path_t* pPath, team_t eTeam, pathnode_t* pNodeFrom, float* vGoalPos, int bAllowNegotiationLinks, int bIgnoreBadplaces);
+	int Path_GeneratePath(path_t* pPath, team_t eTeam, const float* vStartPos, float* vGoalPos, pathnode_t* pNodeFrom, pathnode_t* pNodeTo, int bIncludeGoalPos, int bAllowNegotiationLinks);
 
 	template <typename T>
 	class symbol
