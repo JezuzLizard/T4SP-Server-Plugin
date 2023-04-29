@@ -3,6 +3,7 @@
 #include "structs.hpp"
 
 #define SELECT(mp, sp) (game::environment::t4mp() ? mp : sp)
+#define CALL_ADDR(mp, sp) reinterpret_cast<void*>(SELECT(mp, sp))
 
 namespace game
 {
@@ -50,7 +51,7 @@ namespace game
 	void Scr_AddUndefined(game::scriptInstance_t inst);
 	gentity_s* Scr_GetEntity(unsigned int arg_index);
 	void Scr_AddEntity(game::scriptInstance_t inst, gentity_s* ent);
-	unsigned int Scr_GetEntityId(scriptInstance_t inst, int entNum, classNum_e classnum, unsigned int clientnum);
+	unsigned int Scr_GetEntityId(scriptInstance_t inst, unsigned int entnum, classNum_e classnum, unsigned int clientnum, void* call_addr = CALL_ADDR(0x0, 0x692520));
 	void Scr_AddEntityNum(scriptInstance_t inst, unsigned int entid);
 	pathnode_t* Scr_GetPathnode(scriptInstance_t inst);
 	void Scr_AddPathnode(scriptInstance_t inst, pathnode_t* node);

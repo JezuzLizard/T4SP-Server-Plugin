@@ -11,6 +11,9 @@ namespace test
 {
 	utils::hook::detour gscr_spawn_hook;
 
+	// a __usercall detour! :o
+	utils::hook::detour scr_getentityid_hook;
+
 	namespace
 	{
 		game::dvar_s* custom_dvar;
@@ -91,6 +94,37 @@ namespace test
 				retn;
 			}
 		}
+
+		unsigned int __stdcall scr_getentityid_call(game::scriptInstance_t inst, game::classNum_e classnum, unsigned int clientnum, unsigned int entnum)
+		{
+			// minhook allocated space for the original asm, we want to execute that instead because the original gamecode has the jump from the detour
+			return game::Scr_GetEntityId(inst, entnum, classnum, clientnum, scr_getentityid_hook.get_original());
+		}
+
+		unsigned int __declspec(naked) __cdecl scr_getentityid_stub(game::scriptInstance_t inst, game::classNum_e classnum, unsigned int clientnum)
+		{
+			// 00692520 unsigned int __usercall Scr_GetEntityId@<eax>(unsigned int entnum@<eax>, scriptInstance_t inst, classNum_e classnum, unsigned int clientnum)
+			__asm
+			{
+				// prol
+				push ebp;
+				mov ebp, esp;
+
+				// push shit for our call, remember eax is a param in the usercall, rest was on stack
+				// we can access params like this in naked because we correctly setup the ebp
+				push eax;
+				push clientnum;
+				push classnum;
+				push inst;
+				call scr_getentityid_call;
+				// we made this a __stdcall, so we dont need to clean up stack
+
+				// epil
+				mov esp, ebp;
+				pop ebp;
+				ret;
+			}
+		}
 	}
 
 	class component final : public component_interface
@@ -137,6 +171,9 @@ namespace test
 
 			// fix NEGOTIATION links
 			//utils::hook::jump(0x4D3296, our_funny_hook);
+
+			// test usercall detour!
+			scr_getentityid_hook.create(0x692520, scr_getentityid_stub);
 		}
 
 	private:

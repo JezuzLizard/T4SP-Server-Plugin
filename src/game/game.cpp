@@ -303,10 +303,8 @@ namespace game
 		}
 	}
 
-	unsigned int Scr_GetEntityId(scriptInstance_t inst, int entNum, classNum_e classnum, unsigned int clientnum)
+	unsigned int Scr_GetEntityId(scriptInstance_t inst, unsigned int entnum, classNum_e classnum, unsigned int clientnum, void* call_addr)
 	{
-		static const auto call_addr = SELECT(0x0, 0x692520);
-
 		unsigned int answer;
 
 		__asm
@@ -314,7 +312,7 @@ namespace game
 			push clientnum;
 			push classnum;
 			push inst;
-			mov eax, entNum;
+			mov eax, entnum;
 			call call_addr;
 			add esp, 0xC;
 			mov answer, eax;
