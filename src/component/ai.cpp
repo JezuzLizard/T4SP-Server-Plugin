@@ -447,7 +447,7 @@ namespace ai
 			game::pathnode_t* pNodeTo = game::Path_NearestNodeNotCrossPlanes(-2, maxNodes, vGoalPos, nodes.get(), 192.0f, 0.0f, 0.0f, 0.0f, &returnCount, game::NEAREST_NODE_DO_HEIGHT_CHECK);
 			if (!pNodeTo)
 			{
-				printf("Couldn't find the node to\n");
+				//printf("Couldn't find the node to\n");
 			}
 			game::pathnode_t* pNodeFrom = game::Path_NearestNodeNotCrossPlanes(-2, maxNodes, vStartPos, nodes.get(), 192.0f, 0.0f, 0.0f, 0.0f, &returnCount, game::NEAREST_NODE_DO_HEIGHT_CHECK);
 			if (pNodeTo && pNodeFrom)
@@ -611,7 +611,7 @@ namespace ai
 
 					auto eTeam = game::team_map.at(team);
 
-					auto success = game::Path_FindPath(path.get(), eTeam, start_pos, goal_pos, allow_negotiation_links);
+					auto success = Path_FindPath_custom(path.get(), eTeam, start_pos, goal_pos, allow_negotiation_links);
 
 					if (!success)
 					{
