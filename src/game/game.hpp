@@ -24,6 +24,9 @@ namespace game
 	extern std::map<std::string, team_t> team_map;
 
 	void Scr_PrintPrevCodePos(const char* codepos, int scriptInstance, con_channel_e channel, int index);
+	void RemoveRefToObject(scriptInstance_t inst, unsigned int id);
+	int Scr_LoadScript(const char* file, scriptInstance_t inst);
+	unsigned int Scr_GetFunctionHandle(scriptInstance_t inst, const char* file, const char* handle);
 
 	const char* Cmd_Argv(int index);
 	unsigned int Cmd_Argc();
@@ -51,8 +54,12 @@ namespace game
 	void Scr_AddEntityNum(scriptInstance_t inst, unsigned int entid);
 	pathnode_t* Scr_GetPathnode(scriptInstance_t inst);
 	void Scr_AddPathnode(scriptInstance_t inst, pathnode_t* node);
+	void Scr_AddHudElem(game_hudelem_s* hud);
+	void Scr_AddObject(scriptInstance_t inst, int entid);
 	void Scr_MakeArray(scriptInstance_t inst);
 	void Scr_AddArrayStringIndexed(scriptInstance_t inst, unsigned short id);
+	unsigned short Scr_ExecThread(scriptInstance_t inst, int handle, int paramCount);
+	unsigned short Scr_ExecEntThread(scriptInstance_t inst, int entNum, int handle, int numParams, int entClass);
 	unsigned int Scr_GetNumParam(scriptInstance_t inst);
 	VariableType Scr_GetType(scriptInstance_t inst, unsigned int index);
 	void Scr_Error(const char* err, scriptInstance_t inst, bool is_terminal);
@@ -62,6 +69,10 @@ namespace game
 	pathnode_t* Path_NearestNodeNotCrossPlanes(int typeFlags, int maxNodes, float* vOrigin, pathsort_t* nodes, float fMaxDist, float a6, float a7, int iPlaneCount, int* returnCount, nearestNodeHeightCheck heightCheck);
 	int Path_FindPathFromTo(float* startPos, pathnode_t* pNodeTo, path_t* pPath, team_t eTeam, pathnode_t* pNodeFrom, float* vGoalPos, int bAllowNegotiationLinks, int bIgnoreBadplaces);
 	int Path_GeneratePath(path_t* pPath, team_t eTeam, const float* vStartPos, float* vGoalPos, pathnode_t* pNodeFrom, pathnode_t* pNodeTo, int bIncludeGoalPos, int bAllowNegotiationLinks);
+	void Path_UpdateLookahead(path_t* pPath, const float* vStartPos, int bReduceLookaheadAmount, int a4, int bAllowBacktrack);
+	void Path_AddTrimmedAmount(const float* a1, path_t* a2);
+	void Path_TransferLookahead(path_t* a1, const float* a2);
+	void Sentient_GetVelocity(sentient_s* self, float* vVelOut);
 
 	template <typename T>
 	class symbol

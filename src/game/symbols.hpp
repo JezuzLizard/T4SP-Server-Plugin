@@ -21,6 +21,7 @@ namespace game
 	WEAK symbol<GameWorldSp*> gameWorldCurrent{ 0x0, 0x8E1D80 };
 	WEAK symbol<pathlocal_t> g_path{ 0x0, 0x1F2F700 };
 	WEAK symbol<gentity_s> g_entities{ 0x0, 0x176C6F0 };
+	WEAK symbol<game_hudelem_s> g_hudelems{ 0x0, 0x173C6F0 };
 	//WEAK symbol<scrVarPub_t> scrVarPub{ 0x0, 0x3882B70 };
 	WEAK symbol<scrVmPub_t> gScrVmPub{ 0x0, 0x3BD4700 };
 	WEAK symbol<level_locals_s> level{ 0x0, 0x18F5D88 };

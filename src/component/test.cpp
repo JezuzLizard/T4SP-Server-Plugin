@@ -136,7 +136,7 @@ namespace test
 			utils::hook::nop(0x5F04AF, 5);
 
 			// fix NEGOTIATION links
-			utils::hook::jump(0x4D3296, our_funny_hook);
+			//utils::hook::jump(0x4D3296, our_funny_hook);
 		}
 
 	private:

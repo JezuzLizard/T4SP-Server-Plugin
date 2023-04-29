@@ -636,10 +636,76 @@ namespace game
 		int icon;
 	};
 
+	enum he_type_t : __int32
+	{
+		HE_TYPE_FREE = 0x0,
+		HE_TYPE_TEXT = 0x1,
+		HE_TYPE_VALUE = 0x2,
+		HE_TYPE_DAMAGE_INDICATOR = 0x3,
+		HE_TYPE_MATERIAL = 0x4,
+		HE_TYPE_TIMER_DOWN = 0x5,
+		HE_TYPE_TIMER_UP = 0x6,
+		HE_TYPE_TENTHS_TIMER_DOWN = 0x7,
+		HE_TYPE_TENTHS_TIMER_UP = 0x8,
+		HE_TYPE_CLOCK_DOWN = 0x9,
+		HE_TYPE_CLOCK_UP = 0xA,
+		HE_TYPE_WAYPOINT = 0xB,
+		HE_TYPE_COUNT = 0xC,
+	};
+
 	struct hudelem_s
 	{
-		char gap0[171];
-		char field_AB;
+		he_type_t type;
+		float x;
+		float y;
+		float z;
+		int targetEntNum;
+		float fontScale;
+		float fromFontScale;
+		int fontScaleStartTime;
+		int fontScaleTime;
+		int font;
+		int alignOrg;
+		int alignScreen;
+		int color;
+		int fromColor;
+		int fadeStartTime;
+		int fadeTime;
+		int label;
+		int width;
+		int height;
+		int materialIndex;
+		int offscreenMaterialIdx;
+		int fromWidth;
+		int fromHeight;
+		int scaleStartTime;
+		int scaleTime;
+		float fromX;
+		float fromY;
+		int fromAlignOrg;
+		int fromAlignScreen;
+		int moveStartTime;
+		int moveTime;
+		int time;
+		int duration;
+		float value;
+		int text;
+		float sort;
+		int glowColor;
+		int fxBirthTime;
+		int fxLetterTime;
+		int fxDecayStartTime;
+		int fxDecayDuration;
+		int soundID;
+		int flags;
+	};
+
+	struct game_hudelem_s
+	{
+		hudelem_s elem;
+		int clientNum;
+		int team;
+		int archived;
 	};
 
 	struct __declspec(align(4)) playerState_s

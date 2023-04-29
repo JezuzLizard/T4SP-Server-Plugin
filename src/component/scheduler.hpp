@@ -20,4 +20,6 @@ namespace scheduler
 		std::chrono::milliseconds delay = 0ms);
 
 	void on_init(const std::function<void()>& callback);
+
+	void on_postloadscripts(const std::function<void()>& callback);
 }

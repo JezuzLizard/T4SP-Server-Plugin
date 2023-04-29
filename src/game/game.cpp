@@ -43,7 +43,55 @@ namespace game
 			push scriptInstance;
 			mov eax, codepos;
 			call call_addr;
+			add esp, 0xC;
 		}
+	}
+
+	void RemoveRefToObject(scriptInstance_t inst/*<ecx>*/, unsigned int id/*<eax>*/)
+	{
+		static const auto call_addr = SELECT(0x0, 0x690040);
+
+		__asm
+		{
+			mov ecx, inst;
+			mov eax, id;
+			call call_addr;
+		}
+	}
+
+	int Scr_LoadScript(const char* file, scriptInstance_t inst)
+	{
+		static const auto call_addr = SELECT(0x646DE0, 0x689C60);
+		int answer;
+
+		__asm
+		{
+			mov ecx, file;
+			mov edx, inst;
+			call call_addr;
+			mov answer, eax;
+		}
+
+		return answer;
+	}
+
+	unsigned int Scr_GetFunctionHandle/*<eax>*/(scriptInstance_t inst/*<ecx>*/, const char* file/*<eax>*/, const char* handle)
+	{
+		static const auto call_addr = SELECT(0x0, 0x6894B0);
+
+		unsigned int answer;
+
+		__asm
+		{
+			push handle;
+			mov eax, file;
+			mov ecx, inst;
+			call call_addr;
+			mov answer, eax;
+			add esp, 0x4;
+		}
+
+		return answer;
 	}
 
 	int Scr_GetInt(game::scriptInstance_t inst, unsigned int arg_index)
@@ -71,7 +119,7 @@ namespace game
 			push value;
 			mov eax, inst;
 			call call_addr;
-			add esp, 4;
+			add esp, 0x4;
 		}
 	}
 
@@ -100,7 +148,7 @@ namespace game
 			push value;
 			mov eax, inst;
 			call call_addr;
-			add esp, 4;
+			add esp, 0x4;
 		}
 	}
 
@@ -129,7 +177,7 @@ namespace game
 			push string;
 			mov eax, inst;
 			call call_addr;
-			add esp, 4;
+			add esp, 0x4;
 		}
 	}
 
@@ -172,7 +220,7 @@ namespace game
 			mov eax, inst;
 			call call_addr;
 			mov answer, cx;
-			add esp, 4;
+			add esp, 0x4;
 		}
 
 		return answer;
@@ -200,7 +248,7 @@ namespace game
 			mov ecx, value;
 			mov eax, inst;
 			call call_addr;
-			add esp, 4;
+			add esp, 0x4;
 		}
 	}
 
@@ -213,7 +261,7 @@ namespace game
 			push value;
 			mov eax, inst;
 			call call_addr;
-			add esp, 4;
+			add esp, 0x4;
 		}
 	}
 
@@ -310,6 +358,24 @@ namespace game
 		Scr_AddEntityNum(inst, entid);
 	}
 
+	void Scr_AddHudElem(game_hudelem_s* hud)
+	{
+		int entId = Scr_GetEntityId(SCRIPTINSTANCE_SERVER, hud - g_hudelems, CLASS_NUM_HUDELEM, 0);
+		Scr_AddObject(SCRIPTINSTANCE_SERVER, entId);
+	}
+
+	void Scr_AddObject(scriptInstance_t inst/*<eax>*/, int entid/*<esi>*/)
+	{
+		static const auto call_addr = SELECT(0x0, 0x69A770);
+
+		__asm
+		{
+			mov esi, entid;
+			mov eax, inst;
+			call call_addr;
+		}
+	}
+
 	void Scr_MakeArray(scriptInstance_t inst)
 	{
 		static const auto call_addr = SELECT(0x0, 0x69A9D0);
@@ -331,6 +397,46 @@ namespace game
 			movzx ecx, id;
 			call call_addr;
 		}
+	}
+
+	unsigned short Scr_ExecThread/*<ax>*/(scriptInstance_t inst/*<edi>*/, int handle, int paramCount)
+	{
+		static const auto call_addr = SELECT(0x0, 0x699560);
+
+		unsigned short answer;
+
+		__asm
+		{
+			push paramCount;
+			push handle;
+			mov edi, inst;
+			call call_addr;
+			add esp, 0x8;
+			mov answer, ax;
+		}
+
+		return answer;
+	}
+
+	unsigned short Scr_ExecEntThread/*<ax>*/(scriptInstance_t inst/*<edi>*/, int entNum, int handle, int numParams, int entClass)
+	{
+		static const auto call_addr = SELECT(0x0, 0x699640);
+
+		unsigned short answer;
+
+		__asm
+		{
+			push entClass;
+			push numParams;
+			push handle;
+			push entNum;
+			mov edi, inst;
+			call call_addr;
+			add esp, 0x10;
+			mov answer, ax;
+		}
+
+		return answer;
 	}
 
 	unsigned int Scr_GetNumParam(scriptInstance_t inst)
@@ -364,7 +470,7 @@ namespace game
 			mov edi, inst;
 			mov ecx, err;
 			call call_addr;
-			add esp, 4;
+			add esp, 0x4;
 		}
 	}
 
@@ -527,6 +633,57 @@ namespace game
 		}
 
 		return answer;
+	}
+
+	void /*__userpurge*/ Path_UpdateLookahead(path_t* pPath/*@<eax>*/, const float* vStartPos, int bReduceLookaheadAmount, int a4, int bAllowBacktrack)
+	{
+		static const auto call_addr = SELECT(0x0, 0x4D2120);
+
+		__asm
+		{
+			push bAllowBacktrack;
+			push a4;
+			push bReduceLookaheadAmount;
+			push vStartPos;
+			mov eax, pPath;
+			call call_addr;
+		}
+	}
+
+	void /*__usercall*/ Path_AddTrimmedAmount(const float* a1/*@<eax>*/, path_t* a2/*@<edi>*/)
+	{
+		static const auto call_addr = SELECT(0x0, 0x4CE560);
+
+		__asm
+		{
+			mov edi, a2;
+			mov eax, a1;
+			call call_addr;
+		}
+	}
+
+	void /*__stdcall*/ Path_TransferLookahead(path_t* a1, const float* a2)
+	{
+		static const auto call_addr = SELECT(0x0, 0x4CE980);
+
+		__asm
+		{
+			push a2;
+			push a1;
+			call call_addr;
+		}
+	}
+
+	void Sentient_GetVelocity(sentient_s* self, float* vVelOut)
+	{
+		static const auto call_addr = SELECT(0x0, 0x5662A0);
+
+		__asm
+		{
+			mov ecx, vVelOut;
+			mov eax, self;
+			call call_addr;
+		}
 	}
 
 	namespace plutonium

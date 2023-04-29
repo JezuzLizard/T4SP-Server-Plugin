@@ -13,308 +13,375 @@ namespace ai
 {
 	namespace
 	{
-		/*
-		int __cdecl Path_AStarAlgorithm_CustomSearchInfo_FindPath_(path_t *pPath, team_t eTeam, const float *vStartPos, pathnode_t *pNodeFrom, const float *vGoalPos, int bAllowNegotiationLinks, CustomSearchInfo_FindPath *searchInfo, int bIgnoreBadplaces, pathnode_t *nodeTo)
+		game::pathnode_t* Path_ConvertIndexToNode(int index)
 		{
-		  float *returnVGoaPosl; // edx
-		  int nodeLinkIndex; // ebx
-		  pathnode_t *returnStartNode; // ecx
-		  pathnode_t *returnEndNode; // edi
-		  pathlink_s *endNodeLinks; // eax
-		  int nodeNum; // esi
-		  float *endNodeLinkDist; // eax
-		  pathnode_t *pSuccessor; // esi
-		  float v17; // xmm0_4
-		  pathnode_t *v18; // eax
-		  pathnode_t *v19; // eax
-		  float v20; // xmm1_4
-		  long double v21; // st7
-		  float v22; // xmm3_4
-		  float v23; // xmm0_4
-		  float v24; // xmm1_4
-		  float v25; // xmm2_4
-		  float v26; // xmm0_4
-		  float v27; // xmm1_4
-		  float v28; // xmm1_4
-		  pathnode_t *pInsert; // eax
-		  pathnode_t *v30; // ecx
-		  pathnode_t *v31; // eax
-		  int success; // eax
-		  float v33; // [esp+10h] [ebp-8Ch]
-		  int linkCount; // [esp+14h] [ebp-88h]
-		  float negotiationOverlapCost; // [esp+18h] [ebp-84h]
-		  pathnode_t topParent; // [esp+1Ch] [ebp-80h] BYREF
-
-		  returnVGoaPosl = (float *)vGoalPos;
-		  nodeLinkIndex = 0;
-		  if ( vGoalPos )
-		  {
-			g_pathAttemptGoalPos[0] = *vGoalPos;
-			g_pathAttemptGoalPos[1] = vGoalPos[1];
-			g_pathAttemptGoalPos[2] = vGoalPos[2];
-		  }
-		  else
-		  {
-			g_pathAttemptGoalPos[0] = 0.0;
-			g_pathAttemptGoalPos[1] = 0.0;
-			g_pathAttemptGoalPos[2] = 0.0;
-		  }
-		  returnStartNode = pNodeFrom;
-		  pNodeFrom->transient.iSearchFrame = ++level.iSearchFrame;
-		  returnEndNode = pNodeFrom;
-		  pNodeFrom->transient.pParent = &topParent;
-		  pNodeFrom->transient.pNextOpen = 0;
-		  pNodeFrom->transient.pPrevOpen = &topParent;
-		  pNodeFrom->transient.fCost = 0.0;
-		  topParent.transient.pNextOpen = pNodeFrom;
-		  while ( returnEndNode != searchInfo->m_pNodeTo )
-		  {
-			topParent.transient.pNextOpen = returnEndNode->transient.pNextOpen;
-			if ( topParent.transient.pNextOpen )
-			  topParent.transient.pNextOpen->transient.pPrevOpen = &topParent;
-			linkCount = 0;
-			if ( returnEndNode->dynamic.wLinkCount > 0 )
-			{
-			  while ( 1 )
-			  {
-				if ( bIgnoreBadplaces || !returnEndNode->constant.Links[nodeLinkIndex].ubBadPlaceCount[eTeam] )
-				{
-				  endNodeLinks = returnEndNode->constant.Links;
-				  nodeNum = endNodeLinks[nodeLinkIndex].nodeNum;
-				  endNodeLinkDist = &endNodeLinks[nodeLinkIndex].fDist;
-				  pSuccessor = &gameWorldCurrent->path.nodes[nodeNum];
-				  if ( returnEndNode->constant.type != NODE_NEGOTIATION_BEGIN || pSuccessor->constant.type != NODE_NEGOTIATION_END || !returnEndNode->dynamic.wOverlapCount && !pSuccessor->dynamic.wOverlapCount )
-				  {
-					if ( pSuccessor->transient.iSearchFrame != level.iSearchFrame )
-					{
-					  pSuccessor->transient.iSearchFrame = level.iSearchFrame;
-					  negotiationOverlapCost = searchInfo->negotiationOverlapCost;
-					  v20 = vGoalPos[1] - pSuccessor->constant.vOrigin[1];
-					  v21 = sqrtf((float)((float)(*vGoalPos - pSuccessor->constant.vOrigin[0]) * (float)(*vGoalPos - pSuccessor->constant.vOrigin[0])) + (float)(v20 * v20));
-					  v22 = pSuccessor->constant.minUseDistSq;
-					  if ( v22 <= 1.0 || (v23 = searchInfo->startPos[0] - pSuccessor->constant.vOrigin[0], v24 = searchInfo->startPos[1] - pSuccessor->constant.vOrigin[1], v25 = searchInfo->startPos[2] - pSuccessor->constant.vOrigin[2], v22 <= (float)((float)((float)(v23 * v23) + (float)(v24 * v24)) + (float)(v25 * v25))) )
-					  {
-						v26 = v21 + (double)pSuccessor->dynamic.userCount * negotiationOverlapCost;
-					  }
-					  else
-					  {
-						v33 = v21 + (double)pSuccessor->dynamic.userCount * negotiationOverlapCost;
-						v26 = negotiationOverlapCost + v33;
-					  }
-					  pSuccessor->transient.fHeuristic = v26;
-					  v17 = returnEndNode->constant.Links[nodeLinkIndex].fDist + returnEndNode->transient.fCost;
-		LABEL_25:
-					  v27 = pSuccessor->transient.fHeuristic;
-					  pSuccessor->transient.pParent = returnEndNode;
-					  pSuccessor->transient.fCost = v17;
-					  v28 = v27 + v17;
-					  pInsert = &topParent;
-					  if ( topParent.transient.pNextOpen )
-					  {
-						do
-						{
-						  v30 = pInsert->transient.pNextOpen;
-						  if ( (float)(v30->transient.fHeuristic + v30->transient.fCost) >= v28 )
-							break;
-						  pInsert = pInsert->transient.pNextOpen;
-						}
-						while ( v30->transient.pNextOpen );
-					  }
-					  pSuccessor->transient.pPrevOpen = pInsert;
-					  pSuccessor->transient.pNextOpen = pInsert->transient.pNextOpen;
-					  pInsert->transient.pNextOpen = pSuccessor;
-					  v31 = pSuccessor->transient.pNextOpen;
-					  if ( v31 )
-						v31->transient.pPrevOpen = pSuccessor;
-					  goto LABEL_30;
-					}
-					v17 = returnEndNode->transient.fCost + *endNodeLinkDist;
-					if ( v17 < pSuccessor->transient.fCost )
-					{
-					  v18 = pSuccessor->transient.pPrevOpen;
-					  if ( v18 )
-					  {
-						v18->transient.pNextOpen = pSuccessor->transient.pNextOpen;
-						v19 = pSuccessor->transient.pNextOpen;
-						if ( v19 )
-						  v19->transient.pPrevOpen = pSuccessor->transient.pPrevOpen;
-					  }
-					  goto LABEL_25;
-					}
-				  }
-				}
-		LABEL_30:
-				++nodeLinkIndex;
-				if ( ++linkCount >= returnEndNode->dynamic.wLinkCount )
-				{
-				  returnVGoaPosl = (float *)vGoalPos;
-				  returnStartNode = pNodeFrom;
-				  break;
-				}
-			  }
-			}
-			nodeLinkIndex = 0;
-			returnEndNode->transient.pPrevOpen = 0;
-			returnEndNode = topParent.transient.pNextOpen;
-			if ( !topParent.transient.pNextOpen )
-			  return 0;
-		  }
-		  if ( pPath )
-			success = Path_GeneratePath(pPath, eTeam, vStartPos, returnVGoaPosl, returnStartNode, returnEndNode, 1, bAllowNegotiationLinks);
-		  else
-			success = 1;
-		  return success;
+			return &(*game::gameWorldCurrent)->path.nodes[index];
 		}
-		*/
 
-		int Path_AStarAlgorithm_CustomSearchInfo_FindPath_custom(game::path_t* pPath, game::team_t eTeam, const float* vStartPos, game::pathnode_t* pNodeFrom, const float* vGoalPos, int bAllowNegotiationLinks, game::CustomSearchInfo_FindPath* searchInfo, int bIgnoreBadplaces, game::pathnode_t* nodeTo)
+		unsigned int __cdecl Path_ConvertNodeToIndex(const game::pathnode_t* node)
 		{
-			float* returnVGoaPosl; // edx
-			int nodeLinkIndex; // ebx
-			game::pathnode_t* returnStartNode; // ecx
-			game::pathnode_t* returnEndNode; // edi
-			game::pathlink_s* endNodeLinks; // eax
-			int nodeNum; // esi
-			float* endNodeLinkDist; // eax
-			game::pathnode_t* pSuccessor; // esi
-			float v17; // xmm0_4
-			game::pathnode_t* v18; // eax
-			game::pathnode_t* v19; // eax
-			float v20; // xmm1_4
-			long double v21; // st7
-			float v22; // xmm3_4
-			float v23; // xmm0_4
-			float v24; // xmm1_4
-			float v25; // xmm2_4
-			float v26; // xmm0_4
-			float v27; // xmm1_4
-			float v28; // xmm1_4
-			game::pathnode_t* pInsert; // eax
-			game::pathnode_t* v30; // ecx
-			game::pathnode_t* v31; // eax
-			int success; // eax
-			float v33; // [esp+10h] [ebp-8Ch]
-			int linkCount; // [esp+14h] [ebp-88h]
-			float negotiationOverlapCost; // [esp+18h] [ebp-84h]
-			game::pathnode_t topParent; // [esp+1Ch] [ebp-80h] BYREF
+			unsigned int nodeIndex; // [esp+0h] [ebp-4h]
 
-			returnVGoaPosl = (float*)vGoalPos;
-			nodeLinkIndex = 0;
-			if (vGoalPos)
+			nodeIndex = node - (*game::gameWorldCurrent)->path.nodes;
+			return nodeIndex;
+		}
+
+		game::pathnode_t* Path_GetNegotiationNode(const game::path_t* pPath)
+		{
+			return Path_ConvertIndexToNode(pPath->pts[pPath->wNegotiationStartNode].iNodeNum);
+		}
+
+		void Path_IncrementNodeUserCount(game::path_t* pPath)
+		{
+			game::pathnode_t* negotiationNode; // [esp+4h] [ebp-4h]
+
+			negotiationNode = Path_GetNegotiationNode(pPath);
+			++negotiationNode->dynamic.userCount;
+		}
+
+		void Path_DecrementNodeUserCount(game::path_t* pPath)
+		{
+			game::pathnode_t* negotiationNode; // [esp+4h] [ebp-4h]
+
+			negotiationNode = Path_GetNegotiationNode(pPath);
+			--negotiationNode->dynamic.userCount;
+		}
+
+		void Path_Clear(game::path_t* pPath)
+		{
+			if (pPath->wNegotiationStartNode > 0)
 			{
-				*game::g_pathAttemptGoalPos[0] = vGoalPos[0];
-				*game::g_pathAttemptGoalPos[1] = vGoalPos[1];
-				*game::g_pathAttemptGoalPos[2] = vGoalPos[2];
+				Path_DecrementNodeUserCount(pPath);
+				pPath->wNegotiationStartNode = 0;
+			}
+			pPath->wPathLen = 0;
+			pPath->wOrigPathLen = 0;
+		}
+
+		double Vec2Length(const float* v)
+		{
+			return (float)sqrt((float)((float)(*v * *v) + (float)(v[1] * v[1])));
+		}
+
+		float Path_GetPathDir(float* delta, const float* vFrom, const float* vTo)
+		{
+			float fDist; // [esp+18h] [ebp-4h]
+
+			delta[0] = *vTo - vFrom[0];
+			delta[1] = vTo[1] - vFrom[1];
+			fDist = Vec2Length(delta);
+			delta[0] = (1.0 / fDist) * delta[0];
+			delta[1] = (1.0 / fDist) * delta[1];
+			return fDist;
+		}
+
+		double __cdecl Vec3DistanceSq(const float* p1, const float* p2)
+		{
+			float vDiffY; // [esp+4h] [ebp-8h]
+			float vDiffZ; // [esp+8h] [ebp-4h]
+
+			vDiffY = p2[1] - p1[1];
+			vDiffZ = p2[2] - p1[2];
+			return vDiffZ * vDiffZ + vDiffY * vDiffY + (float)(*p2 - *p1) * (float)(*p2 - *p1);
+		}
+
+		double EvaluateHeuristic(game::CustomSearchInfo_FindPath* searchInfo, game::pathnode_t* pSuccessor, const float* vGoalPos)
+		{
+			float v[2]; // [esp+18h] [ebp-Ch] BYREF
+			float dist; // [esp+20h] [ebp-4h]
+
+			v[0] = *vGoalPos - pSuccessor->constant.vOrigin[0];
+			v[1] = vGoalPos[1] - pSuccessor->constant.vOrigin[1];
+			dist = Vec2Length(v);
+			dist = (float)((float)pSuccessor->dynamic.userCount * searchInfo->negotiationOverlapCost) + dist;
+			if (pSuccessor->constant.minUseDistSq > 1.0
+				&& pSuccessor->constant.minUseDistSq > Vec3DistanceSq(pSuccessor->constant.vOrigin, searchInfo->startPos))
+			{
+				dist = dist + searchInfo->negotiationOverlapCost;
+			}
+			return dist;
+		}
+
+		int Path_GeneratePath_custom(game::path_t* pPath, game::team_t eTeam, const float* vStartPos, const float* vGoalPos, game::pathnode_t* pNodeFrom, game::pathnode_t* pNodeTo, int bIncludeGoalPos, int bAllowNegotiationLinks)
+		{
+			const char* v9; // eax
+			float v10; // [esp+10h] [ebp-68h]
+			int v12; // [esp+18h] [ebp-60h]
+			game::pathpoint_t* v16; // [esp+30h] [ebp-48h]
+			game::pathpoint_t* v17; // [esp+38h] [ebp-40h]
+			int excess; // [esp+54h] [ebp-24h]
+			game::pathnode_t* pPrevNode; // [esp+58h] [ebp-20h]
+			int iTotal; // [esp+5Ch] [ebp-1Ch]
+			game::pathnode_t* pNode; // [esp+64h] [ebp-14h]
+			game::pathnode_t* pNodea; // [esp+64h] [ebp-14h]
+			int negotiationStartNode; // [esp+68h] [ebp-10h]
+			int i; // [esp+6Ch] [ebp-Ch]
+			int ia; // [esp+6Ch] [ebp-Ch]
+			game::pathnode_t* pPrevPrevNode; // [esp+70h] [ebp-8h]
+			int prevFlags; // [esp+74h] [ebp-4h]
+
+			game::Path_AddTrimmedAmount(vStartPos, pPath);
+			iTotal = 0;
+			pNode = pNodeTo;
+			if (bIncludeGoalPos)
+			{
+				pPath->pts[0].vOrigPoint[0] = *vGoalPos;
+				pPath->pts[0].vOrigPoint[1] = vGoalPos[1];
+				pPath->pts[0].vOrigPoint[2] = vGoalPos[2];
+				if (*vGoalPos == pNodeTo->constant.vOrigin[0] && vGoalPos[1] == pNodeTo->constant.vOrigin[1])
+				{
+					pPath->pts[0].iNodeNum = Path_ConvertNodeToIndex(pNodeTo);
+				}
+				else
+				{
+					pPath->pts[0].iNodeNum = -1;
+					iTotal = 1;
+				}
 			}
 			else
 			{
-				*game::g_pathAttemptGoalPos[0] = 0.0f;
-				*game::g_pathAttemptGoalPos[1] = 0.0f;
-				*game::g_pathAttemptGoalPos[2] = 0.0f;
+				pPath->pts[0].vOrigPoint[0] = pNodeTo->constant.vOrigin[0];
+				pPath->pts[0].vOrigPoint[1] = pNodeTo->constant.vOrigin[1];
+				pPath->pts[0].vOrigPoint[2] = pNodeTo->constant.vOrigin[2];
+				pPath->pts[0].iNodeNum = Path_ConvertNodeToIndex(pNodeTo);
 			}
-			returnStartNode = pNodeFrom;
-			pNodeFrom->transient.iSearchFrame = ++game::level->iSearchFrame;
-			returnEndNode = pNodeFrom;
-			pNodeFrom->transient.pParent = &topParent;
-			pNodeFrom->transient.pNextOpen = 0;
-			pNodeFrom->transient.pPrevOpen = &topParent;
-			pNodeFrom->transient.fCost = 0.0;
-			topParent.transient.pNextOpen = pNodeFrom;
-			while (returnEndNode != searchInfo->m_pNodeTo)
+			prevFlags = pPath->flags;
+			pPath->flags = 0;
+			if (!pPath->wPathLen
+				|| (pPath->pts[0].vOrigPoint[0] != pPath->vFinalGoal[0]
+					|| pPath->pts[0].vOrigPoint[1] != pPath->vFinalGoal[1]
+					|| pPath->pts[0].vOrigPoint[2] != pPath->vFinalGoal[2] ? (v12 = 0) : (v12 = 1),
+					!v12))
 			{
-				topParent.transient.pNextOpen = returnEndNode->transient.pNextOpen;
-				if (topParent.transient.pNextOpen)
-					topParent.transient.pNextOpen->transient.pPrevOpen = &topParent;
-				linkCount = 0;
-				if (returnEndNode->dynamic.wLinkCount > 0)
+				if (pPath->pts[0].vOrigPoint[0] != pPath->vFinalGoal[0] || pPath->pts[0].vOrigPoint[1] != pPath->vFinalGoal[1])
+					pPath->iPathEndTime = 0;
+				pPath->vFinalGoal[0] = pPath->pts[0].vOrigPoint[0];
+				pPath->vFinalGoal[1] = pPath->pts[0].vOrigPoint[1];
+				pPath->vFinalGoal[2] = pPath->pts[0].vOrigPoint[2];
+			}
+			Path_Clear(pPath);
+			pPath->wDodgeCount = 0;
+			negotiationStartNode = 0;
+			if (pNodeTo)
+			{
+				for (pPrevNode = pNodeTo->transient.pParent; ; pPrevNode = pPrevPrevNode)
 				{
-					while (1)
+					++iTotal;
+					if (pNode == pNodeFrom)
+						break;
+					if (pPrevNode->constant.type == game::NODE_NEGOTIATION_BEGIN
+						&& pNode->constant.type == game::NODE_NEGOTIATION_END
+						&& pPrevNode->constant.target == pNode->constant.targetname)
 					{
-						if (bIgnoreBadplaces || !returnEndNode->constant.Links[nodeLinkIndex].ubBadPlaceCount[eTeam])
+						/*
+						if (!bAllowNegotiationLinks)
+							return 0;
+						*/
+						negotiationStartNode = iTotal;
+					}
+					pPrevPrevNode = pPrevNode->transient.pParent;
+					pPrevNode->transient.pParent = pNode;
+					pNode = pPrevNode;
+				}
+			}
+			excess = iTotal - 32;
+			if (iTotal - 32 > 0)
+			{
+				iTotal = 32;
+				pPath->flags |= 4u;
+				negotiationStartNode -= excess;
+				if (negotiationStartNode < 0)
+					*reinterpret_cast<unsigned short*>(&negotiationStartNode) = 0;
+			}
+			i = iTotal - 1;
+			pNodea = pNodeFrom;
+			while (i > 0)
+			{
+				v17 = &pPath->pts[i];
+				v17->vOrigPoint[0] = pNodea->constant.vOrigin[0];
+				v17->vOrigPoint[1] = pNodea->constant.vOrigin[1];
+				v17->vOrigPoint[2] = pNodea->constant.vOrigin[2];
+				v17->iNodeNum = Path_ConvertNodeToIndex(pNodea);
+				--i;
+				pNodea = pNodea->transient.pParent;
+			}
+			if (excess > 0)
+			{
+				pPath->pts[0].vOrigPoint[0] = pNodea->constant.vOrigin[0];
+				pPath->pts[0].vOrigPoint[1] = pNodea->constant.vOrigin[1];
+				pPath->pts[0].vOrigPoint[2] = pNodea->constant.vOrigin[2];
+				pPath->pts[0].iNodeNum = Path_ConvertNodeToIndex(pNodea);
+			}
+			pPath->wNegotiationStartNode = negotiationStartNode;
+			if (pPath->wNegotiationStartNode > 0)
+				Path_IncrementNodeUserCount(pPath);
+			pPath->pts[iTotal - 1].fOrigLength = 0.0;
+			pPath->pts[iTotal - 1].fDir2D[0] = 0.0;
+			pPath->pts[iTotal - 1].fDir2D[1] = 0.0;
+			v16 = &pPath->pts[iTotal - 1];
+			pPath->vCurrPoint[0] = v16->vOrigPoint[0];
+			pPath->vCurrPoint[1] = v16->vOrigPoint[1];
+			pPath->vCurrPoint[2] = v16->vOrigPoint[2];
+			for (ia = 0; ia < iTotal - 1; ++ia)
+				pPath->pts[ia].fOrigLength = Path_GetPathDir(
+					pPath->pts[ia].fDir2D,
+					pPath->pts[ia + 1].vOrigPoint,
+					pPath->pts[ia].vOrigPoint);
+			if (iTotal <= 1)
+				v10 = 0.0;
+			else
+				v10 = pPath->pts[iTotal - 2].fOrigLength;
+			pPath->fCurrLength = v10;
+			pPath->wPathLen = iTotal;
+			pPath->wOrigPathLen = pPath->wPathLen;
+			if (bAllowNegotiationLinks)
+				pPath->flags |= 0x10u;
+			pPath->eTeam = eTeam;
+			pPath->iPathTime = game::level->time;
+			if (pPath->fLookaheadAmount == 0.0)
+				return 1;
+			if ((prevFlags & 0x180) != 0)
+			{
+				if ((prevFlags & 0x80) != 0)
+				{
+					pPath->fLookaheadAmount = 32768.0;
+					pPath->minLookAheadNodes = 0;
+				}
+				else
+				{
+					pPath->fLookaheadAmount = 4096.0;
+					pPath->minLookAheadNodes = 2;
+				}
+				pPath->lookaheadDir[0] = 0.0;
+				pPath->lookaheadDir[1] = 0.0;
+				pPath->lookaheadDir[2] = 0.0;
+				game::Path_UpdateLookahead(pPath, vStartPos, 0, 0, 1);
+				pPath->minLookAheadNodes = 0;
+			}
+			else
+			{
+				game::Path_TransferLookahead(pPath, vStartPos);
+			}
+			return 1;
+		}
+
+		int __cdecl Path_AStarAlgorithm_CustomSearchInfo_FindPath_custom(game::path_t* pPath, game::team_t eTeam, float* vStartPos, game::pathnode_t* pNodeFrom, float* vGoalPos, int bIncludeGoalInPath, int bAllowNegotiationLinks, game::CustomSearchInfo_FindPath* custom, int bIgnoreBadPlaces)
+		{
+			int success; // [esp+28h] [ebp-A0h]
+			game::pathnode_t* pCurrent; // [esp+2Ch] [ebp-9Ch]
+			game::pathnode_t TopParent; // [esp+30h] [ebp-98h] BYREF
+			float fApproxTotalCost; // [esp+B4h] [ebp-14h]
+			game::pathnode_t* pInsert; // [esp+B8h] [ebp-10h]
+			int i; // [esp+BCh] [ebp-Ch]
+			float fCost; // [esp+C0h] [ebp-8h]
+			game::pathnode_t* pSuccessor; // [esp+C4h] [ebp-4h]
+
+			pNodeFrom->transient.iSearchFrame = ++game::level->iSearchFrame;
+			pNodeFrom->transient.pParent = &TopParent;
+			pNodeFrom->transient.pNextOpen = 0;
+			pNodeFrom->transient.pPrevOpen = &TopParent;
+			pNodeFrom->transient.fCost = 0.0;
+			TopParent.transient.pNextOpen = pNodeFrom;
+			while (true)
+			{
+				if (!TopParent.transient.pNextOpen)
+				{
+					return 0;
+				}
+
+				pCurrent = TopParent.transient.pNextOpen;
+
+				if (TopParent.transient.pNextOpen == custom->m_pNodeTo)
+				{
+					break;
+				}
+
+				TopParent.transient.pNextOpen = TopParent.transient.pNextOpen->transient.pNextOpen;
+				if (TopParent.transient.pNextOpen)
+				{
+					TopParent.transient.pNextOpen->transient.pPrevOpen = &TopParent;
+				}
+
+				for (i = 0; i < pCurrent->dynamic.wLinkCount; ++i)
+				{
+					if (bIgnoreBadPlaces || !pCurrent->constant.Links[i].ubBadPlaceCount[eTeam])
+					{
+						pSuccessor = Path_ConvertIndexToNode(pCurrent->constant.Links[i].nodeNum);
+						if (!bAllowNegotiationLinks && pCurrent->constant.type == game::NODE_NEGOTIATION_BEGIN && pSuccessor->constant.type == game::NODE_NEGOTIATION_END)
 						{
-							endNodeLinks = returnEndNode->constant.Links;
-							nodeNum = endNodeLinks[nodeLinkIndex].nodeNum;
-							endNodeLinkDist = &endNodeLinks[nodeLinkIndex].fDist;
-							pSuccessor = &(*game::gameWorldCurrent)->path.nodes[nodeNum];
-							if (returnEndNode->constant.type != game::NODE_NEGOTIATION_BEGIN || pSuccessor->constant.type != game::NODE_NEGOTIATION_END || !returnEndNode->dynamic.wOverlapCount && !pSuccessor->dynamic.wOverlapCount)
+							std::string animscript(game::SL_ConvertToString(game::SCRIPTINSTANCE_SERVER, pCurrent->constant.animscript));
+							if (animscript.find("jump_down") == std::string::npos)
 							{
-								if (pSuccessor->transient.iSearchFrame != game::level->iSearchFrame)
-								{
-									pSuccessor->transient.iSearchFrame = game::level->iSearchFrame;
-									negotiationOverlapCost = searchInfo->negotiationOverlapCost;
-									v20 = vGoalPos[1] - pSuccessor->constant.vOrigin[1];
-									v21 = sqrtf((float)((float)(*vGoalPos - pSuccessor->constant.vOrigin[0]) * (float)(*vGoalPos - pSuccessor->constant.vOrigin[0])) + (float)(v20 * v20));
-									v22 = pSuccessor->constant.minUseDistSq;
-									if (v22 <= 1.0 || (v23 = searchInfo->startPos[0] - pSuccessor->constant.vOrigin[0], v24 = searchInfo->startPos[1] - pSuccessor->constant.vOrigin[1], v25 = searchInfo->startPos[2] - pSuccessor->constant.vOrigin[2], v22 <= (float)((float)((float)(v23 * v23) + (float)(v24 * v24)) + (float)(v25 * v25))))
-									{
-										v26 = v21 + (double)pSuccessor->dynamic.userCount * negotiationOverlapCost;
-									}
-									else
-									{
-										v33 = v21 + (double)pSuccessor->dynamic.userCount * negotiationOverlapCost;
-										v26 = negotiationOverlapCost + v33;
-									}
-									pSuccessor->transient.fHeuristic = v26;
-									v17 = returnEndNode->constant.Links[nodeLinkIndex].fDist + returnEndNode->transient.fCost;
-								LABEL_25:
-									v27 = pSuccessor->transient.fHeuristic;
-									pSuccessor->transient.pParent = returnEndNode;
-									pSuccessor->transient.fCost = v17;
-									v28 = v27 + v17;
-									pInsert = &topParent;
-									if (topParent.transient.pNextOpen)
-									{
-										do
-										{
-											v30 = pInsert->transient.pNextOpen;
-											if ((float)(v30->transient.fHeuristic + v30->transient.fCost) >= v28)
-												break;
-											pInsert = pInsert->transient.pNextOpen;
-										} while (v30->transient.pNextOpen);
-									}
-									pSuccessor->transient.pPrevOpen = pInsert;
-									pSuccessor->transient.pNextOpen = pInsert->transient.pNextOpen;
-									pInsert->transient.pNextOpen = pSuccessor;
-									v31 = pSuccessor->transient.pNextOpen;
-									if (v31)
-										v31->transient.pPrevOpen = pSuccessor;
-									goto LABEL_30;
-								}
-								v17 = returnEndNode->transient.fCost + *endNodeLinkDist;
-								if (v17 < pSuccessor->transient.fCost)
-								{
-									v18 = pSuccessor->transient.pPrevOpen;
-									if (v18)
-									{
-										v18->transient.pNextOpen = pSuccessor->transient.pNextOpen;
-										v19 = pSuccessor->transient.pNextOpen;
-										if (v19)
-											v19->transient.pPrevOpen = pSuccessor->transient.pPrevOpen;
-									}
-									goto LABEL_25;
-								}
+								continue;
 							}
 						}
-					LABEL_30:
-						++nodeLinkIndex;
-						if (++linkCount >= returnEndNode->dynamic.wLinkCount)
+						if (pCurrent->constant.type != game::NODE_NEGOTIATION_BEGIN
+							|| pSuccessor->constant.type != game::NODE_NEGOTIATION_END
+							|| (pCurrent->dynamic.wOverlapCount == 0 && pSuccessor->dynamic.wOverlapCount == 0))
 						{
-							returnVGoaPosl = (float*)vGoalPos;
-							returnStartNode = pNodeFrom;
-							break;
+							if (pSuccessor->transient.iSearchFrame == game::level->iSearchFrame)
+							{
+								fCost = (pCurrent->constant.Links[i].fDist * 1.0) + pCurrent->transient.fCost;
+								if (fCost >= pSuccessor->transient.fCost)
+								{
+									continue;
+								}
+								if (pSuccessor->transient.pPrevOpen)
+								{
+									pSuccessor->transient.pPrevOpen->transient.pNextOpen = pSuccessor->transient.pNextOpen;
+									if (pSuccessor->transient.pNextOpen)
+									{
+										pSuccessor->transient.pNextOpen->transient.pPrevOpen = pSuccessor->transient.pPrevOpen;
+									}
+								}
+							}
+							else
+							{
+								pSuccessor->transient.iSearchFrame = game::level->iSearchFrame;
+								pSuccessor->transient.fHeuristic = EvaluateHeuristic(custom, pSuccessor, vGoalPos);
+								fCost = (pCurrent->constant.Links[i].fDist * 1.0) + pCurrent->transient.fCost;
+							}
+
+							pSuccessor->transient.pParent = pCurrent;
+							pSuccessor->transient.fCost = fCost;
+							fApproxTotalCost = pSuccessor->transient.fCost + pSuccessor->transient.fHeuristic;
+
+							for (pInsert = &TopParent;
+								pInsert->transient.pNextOpen
+								&& (pInsert->transient.pNextOpen->transient.fCost
+									+ pInsert->transient.pNextOpen->transient.fHeuristic) < fApproxTotalCost;
+								pInsert = pInsert->transient.pNextOpen)
+							{
+								;
+							}
+
+							pSuccessor->transient.pPrevOpen = pInsert;
+							pSuccessor->transient.pNextOpen = pInsert->transient.pNextOpen;
+							pInsert->transient.pNextOpen = pSuccessor;
+
+							if (pSuccessor->transient.pNextOpen)
+							{
+								pSuccessor->transient.pNextOpen->transient.pPrevOpen = pSuccessor;
+							}
 						}
 					}
 				}
-				nodeLinkIndex = 0;
-				returnEndNode->transient.pPrevOpen = 0;
-				returnEndNode = topParent.transient.pNextOpen;
-				if (!topParent.transient.pNextOpen)
-					return 0;
+				pCurrent->transient.pPrevOpen = 0;
 			}
-			if (pPath)
-				success = game::Path_GeneratePath(pPath, eTeam, vStartPos, returnVGoaPosl, returnStartNode, returnEndNode, 1, bAllowNegotiationLinks);
-			else
-				success = 1;
+			if (!pPath)
+			{
+				return 1;
+			}
+
+			success = Path_GeneratePath_custom(
+				pPath,
+				eTeam,
+				vStartPos,
+				vGoalPos,
+				pNodeFrom,
+				TopParent.transient.pNextOpen,
+				bIncludeGoalInPath,
+				bAllowNegotiationLinks);
 			return success;
 		}
 
@@ -347,7 +414,7 @@ namespace ai
 			info.startPos[0] = startPos[0];
 			info.startPos[1] = startPos[1];
 			info.startPos[2] = startPos[2];
-			result = Path_AStarAlgorithm_CustomSearchInfo_FindPath_custom(pPath, eTeam, startPos, pNodeFrom, vGoalPos, bAllowNegotiationLinks, &info, bIgnoreBadplaces, pNodeTo);
+			result = Path_AStarAlgorithm_CustomSearchInfo_FindPath_custom(pPath, eTeam, startPos, pNodeFrom, vGoalPos, true, bAllowNegotiationLinks, &info, bIgnoreBadplaces);
 			return result;
 		}
 
@@ -393,6 +460,38 @@ namespace ai
 			}
 			return result;
 		}
+
+		int actor_spawned_callback_handle = 0;
+
+		void actor_spawned_callback(game::actor_s* actor)
+		{
+			static const auto call_addr = SELECT(0x0, 0x4B5550);
+
+			__asm
+			{
+				mov esi, actor;
+				call call_addr;
+			}
+
+			if (!actor_spawned_callback_handle)
+			{
+				return;
+			}
+
+			auto id = game::Scr_ExecEntThread(game::SCRIPTINSTANCE_SERVER, actor->ent->s.number, actor_spawned_callback_handle, 0, game::CLASS_NUM_ENTITY);
+			game::RemoveRefToObject(game::SCRIPTINSTANCE_SERVER, id);
+		}
+
+		void __declspec(naked) actor_spawned_callback_stub()
+		{
+			__asm
+			{
+				push esi;
+				call actor_spawned_callback;
+				add esp, 0x4;
+				retn;
+			}
+		}
 	}
 
 	class component final : public component_interface
@@ -400,6 +499,23 @@ namespace ai
 	public:
 		void post_unpack() override
 		{
+			//Add support for codecallback_actorspawned GSC callback
+			utils::hook::call(0x4E06EB, actor_spawned_callback_stub);
+			//Initialize handle for codecallback_actorspawned
+			scheduler::on_postloadscripts([]()
+				{
+					int found_script = game::Scr_LoadScript("scripts/sp/callbacks_ext", game::SCRIPTINSTANCE_SERVER);
+					if (found_script)
+					{
+						actor_spawned_callback_handle = game::Scr_GetFunctionHandle(game::SCRIPTINSTANCE_SERVER, "scripts/sp/callbacks_ext", "codecallback_actorspawned");
+						printf("Adding actor_spawned_callback_handle\n");
+					}
+					else
+					{
+						printf("Could not find callbacks_ext.gsc\n");
+					}
+				});
+
 			//utils::hook::jump(0x4CF280, Path_FindPath_stub);
 
 			gsc::method::add("getlinkednodes", [](game::scr_entref_s ent)
@@ -495,7 +611,7 @@ namespace ai
 
 					auto eTeam = game::team_map.at(team);
 
-					auto success = Path_FindPath_custom(path.get(), eTeam, start_pos, goal_pos, allow_negotiation_links);
+					auto success = game::Path_FindPath(path.get(), eTeam, start_pos, goal_pos, allow_negotiation_links);
 
 					if (!success)
 					{
@@ -506,10 +622,13 @@ namespace ai
 					game::Scr_MakeArray(game::SCRIPTINSTANCE_SERVER);
 
 					//Reverse the order of the array so index 0 is from the starting point instead of the end
-					for (auto i = path->wPathLen; i >= 0; i--)
+					for (auto i = path->wPathLen - 1; i >= 0; i--)
 					{
-						//Return the number of the node instead of the node itself because of spooky GSC VM corruption
-						game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, path->pts[i].iNodeNum);
+						if (path->pts[i].iNodeNum < 0)
+						{
+							continue;
+						}
+						game::Scr_AddPathnode(game::SCRIPTINSTANCE_SERVER, &(*game::gameWorldCurrent)->path.nodes[path->pts[i].iNodeNum]);
 						game::Scr_AddArray(game::SCRIPTINSTANCE_SERVER);
 					}
 				});

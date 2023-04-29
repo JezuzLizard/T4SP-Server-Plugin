@@ -1,6 +1,8 @@
 #include <stdinc.hpp>
 #include "loader/component_loader.hpp"
 
+#include "scheduler.hpp"
+
 #include <json.hpp>
 #include <utils/io.hpp>
 #include <utils/hook.hpp>
@@ -121,6 +123,30 @@ namespace gsc
 				retn;
 			}
 		}
+
+		int hudelem_spawned_callback_handle = 0;
+
+		game::game_hudelem_s* hudelem_alloc_codecallback(game::game_hudelem_s* hud)
+		{
+			static const auto call_addr = SELECT(0x0, 0x4FA310);
+
+			game::game_hudelem_s* answer;
+
+			__asm
+			{
+				mov eax, hud;
+				call call_addr;
+				mov answer, eax;
+			}
+
+			if (hudelem_spawned_callback_handle)
+			{
+				auto id = game::Scr_ExecEntThread(game::SCRIPTINSTANCE_SERVER, hud - game::g_hudelems, hudelem_spawned_callback_handle, 0, game::CLASS_NUM_HUDELEM);
+				game::RemoveRefToObject(game::SCRIPTINSTANCE_SERVER, id);
+			}
+
+			return answer;
+		}
 	}
 
 	namespace function
@@ -148,6 +174,23 @@ namespace gsc
 			original_scr_get_method_funcs_call_loc = utils::hook::get_displacement_addr(0x683043);
 			utils::hook::jump(0x682D99, original_scr_get_gsc_funcs_hook);
 			utils::hook::call(0x683043, original_scr_get_method_funcs_hook);
+
+			//Add support for codecallback_hudelemspawned GSC callback
+			//utils::hook::call(0x4FA40B, hudelem_alloc_stub);
+			//HudElem_Alloc_hook.create(0x4FA3E0, hudelem_alloc_stub2);
+			//Handle for codecallback_hudelemspawned
+			scheduler::on_postloadscripts([]()
+				{
+					auto found_script = game::Scr_LoadScript("scripts/sp/callbacks_ext", game::SCRIPTINSTANCE_SERVER);
+					if (found_script)
+					{
+						hudelem_spawned_callback_handle = game::Scr_GetFunctionHandle(game::SCRIPTINSTANCE_SERVER, "scripts/sp/callbacks_ext", "codecallback_hudelemspawned");
+					}
+					else
+					{
+						printf("Couldn't load script scripts/sp/callbacks_ext.gsc\n");
+					}
+				});
 
 			function::add("funny_func", []()
 				{
@@ -274,7 +317,7 @@ namespace gsc
 					game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, utils::io::write_file(path, data, append));
 				});
 
-			gsc::function::add("readfile", []()
+			function::add("readfile", []()
 				{
 					const auto path = game::Scr_GetString(game::SCRIPTINSTANCE_SERVER, 0);
 					game::Scr_AddString(game::SCRIPTINSTANCE_SERVER, utils::io::read_file(path).c_str());
