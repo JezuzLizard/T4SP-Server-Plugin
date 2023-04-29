@@ -51,7 +51,8 @@ namespace game
 	void Scr_AddUndefined(game::scriptInstance_t inst);
 	gentity_s* Scr_GetEntity(unsigned int arg_index);
 	void Scr_AddEntity(game::scriptInstance_t inst, gentity_s* ent);
-	unsigned int Scr_GetEntityId(scriptInstance_t inst, unsigned int entnum, classNum_e classnum, unsigned int clientnum, void* call_addr = CALL_ADDR(0x0, 0x692520));
+	__inline void* Scr_GetEntityId() { return CALL_ADDR(0x0, 0x692520); }
+	unsigned int Scr_GetEntityId(scriptInstance_t inst, unsigned int entnum, classNum_e classnum, unsigned int clientnum, void* call_addr = Scr_GetEntityId());
 	void Scr_AddEntityNum(scriptInstance_t inst, unsigned int entid);
 	pathnode_t* Scr_GetPathnode(scriptInstance_t inst);
 	void Scr_AddPathnode(scriptInstance_t inst, pathnode_t* node);

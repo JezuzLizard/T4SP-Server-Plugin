@@ -173,7 +173,8 @@ namespace test
 			//utils::hook::jump(0x4D3296, our_funny_hook);
 
 			// test usercall detour!
-			scr_getentityid_hook.create(0x692520, scr_getentityid_stub);
+			scr_getentityid_hook.create(game::Scr_GetEntityId(), scr_getentityid_stub);
+			// scr_getentityid_hook.create(game::SL_GetStringOfSize.get(), sl_getstringofsize_stub);
 		}
 
 	private:
