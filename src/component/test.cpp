@@ -95,8 +95,9 @@ namespace test
 			}
 		}
 
-		unsigned int __stdcall scr_getentityid_call(game::scriptInstance_t inst, game::classNum_e classnum, unsigned int clientnum, unsigned int entnum)
+		unsigned int __stdcall scr_getentityid_call(void* caller_addr, game::scriptInstance_t inst, game::classNum_e classnum, unsigned int clientnum, unsigned int entnum)
 		{
+			printf("scr_getentityid_call: called from %p\n", caller_addr);
 			// minhook allocated space for the original asm, we want to execute that instead because the original gamecode has the jump from the detour
 			return game::Scr_GetEntityId(inst, entnum, classnum, clientnum, scr_getentityid_hook.get_original());
 		}
@@ -116,6 +117,8 @@ namespace test
 				push clientnum;
 				push classnum;
 				push inst;
+				mov eax, [ebp + 4]; // caller address! where did we get called from?
+				push eax;
 				call scr_getentityid_call;
 				// we made this a __stdcall, so we dont need to clean up stack
 
