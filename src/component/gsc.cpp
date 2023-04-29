@@ -11,58 +11,27 @@
 namespace gsc
 {
 	std::unordered_map<std::string, game::BuiltinFunction> functions;
-
 	std::unordered_map<std::string, game::BuiltinMethod> methods;
+
+	utils::hook::detour scr_getmethod_hook;
+	void* scr_getfunction_stub_ret_loc;
 
 	namespace
 	{
-		void* original_scr_get_gsc_funcs_jump_loc;
-
-		void* original_scr_get_method_funcs_call_loc;
-
-		game::BuiltinFunction find_function(const std::string& name)
+		game::BuiltinFunction scr_getfunction_call(const char** pName, int* pType)
 		{
-			auto itr = functions.find(name);
+			auto itr = functions.find(*pName);
+
 			if (itr == functions.end())
 			{
-				return 0;
+				return nullptr;
 			}
 
+			*pType = 0;
 			return itr->second;
 		}
 
-		game::BuiltinMethod find_method(const std::string& name)
-		{
-			auto itr = methods.find(name);
-			if (itr == methods.end())
-			{
-				return 0;
-			}
-
-			return itr->second;
-		}
-
-		game::BuiltinFunction scr_get_funcs_stub(const char** pName, int* type)
-		{
-			const auto func = find_function(*pName);
-			if (func)
-			{
-				return func;
-			}
-			return 0;
-		}
-
-		game::BuiltinMethod scr_get_methods_stub(const char** pName, int* type)
-		{
-			const auto meth = find_method(*pName);
-			if (meth)
-			{
-				return meth;
-			}
-			return 0;
-		}
-
-		void __declspec(naked) original_scr_get_gsc_funcs_hook()
+		game::BuiltinFunction __declspec(naked) scr_getfunction_stub()
 		{
 			__asm
 			{
@@ -72,55 +41,62 @@ namespace gsc
 				lea eax, [esp + 0x24 + 0x2C - 0x1C];
 				push eax;
 				push edx;
-				call scr_get_funcs_stub;
+				call scr_getfunction_call;
 				add esp, 8;
-
-				mov[esp + 0x20], eax;
+				mov [esp + 0x20], eax;
 
 				popad;
 				pop eax;
 
 				test eax, eax;
+				jnz just_ret;
 
-				jnz og;
+				// go do original code
+				push scr_getfunction_stub_ret_loc;
+				ret;
 
-				// pluto
-				push original_scr_get_gsc_funcs_jump_loc;
-				retn;
-
-			og:
-				// retn
+			just_ret:
 				add esp, 4;
 				push 0x682DC8;
-				retn;
+				ret;
 			}
 		}
 
-		void __declspec(naked) original_scr_get_method_funcs_hook()
+		game::BuiltinMethod scr_getmethod_call(const char** pName, int* pType)
+		{
+			auto itr = methods.find(*pName);
+
+			if (itr == methods.end())
+			{
+				// call og
+				const auto og_addr = scr_getmethod_hook.get_original();
+				game::BuiltinMethod answer;
+
+				__asm
+				{
+					mov edi, pType;
+					mov esi, pName;
+					call og_addr;
+					mov answer, eax;
+				}
+
+				return answer;
+			}
+
+			*pType = 0;
+			return itr->second;
+		}
+
+		game::BuiltinMethod __declspec(naked) scr_getmethod_stub()
 		{
 			__asm
 			{
-				push eax;
-				pushad;
-
 				push edi;
 				push esi;
-				call scr_get_methods_stub;
+				call scr_getmethod_call;
 				add esp, 8;
-				mov[esp + 0x20], eax; // move answer into eax when pop happens
 
-				popad;
-				pop eax;
-
-				test eax, eax;
-				jz pluto_code;
-
-				retn;
-
-			pluto_code:
-
-				push original_scr_get_method_funcs_call_loc;
-				retn;
+				ret;
 			}
 		}
 
@@ -170,10 +146,13 @@ namespace gsc
 	public:
 		void post_unpack() override
 		{
-			original_scr_get_gsc_funcs_jump_loc = utils::hook::get_displacement_addr(0x682D99);
-			original_scr_get_method_funcs_call_loc = utils::hook::get_displacement_addr(0x683043);
-			utils::hook::jump(0x682D99, original_scr_get_gsc_funcs_hook);
-			utils::hook::call(0x683043, original_scr_get_method_funcs_hook);
+			// custom gsc methods
+			scr_getmethod_hook.create(utils::hook::get_displacement_addr(SELECT(0x0, 0x683043)), scr_getmethod_stub);
+			
+			// custom gsc funcs
+			scr_getfunction_stub_ret_loc = utils::hook::get_displacement_addr(SELECT(0x0, 0x682D99));
+			utils::hook::jump(SELECT(0x0, 0x682D99), scr_getfunction_stub);
+
 
 			//Add support for codecallback_hudelemspawned GSC callback
 			//utils::hook::call(0x4FA40B, hudelem_alloc_stub);
