@@ -95,36 +95,25 @@ namespace test
 			}
 		}
 
-		unsigned int __stdcall scr_getentityid_call(void* caller_addr, game::scriptInstance_t inst, game::classNum_e classnum, unsigned int clientnum, unsigned int entnum)
+		unsigned int scr_getentityid_call(unsigned int entnum, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, game::classNum_e classnum, unsigned int clientnum)
 		{
-			printf("scr_getentityid_call: called from %p\n", caller_addr);
 			// minhook allocated space for the original asm, we want to execute that instead because the original gamecode has the jump from the detour
 			return game::Scr_GetEntityId(inst, entnum, classnum, clientnum, scr_getentityid_hook.get_original());
 		}
 
-		unsigned int __declspec(naked) __cdecl scr_getentityid_stub(game::scriptInstance_t inst, game::classNum_e classnum, unsigned int clientnum)
+		unsigned int __declspec(naked) scr_getentityid_stub()
 		{
 			// 00692520 unsigned int __usercall Scr_GetEntityId@<eax>(unsigned int entnum@<eax>, scriptInstance_t inst, classNum_e classnum, unsigned int clientnum)
 			__asm
 			{
-				// prol
-				push ebp;
-				mov ebp, esp;
+				// eax is a param, lets push it!
+				push eax;
 
-				// push shit for our call, remember eax is a param in the usercall, rest was on stack
-				// we can access params like this in naked because we correctly setup the ebp
-				push eax;
-				push clientnum;
-				push classnum;
-				push inst;
-				mov eax, [ebp + 4]; // caller address! where did we get called from?
-				push eax;
+				// ok so scr_getentityid_call intentionally has more params than it should, so we can access everything on the stack
 				call scr_getentityid_call;
-				// we made this a __stdcall, so we dont need to clean up stack
 
-				// epil
-				mov esp, ebp;
-				pop ebp;
+				// clean up and return
+				add esp, 4;
 				ret;
 			}
 		}
