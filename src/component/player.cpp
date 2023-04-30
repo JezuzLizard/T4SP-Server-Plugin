@@ -63,6 +63,23 @@ namespace player
                 client->previouslyUsingNightVision = 0;
                 game::Scr_NotifyNum(game::SCRIPTINSTANCE_SERVER, ent->s.number, 0, game::scr_const->night_vision_off, 0);
             }
+
+            //New addition
+            if (game::PM_IsSprinting(&client->ps))
+            {
+                if (!client->previouslySprinting)
+                {
+                    client->previouslySprinting = true;
+                    std::string sprintBeginNotifyStr("sprint_begin");
+                    game::Scr_NotifyNum(game::SCRIPTINSTANCE_SERVER, ent->s.number, 0, game::SL_GetStringOfSize(game::SCRIPTINSTANCE_SERVER, sprintBeginNotifyStr.data(), 0, sprintBeginNotifyStr.length()), 0);
+                }
+            }
+            else if (client->previouslySprinting)
+            {
+                client->previouslySprinting = false;
+                std::string sprintBeginNotifyStr("sprint_end");
+                game::Scr_NotifyNum(game::SCRIPTINSTANCE_SERVER, ent->s.number, 0, game::SL_GetStringOfSize(game::SCRIPTINSTANCE_SERVER, sprintBeginNotifyStr.data(), 0, sprintBeginNotifyStr.length()), 0);
+            }
         }
 
         void __declspec(naked) G_ClientDoPerFrameNotifies_stub()

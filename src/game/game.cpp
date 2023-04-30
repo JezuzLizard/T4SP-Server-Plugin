@@ -695,6 +695,11 @@ namespace game
 		}
 	}
 
+	bool PM_IsSprinting(const playerState_s* ps)
+	{
+		return ps->sprintState.lastSprintStart && ps->sprintState.lastSprintStart > ps->sprintState.lastSprintEnd;
+	}
+
 	game::pathnode_t* Path_ConvertIndexToNode(int index)
 	{
 		return &(*game::gameWorldCurrent)->path.nodes[index];

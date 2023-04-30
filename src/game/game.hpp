@@ -79,7 +79,10 @@ namespace game
 	int Path_GeneratePath(path_t* pPath, team_t eTeam, const float* vStartPos, float* vGoalPos, pathnode_t* pNodeFrom, pathnode_t* pNodeTo, int bIncludeGoalPos, int bAllowNegotiationLinks);
 	void Path_UpdateLookahead(path_t* pPath, const float* vStartPos, int bReduceLookaheadAmount, int a4, int bAllowBacktrack);
 	void Path_AddTrimmedAmount(const float* a1, path_t* a2);
+
+	//Reimplemented functions
 	void Path_TransferLookahead(path_t* a1, const float* a2);
+	bool PM_IsSprinting(const playerState_s* ps);
 	pathnode_t* Path_ConvertIndexToNode(int index);
 	unsigned int __cdecl Path_ConvertNodeToIndex(const game::pathnode_t* node);
 	pathnode_t* Path_GetNegotiationNode(const path_t* pPath);

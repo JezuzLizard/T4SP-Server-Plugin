@@ -1046,7 +1046,11 @@ namespace game
 		float vGunSpeed[3];
 		int dropWeaponTime;
 		bool previouslyChangingWeapon;
+		//New additions below
+		bool previouslySprinting;
 	};
+
+	static_assert(sizeof(gclient_s) == 0x2348);
 
 	enum AISpecies : __int32
 	{
