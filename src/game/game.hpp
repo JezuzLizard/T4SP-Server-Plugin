@@ -24,6 +24,9 @@ namespace game
 
 	extern std::map<std::string, team_t> team_map;
 
+	__inline void* G_ClientDoPerFrameNotifies() { return CALL_ADDR(0x0, 0x503540); }
+	void G_ClientDoPerFrameNotifies(gentity_s* ent, void* call_addr = G_ClientDoPerFrameNotifies());
+
 	void Scr_PrintPrevCodePos(const char* codepos, int scriptInstance, con_channel_e channel, int index);
 	void RemoveRefToObject(scriptInstance_t inst, unsigned int id);
 	int Scr_LoadScript(const char* file, scriptInstance_t inst);
@@ -62,6 +65,9 @@ namespace game
 	void Scr_AddArrayStringIndexed(scriptInstance_t inst, unsigned short id);
 	unsigned short Scr_ExecThread(scriptInstance_t inst, int handle, int paramCount);
 	unsigned short Scr_ExecEntThread(scriptInstance_t inst, int entNum, int handle, int numParams, int entClass);
+	__inline void* Scr_NotifyNum() { return CALL_ADDR(0x0, 0x698CC0); }
+	void Scr_NotifyNum(scriptInstance_t inst, int entNum, int entClass, unsigned int notifStr, int numParams, void* call_addr = Scr_NotifyNum());
+
 	unsigned int Scr_GetNumParam(scriptInstance_t inst);
 	VariableType Scr_GetType(scriptInstance_t inst, unsigned int index);
 	void Scr_Error(const char* err, scriptInstance_t inst, bool is_terminal);

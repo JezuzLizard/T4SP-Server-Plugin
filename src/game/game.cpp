@@ -32,6 +32,15 @@ namespace game
 		{ "dead", TEAM_DEAD }
 	};
 
+	void G_ClientDoPerFrameNotifies(gentity_s* ent, void* call_addr)
+	{
+		__asm
+		{
+			mov edi, ent;
+			call call_addr;
+		}
+	}
+
 	void Scr_PrintPrevCodePos(const char* codepos, int scriptInstance, con_channel_e channel, int index)
 	{
 		static const auto call_addr = SELECT(0x0, 0x68B340);
@@ -435,6 +444,20 @@ namespace game
 		}
 
 		return answer;
+	}
+
+	void Scr_NotifyNum(scriptInstance_t inst, int entNum, int entClass, unsigned int notifStr, int numParams, void* call_addr)
+	{
+		__asm
+		{
+			push numParams;
+			push notifStr;
+			push entClass;
+			push entNum;
+			mov eax, inst;
+			call call_addr;
+			add esp, 0x10;
+		}
 	}
 
 	unsigned int Scr_GetNumParam(scriptInstance_t inst)

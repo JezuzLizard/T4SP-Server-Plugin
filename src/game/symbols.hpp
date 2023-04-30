@@ -32,6 +32,8 @@ namespace game
 	WEAK symbol<function_stack_t> function_stack{ 0x0, 0x3BDDDD0 };
 	WEAK symbol<scr_const_t> scr_const{0x0, 0x1F33B90};
 
+	WEAK symbol<WeaponDef*> BG_WeaponNames{ 0x0, 0x8F6770 };
+
 	// Dvars
 
 	WEAK symbol<dvar_s*> com_developer{ 0x0, 0x1F55288 };
