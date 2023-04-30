@@ -917,30 +917,6 @@ namespace game
 		CON_CONNECTED = 0x2,
 	};
 
-	struct __declspec(align(4)) usercmd_s
-	{
-		int time;
-		int buttons;
-		int angles[3];
-		char weapon;
-		char offHandIndex;
-		char forward;
-		char right;
-		char gap_18;
-		char pitchmove;
-		char yawmove;
-		char gap_1B;
-		__int16 wiimoteGunPitch;
-		__int16 wiimoteGunYaw;
-		int gap_20;
-		int field_24;
-		int meleeChargeYaw;
-		int meleeChargeDist;
-		int field_30;
-		char selectedLocation[2];
-		__int16 gap_36;
-	};
-
 	struct clientState_s
 	{
 		int clientNum;
@@ -954,6 +930,67 @@ namespace game
 		char gap_84[15];
 		char field_93;
 	};
+
+	/* 1112 */
+	enum button_mask : __int32
+	{
+		KEY_FIRE = 0x1,
+		KEY_SPRINT = 0x2,
+		KEY_MELEE = 0x4,
+		KEY_USE = 0x8,
+		KEY_RELOAD = 0x10,
+		KEY_USERELOAD = 0x20,
+		KEY_LEANLEFT = 0x40,
+		KEY_LEANRIGHT = 0x80,
+		KEY_PRONE = 0x100,
+		KEY_CROUCH = 0x200,
+		KEY_GOSTAND = 0x400,
+		KEY_ADSMODE = 0x800,
+		KEY_TEMP = 0x1000,
+		KEY_HOLDBREATH = 0x2000,
+		KEY_FRAG = 0x4000,
+		KEY_SMOKE = 0x8000,
+		KEY_SELECTING_LOCATION = 0x10000,
+		KEY_CANCEL_LOCATION = 0x20000,
+		KEY_NIGHTVISION = 0x40000,
+		KEY_ADS = 0x80000,
+		KEY_REVERSE = 0x100000,
+		KEY_HANDBRAKE = 0x200000,
+		KEY_THROW = 0x400000,
+		KEY_INMENU = 0x800000,
+		KEY_UNK6 = 0x1000000,
+		KEY_UNK7 = 0x2000000,
+		KEY_UNK8 = 0x2000000,
+		KEY_UNK9 = 0x4000000,
+		KEY_UNK10 = 0x8000000,
+	};
+
+	/* 181 */
+	struct __declspec(align(4)) usercmd_s
+	{
+		int serverTime;
+		button_mask buttons;
+		int angles[3];
+		char weapon;
+		char offHandIndex;
+		char forward;
+		char right;
+		char upmove;
+		char pitchmove;
+		char yawmove;
+		__int16 wiimoteGunPitch;
+		__int16 wiimoteGunYaw;
+		__int16 gunXOfs;
+		__int16 gunYOfs;
+		__int16 gunZOfs;
+		int meleeChargeYaw;
+		char meleeChargeDist;
+		int rollmove;
+		char selectedLocation[2];
+		__int16 weapon_buddy;
+	};
+
+	static_assert(sizeof(usercmd_s) == 0x38);
 
 	struct __declspec(align(4)) clientSession_s
 	{
@@ -1051,6 +1088,202 @@ namespace game
 	};
 
 	static_assert(sizeof(gclient_s) == 0x2348);
+
+	/* 365 */
+	enum clientconn_e
+	{
+		CS_FREE = 0x0,
+		CS_ZOMBIE = 0x1,
+		CS_CONNECTED = 0x2,
+		CS_PRIMED = 0x3,
+		CS_ACTIVE = 0x4,
+	};
+
+	/* 370 */
+	enum connstate_t : __int32
+	{
+		CA_DISCONNECTED = 0x0,
+		CA_CINEMATIC = 0x1,
+		CA_UICINEMATIC = 0x2,
+		CA_LOGO = 0x3,
+		CA_CONNECTING = 0x4,
+		CA_CHALLENGING = 0x5,
+		CA_CONNECTED = 0x6,
+		CA_SENDINGSTATS = 0x7,
+		CA_LOADING = 0x8,
+		CA_PRIMED = 0x9,
+		CA_ACTIVE = 0xA,
+		CA_MAP_RESTART = 0xB,
+	};
+
+	/* 178 */
+	enum netsrc_t : __int32
+	{
+		NS_CLIENT1 = 0x0,
+		NS_SERVER = 0x1,
+		NS_MAXCLIENTS = 0x1,
+		NS_PACKET = 0x2,
+	};
+
+	/* 173 */
+	enum netadrtype_t : __int32
+	{
+		NA_BOT = 0x0,
+		NA_BAD = 0x1,
+		NA_LOOPBACK = 0x2,
+		NA_BROADCAST = 0x3,
+		NA_IP = 0x4,
+	};
+
+	/* 175 */
+	struct netadr_s
+	{
+		netadrtype_t type;
+		union
+		{
+			unsigned __int8 ip[4];
+			unsigned int ip_packed;
+		};
+		unsigned __int16 port;
+		unsigned __int8 netnum[4];
+		unsigned __int8 nodenum[6];
+		unsigned int routerHandle;
+	};
+
+	/* 197 */
+	struct __declspec(align(4)) netchan_s
+	{
+		int outgoingSequence;
+		netsrc_t sock;
+		int dropped;
+		int incomingSequence;
+		netadr_s remoteAddress;
+		int qport;
+		int fragmentSequence;
+		int fragmentLength;
+		char* fragmentBuffer;
+		int fragmentBufferSize;
+		int unsentFragments;
+		int unsentFragmentStart;
+		int unsentLength;
+		int unsentBuffer;
+		int unsentBufferSize;
+		int reliable_fragments;
+		char fragment_send_count[128];
+		int fragment_ack[4];
+		int lowest_send_count;
+		char prof[1504];
+	};
+
+	/* 196 */
+	struct __declspec(align(4)) clientHeader_s
+	{
+		clientconn_e state;
+		connstate_t clientReportedState;
+		int huh;
+		int deltaMessage;
+		int rateDelayed;
+		netchan_s netchan;
+		float predictedOrigin[3];
+		int predictedOriginServerTime;
+	};
+
+	/* 359 */
+	struct reliableCommands_s
+	{
+		char cmd[512];
+		int time;
+		int type;
+	};
+
+	/* 309 */
+	struct clientSnapshot_t
+	{
+		playerState_s ps;
+		int num_entities;
+		int num_clients;
+		int num_actors;
+		int first_entity;
+		int first_client;
+		int first_actor;
+		int num_animCmds;
+		int first_animCmd;
+		int messageSent;
+		int messageAcked;
+		int messageSize;
+		int field_20D8;
+	};
+
+	/* 376 */
+#pragma pack(push, 1)
+	struct __declspec(align(1)) VoicePacket_t
+	{
+		char talker;
+		char data[256];
+		int dataSize;
+	};
+#pragma pack(pop)
+
+	static_assert(sizeof(VoicePacket_t) == 0x105);
+
+	struct __declspec(align(4)) client_s
+	{
+		clientHeader_s header;
+		char* dropReason;
+		char userinfo[1536];
+		reliableCommands_s reliableCommands[128];
+		int reliableSequence;
+		int reliableAcknowledge;
+		int reliableSent;
+		int messageAcknowledge;
+		int gamestateMessageNum;
+		int challenge;
+		usercmd_s lastUsercmd;
+		int lastClientCommand;
+		char lastClientCommandString[1024];
+		gentity_s* gentity;
+		char name[32];
+		char clanAbbrev[8];
+		char downloadName[64];
+		int download;
+		int downloadSize;
+		int downloadCount;
+		int downloadClientBlock;
+		int downloadCurrentBlock;
+		int downloadXmitBlock;
+		unsigned __int8* downloadBlocks[8];
+		int downloadBlockSize[8];
+		int downloadEOF;
+		int downloadSendTime;
+		int nextReliableTime;
+		int lastPacketTime;
+		int lastConnectTime;
+		int nextSnapshotTime;
+		int timeoutCount;
+		clientSnapshot_t frames[16];
+		int ping;
+		int rate;
+		int snapshotMsec;
+		int pureAuthentic;
+		char netchanOutgoingBuffer[131072];
+		char netchanIncomingBuffer[2048];
+		int guid;
+		int scriptId;
+		int bIsTestClient;
+		int serverId;
+		VoicePacket_t voicePackets[40];
+		int voicePacketCount;
+		char muteList[4];
+		char sendVoice;
+		char stats[8192];
+		char statPacketsReceived;
+		char PBguid[33];
+		char clientPBguid[33];
+		char gap_57518[6167];
+		char field_0;
+	};
+
+	static_assert(sizeof(client_s) == 0x58D30);
 
 	enum AISpecies : __int32
 	{

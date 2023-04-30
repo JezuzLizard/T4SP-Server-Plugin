@@ -14,6 +14,8 @@ namespace test
 	// a __usercall detour! :o
 	utils::hook::detour scr_getentityid_hook;
 
+	utils::hook::detour sv_clientthink_hook;
+
 	namespace
 	{
 		game::dvar_s* custom_dvar;
@@ -117,6 +119,41 @@ namespace test
 				ret;
 			}
 		}
+
+		void sv_clientthink_call(game::client_s* client, [[maybe_unused]] void* caller_addr, game::usercmd_s* cmd)
+		{
+			const auto og_addr = sv_clientthink_hook.get_original();
+
+			if (client->bIsTestClient && client->gentity && client->gentity->client)
+			{
+				auto gclient = client->gentity->client;
+				
+				cmd->wiimoteGunPitch = static_cast<unsigned short>((gclient->ps.viewangles[0]) * (65536 / 360.f)) & 0xFFFF;
+				cmd->wiimoteGunYaw = static_cast<unsigned short>((gclient->ps.viewangles[1]) * (65536 / 360.f)) & 0xFFFF;
+			}
+
+			__asm
+			{
+				push cmd;
+				mov eax, client; 
+				call og_addr;
+				add esp, 0x4;
+			}
+		}
+
+		void __declspec(naked) sv_clientthink_stub()
+		{
+			__asm
+			{
+				push eax;
+
+				call sv_clientthink_call;
+
+				add esp, 0x4;
+
+				ret;
+			}
+		}
 	}
 
 	class component final : public component_interface
@@ -167,6 +204,8 @@ namespace test
 			// test usercall detour!
 			scr_getentityid_hook.create(game::Scr_GetEntityId(), scr_getentityid_stub);
 			// scr_getentityid_hook.create(game::SL_GetStringOfSize.get(), sl_getstringofsize_stub);
+
+			sv_clientthink_hook.create(0x630BF0, sv_clientthink_stub);
 		}
 
 	private:
