@@ -74,6 +74,17 @@ namespace game
 	void Path_UpdateLookahead(path_t* pPath, const float* vStartPos, int bReduceLookaheadAmount, int a4, int bAllowBacktrack);
 	void Path_AddTrimmedAmount(const float* a1, path_t* a2);
 	void Path_TransferLookahead(path_t* a1, const float* a2);
+	pathnode_t* Path_ConvertIndexToNode(int index);
+	unsigned int __cdecl Path_ConvertNodeToIndex(const game::pathnode_t* node);
+	pathnode_t* Path_GetNegotiationNode(const path_t* pPath);
+	void Path_IncrementNodeUserCount(path_t* pPath);
+	void Path_DecrementNodeUserCount(path_t* pPath);
+	void Path_Clear(path_t* pPath);
+	float Vec2Length(const float* v);
+	float Path_GetPathDir(float* delta, const float* vFrom, const float* vTo);
+	float Vec3DistanceSq(const float* p1, const float* p2);
+	float EvaluateHeuristic(CustomSearchInfo_FindPath* searchInfo, pathnode_t* pSuccessor, const float* vGoalPos);
+
 	void Sentient_GetVelocity(sentient_s* self, float* vVelOut);
 
 	template <typename T>

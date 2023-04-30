@@ -672,6 +672,92 @@ namespace game
 		}
 	}
 
+	game::pathnode_t* Path_ConvertIndexToNode(int index)
+	{
+		return &(*game::gameWorldCurrent)->path.nodes[index];
+	}
+
+	unsigned int __cdecl Path_ConvertNodeToIndex(const game::pathnode_t* node)
+	{
+		return node - (*game::gameWorldCurrent)->path.nodes;
+	}
+
+	game::pathnode_t* Path_GetNegotiationNode(const game::path_t* pPath)
+	{
+		return Path_ConvertIndexToNode(pPath->pts[pPath->wNegotiationStartNode].iNodeNum);
+	}
+
+	void Path_IncrementNodeUserCount(game::path_t* pPath)
+	{
+		game::pathnode_t* negotiationNode; // [esp+4h] [ebp-4h]
+
+		negotiationNode = Path_GetNegotiationNode(pPath);
+		++negotiationNode->dynamic.userCount;
+	}
+
+	void Path_DecrementNodeUserCount(game::path_t* pPath)
+	{
+		game::pathnode_t* negotiationNode; // [esp+4h] [ebp-4h]
+
+		negotiationNode = Path_GetNegotiationNode(pPath);
+		--negotiationNode->dynamic.userCount;
+	}
+
+	void Path_Clear(game::path_t* pPath)
+	{
+		if (pPath->wNegotiationStartNode > 0)
+		{
+			Path_DecrementNodeUserCount(pPath);
+			pPath->wNegotiationStartNode = 0;
+		}
+		pPath->wPathLen = 0;
+		pPath->wOrigPathLen = 0;
+	}
+
+	float Vec2Length(const float* v)
+	{
+		return sqrt((*v * *v) + (v[1] * v[1]));
+	}
+
+	float Path_GetPathDir(float* delta, const float* vFrom, const float* vTo)
+	{
+		float fDist; // [esp+18h] [ebp-4h]
+
+		delta[0] = *vTo - vFrom[0];
+		delta[1] = vTo[1] - vFrom[1];
+		fDist = Vec2Length(delta);
+		delta[0] = (1.0 / fDist) * delta[0];
+		delta[1] = (1.0 / fDist) * delta[1];
+		return fDist;
+	}
+
+	float Vec3DistanceSq(const float* p1, const float* p2)
+	{
+		float vDiffY; // [esp+4h] [ebp-8h]
+		float vDiffZ; // [esp+8h] [ebp-4h]
+
+		vDiffY = p2[1] - p1[1];
+		vDiffZ = p2[2] - p1[2];
+		return vDiffZ * vDiffZ + vDiffY * vDiffY + (float)(*p2 - *p1) * (float)(*p2 - *p1);
+	}
+
+	float EvaluateHeuristic(game::CustomSearchInfo_FindPath* searchInfo, game::pathnode_t* pSuccessor, const float* vGoalPos)
+	{
+		float v[2]; // [esp+18h] [ebp-Ch] BYREF
+		float dist; // [esp+20h] [ebp-4h]
+
+		v[0] = *vGoalPos - pSuccessor->constant.vOrigin[0];
+		v[1] = vGoalPos[1] - pSuccessor->constant.vOrigin[1];
+		dist = Vec2Length(v);
+		dist = (pSuccessor->dynamic.userCount * searchInfo->negotiationOverlapCost) + dist;
+		if (pSuccessor->constant.minUseDistSq > 1.0
+			&& pSuccessor->constant.minUseDistSq > Vec3DistanceSq(pSuccessor->constant.vOrigin, searchInfo->startPos))
+		{
+			dist = dist + searchInfo->negotiationOverlapCost;
+		}
+		return dist;
+	}
+
 	void Sentient_GetVelocity(sentient_s* self, float* vVelOut)
 	{
 		static const auto call_addr = SELECT(0x0, 0x5662A0);

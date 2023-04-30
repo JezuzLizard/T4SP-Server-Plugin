@@ -13,95 +13,6 @@ namespace ai
 {
 	namespace
 	{
-		game::pathnode_t* Path_ConvertIndexToNode(int index)
-		{
-			return &(*game::gameWorldCurrent)->path.nodes[index];
-		}
-
-		unsigned int __cdecl Path_ConvertNodeToIndex(const game::pathnode_t* node)
-		{
-			unsigned int nodeIndex; // [esp+0h] [ebp-4h]
-
-			nodeIndex = node - (*game::gameWorldCurrent)->path.nodes;
-			return nodeIndex;
-		}
-
-		game::pathnode_t* Path_GetNegotiationNode(const game::path_t* pPath)
-		{
-			return Path_ConvertIndexToNode(pPath->pts[pPath->wNegotiationStartNode].iNodeNum);
-		}
-
-		void Path_IncrementNodeUserCount(game::path_t* pPath)
-		{
-			game::pathnode_t* negotiationNode; // [esp+4h] [ebp-4h]
-
-			negotiationNode = Path_GetNegotiationNode(pPath);
-			++negotiationNode->dynamic.userCount;
-		}
-
-		void Path_DecrementNodeUserCount(game::path_t* pPath)
-		{
-			game::pathnode_t* negotiationNode; // [esp+4h] [ebp-4h]
-
-			negotiationNode = Path_GetNegotiationNode(pPath);
-			--negotiationNode->dynamic.userCount;
-		}
-
-		void Path_Clear(game::path_t* pPath)
-		{
-			if (pPath->wNegotiationStartNode > 0)
-			{
-				Path_DecrementNodeUserCount(pPath);
-				pPath->wNegotiationStartNode = 0;
-			}
-			pPath->wPathLen = 0;
-			pPath->wOrigPathLen = 0;
-		}
-
-		double Vec2Length(const float* v)
-		{
-			return (float)sqrt((float)((float)(*v * *v) + (float)(v[1] * v[1])));
-		}
-
-		float Path_GetPathDir(float* delta, const float* vFrom, const float* vTo)
-		{
-			float fDist; // [esp+18h] [ebp-4h]
-
-			delta[0] = *vTo - vFrom[0];
-			delta[1] = vTo[1] - vFrom[1];
-			fDist = Vec2Length(delta);
-			delta[0] = (1.0 / fDist) * delta[0];
-			delta[1] = (1.0 / fDist) * delta[1];
-			return fDist;
-		}
-
-		double __cdecl Vec3DistanceSq(const float* p1, const float* p2)
-		{
-			float vDiffY; // [esp+4h] [ebp-8h]
-			float vDiffZ; // [esp+8h] [ebp-4h]
-
-			vDiffY = p2[1] - p1[1];
-			vDiffZ = p2[2] - p1[2];
-			return vDiffZ * vDiffZ + vDiffY * vDiffY + (float)(*p2 - *p1) * (float)(*p2 - *p1);
-		}
-
-		double EvaluateHeuristic(game::CustomSearchInfo_FindPath* searchInfo, game::pathnode_t* pSuccessor, const float* vGoalPos)
-		{
-			float v[2]; // [esp+18h] [ebp-Ch] BYREF
-			float dist; // [esp+20h] [ebp-4h]
-
-			v[0] = *vGoalPos - pSuccessor->constant.vOrigin[0];
-			v[1] = vGoalPos[1] - pSuccessor->constant.vOrigin[1];
-			dist = Vec2Length(v);
-			dist = (float)((float)pSuccessor->dynamic.userCount * searchInfo->negotiationOverlapCost) + dist;
-			if (pSuccessor->constant.minUseDistSq > 1.0
-				&& pSuccessor->constant.minUseDistSq > Vec3DistanceSq(pSuccessor->constant.vOrigin, searchInfo->startPos))
-			{
-				dist = dist + searchInfo->negotiationOverlapCost;
-			}
-			return dist;
-		}
-
 		int Path_GeneratePath_custom(game::path_t* pPath, game::team_t eTeam, const float* vStartPos, const float* vGoalPos, game::pathnode_t* pNodeFrom, game::pathnode_t* pNodeTo, int bIncludeGoalPos, int bAllowNegotiationLinks)
 		{
 			const char* v9; // eax
@@ -130,7 +41,7 @@ namespace ai
 				pPath->pts[0].vOrigPoint[2] = vGoalPos[2];
 				if (*vGoalPos == pNodeTo->constant.vOrigin[0] && vGoalPos[1] == pNodeTo->constant.vOrigin[1])
 				{
-					pPath->pts[0].iNodeNum = Path_ConvertNodeToIndex(pNodeTo);
+					pPath->pts[0].iNodeNum = game::Path_ConvertNodeToIndex(pNodeTo);
 				}
 				else
 				{
@@ -143,7 +54,7 @@ namespace ai
 				pPath->pts[0].vOrigPoint[0] = pNodeTo->constant.vOrigin[0];
 				pPath->pts[0].vOrigPoint[1] = pNodeTo->constant.vOrigin[1];
 				pPath->pts[0].vOrigPoint[2] = pNodeTo->constant.vOrigin[2];
-				pPath->pts[0].iNodeNum = Path_ConvertNodeToIndex(pNodeTo);
+				pPath->pts[0].iNodeNum = game::Path_ConvertNodeToIndex(pNodeTo);
 			}
 			prevFlags = pPath->flags;
 			pPath->flags = 0;
@@ -154,12 +65,14 @@ namespace ai
 					!v12))
 			{
 				if (pPath->pts[0].vOrigPoint[0] != pPath->vFinalGoal[0] || pPath->pts[0].vOrigPoint[1] != pPath->vFinalGoal[1])
+				{
 					pPath->iPathEndTime = 0;
+				}
 				pPath->vFinalGoal[0] = pPath->pts[0].vOrigPoint[0];
 				pPath->vFinalGoal[1] = pPath->pts[0].vOrigPoint[1];
 				pPath->vFinalGoal[2] = pPath->pts[0].vOrigPoint[2];
 			}
-			Path_Clear(pPath);
+			game::Path_Clear(pPath);
 			pPath->wDodgeCount = 0;
 			negotiationStartNode = 0;
 			if (pNodeTo)
@@ -168,7 +81,9 @@ namespace ai
 				{
 					++iTotal;
 					if (pNode == pNodeFrom)
+					{
 						break;
+					}
 					if (pPrevNode->constant.type == game::NODE_NEGOTIATION_BEGIN
 						&& pNode->constant.type == game::NODE_NEGOTIATION_END
 						&& pPrevNode->constant.target == pNode->constant.targetname)
@@ -191,7 +106,9 @@ namespace ai
 				pPath->flags |= 4u;
 				negotiationStartNode -= excess;
 				if (negotiationStartNode < 0)
+				{
 					*reinterpret_cast<unsigned short*>(&negotiationStartNode) = 0;
+				}
 			}
 			i = iTotal - 1;
 			pNodea = pNodeFrom;
@@ -201,7 +118,7 @@ namespace ai
 				v17->vOrigPoint[0] = pNodea->constant.vOrigin[0];
 				v17->vOrigPoint[1] = pNodea->constant.vOrigin[1];
 				v17->vOrigPoint[2] = pNodea->constant.vOrigin[2];
-				v17->iNodeNum = Path_ConvertNodeToIndex(pNodea);
+				v17->iNodeNum = game::Path_ConvertNodeToIndex(pNodea);
 				--i;
 				pNodea = pNodea->transient.pParent;
 			}
@@ -210,11 +127,13 @@ namespace ai
 				pPath->pts[0].vOrigPoint[0] = pNodea->constant.vOrigin[0];
 				pPath->pts[0].vOrigPoint[1] = pNodea->constant.vOrigin[1];
 				pPath->pts[0].vOrigPoint[2] = pNodea->constant.vOrigin[2];
-				pPath->pts[0].iNodeNum = Path_ConvertNodeToIndex(pNodea);
+				pPath->pts[0].iNodeNum = game::Path_ConvertNodeToIndex(pNodea);
 			}
 			pPath->wNegotiationStartNode = negotiationStartNode;
 			if (pPath->wNegotiationStartNode > 0)
-				Path_IncrementNodeUserCount(pPath);
+			{
+				game::Path_IncrementNodeUserCount(pPath);
+			}
 			pPath->pts[iTotal - 1].fOrigLength = 0.0;
 			pPath->pts[iTotal - 1].fDir2D[0] = 0.0;
 			pPath->pts[iTotal - 1].fDir2D[1] = 0.0;
@@ -223,23 +142,33 @@ namespace ai
 			pPath->vCurrPoint[1] = v16->vOrigPoint[1];
 			pPath->vCurrPoint[2] = v16->vOrigPoint[2];
 			for (ia = 0; ia < iTotal - 1; ++ia)
-				pPath->pts[ia].fOrigLength = Path_GetPathDir(
+			{
+				pPath->pts[ia].fOrigLength = game::Path_GetPathDir(
 					pPath->pts[ia].fDir2D,
 					pPath->pts[ia + 1].vOrigPoint,
 					pPath->pts[ia].vOrigPoint);
+			}
 			if (iTotal <= 1)
+			{
 				v10 = 0.0;
+			}
 			else
+			{
 				v10 = pPath->pts[iTotal - 2].fOrigLength;
+			}
 			pPath->fCurrLength = v10;
 			pPath->wPathLen = iTotal;
 			pPath->wOrigPathLen = pPath->wPathLen;
 			if (bAllowNegotiationLinks)
+			{
 				pPath->flags |= 0x10u;
+			}
 			pPath->eTeam = eTeam;
 			pPath->iPathTime = game::level->time;
 			if (pPath->fLookaheadAmount == 0.0)
+			{
 				return 1;
+			}
 			if ((prevFlags & 0x180) != 0)
 			{
 				if ((prevFlags & 0x80) != 0)
@@ -306,7 +235,7 @@ namespace ai
 				{
 					if (bIgnoreBadPlaces || !pCurrent->constant.Links[i].ubBadPlaceCount[eTeam])
 					{
-						pSuccessor = Path_ConvertIndexToNode(pCurrent->constant.Links[i].nodeNum);
+						pSuccessor = game::Path_ConvertIndexToNode(pCurrent->constant.Links[i].nodeNum);
 						if (!bAllowNegotiationLinks && pCurrent->constant.type == game::NODE_NEGOTIATION_BEGIN && pSuccessor->constant.type == game::NODE_NEGOTIATION_END)
 						{
 							std::string animscript(game::SL_ConvertToString(game::SCRIPTINSTANCE_SERVER, pCurrent->constant.animscript));
@@ -338,7 +267,7 @@ namespace ai
 							else
 							{
 								pSuccessor->transient.iSearchFrame = game::level->iSearchFrame;
-								pSuccessor->transient.fHeuristic = EvaluateHeuristic(custom, pSuccessor, vGoalPos);
+								pSuccessor->transient.fHeuristic = game::EvaluateHeuristic(custom, pSuccessor, vGoalPos);
 								fCost = (pCurrent->constant.Links[i].fDist * 1.0) + pCurrent->transient.fCost;
 							}
 
@@ -404,18 +333,14 @@ namespace ai
 
 		int Path_FindPathFromTo_custom(float* startPos, game::pathnode_t* pNodeTo, game::path_t* pPath, game::team_t eTeam, game::pathnode_t* pNodeFrom, float* vGoalPos, int bAllowNegotiationLinks, int bIgnoreBadplaces)
 		{
-			int overlapCost; // xmm0_4
 			game::CustomSearchInfo_FindPath info = {}; // [esp+0h] [ebp-14h] BYREF
-			int result;
 
-			overlapCost = (*game::ai_pathNegotiationOverlapCost)->current.integer;
 			info.m_pNodeTo = pNodeTo;
-			info.negotiationOverlapCost = overlapCost;
+			info.negotiationOverlapCost = (*game::ai_pathNegotiationOverlapCost)->current.integer;
 			info.startPos[0] = startPos[0];
 			info.startPos[1] = startPos[1];
 			info.startPos[2] = startPos[2];
-			result = Path_AStarAlgorithm_CustomSearchInfo_FindPath_custom(pPath, eTeam, startPos, pNodeFrom, vGoalPos, true, bAllowNegotiationLinks, &info, bIgnoreBadplaces);
-			return result;
+			return Path_AStarAlgorithm_CustomSearchInfo_FindPath_custom(pPath, eTeam, startPos, pNodeFrom, vGoalPos, true, bAllowNegotiationLinks, &info, bIgnoreBadplaces);;
 		}
 
 		/*
@@ -441,8 +366,8 @@ namespace ai
 		{
 			int result; // eax
 			int returnCount = 0; // [esp+2Ch] [ebp-304h] BYREF
-			std::unique_ptr<game::pathsort_t[], void (*)(game::pathsort_t*)> nodes(new game::pathsort_t[64], [](game::pathsort_t* ptr) { delete[] ptr; });
 			const int maxNodes = 64;
+			auto nodes = std::make_unique<game::pathsort_t[]>(maxNodes);
 
 			game::pathnode_t* pNodeTo = game::Path_NearestNodeNotCrossPlanes(-2, maxNodes, vGoalPos, nodes.get(), 192.0f, 0.0f, 0.0f, 0.0f, &returnCount, game::NEAREST_NODE_DO_HEIGHT_CHECK);
 			if (!pNodeTo)
