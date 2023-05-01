@@ -22,15 +22,16 @@ namespace game
 	WEAK symbol<pathlocal_t> g_path{ 0x0, 0x1F2F700 };
 	WEAK symbol<gentity_s> g_entities{ 0x0, 0x176C6F0 };
 	WEAK symbol<game_hudelem_s> g_hudelems{ 0x0, 0x173C6F0 };
-	//WEAK symbol<scrVarPub_t> scrVarPub{ 0x0, 0x3882B70 };
+	WEAK symbol<scrVarPub_t> gScrVarPub{ 0x0, 0x3882B70 };
 	WEAK symbol<scrVmPub_t> gScrVmPub{ 0x0, 0x3BD4700 };
 	WEAK symbol<level_locals_s> level{ 0x0, 0x18F5D88 };
 	WEAK symbol<float*> g_pathAttemptGoalPos{ 0x0, 0x16CFD6C };
 	//WEAK symbol<scrParserPub_t> scrParserPub{ 0x0, 0x3882B00 };
-	//WEAK symbol<scrVarGlob_t> gScrVarGlob{ 0x0, 0x3914700 };
+	WEAK symbol<scrVarGlob_t> gScrVarGlob{ 0x0, 0x3914700 };
 
 	WEAK symbol<function_stack_t> function_stack{ 0x0, 0x3BDDDD0 };
 	WEAK symbol<scr_const_t> scr_const{0x0, 0x1F33B90};
+	WEAK symbol<char*> var_typename{ 0x0, 0x8CF4B0 };
 
 	WEAK symbol<WeaponDef*> BG_WeaponNames{ 0x0, 0x8F6770 };
 

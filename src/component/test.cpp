@@ -2,6 +2,7 @@
 #include "loader/component_loader.hpp"
 
 #include "scheduler.hpp"
+#include "gsc.hpp"
 
 #include <utils/io.hpp>
 #include <utils/hook.hpp>
@@ -184,6 +185,23 @@ namespace test
 			scheduler::loop([]()
 				{
 					//printf("Biggie Spam McCheese\n");
+				});
+
+			gsc::function::add("getarraytest", []()
+				{
+					auto parent_id = game::Scr_GetObject(0, game::SCRIPTINSTANCE_SERVER).pointerValue;
+
+					auto script_array_size = GetArraySize(game::SCRIPTINSTANCE_SERVER, parent_id);
+					for (auto i = 0u; i < script_array_size; ++i)
+					{
+						auto id = game::GetArrayVariable(game::SCRIPTINSTANCE_SERVER, parent_id, i);
+						auto entry_value = &game::gScrVarGlob[0].childVariables[id];
+						if ((entry_value->w.type & 0x1F) != game::VAR_STRING)
+						{
+							game::Scr_Error(utils::string::va("index %d in array is not a string", i), game::SCRIPTINSTANCE_SERVER, false);
+						}
+						printf("%s\n", game::SL_ConvertToString(game::SCRIPTINSTANCE_SERVER, entry_value->u.u.stringValue));
+					}
 				});
 
 			gscr_spawn_hook.create(0x517630, gscr_spawn_stub);

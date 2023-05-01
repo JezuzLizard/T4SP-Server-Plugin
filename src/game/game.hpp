@@ -68,6 +68,9 @@ namespace game
 	__inline void* Scr_NotifyNum() { return CALL_ADDR(0x0, 0x698CC0); }
 	void Scr_NotifyNum(scriptInstance_t inst, int entNum, int entClass, unsigned int notifStr, int numParams, void* call_addr = Scr_NotifyNum());
 
+	__inline void* GetArrayVariableIndex() { return CALL_ADDR(0x0, 0x6902A0); }
+	unsigned int GetArrayVariableIndex(unsigned int unsignedValue, scriptInstance_t inst, unsigned int parentId, void* call_addr = GetArrayVariableIndex());
+
 	unsigned int Scr_GetNumParam(scriptInstance_t inst);
 	VariableType Scr_GetType(scriptInstance_t inst, unsigned int index);
 	void Scr_Error(const char* err, scriptInstance_t inst, bool is_terminal);
@@ -93,6 +96,9 @@ namespace game
 	float Path_GetPathDir(float* delta, const float* vFrom, const float* vTo);
 	float Vec3DistanceSq(const float* p1, const float* p2);
 	float EvaluateHeuristic(CustomSearchInfo_FindPath* searchInfo, pathnode_t* pSuccessor, const float* vGoalPos);
+	VariableUnion Scr_GetObject(unsigned int index, scriptInstance_t inst);
+	unsigned int GetArraySize(scriptInstance_t inst, unsigned int id);
+	unsigned int GetArrayVariable(scriptInstance_t inst, unsigned int parentId, unsigned int unsignedValue);
 
 	void Sentient_GetVelocity(sentient_s* self, float* vVelOut);
 

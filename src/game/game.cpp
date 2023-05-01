@@ -3,6 +3,7 @@
 
 #include <utils/hook.hpp>
 #include <utils/memory.hpp>
+#include <utils/string.hpp>
 
 namespace game
 {
@@ -460,6 +461,23 @@ namespace game
 		}
 	}
 
+	unsigned int GetArrayVariableIndex(unsigned int unsignedValue, scriptInstance_t inst, unsigned int parentId, void* call_addr)
+	{
+		unsigned int answer;
+
+		__asm
+		{
+			push parentId;
+			push inst;
+			mov eax, unsignedValue;
+			call call_addr;
+			mov answer, eax;
+			add esp, 0x8;
+		}
+
+		return answer;
+	}
+
 	unsigned int Scr_GetNumParam(scriptInstance_t inst)
 	{
 		return gScrVmPub[inst].outparamcount;
@@ -784,6 +802,39 @@ namespace game
 			dist = dist + searchInfo->negotiationOverlapCost;
 		}
 		return dist;
+	}
+
+	VariableUnion Scr_GetObject(unsigned int index, scriptInstance_t inst)
+	{
+		const char* v3; // eax
+		const char* v4; // eax
+		VariableValue* value; // [esp+0h] [ebp-4h]
+
+		if (index < gScrVmPub[inst].outparamcount)
+		{
+			value = &gScrVmPub[inst].top[-index];
+			if (value->type == VAR_BEGIN_REF)
+				return value->u;
+			gScrVarPub[inst].error_index = index + 1;
+			v3 = utils::string::va("type %s is not an object", var_typename[value->type]);
+			Scr_Error(v3, inst, 0);
+		}
+		v4 = utils::string::va("parameter %d does not exist", index + 1);
+		Scr_Error(v4, inst, 0);
+		return value->u;
+	}
+
+	unsigned int GetArraySize(scriptInstance_t inst, unsigned int id)
+	{
+		VariableValueInternal* entryValue; // [esp+0h] [ebp-4h]
+
+		entryValue = &gScrVarGlob[inst].parentVariables[id + 1];
+		return entryValue->u.o.u.size;
+	}
+
+	unsigned int GetArrayVariable(scriptInstance_t inst, unsigned int parentId, unsigned int unsignedValue)
+	{
+		return gScrVarGlob[inst].childVariables[GetArrayVariableIndex(unsignedValue, inst, parentId)].hash.id;
 	}
 
 	void Sentient_GetVelocity(sentient_s* self, float* vVelOut)

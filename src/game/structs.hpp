@@ -2122,6 +2122,18 @@ namespace game
 		VAR_TOTAL_COUNT = 0x1B,
 	};
 
+	/* 977 */
+	struct VariableStackBuffer
+	{
+		char* pos;
+		unsigned __int16 size;
+		unsigned __int16 bufLen;
+		unsigned __int16 localId;
+		unsigned __int8 time;
+		char buf[1];
+	};
+
+	/* 234 */
 	union VariableUnion
 	{
 		int intValue;
@@ -2130,7 +2142,7 @@ namespace game
 		const float* vectorValue;
 		const char* codePosValue;
 		unsigned int pointerValue;
-		char* stackValue;
+		VariableStackBuffer* stackValue;
 		unsigned int entityOffset;
 	};
 
@@ -2170,6 +2182,129 @@ namespace game
 		unsigned int outparamcount;
 		function_frame_t function_frame_start[32];
 		VariableValue stack[2048];
+	};
+
+	/* 1143 */
+	union Variable_u
+	{
+		unsigned __int16 prev;
+		unsigned __int16 prevSibling;
+	};
+
+	/* 1144 */
+	struct Variable
+	{
+		unsigned __int16 id;
+		Variable_u u;
+	};
+
+	/* 1145 */
+	union ObjectInfo_u
+	{
+		unsigned __int16 entnum;
+		unsigned __int16 size;
+		unsigned __int16 nextEntId;
+		unsigned __int16 self;
+	};
+
+	/* 1146 */
+	struct ObjectInfo
+	{
+		unsigned __int16 refCount;
+		ObjectInfo_u u;
+	};
+
+	/* 1147 */
+	union VariableValueInternal_u
+	{
+		unsigned int next;
+		VariableUnion u;
+		ObjectInfo o;
+	};
+
+	/* 1148 */
+	union VariableValueInternal_w
+	{
+		unsigned int status;
+		unsigned int type;
+		unsigned int name;
+		unsigned int classnum;
+		unsigned int notifyName;
+		unsigned int waitTime;
+		unsigned int parentLocalId;
+	};
+
+	/* 1149 */
+	union VariableValueInternal_v
+	{
+		unsigned __int16 next;
+		unsigned __int16 index;
+	};
+
+	/* 240 */
+	struct VariableValueInternal
+	{
+		Variable hash;
+		VariableValueInternal_u u;
+		VariableValueInternal_w w;
+		VariableValueInternal_v v;
+		unsigned __int16 nextSibling;
+	};
+
+	/* 241 */
+	struct __declspec(align(4)) scrVarGlob_t
+	{
+		VariableValueInternal parentVariables[24576];
+		VariableValueInternal childVariables[65536];
+	};
+
+	/* 986 */
+	struct __declspec(align(4)) HunkUser
+	{
+		HunkUser* current;
+		HunkUser* next;
+		int maxSize;
+		int end;
+		int pos;
+		int locked;
+		char* name;
+		bool fixed;
+		bool tempMem;
+		bool debugMem;
+		int type;
+		unsigned __int8 buf[1];
+	};
+
+	/* 222 */
+	struct __declspec(align(4)) scrVarPub_t
+	{
+		char* fieldBuffer;
+		unsigned __int16 canonicalStrCount;
+		bool developer;
+		bool developer_script;
+		bool evaluate;
+		char* error_message;
+		int error_index;
+		unsigned int time;
+		unsigned int timeArrayId;
+		unsigned int pauseArrayId;
+		unsigned int levelId;
+		unsigned int gameId;
+		unsigned int animId;
+		unsigned int freeEntList;
+		unsigned int tempVariable;
+		bool bInited;
+		unsigned __int16 savecount;
+		unsigned int checksum;
+		unsigned int entId;
+		unsigned int entFieldName;
+		HunkUser* programHunkUser;
+		char* programBuffer;
+		char* endScriptBuffer;
+		__int16 saveIdMap;
+		__int16 saveIdMapRev;
+		char field_54[98291];
+		char field_18047;
 	};
 
 	struct __declspec(align(2)) scr_const_t
