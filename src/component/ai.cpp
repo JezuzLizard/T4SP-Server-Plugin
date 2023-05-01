@@ -194,7 +194,7 @@ namespace ai
 			return 1;
 		}
 
-		int __cdecl Path_AStarAlgorithm_CustomSearchInfo_FindPath_custom(game::path_t* pPath, game::team_t eTeam, float* vStartPos, game::pathnode_t* pNodeFrom, float* vGoalPos, int bIncludeGoalInPath, const std::vector<std::string>& allowedNegotiationLinks, game::CustomSearchInfo_FindPath* custom, int bIgnoreBadPlaces)
+		int __cdecl Path_AStarAlgorithm_CustomSearchInfo_FindPath_custom(game::path_t* pPath, game::team_t eTeam, float* vStartPos, game::pathnode_t* pNodeFrom, float* vGoalPos, int bIncludeGoalInPath, const std::unordered_set<unsigned short>& allowedNegotiationLinks, game::CustomSearchInfo_FindPath* custom, int bIgnoreBadPlaces)
 		{
 			int success; // [esp+28h] [ebp-A0h]
 			game::pathnode_t* pCurrent; // [esp+2Ch] [ebp-9Ch]
@@ -238,7 +238,7 @@ namespace ai
 						pSuccessor = game::Path_ConvertIndexToNode(pCurrent->constant.Links[i].nodeNum);
 						if (pCurrent->constant.type == game::NODE_NEGOTIATION_BEGIN && pSuccessor->constant.type == game::NODE_NEGOTIATION_END)
 						{
-							if (std::find(allowedNegotiationLinks.begin(), allowedNegotiationLinks.end(), game::SL_ConvertToString(game::SCRIPTINSTANCE_SERVER, pCurrent->constant.animscript)) == allowedNegotiationLinks.end())
+							if (std::find(allowedNegotiationLinks.begin(), allowedNegotiationLinks.end(), pCurrent->constant.animscript) == allowedNegotiationLinks.end())
 							{
 								continue;
 							}
@@ -330,7 +330,7 @@ namespace ai
 		}
 		*/
 
-		int Path_FindPathFromTo_custom(float* startPos, game::pathnode_t* pNodeTo, game::path_t* pPath, game::team_t eTeam, game::pathnode_t* pNodeFrom, float* vGoalPos, const std::vector<std::string>& allowedNegotiationLinks, int bIgnoreBadplaces)
+		int Path_FindPathFromTo_custom(float* startPos, game::pathnode_t* pNodeTo, game::path_t* pPath, game::team_t eTeam, game::pathnode_t* pNodeFrom, float* vGoalPos, const std::unordered_set<unsigned short>& allowedNegotiationLinks, int bIgnoreBadplaces)
 		{
 			game::CustomSearchInfo_FindPath info = {}; // [esp+0h] [ebp-14h] BYREF
 
@@ -361,7 +361,7 @@ namespace ai
 		}
 		*/
 
-		int Path_FindPath_custom(game::path_t* pPath, game::team_t eTeam, float* vStartPos, float* vGoalPos, const std::vector<std::string>& allowedNegotiationLinks)
+		int Path_FindPath_custom(game::path_t* pPath, game::team_t eTeam, float* vStartPos, float* vGoalPos, const std::unordered_set<unsigned short>& allowedNegotiationLinks)
 		{
 			int result; // eax
 			int returnCount = 0; // [esp+2Ch] [ebp-304h] BYREF
@@ -505,7 +505,7 @@ namespace ai
 					float start_pos[3] = {};
 					float goal_pos[3] = {};
 					auto team = "neutral"s;
-					std::vector<std::string> allowed_animscripts;
+					std::unordered_set<unsigned short> allowed_animscripts;
 
 					game::Scr_GetVector(game::SCRIPTINSTANCE_SERVER, 0, start_pos);
 					game::Scr_GetVector(game::SCRIPTINSTANCE_SERVER, 1, goal_pos);
@@ -532,7 +532,7 @@ namespace ai
 									game::Scr_Error(utils::string::va("index %d in array is not a string", i), game::SCRIPTINSTANCE_SERVER, false);
 								}
 								
-								allowed_animscripts.push_back(game::SL_ConvertToString(game::SCRIPTINSTANCE_SERVER, entry_value->u.u.stringValue));
+								allowed_animscripts.insert(entry_value->u.u.stringValue);
 							}
 						}
 					}
