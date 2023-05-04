@@ -580,6 +580,38 @@ namespace game
 		return Dvar_RegisterVariant(name, game::DVAR_TYPE_STRING, flags, dvar_value, limits, desc);
 	}
 
+	const char* Dvar_ValueToString(dvar_s* dvar, DvarValue dvarValue)
+	{
+		static const auto call_addr = SELECT(0x0, 0x5ECAB0);
+
+		const char* answer;
+
+		__asm
+		{
+			push dvarValue;
+			mov ecx, dvar;
+			call call_addr;
+			mov answer, eax;
+			add esp, 0x4;
+		}
+
+		return answer;
+	}
+
+	void Dvar_SetVariant(dvar_s* dvar, DvarValue val, DvarSetSource dvarSetSource)
+	{
+		static const auto call_addr = SELECT(0x0, 0x5EDA40);
+
+		__asm
+		{
+			push dvarSetSource;
+			push val;
+			push dvar;
+			call call_addr;
+			add esp, 0xC;
+		}
+	}
+
 	int Path_FindPath(path_t* pPath, team_t eTeam, float* vStartPos, float* vGoalPos, int bAllowNegotiationLinks)
 	{
 		static const auto call_addr = SELECT(0x0, 0x4CF280);
@@ -725,7 +757,7 @@ namespace game
 
 	unsigned int __cdecl Path_ConvertNodeToIndex(const game::pathnode_t* node)
 	{
-		return node - (*game::gameWorldCurrent)->path.nodes;
+		return node - (*gameWorldCurrent)->path.nodes;
 	}
 
 	game::pathnode_t* Path_GetNegotiationNode(const game::path_t* pPath)
@@ -835,6 +867,58 @@ namespace game
 	unsigned int GetArrayVariable(scriptInstance_t inst, unsigned int parentId, unsigned int unsignedValue)
 	{
 		return gScrVarGlob[inst].childVariables[GetArrayVariableIndex(unsignedValue, inst, parentId)].hash.id;
+	}
+
+	unsigned int __cdecl Scr_GetFunc(scriptInstance_t inst, unsigned int index)
+	{
+		VariableValue* value; // [esp+0h] [ebp-4h]
+
+		if (index >= gScrVmPub[inst].outparamcount)
+		{
+			Scr_Error(utils::string::va("parameter %d does not exist", index + 1), inst, false);
+			return 0;
+		}
+		value = &gScrVmPub[inst].top[-index];
+		if (value->type != VAR_FUNCTION)
+		{
+			gScrVarPub[inst].error_index = index + 1;
+			Scr_Error(utils::string::va("type %s is not a function", var_typename[value->type]), inst, false);
+			return 0;
+		}
+		return value->u.intValue - (unsigned int)gScrVarPub[inst].programBuffer;
+	}
+
+	void Dvar_Reset(DvarSetSource dvarSetSource, dvar_s* dvar)
+	{
+		return Dvar_SetVariant(dvar, dvar->reset, dvarSetSource);
+	}
+
+	void SV_SendServerCommand(client_s* clientArg, svscmd_type type, char* Format, ...)
+	{
+		client_s* i; // esi
+		va_list ArgList; // [esp+18h] [ebp+Ch] BYREF
+
+		va_start(ArgList, Format);
+		_vsnprintf(tempServerCommandBuf, 0x20000u, Format, ArgList);
+		if (clientArg)
+		{
+			SV_AddServerCommand(clientArg, type, tempServerCommandBuf);
+		}
+		else
+		{
+			if ((*com_dedicated)->current.integer && !strncmp(tempServerCommandBuf, "print", 5u))
+			{
+				Com_PrintF(CON_CHANNEL_SERVER, "broadcast: %s\n", SV_ExpandNewlines());
+			}
+			for (auto i = 0; i < (*sv_maxclients)->current.integer; ++i)
+			{
+				auto client = &svs->clients[i];
+				if (client->header.state >= CS_PRIMED)
+				{
+					SV_AddServerCommand(client, type, tempServerCommandBuf);
+				}
+			}
+		}
 	}
 
 	void Sentient_GetVelocity(sentient_s* self, float* vVelOut)

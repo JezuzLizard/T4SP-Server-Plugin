@@ -126,6 +126,81 @@ namespace game
 		CON_BUILTIN_CHANNEL_COUNT = 0x22,
 	};
 
+	enum svscmd_type
+	{
+		SV_CMD_CAN_IGNORE = 0x0,
+		SV_CMD_RELIABLE = 0x1,
+	};
+
+	enum deployableCommand_t
+	{
+		DEPLOYABLE_CMD_NONE = 0x0,
+		DEPLOYABLE_CMD_WATER_SHEETING_FX = 0x21,
+		DEPLOYABLE_CMD_ROPE = 0x23,
+		DEPLOYABLE_CMD_WATER_PLOP = 0x24,
+		DEPLOYABLE_CMD_ELECTRIFIED = 0x28,
+		DEPLOYABLE_CMD_TELEPORTED = 0x29,
+		DEPLOYABLE_CMD_ENTITY_EVENT = 0x2A,
+		DEPLOYABLE_CMD_WATER_DROPS = 0x30,
+		DEPLOYABLE_CMD_BRIEFING_POPUP = 0x31,
+		DEPLOYABLE_CMD_PHYS_GRAVITY_DIR = 0x32,
+		DEPLOYABLE_CMD_CLEAR_CONFIGSTRING_RANGE = 0x33,
+		DEPLOYABLE_CMD_DOUBLE_VISION = 0x34,
+		DEPLOYABLE_CMD_GENERATE_CLIENT_SAVE = 0x35,
+		DEPLOYABLE_CMD_CLIENTSYS_STATE_CHANGE = 0x39,
+		DEPLOYABLE_CMD_COMMIT_CLIENT_SAVE = 0x3A,
+		DEPLOYABLE_CMD_RESET_CLIENTINFO = 0x3F,
+		DEPLOYABLE_CMD_EXPLODER = 0x40,
+		DEPLOYABLE_CMD_UNK1 = 0x41,
+		DEPLOYABLE_CMD_MAPRESTART_SAVE_PERSIST = 0x42,
+		DEPLOYABLE_CMD_SWITCH_OFFHAND = 0x43,
+		DEPLOYABLE_CMD_DEACTIVATE_REVERB = 0x44,
+		DEPLOYABLE_CMD_SET_CHANNEL_VOLUME = 0x45,
+		DEPLOYABLE_CMD_DEACTIVATE_CHANNEL_VOLUME = 0x46,
+		DEPLOYABLE_CMD_MENU_SHOW_NOTIFY = 0x4A,
+		DEPLOYABLE_CMD_PLAYER_MUTE = 0x4B,
+		DEPLOYABLE_CMD_CLOSE_INGAME_MENU = 0x4C,
+		DEPLOYABLE_CMD_SET_STAT_CHANGED = 0x4E,
+		DEPLOYABLE_CMD_RESET_GUN_PITCH = 0x4F,
+		DEPLOYABLE_CMD_START_AMPLIFY = 0x51,
+		DEPLOYABLE_CMD_STOP_AMPLIFY = 0x52,
+		DEPLOYABLE_CMD_REACHED_CHECKPOINT = 0x53,
+		DEPLOYABLE_CMD_RETICLE_START_LOCKON = 0x54,
+		DEPLOYABLE_CMD_FADE = 0x55,
+		DEPLOYABLE_CMD_OBJECTIVE_STATE = 0x56,
+		DEPLOYABLE_CMD_BURN = 0x57,
+		DEPLOYABLE_CMD_SLOW_TIMESCALE_OVER_TIME = 0x58,
+		DEPLOYABLE_CMD_DEATH_SCREEN = 0x59,
+		DEPLOYABLE_CMD_COOP_MESSAGE = 0x5E,
+		DEPLOYABLE_CMD_SWITCH_WEAPON = 0x61,
+		DEPLOYABLE_CMD_TAKE = 0x61,
+		DEPLOYABLE_CMD_PARSE_SCORES = 0x62,
+		DEPLOYABLE_CMD_ANNOUNCMENT = 0x63,
+		DEPLOYABLE_CMD_CONFIGSTRING_MODIFIED = 0x64,
+		DEPLOYABLE_CMD_GAMEMESSAGE = 0x65,
+		DEPLOYABLE_CMD_GAMEMESSAGE2 = 0x66,
+		DEPLOYABLE_CMD_BOLD_GAMEMESSAGE = 0x67,
+		DEPLOYABLE_CMD_CHATMESSAGE = 0x68,
+		DEPLOYABLE_CMD_DYN_ENT_DESTROYED = 0x6A,
+		DEPLOYABLE_CMD_SYSCMD_EQ = 0x6C,
+		DEPLOYABLE_CMD_SVSCMD_EQ_DEACTIVATE = 0x6D,
+		DEPLOYABLE_CMD_STOP_LOCAL_SOUND = 0x6B,
+		DEPLOYABLE_CMD_MAPRESTART_NO_SAVE_PERSIST = 0x6E,
+		DEPLOYABLE_CMD_SOUND_FADE = 0x71,
+		DEPLOYABLE_CMD_ACTIVATE_REVERB = 0x72,
+		DEPLOYABLE_CMD_PLAY_LOCAL_SOUND = 0x73,
+		DEPLOYABLE_CMD_OPEN_MENU = 0x74,
+		DEPLOYABLE_CMD_CLOSE_MENU = 0x75,
+		DEPLOYABLE_CMD_SET_CLIENT_DVAR = 0x76,
+		DEPLOYABLE_CMD_CL_DISCONNECT = 0x77,
+		DEPLOYABLE_CMD_COPY_INTO_BIG_CONFIGSTRING = 0x78,
+		DEPLOYABLE_CMD_CONCAT_BIG_CONFIGSTRING = 0x79,
+		DEPLOYABLE_CMD_CONCAT_BIG_CONFIGSTRING2 = 0x7A,
+		DEPLOYABLE_CMD_SHOW_VIEWMODEL = 0x7B,
+		DEPLOYABLE_CMD_FADING_BLUR = 0x7C,
+		DEPLOYABLE_CMD_HIDE_VIEWMODEL = 0x7D,
+	};
+
 	struct CmdArgs
 	{
 		int nesting;
@@ -141,6 +216,13 @@ namespace game
 		const char* name;
 		char unk[8];
 		void(__cdecl* function)();
+	};
+
+	enum DvarSetSource
+	{
+		DVAR_SOURCE_INTERNAL = 0x0,
+		DVAR_SOURCE_EXTERNAL = 0x1,
+		DVAR_SOURCE_SCRIPT = 0x2,
 	};
 
 	enum DvarFlags : unsigned __int16
@@ -4286,5 +4368,56 @@ namespace game
 		unsigned __int16 Data2;
 		unsigned __int16 Data3;
 		unsigned __int8 Data4[8];
+	};
+
+	struct __declspec(align(4)) challenge_s
+	{
+		netadr_s adr;
+		int challenge;
+		int time;
+		int pingTime;
+		int firstTime;
+		int firstPing;
+		int connected;
+		int guid;
+		char PBguid[33];
+		char clientPBguid[33];
+	};
+
+	struct __declspec(align(16)) serverStatic_s
+	{
+		int cachedSnapshotFrames;
+		char gap4[22524];
+		int field_5800;
+		char gap5804[1489916];
+		int initialized;
+		int time;
+		int snapFlagServerBit;
+		int field_17140C;
+		client_s clients[4];
+		int numSnapshotEntities;
+		int numSnapshotClients;
+		int numSnapshotActors;
+		int nextSnapshotEntities[4];
+		int nextSnapshotClients[4];
+		int nextSnapshotActors[4];
+		entityState_s snapshotEntities[21504];
+		clientState_s snapshotClients[4][64];
+		actorState_s snapshotActors[4][512];
+		int nextCachedSnapshotEntities;
+		int nextCachedSnapshotClients;
+		int awdd;
+		int nextCachedSnapshotFrames;
+		char gap_8D7D1C[136256];
+		int nextHeartbeatTime;
+		char gap_8F9160[4];
+		challenge_s challenges[1024];
+		int numSnapshotAnimCmds;
+		int nextSnapshotAnimCmds[4];
+		animCmdState_s snapshotAnimCmds[4][16384];
+		int acaw;
+		int OOBProf;
+		char gap_BD7180[1791];
+		char field_BD787F;
 	};
 }

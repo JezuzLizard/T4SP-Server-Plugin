@@ -38,6 +38,8 @@ namespace game
 
 	dvar_s* Dvar_RegisterInt(const char* name, int value, int min, int max, DvarFlags flags, const char* desc);
 	dvar_s* Dvar_RegisterString(const char* name, const char* value, DvarFlags flags, const char* desc);
+	const char* Dvar_ValueToString(dvar_s* dvar, DvarValue dvarValue);
+	void Dvar_SetVariant(dvar_s* dvar, DvarValue val, DvarSetSource dvarSetSource);
 
 	int Scr_GetInt(game::scriptInstance_t inst, unsigned int arg_index);
 	void Scr_AddInt(game::scriptInstance_t inst, int value);
@@ -99,6 +101,9 @@ namespace game
 	VariableUnion Scr_GetObject(unsigned int index, scriptInstance_t inst);
 	unsigned int GetArraySize(scriptInstance_t inst, unsigned int id);
 	unsigned int GetArrayVariable(scriptInstance_t inst, unsigned int parentId, unsigned int unsignedValue);
+	unsigned int __cdecl Scr_GetFunc(scriptInstance_t inst, unsigned int index);
+	void Dvar_Reset(DvarSetSource dvarSetSource, dvar_s* dvar);
+	void SV_SendServerCommand(client_s* clientArg, svscmd_type type, char* Format, ...);
 
 	void Sentient_GetVelocity(sentient_s* self, float* vVelOut);
 
