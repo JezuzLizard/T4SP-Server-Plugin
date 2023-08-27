@@ -99,8 +99,6 @@ namespace scheduler
 
 		std::vector<std::function<void()>> post_init_funcs;
 		bool com_inited = false;
-		std::vector<std::function<void()>> post_loadscripts_funcs;
-		bool postloadscripts_inited = false;
 
 		void on_post_init_hook()
 		{
@@ -119,26 +117,6 @@ namespace scheduler
 		{
 			com_init_hook.invoke<void>();
 			on_post_init_hook();
-		}
-
-		void on_post_postloadscripts_hook()
-		{
-			if (postloadscripts_inited)
-			{
-				return;
-			}
-			for (const auto& func : post_loadscripts_funcs)
-			{
-				func();
-			}
-		}
-
-		void postloadscripts_stub()
-		{
-			postloadscripts_inited = false;
-			gscr_postloadscripts_hook.invoke<void>();
-			on_post_postloadscripts_hook();
-			postloadscripts_inited = true;
 		}
 	}
 
@@ -187,11 +165,6 @@ namespace scheduler
 		}
 	}
 
-	void on_postloadscripts(const std::function<void()>& callback)
-	{
-		post_loadscripts_funcs.push_back(callback);
-	}
-
 	class component final : public component_interface
 	{
 	public:
@@ -207,9 +180,6 @@ namespace scheduler
 			});
 
 			com_init_hook.create(SELECT(0x0, 0x59D710), com_init_stub);
-
-			gscr_postloadscripts_hook.create(SELECT(0x0, 0x5150E0), postloadscripts_stub);
-
 			utils::hook::call(SELECT(0x0, 0x503B5D), execute_server);
 		}
 	};

@@ -11,29 +11,24 @@ namespace utils::http
 	{
 		struct progress_helper
 		{
-			const std::function<void(size_t)>* callback{};
-			std::exception_ptr exception{};
+			const std::function<bool(size_t)>* callback{};
 		};
 
+
+#pragma warning(push)
+#pragma warning(disable: 4244)
 		int progress_callback(void* clientp, const curl_off_t /*dltotal*/, const curl_off_t dlnow, const curl_off_t /*ultotal*/, const curl_off_t /*ulnow*/)
 		{
 			auto* helper = static_cast<progress_helper*>(clientp);
 
-			try
+			if (*helper->callback && !(*helper->callback)(dlnow))
 			{
-				if (*helper->callback)
-				{
-					(*helper->callback)(dlnow);
-				}
-			}
-			catch (...)
-			{
-				helper->exception = std::current_exception();
 				return -1;
 			}
 
 			return 0;
 		}
+#pragma warning(pop)
 
 		size_t write_callback(void* contents, const size_t size, const size_t nmemb, void* userp)
 		{
@@ -45,7 +40,7 @@ namespace utils::http
 		}
 	}
 
-	std::optional<std::string> get_data(const std::string& url, const headers& headers, const std::function<void(size_t)>& callback)
+	std::optional<std::string> get_data(const std::string& url, const headers& headers, const std::function<bool(size_t)>& callback)
 	{
 		curl_slist* header_list = nullptr;
 		auto* curl = curl_easy_init();
@@ -81,11 +76,6 @@ namespace utils::http
 		if (curl_easy_perform(curl) == CURLE_OK)
 		{
 			return {std::move(buffer)};
-		}
-
-		if (helper.exception)
-		{
-			std::rethrow_exception(helper.exception);
 		}
 
 		return {};

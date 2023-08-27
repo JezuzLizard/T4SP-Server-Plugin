@@ -7,6 +7,8 @@
 #pragma warning(disable: 26812)
 #pragma warning(disable: 28182)
 
+#pragma warning(disable: 4324)
+
 #define DLL_EXPORT extern "C" __declspec(dllexport)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -57,6 +59,6 @@
 #include "game/game.hpp"
 
 #define printf(__fmt__, ...) \
-	game::Com_PrintF(game::CON_CHANNEL_SERVER, __fmt__, __VA_ARGS__)
+	game::Com_Printf(game::CON_CHANNEL_SERVER, __fmt__, __VA_ARGS__)
 
 using namespace std::literals;

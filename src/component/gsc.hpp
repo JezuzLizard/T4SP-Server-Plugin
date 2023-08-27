@@ -1,14 +1,7 @@
 #pragma once
 
-#include <stdinc.hpp>
-
 namespace gsc
 {
-	namespace
-	{
-
-	}
-
 	namespace function
 	{
 		void add(const std::string& name, const game::BuiltinFunction function);

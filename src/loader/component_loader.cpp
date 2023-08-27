@@ -6,22 +6,17 @@ void component_loader::register_component(std::unique_ptr<component_interface>&&
 	get_components().push_back(std::move(component_));
 }
 
+
 bool component_loader::post_start()
 {
 	static auto handled = false;
+
 	if (handled) return true;
 	handled = true;
 
-	try
+	for (const auto& component_ : get_components())
 	{
-		for (const auto& component_ : get_components())
-		{
-			component_->post_start();
-		}
-	}
-	catch (premature_shutdown_trigger&)
-	{
-		return false;
+		component_->post_start();
 	}
 
 	return true;
@@ -35,16 +30,9 @@ bool component_loader::post_load()
 
 	clean();
 
-	try
+	for (const auto& component_ : get_components())
 	{
-		for (const auto& component_ : get_components())
-		{
-			component_->post_load();
-		}
-	}
-	catch (premature_shutdown_trigger&)
-	{
-		return false;
+		component_->post_load();
 	}
 
 	return true;
@@ -105,11 +93,6 @@ void* component_loader::load_import(const std::string& library, const std::strin
 	}
 
 	return function_ptr;
-}
-
-void component_loader::trigger_premature_shutdown()
-{
-	throw premature_shutdown_trigger();
 }
 
 std::vector<std::unique_ptr<component_interface>>& component_loader::get_components()

@@ -4,14 +4,6 @@
 class component_loader final
 {
 public:
-	class premature_shutdown_trigger final : public std::exception
-	{
-		[[nodiscard]] const char* what() const noexcept override
-		{
-			return "Premature shutdown requested";
-		}
-	};
-
 	template <typename T>
 	class installer final
 	{
@@ -47,8 +39,6 @@ public:
 	static void clean();
 
 	static void* load_import(const std::string& library, const std::string& function);
-
-	static void trigger_premature_shutdown();
 
 private:
 	static std::vector<std::unique_ptr<component_interface>>& get_components();

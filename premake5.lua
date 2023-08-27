@@ -77,6 +77,8 @@ workspace "t4sp-server-plugin"
 			"./src/**.h",
 			"./src/**.hpp",
 			"./src/**.cpp",
+			"./src/**.c",
+			"./src/**.asm"
 		}
 
 		includedirs 
@@ -95,6 +97,17 @@ workspace "t4sp-server-plugin"
 		buildoptions { "/Zm100 -Zm100" }
 
 		dependencies.imports()
+
+		exceptionhandling ("Off")
+
+		if _OPTIONS["copy-to"] then
+			postbuildcommands {"copy /y \"$(TargetPath)\" \"" .. _OPTIONS["copy-to"] .. "\""}
+		else
+			postbuildcommands {
+				"if \"%COMPUTERNAME%\" == \"NEW-BUILT\" ( copy /y \"$(TargetPath)\" \"$(CODWAW_PATH)\\t4staging\\plugins\\\" )",
+				"if \"%COMPUTERNAME%\" == \"JEZUZLIZARD\" ( copy /y \"$(TargetPath)\" \"C:/Users/Jezuz/Desktop/re-T4SP\" )"
+			}
+		end
 
 	group "Dependencies"
 	dependencies.projects()
