@@ -55,6 +55,7 @@
 #pragma comment(lib, "iphlpapi.lib")
 #pragma comment(lib, "Crypt32.lib")
 
+#include "utils/hexrays_defs.h"
 #include "game/structs.hpp"
 #include "game/game.hpp"
 
