@@ -93,6 +93,11 @@ namespace scheduler
 			execute(pipeline::server);
 		}
 
+		void execute_main()
+		{
+			execute(pipeline::main);
+		}
+
 		utils::hook::detour com_init_hook;
 		utils::hook::detour gscr_postloadscripts_hook;
 
@@ -110,6 +115,8 @@ namespace scheduler
 			{
 				func();
 			}
+
+			post_init_funcs.clear();
 		}
 
 		void com_init_stub()
@@ -156,7 +163,7 @@ namespace scheduler
 	{
 		if (com_inited)
 		{
-			callback();
+			once(callback, pipeline::main);
 		}
 		else
 		{
@@ -180,6 +187,7 @@ namespace scheduler
 
 			com_init_hook.create(SELECT(0x0, 0x59D710), com_init_stub);
 			utils::hook::call(SELECT(0x0, 0x503B5D), execute_server);
+			utils::hook::call(SELECT(0x0, 0x59DCFD), execute_main);
 		}
 	};
 }
