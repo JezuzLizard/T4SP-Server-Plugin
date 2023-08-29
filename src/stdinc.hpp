@@ -62,7 +62,4 @@
 #include "game/game.hpp"
 #include "game/symbols.hpp"
 
-#define printf(__fmt__, ...) \
-	game::Com_Printf(game::CON_CHANNEL_SERVER, __fmt__, __VA_ARGS__)
-
 using namespace std::literals;
