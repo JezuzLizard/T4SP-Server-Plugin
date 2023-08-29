@@ -1,5 +1,4 @@
 #include <stdinc.hpp>
-#include "game.hpp"
 
 #include <utils/hook.hpp>
 #include <utils/memory.hpp>

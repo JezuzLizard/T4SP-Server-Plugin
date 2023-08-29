@@ -56,8 +56,11 @@
 #pragma comment(lib, "Crypt32.lib")
 
 #include "utils/hexrays_defs.h"
+
+#include "game/enums.hpp"
 #include "game/structs.hpp"
 #include "game/game.hpp"
+#include "game/symbols.hpp"
 
 #define printf(__fmt__, ...) \
 	game::Com_Printf(game::CON_CHANNEL_SERVER, __fmt__, __VA_ARGS__)
