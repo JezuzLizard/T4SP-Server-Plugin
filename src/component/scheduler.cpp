@@ -1,7 +1,6 @@
 #include <stdinc.hpp>
 #include "loader/component_loader.hpp"
 
-#include "game/game.hpp"
 #include "scheduler.hpp"
 
 #include <utils/concurrency.hpp>
