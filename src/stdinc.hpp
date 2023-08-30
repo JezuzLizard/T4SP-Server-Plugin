@@ -8,6 +8,7 @@
 #pragma warning(disable: 28182)
 
 #pragma warning(disable: 4324)
+#pragma warning(disable: 4459)
 
 #define DLL_EXPORT extern "C" __declspec(dllexport)
 #define WIN32_LEAN_AND_MEAN
