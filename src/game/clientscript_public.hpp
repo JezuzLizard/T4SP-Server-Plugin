@@ -2139,6 +2139,10 @@ namespace game
 #pragma region "data"
 #pragma endregion
 
+#pragma region "functions"
+
+#pragma endregion
+
 #pragma region "cscr_main"
 
 	WEAK symbol<unsigned int(scriptInstance_t inst, const char* file, PrecacheEntry* entries, int entriesCount)> Scr_LoadScriptInternal{ 0x0, 0x689980 };
