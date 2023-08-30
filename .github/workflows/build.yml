@@ -62,6 +62,7 @@ jobs:
   deploy:
     name: Deploy release
     runs-on: ubuntu-latest
+    permissions: write-all
     needs: [ build ]
     if: startsWith(github.event.ref, 'refs/tags/')
     steps:
