@@ -17,3 +17,10 @@
 [submodule "deps/curl"]
 	path = deps/curl
 	url = https://github.com/curl/curl.git
+
+[submodule "deps/libtomcrypt"]
+	path = deps/libtomcrypt
+	url = https://github.com/libtom/libtomcrypt.git
+[submodule "deps/libtommath"]
+	path = deps/libtommath
+	url = https://github.com/libtom/libtommath.git
