@@ -8,6 +8,7 @@ Move the `t4sp-server-plugin.dll` to `%LOCALAPPDATA%\Plutonium\storage\t4\plugin
 
 # Credits
 - momo5502 (https://github.com/momo5502)
+- xensik (https://github.com/xensik/gsc-tool)
 - fedddddd (https://github.com/fedddddd/t6-gsc-utils)
 - VoroN (https://github.com/voron00/CoD2rev_Server)
 - CoD4x team (https://github.com/callofduty4x/CoD4x_Server)
