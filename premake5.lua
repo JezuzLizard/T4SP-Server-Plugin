@@ -108,7 +108,7 @@ workspace "t4sp-server-plugin"
 		else
 			filter "configurations:Release"
 				postbuildcommands {
-					"if \"%COMPUTERNAME%\" == \"NEW-BUILT\" ( copy /y \"$(TargetPath)\" \"$(CODWAW_PATH)\\plutonium\\storage\\t4\\plugins\\\" )"
+					"if \"%COMPUTERNAME%\" == \"NEW-BUILT\" ( copy /y \"$(TargetPath)\" \"$(CODWAW_PATH)\\t4\\plugins\\\" )"
 				}
 			filter {}
 			
