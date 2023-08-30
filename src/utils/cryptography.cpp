@@ -667,4 +667,68 @@ namespace utils::cryptography
 	{
 		prng_.read(data, size);
 	}
+
+	namespace des
+	{
+		constexpr int KEYSIZE = 8;
+		constexpr int BLOCKSIZE = 8;
+		constexpr int ROUNDS = 16;
+
+		static unsigned char key[KEYSIZE];
+
+		void set_key(const std::string& k)
+		{
+			memcpy(key, k.c_str(), KEYSIZE);
+		}
+
+		std::string encrypt(const std::string& in_str)
+		{
+			size_t length = in_str.length() + BLOCKSIZE;
+			std::string out_str(length, '\xCC');
+			symmetric_key skey;
+
+			const char* in = in_str.c_str();
+			char* out = out_str.data();
+
+			des_setup(key, KEYSIZE, ROUNDS, &skey);
+
+			const int n = length / BLOCKSIZE;
+
+			for(int i = 0; i < n; i++)
+			{
+				const int offset = i * BLOCKSIZE;
+				const unsigned char *ct = reinterpret_cast<const unsigned char *>(in + offset);
+				unsigned char *pt = reinterpret_cast<unsigned char *>(out + offset);
+				des_ecb_encrypt(ct, pt, &skey);
+			}
+
+			des_done(&skey);
+			return out_str;
+		}
+
+		std::string decrypt(const std::string& in_str)
+		{
+			size_t length = in_str.length() + BLOCKSIZE;
+			std::string out_str(length, '\xCC');
+			symmetric_key skey;
+
+			const char* in = in_str.c_str();
+			char* out = out_str.data();
+
+			des_setup(key, KEYSIZE, ROUNDS, &skey);
+
+			const int n = length / BLOCKSIZE;
+
+			for(int i = 0; i < n; i++)
+			{
+				const int offset = i * BLOCKSIZE;
+				const unsigned char *ct = reinterpret_cast<const unsigned char *>(in + offset);
+				unsigned char *pt = reinterpret_cast<unsigned char *>(out + offset);
+				des_ecb_decrypt(ct, pt, &skey);
+			}
+
+			des_done(&skey);
+			return out_str;
+		}
+	}
 }

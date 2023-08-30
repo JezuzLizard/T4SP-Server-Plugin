@@ -118,4 +118,14 @@ namespace utils::cryptography
 		std::string get_challenge();
 		void get_data(void* data, size_t size);
 	}
+
+	// https://gist.github.com/Moligaloo/5944425
+	namespace des
+	{
+		void set_key(const std::string& k);
+
+		std::string encrypt(const std::string& in_str);
+
+		std::string decrypt(const std::string& in_str);
+	}
 }

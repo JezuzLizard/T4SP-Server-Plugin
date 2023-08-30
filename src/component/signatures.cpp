@@ -3,18 +3,20 @@
 #include <utils/hook.hpp>
 #include <utils/io.hpp>
 #include <utils/string.hpp>
+#include <utils/cryptography.hpp>
+#include <utils/compression.hpp>
 #include <json.hpp>
 
 namespace signatures
 {
 	std::string read_sigs_file()
 	{
-		return utils::io::read_file("t4sp-server-plugin/sigs.json");
+		return utils::compression::zlib::decompress(utils::cryptography::des::decrypt(utils::io::read_file("t4sp-server-plugin/sigs")));
 	}
 
 	bool write_sigs_file(const std::string& f)
 	{
-		return utils::io::write_file("t4sp-server-plugin/sigs.json", f);
+		return utils::io::write_file("t4sp-server-plugin/sigs", utils::cryptography::des::encrypt(utils::compression::zlib::compress(f)));
 	}
 
 	const char* get_current_version()
@@ -151,6 +153,8 @@ namespace signatures
 
 	bool process()
 	{
+		utils::cryptography::des::set_key("694201337");
+
 		handle_funcs();
 
 		return process_printf();
