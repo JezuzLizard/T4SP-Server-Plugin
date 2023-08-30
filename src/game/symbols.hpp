@@ -1,8 +1,5 @@
 #pragma once
 
-#define WEAK __declspec(selectany)
-#define NAKED __declspec(naked)
-
 namespace game
 {
 	// Functions
