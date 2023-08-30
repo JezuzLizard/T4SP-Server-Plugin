@@ -1,3 +1,3 @@
 @echo off
 call git submodule update --init --recursive
-premake5.exe vs2022
+tools\premake5.exe vs2022
