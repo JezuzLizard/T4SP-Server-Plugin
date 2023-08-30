@@ -376,6 +376,7 @@ namespace game
 		unsigned int pointerValue; //OFS: 0x5 SIZE: 0x4
 		VariableStackBuffer * stackValue; //OFS: 0x6 SIZE: 0x4
 		unsigned int entityOffset; //OFS: 0x7 SIZE: 0x4
+		scr_anim_s anim;
 	};
 	ASSERT_STRUCT_SIZE(VariableUnion, 0x4);
 
@@ -420,11 +421,11 @@ namespace game
 
 	struct function_frame_t
 	{
-		function_stack_t _fs; //OFS: 0x0 SIZE: 0x14
+		function_stack_t fs; //OFS: 0x0 SIZE: 0x14
 		VariableType topType; //OFS: 0x14 SIZE: 0x4
 	};
 	ASSERT_STRUCT_SIZE(function_frame_t, 0x18);
-	ASSERT_STRUCT_OFFSET(function_frame_t, _fs, 0x0);
+	ASSERT_STRUCT_OFFSET(function_frame_t, fs, 0x0);
 	ASSERT_STRUCT_OFFSET(function_frame_t, topType, 0x14);
 
 	struct scrVmPub_t
