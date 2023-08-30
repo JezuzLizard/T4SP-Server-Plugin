@@ -48,6 +48,10 @@ function libtommath.project()
 
 		warnings "Off"
 		kind "StaticLib"
+
+		filter "configurations:Debug"
+			buildoptions "/MTd"
+			optimize "Size"
 end
 
 table.insert(dependencies, libtommath)
