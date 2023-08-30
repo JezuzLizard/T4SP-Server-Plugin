@@ -59,6 +59,9 @@ workspace "t4sp-server-plugin"
 	filter "configurations:Release"
 		optimize "Full"
 		defines { "NDEBUG" }
+		flags {
+            "FatalCompileWarnings",
+        }
 	filter {}
 
 	filter "configurations:Debug"
@@ -103,10 +106,17 @@ workspace "t4sp-server-plugin"
 		if _OPTIONS["copy-to"] then
 			postbuildcommands {"copy /y \"$(TargetPath)\" \"" .. _OPTIONS["copy-to"] .. "\""}
 		else
-			postbuildcommands {
-				"if \"%COMPUTERNAME%\" == \"NEW-BUILT\" ( copy /y \"$(TargetPath)\" \"$(CODWAW_PATH)\\t4staging\\plugins\\\" )",
-				"if \"%COMPUTERNAME%\" == \"JEZUZLIZARD\" ( copy /y \"$(TargetPath)\" \"C:/Users/Jezuz/Desktop/re-T4SP\" )"
-			}
+			filter "configurations:Release"
+				postbuildcommands {
+					"if \"%COMPUTERNAME%\" == \"NEW-BUILT\" ( copy /y \"$(TargetPath)\" \"$(CODWAW_PATH)\\plutonium\\storage\\t4\\plugins\\\" )"
+				}
+			filter {}
+			
+			filter "configurations:Debug"
+				postbuildcommands {
+					"if \"%COMPUTERNAME%\" == \"NEW-BUILT\" ( copy /y \"$(TargetPath)\" \"$(CODWAW_PATH)\\t4staging\\plugins\\\" )"
+				}
+			filter {}
 		end
 
 	group "Dependencies"

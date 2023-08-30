@@ -52,6 +52,7 @@ function libtommath.project()
 		filter "configurations:Debug"
 			buildoptions "/MTd"
 			optimize "Size"
+		filter {}
 end
 
 table.insert(dependencies, libtommath)

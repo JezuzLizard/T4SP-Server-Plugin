@@ -5,6 +5,298 @@ namespace game
 {
 #endif
 
+	struct HunkUser;
+	struct XAnim_s;
+	struct actorBackup_s;
+	struct XAnimTree_s;
+	struct actor_s;
+	struct centity_s;
+	struct gentity_s;
+	struct sentient_s;
+	struct gclient_s;
+	struct game_hudelem_s;
+
+	enum classNum_e
+	{
+		CLASS_NUM_ENTITY = 0x0,
+		CLASS_NUM_HUDELEM = 0x1,
+		CLASS_NUM_PATHNODE = 0x2,
+		CLASS_NUM_VEHICLENODE = 0x3,
+		CLASS_NUM_COUNT = 0x4,
+	};
+
+	enum scriptInstance_t : __int32
+	{
+		SCRIPTINSTANCE_SERVER = 0x0,
+		SCRIPTINSTANCE_CLIENT = 0x1,
+		SCRIPT_INSTANCE_MAX = 0x2,
+	};
+
+	enum OpcodeVM : __int32
+	{
+		OP_End = 0x0,
+		OP_Return = 0x1,
+		OP_GetUndefined = 0x2,
+		OP_GetZero = 0x3,
+		OP_GetByte = 0x4,
+		OP_GetNegByte = 0x5,
+		OP_GetUnsignedShort = 0x6,
+		OP_GetNegUnsignedShort = 0x7,
+		OP_GetInteger = 0x8,
+		OP_GetFloat = 0x9,
+		OP_GetString = 0xA,
+		OP_GetIString = 0xB,
+		OP_GetVector = 0xC,
+		OP_GetLevelObject = 0xD,
+		OP_GetAnimObject = 0xE,
+		OP_GetSelf = 0xF,
+		OP_GetLevel = 0x10,
+		OP_GetGame = 0x11,
+		OP_GetAnim = 0x12,
+		OP_GetAnimation = 0x13,
+		OP_GetGameRef = 0x14,
+		OP_GetFunction = 0x15,
+		OP_CreateLocalVariable = 0x16,
+		OP_RemoveLocalVariables = 0x17,
+		OP_EvalLocalVariableCached0 = 0x18,
+		OP_EvalLocalVariableCached1 = 0x19,
+		OP_EvalLocalVariableCached2 = 0x1A,
+		OP_EvalLocalVariableCached3 = 0x1B,
+		OP_EvalLocalVariableCached4 = 0x1C,
+		OP_EvalLocalVariableCached5 = 0x1D,
+		OP_EvalLocalVariableCached = 0x1E,
+		OP_EvalLocalArrayCached = 0x1F,
+		OP_EvalArray = 0x20,
+		OP_EvalLocalArrayRefCached0 = 0x21,
+		OP_EvalLocalArrayRefCached = 0x22,
+		OP_EvalArrayRef = 0x23,
+		OP_ClearArray = 0x24,
+		OP_EmptyArray = 0x25,
+		OP_GetSelfObject = 0x26,
+		OP_EvalLevelFieldVariable = 0x27,
+		OP_EvalAnimFieldVariable = 0x28,
+		OP_EvalSelfFieldVariable = 0x29,
+		OP_EvalFieldVariable = 0x2A,
+		OP_EvalLevelFieldVariableRef = 0x2B,
+		OP_EvalAnimFieldVariableRef = 0x2C,
+		OP_EvalSelfFieldVariableRef = 0x2D,
+		OP_EvalFieldVariableRef = 0x2E,
+		OP_ClearFieldVariable = 0x2F,
+		OP_SafeCreateVariableFieldCached = 0x30,
+		OP_SafeSetVariableFieldCached0 = 0x31,
+		OP_SafeSetVariableFieldCached = 0x32,
+		OP_SafeSetWaittillVariableFieldCached = 0x33,
+		OP_clearparams = 0x34,
+		OP_checkclearparams = 0x35,
+		OP_EvalLocalVariableRefCached0 = 0x36,
+		OP_EvalLocalVariableRefCached = 0x37,
+		OP_SetLevelFieldVariableField = 0x38,
+		OP_SetVariableField = 0x39,
+		OP_SetAnimFieldVariableField = 0x3A,
+		OP_SetSelfFieldVariableField = 0x3B,
+		OP_SetLocalVariableFieldCached0 = 0x3C,
+		OP_SetLocalVariableFieldCached = 0x3D,
+		OP_CallBuiltin0 = 0x3E,
+		OP_CallBuiltin1 = 0x3F,
+		OP_CallBuiltin2 = 0x40,
+		OP_CallBuiltin3 = 0x41,
+		OP_CallBuiltin4 = 0x42,
+		OP_CallBuiltin5 = 0x43,
+		OP_CallBuiltin = 0x44,
+		OP_CallBuiltinMethod0 = 0x45,
+		OP_CallBuiltinMethod1 = 0x46,
+		OP_CallBuiltinMethod2 = 0x47,
+		OP_CallBuiltinMethod3 = 0x48,
+		OP_CallBuiltinMethod4 = 0x49,
+		OP_CallBuiltinMethod5 = 0x4A,
+		OP_CallBuiltinMethod = 0x4B,
+		OP_wait = 0x4C,
+		OP_waittillFrameEnd = 0x4D,
+		OP_PreScriptCall = 0x4E,
+		OP_ScriptFunctionCall2 = 0x4F,
+		OP_ScriptFunctionCall = 0x50,
+		OP_ScriptFunctionCallPointer = 0x51,
+		OP_ScriptMethodCall = 0x52,
+		OP_ScriptMethodCallPointer = 0x53,
+		OP_ScriptThreadCall = 0x54,
+		OP_ScriptThreadCallPointer = 0x55,
+		OP_ScriptMethodThreadCall = 0x56,
+		OP_ScriptMethodThreadCallPointer = 0x57,
+		OP_DecTop = 0x58,
+		OP_CastFieldObject = 0x59,
+		OP_EvalLocalVariableObjectCached = 0x5A,
+		OP_CastBool = 0x5B,
+		OP_BoolNot = 0x5C,
+		OP_BoolComplement = 0x5D,
+		OP_JumpOnFalse = 0x5E,
+		OP_JumpOnTrue = 0x5F,
+		OP_JumpOnFalseExpr = 0x60,
+		OP_JumpOnTrueExpr = 0x61,
+		OP_jump = 0x62,
+		OP_jumpback = 0x63,
+		OP_inc = 0x64,
+		OP_dec = 0x65,
+		OP_bit_or = 0x66,
+		OP_bit_ex_or = 0x67,
+		OP_bit_and = 0x68,
+		OP_equality = 0x69,
+		OP_inequality = 0x6A,
+		OP_less = 0x6B,
+		OP_greater = 0x6C,
+		OP_less_equal = 0x6D,
+		OP_greater_equal = 0x6E,
+		OP_shift_left = 0x6F,
+		OP_shift_right = 0x70,
+		OP_plus = 0x71,
+		OP_minus = 0x72,
+		OP_multiply = 0x73,
+		OP_divide = 0x74,
+		OP_mod = 0x75,
+		OP_size = 0x76,
+		OP_waittillmatch = 0x77,
+		OP_waittill = 0x78,
+		OP_notify = 0x79,
+		OP_endon = 0x7A,
+		OP_voidCodepos = 0x7B,
+		OP_switch = 0x7C,
+		OP_endswitch = 0x7D,
+		OP_vector = 0x7E,
+		OP_NOP = 0x7F,
+		OP_abort = 0x80,
+		OP_object = 0x81,
+		OP_thread_object = 0x82,
+		OP_EvalLocalVariable = 0x83,
+		OP_EvalLocalVariableRef = 0x84,
+		OP_prof_begin = 0x85,
+		OP_prof_end = 0x86,
+		OP_breakpoint = 0x87,
+		OP_assignmentBreakpoint = 0x88,
+		OP_manualAndAssignmentBreakpoint = 0x89,
+		OP_count = 0x8A,
+	};
+
+	enum scr_enum_t
+	{
+		ENUM_NOP = 0x0,
+		ENUM_program = 0x1,
+		ENUM_assignment = 0x2,
+		ENUM_unknown_variable = 0x3,
+		ENUM_duplicate_variable = 0x4,
+		ENUM_local_variable = 0x5,
+		ENUM_local_variable_frozen = 0x6,
+		ENUM_duplicate_expression = 0x7,
+		ENUM_primitive_expression = 0x8,
+		ENUM_integer = 0x9,
+		ENUM_float = 0xA,
+		ENUM_minus_integer = 0xB,
+		ENUM_minus_float = 0xC,
+		ENUM_string = 0xD,
+		ENUM_istring = 0xE,
+		ENUM_array_variable = 0xF,
+		ENUM_unknown_field = 0x10,
+		ENUM_field_variable = 0x11,
+		ENUM_field_variable_frozen = 0x12,
+		ENUM_variable = 0x13,
+		ENUM_function = 0x14,
+		ENUM_call_expression = 0x15,
+		ENUM_local_function = 0x16,
+		ENUM_far_function = 0x17,
+		ENUM_function_pointer = 0x18,
+		ENUM_call = 0x19,
+		ENUM_method = 0x1A,
+		ENUM_call_expression_statement = 0x1B,
+		ENUM_script_call = 0x1C,
+		ENUM_return = 0x1D,
+		ENUM_return2 = 0x1E,
+		ENUM_wait = 0x1F,
+		ENUM_script_thread_call = 0x20,
+		ENUM_undefined = 0x21,
+		ENUM_self = 0x22,
+		ENUM_self_frozen = 0x23,
+		ENUM_level = 0x24,
+		ENUM_game = 0x25,
+		ENUM_anim = 0x26,
+		ENUM_if = 0x27,
+		ENUM_if_else = 0x28,
+		ENUM_while = 0x29,
+		ENUM_for = 0x2A,
+		ENUM_inc = 0x2B,
+		ENUM_dec = 0x2C,
+		ENUM_binary_equals = 0x2D,
+		ENUM_statement_list = 0x2E,
+		ENUM_developer_statement_list = 0x2F,
+		ENUM_expression_list = 0x30,
+		ENUM_bool_or = 0x31,
+		ENUM_bool_and = 0x32,
+		ENUM_binary = 0x33,
+		ENUM_bool_not = 0x34,
+		ENUM_bool_complement = 0x35,
+		ENUM_size_field = 0x36,
+		ENUM_self_field = 0x37,
+		ENUM_precachetree = 0x38,
+		ENUM_waittill = 0x39,
+		ENUM_waittillmatch = 0x3A,
+		ENUM_waittillFrameEnd = 0x3B,
+		ENUM_notify = 0x3C,
+		ENUM_endon = 0x3D,
+		ENUM_switch = 0x3E,
+		ENUM_case = 0x3F,
+		ENUM_default = 0x40,
+		ENUM_break = 0x41,
+		ENUM_continue = 0x42,
+		ENUM_expression = 0x43,
+		ENUM_empty_array = 0x44,
+		ENUM_animation = 0x45,
+		ENUM_thread = 0x46,
+		ENUM_begin_developer_thread = 0x47,
+		ENUM_end_developer_thread = 0x48,
+		ENUM_usingtree = 0x49,
+		ENUM_false = 0x4A,
+		ENUM_true = 0x4B,
+		ENUM_animtree = 0x4C,
+		ENUM_breakon = 0x4D,
+		ENUM_breakpoint = 0x4E,
+		ENUM_prof_begin = 0x4F,
+		ENUM_prof_end = 0x50,
+		ENUM_vector = 0x51,
+		ENUM_object = 0x52,
+		ENUM_thread_object = 0x53,
+		ENUM_local = 0x54,
+		ENUM_statement = 0x55,
+		ENUM_bad_expression = 0x56,
+		ENUM_bad_statement = 0x57,
+		ENUM_include = 0x58,
+		ENUM_argument = 0x59,
+	};
+
+	enum HASH_e
+	{
+		HASH_STAT_MASK = 0x30000,
+		HASH_STAT_HEAD = 0x20000,
+		HASH_STAT_MOVABLE = 0x10000,
+		HASH_STAT_FREE = 0x0,
+	};
+
+	enum VAR_e
+	{
+		VAR_STAT_FREE = 0x0,
+		VAR_BEGIN_REF = 0x1,
+		VAR_END_REF = 0x5,
+		VAR_STAT_MASK = 0x60,
+		VAR_STAT_MOVABLE = 0x20,
+		VAR_STAT_HEAD = 0x40,
+		VAR_STAT_EXTERNAL = 0x60,
+		VAR_MASK = 0x1F,
+		VAR_NAME_LOW_MASK = 0xFF000000,
+		VAR_NAME_HIGH_MASK = 0xFFFFFF00,
+		VAR_NAME_BITS = 0x8,
+		VARIABLELIST_CHILD_SIZE = 0x10000,
+		VARIABLELIST_CHILD_BEGIN = 0x6000,
+		SL_MAX_STRING_INDEX = 0x10000,
+		OBJECT_STACK = 0x15FFE,
+		FIRST_OBJECT = 0x14,
+	};
+
 	enum VariableType
 	{
 		VAR_UNDEFINED = 0x0,
@@ -34,32 +326,6 @@ namespace game
 		VAR_ENDON_LIST = 0x18,
 	};
 
-	enum ai_animmode_t
-	{
-		AI_ANIM_UNKNOWN = 0x0,
-		AI_ANIM_MOVE_CODE = 0x1,
-		AI_ANIM_USE_POS_DELTAS = 0x2,
-		AI_ANIM_USE_ANGLE_DELTAS = 0x3,
-		AI_ANIM_USE_BOTH_DELTAS = 0x4,
-		AI_ANIM_USE_BOTH_DELTAS_NOCLIP = 0x5,
-		AI_ANIM_USE_BOTH_DELTAS_NOGRAVITY = 0x6,
-		AI_ANIM_USE_BOTH_DELTAS_ZONLY_PHYSICS = 0x7,
-		AI_ANIM_NOPHYSICS = 0x8,
-		AI_ANIM_POINT_RELATIVE = 0x9,
-	};
-
-	enum ai_orient_mode_t
-	{
-		AI_ORIENT_INVALID = 0x0,
-		AI_ORIENT_DONT_CHANGE = 0x1,
-		AI_ORIENT_TO_MOTION = 0x2,
-		AI_ORIENT_TO_ENEMY = 0x3,
-		AI_ORIENT_TO_ENEMY_OR_MOTION = 0x4,
-		AI_ORIENT_TO_ENEMY_OR_MOTION_SIDESTEP = 0x5,
-		AI_ORIENT_TO_GOAL = 0x6,
-		AI_ORIENT_COUNT = 0x7,
-	};
-
 	struct VariableStackBuffer
 	{
 		const char * pos; //OFS: 0x0 SIZE: 0x4
@@ -76,6 +342,29 @@ namespace game
 	ASSERT_STRUCT_OFFSET(VariableStackBuffer, localId, 0x8);
 	ASSERT_STRUCT_OFFSET(VariableStackBuffer, time, 0xA);
 	ASSERT_STRUCT_OFFSET(VariableStackBuffer, buf, 0xB);
+
+	struct __declspec(align(2)) scr_anim_u_u
+	{
+		unsigned __int16 index; //OFS: 0x0 SIZE: 0x2
+		unsigned __int16 tree; //OFS: 0x2 SIZE: 0x2
+	};
+	ASSERT_STRUCT_SIZE(scr_anim_u_u, 0x4);
+	ASSERT_STRUCT_OFFSET(scr_anim_u_u, index, 0x0);
+	ASSERT_STRUCT_OFFSET(scr_anim_u_u, tree, 0x2);
+
+	union scr_anim_u
+	{
+		scr_anim_u_u s; //OFS: 0x0 SIZE: 0x4
+		const char * linkPointer; //OFS: 0x1 SIZE: 0x4
+	};
+	ASSERT_STRUCT_SIZE(scr_anim_u, 0x4);
+
+	struct scr_anim_s
+	{
+		scr_anim_u u; //OFS: 0x0 SIZE: 0x4
+	};
+	ASSERT_STRUCT_SIZE(scr_anim_s, 0x4);
+	ASSERT_STRUCT_OFFSET(scr_anim_s, u, 0x0);
 
 	union VariableUnion
 	{
@@ -218,6 +507,7 @@ namespace game
 		unsigned int unk1 : 1;
 		unsigned int name : 24;
 	};
+	ASSERT_STRUCT_SIZE(VariableValueInternal_w_bits, 0x4);
 
 	union VariableValueInternal_w
 	{
@@ -289,35 +579,6 @@ namespace game
 	ASSERT_STRUCT_OFFSET(scrStringGlob_t, hashTable, 0x0);
 	ASSERT_STRUCT_OFFSET(scrStringGlob_t, inited, 0x30D40);
 	ASSERT_STRUCT_OFFSET(scrStringGlob_t, nextFreeEntry, 0x30D44);
-
-	struct HunkUser
-	{
-		HunkUser * current; //OFS: 0x0 SIZE: 0x4
-		HunkUser * next; //OFS: 0x4 SIZE: 0x4
-		int maxSize; //OFS: 0x8 SIZE: 0x4
-		int end; //OFS: 0xC SIZE: 0x4
-		int pos; //OFS: 0x10 SIZE: 0x4
-		int locked; //OFS: 0x14 SIZE: 0x4
-		char * name; //OFS: 0x18 SIZE: 0x4
-		bool fixed; //OFS: 0x1C SIZE: 0x1
-		bool tempMem; //OFS: 0x1D SIZE: 0x1
-		bool debugMem; //OFS: 0x1E SIZE: 0x1
-		int type; //OFS: 0x20 SIZE: 0x4
-		unsigned __int8 buf[1]; //OFS: 0x24 SIZE: 0x1
-	};
-	ASSERT_STRUCT_SIZE(HunkUser, 0x28);
-	ASSERT_STRUCT_OFFSET(HunkUser, current, 0x0);
-	ASSERT_STRUCT_OFFSET(HunkUser, next, 0x4);
-	ASSERT_STRUCT_OFFSET(HunkUser, maxSize, 0x8);
-	ASSERT_STRUCT_OFFSET(HunkUser, end, 0xC);
-	ASSERT_STRUCT_OFFSET(HunkUser, pos, 0x10);
-	ASSERT_STRUCT_OFFSET(HunkUser, locked, 0x14);
-	ASSERT_STRUCT_OFFSET(HunkUser, name, 0x18);
-	ASSERT_STRUCT_OFFSET(HunkUser, fixed, 0x1C);
-	ASSERT_STRUCT_OFFSET(HunkUser, tempMem, 0x1D);
-	ASSERT_STRUCT_OFFSET(HunkUser, debugMem, 0x1E);
-	ASSERT_STRUCT_OFFSET(HunkUser, type, 0x20);
-	ASSERT_STRUCT_OFFSET(HunkUser, buf, 0x24);
 
 	struct scrVarPub_t
 	{
@@ -693,42 +954,53 @@ namespace game
 	ASSERT_STRUCT_OFFSET(scrCompilePub_t, func_table_size, 0x20034);
 	ASSERT_STRUCT_OFFSET(scrCompilePub_t, func_table, 0x20038);
 
-	struct __declspec(align(2)) XAnimParent
+	struct animScriptCondition_t
 	{
-		unsigned __int16 flags; //OFS: 0x0 SIZE: 0x2
-		unsigned __int16 children; //OFS: 0x2 SIZE: 0x2
+		int index; //OFS: 0x0 SIZE: 0x4
+		unsigned int value[2]; //OFS: 0x4 SIZE: 0x8
 	};
-	ASSERT_STRUCT_SIZE(XAnimParent, 0x4);
-	ASSERT_STRUCT_OFFSET(XAnimParent, flags, 0x0);
-	ASSERT_STRUCT_OFFSET(XAnimParent, children, 0x2);
+	ASSERT_STRUCT_SIZE(animScriptCondition_t, 0xC);
+	ASSERT_STRUCT_OFFSET(animScriptCondition_t, index, 0x0);
+	ASSERT_STRUCT_OFFSET(animScriptCondition_t, value, 0x4);
 
-	struct XAnimEntry
+	struct animScriptCommand_t
 	{
-		unsigned __int16 bCreated; //OFS: 0x0 SIZE: 0x2
-		unsigned __int16 numAnims; //OFS: 0x2 SIZE: 0x2
-		unsigned __int16 parent; //OFS: 0x4 SIZE: 0x2
-		__int16 field_6; //OFS: 0x6 SIZE: 0x2
-		XAnimParent animParent; //OFS: 0x8 SIZE: 0x4
+		__int16 bodyPart[2]; //OFS: 0x0 SIZE: 0x4
+		__int16 animIndex[2]; //OFS: 0x4 SIZE: 0x4
+		unsigned __int16 animDuration[2]; //OFS: 0x8 SIZE: 0x4
+		snd_alias_list_t * soundAlias; //OFS: 0xC SIZE: 0x4
+		unsigned __int16 tagName; //OFS: 0x10 SIZE: 0x2
+		unsigned __int16 flags; //OFS: 0x12 SIZE: 0x2
 	};
-	ASSERT_STRUCT_SIZE(XAnimEntry, 0xC);
-	ASSERT_STRUCT_OFFSET(XAnimEntry, bCreated, 0x0);
-	ASSERT_STRUCT_OFFSET(XAnimEntry, numAnims, 0x2);
-	ASSERT_STRUCT_OFFSET(XAnimEntry, parent, 0x4);
-	ASSERT_STRUCT_OFFSET(XAnimEntry, field_6, 0x6);
-	ASSERT_STRUCT_OFFSET(XAnimEntry, animParent, 0x8);
+	ASSERT_STRUCT_SIZE(animScriptCommand_t, 0x14);
+	ASSERT_STRUCT_OFFSET(animScriptCommand_t, bodyPart, 0x0);
+	ASSERT_STRUCT_OFFSET(animScriptCommand_t, animIndex, 0x4);
+	ASSERT_STRUCT_OFFSET(animScriptCommand_t, animDuration, 0x8);
+	ASSERT_STRUCT_OFFSET(animScriptCommand_t, soundAlias, 0xC);
+	ASSERT_STRUCT_OFFSET(animScriptCommand_t, tagName, 0x10);
+	ASSERT_STRUCT_OFFSET(animScriptCommand_t, flags, 0x12);
 
-	struct XAnim_s
+	struct animScriptItem_t
 	{
-		char * debugName; //OFS: 0x0 SIZE: 0x4
-		unsigned int size; //OFS: 0x4 SIZE: 0x4
-		char ** debugAnimNames; //OFS: 0x8 SIZE: 0x4
-		XAnimEntry entries[1]; //OFS: 0xC SIZE: 0xC
+		int numConditions; //OFS: 0x0 SIZE: 0x4
+		animScriptCondition_t conditions[4]; //OFS: 0x4 SIZE: 0x30
+		int numCommands; //OFS: 0x34 SIZE: 0x4
+		animScriptCommand_t commands[8]; //OFS: 0x38 SIZE: 0xA0
 	};
-	ASSERT_STRUCT_SIZE(XAnim_s, 0x18);
-	ASSERT_STRUCT_OFFSET(XAnim_s, debugName, 0x0);
-	ASSERT_STRUCT_OFFSET(XAnim_s, size, 0x4);
-	ASSERT_STRUCT_OFFSET(XAnim_s, debugAnimNames, 0x8);
-	ASSERT_STRUCT_OFFSET(XAnim_s, entries, 0xC);
+	ASSERT_STRUCT_SIZE(animScriptItem_t, 0xD8);
+	ASSERT_STRUCT_OFFSET(animScriptItem_t, numConditions, 0x0);
+	ASSERT_STRUCT_OFFSET(animScriptItem_t, conditions, 0x4);
+	ASSERT_STRUCT_OFFSET(animScriptItem_t, numCommands, 0x34);
+	ASSERT_STRUCT_OFFSET(animScriptItem_t, commands, 0x38);
+
+	struct animScript_t
+	{
+		int numItems; //OFS: 0x0 SIZE: 0x4
+		animScriptItem_t * items[128]; //OFS: 0x4 SIZE: 0x200
+	};
+	ASSERT_STRUCT_SIZE(animScript_t, 0x204);
+	ASSERT_STRUCT_OFFSET(animScript_t, numItems, 0x0);
+	ASSERT_STRUCT_OFFSET(animScript_t, items, 0x4);
 
 	struct scr_animtree_t
 	{
@@ -1611,91 +1883,6 @@ namespace game
 	ASSERT_STRUCT_OFFSET(AnimScriptList, flashed, 0xA0);
 	ASSERT_STRUCT_OFFSET(AnimScriptList, weapons, 0xA8);
 
-	struct XAnimTree_s
-	{
-		XAnim_s * anims; //OFS: 0x0 SIZE: 0x4
-		unsigned __int16 children; //OFS: 0x4 SIZE: 0x2
-	};
-	ASSERT_STRUCT_SIZE(XAnimTree_s, 0x8);
-	ASSERT_STRUCT_OFFSET(XAnimTree_s, anims, 0x0);
-	ASSERT_STRUCT_OFFSET(XAnimTree_s, children, 0x4);
-
-	struct actor_prone_info_s
-	{
-		bool bCorpseOrientation; //OFS: 0x0 SIZE: 0x1
-		bool orientPitch; //OFS: 0x1 SIZE: 0x1
-		bool prone; //OFS: 0x2 SIZE: 0x1
-		int iProneTime; //OFS: 0x4 SIZE: 0x4
-		int iProneTrans; //OFS: 0x8 SIZE: 0x4
-		float fBodyHeight; //OFS: 0xC SIZE: 0x4
-		float fBodyPitch; //OFS: 0x10 SIZE: 0x4
-		float fBodyRoll; //OFS: 0x14 SIZE: 0x4
-	};
-	ASSERT_STRUCT_SIZE(actor_prone_info_s, 0x18);
-	ASSERT_STRUCT_OFFSET(actor_prone_info_s, bCorpseOrientation, 0x0);
-	ASSERT_STRUCT_OFFSET(actor_prone_info_s, orientPitch, 0x1);
-	ASSERT_STRUCT_OFFSET(actor_prone_info_s, prone, 0x2);
-	ASSERT_STRUCT_OFFSET(actor_prone_info_s, iProneTime, 0x4);
-	ASSERT_STRUCT_OFFSET(actor_prone_info_s, iProneTrans, 0x8);
-	ASSERT_STRUCT_OFFSET(actor_prone_info_s, fBodyHeight, 0xC);
-	ASSERT_STRUCT_OFFSET(actor_prone_info_s, fBodyPitch, 0x10);
-	ASSERT_STRUCT_OFFSET(actor_prone_info_s, fBodyRoll, 0x14);
-
-	struct corpseInfo_t
-	{
-		XAnimTree_s * tree; //OFS: 0x0 SIZE: 0x4
-		int entnum; //OFS: 0x4 SIZE: 0x4
-		actor_prone_info_s proneInfo; //OFS: 0x8 SIZE: 0x18
-	};
-	ASSERT_STRUCT_SIZE(corpseInfo_t, 0x20);
-	ASSERT_STRUCT_OFFSET(corpseInfo_t, tree, 0x0);
-	ASSERT_STRUCT_OFFSET(corpseInfo_t, entnum, 0x4);
-	ASSERT_STRUCT_OFFSET(corpseInfo_t, proneInfo, 0x8);
-
-	struct ai_orient_t
-	{
-		ai_orient_mode_t eMode; //OFS: 0x0 SIZE: 0x4
-		float fDesiredLookPitch; //OFS: 0x4 SIZE: 0x4
-		float fDesiredLookYaw; //OFS: 0x8 SIZE: 0x4
-		float fDesiredBodyYaw; //OFS: 0xC SIZE: 0x4
-	};
-	ASSERT_STRUCT_SIZE(ai_orient_t, 0x10);
-	ASSERT_STRUCT_OFFSET(ai_orient_t, eMode, 0x0);
-	ASSERT_STRUCT_OFFSET(ai_orient_t, fDesiredLookPitch, 0x4);
-	ASSERT_STRUCT_OFFSET(ai_orient_t, fDesiredLookYaw, 0x8);
-	ASSERT_STRUCT_OFFSET(ai_orient_t, fDesiredBodyYaw, 0xC);
-
-	struct actorBackup_s
-	{
-		ai_animmode_t eAnimMode; //OFS: 0x0 SIZE: 0x4
-		ai_animmode_t eDesiredAnimMode; //OFS: 0x4 SIZE: 0x4
-		ai_animmode_t eScriptSetAnimMode; //OFS: 0x8 SIZE: 0x4
-		bool bUseGoalWeight; //OFS: 0xC SIZE: 0x1
-		char gapD[1987]; //OFS: 0xD SIZE: 0x7C3
-		ai_orient_t ScriptOrient; //OFS: 0x7D0 SIZE: 0x10
-		ai_orient_t CodeOrient; //OFS: 0x7E0 SIZE: 0x10
-		float fDesiredBodyYaw; //OFS: 0x7F0 SIZE: 0x4
-		float currentOrigin[3]; //OFS: 0x7F4 SIZE: 0xC
-		float currentAngles[3]; //OFS: 0x800 SIZE: 0xC
-		float vLookForward[3]; //OFS: 0x80C SIZE: 0xC
-		float vLookRight[3]; //OFS: 0x818 SIZE: 0xC
-		float vLookUp[3]; //OFS: 0x824 SIZE: 0xC
-	};
-	ASSERT_STRUCT_SIZE(actorBackup_s, 0x830);
-	ASSERT_STRUCT_OFFSET(actorBackup_s, eAnimMode, 0x0);
-	ASSERT_STRUCT_OFFSET(actorBackup_s, eDesiredAnimMode, 0x4);
-	ASSERT_STRUCT_OFFSET(actorBackup_s, eScriptSetAnimMode, 0x8);
-	ASSERT_STRUCT_OFFSET(actorBackup_s, bUseGoalWeight, 0xC);
-	ASSERT_STRUCT_OFFSET(actorBackup_s, gapD, 0xD);
-	ASSERT_STRUCT_OFFSET(actorBackup_s, ScriptOrient, 0x7D0);
-	ASSERT_STRUCT_OFFSET(actorBackup_s, CodeOrient, 0x7E0);
-	ASSERT_STRUCT_OFFSET(actorBackup_s, fDesiredBodyYaw, 0x7F0);
-	ASSERT_STRUCT_OFFSET(actorBackup_s, currentOrigin, 0x7F4);
-	ASSERT_STRUCT_OFFSET(actorBackup_s, currentAngles, 0x800);
-	ASSERT_STRUCT_OFFSET(actorBackup_s, vLookForward, 0x80C);
-	ASSERT_STRUCT_OFFSET(actorBackup_s, vLookRight, 0x818);
-	ASSERT_STRUCT_OFFSET(actorBackup_s, vLookUp, 0x824);
-
 	struct scr_data_t
 	{
 		int levelscript; //OFS: 0x0 SIZE: 0x4
@@ -1832,6 +2019,113 @@ namespace game
 	ASSERT_STRUCT_SIZE(RefVector, 0x10);
 	ASSERT_STRUCT_OFFSET(RefVector, u, 0x0);
 	ASSERT_STRUCT_OFFSET(RefVector, vec, 0x4);
+
+	struct cent_field_s
+	{
+		const char * name; //OFS: 0x0 SIZE: 0x4
+		int ofs; //OFS: 0x4 SIZE: 0x4
+		fieldtype_t type; //OFS: 0x8 SIZE: 0x4
+		void (__cdecl *setter)(centity_s *, const cent_field_s *); //OFS: 0xC SIZE: 0x4
+		void (__cdecl *getter)(centity_s *, const cent_field_s *); //OFS: 0x10 SIZE: 0x4
+	};
+	ASSERT_STRUCT_SIZE(cent_field_s, 0x14);
+	ASSERT_STRUCT_OFFSET(cent_field_s, name, 0x0);
+	ASSERT_STRUCT_OFFSET(cent_field_s, ofs, 0x4);
+	ASSERT_STRUCT_OFFSET(cent_field_s, type, 0x8);
+	ASSERT_STRUCT_OFFSET(cent_field_s, setter, 0xC);
+	ASSERT_STRUCT_OFFSET(cent_field_s, getter, 0x10);
+
+	struct aifields
+	{
+		const char * name; //OFS: 0x0 SIZE: 0x4
+		int ofs; //OFS: 0x4 SIZE: 0x4
+		int type; //OFS: 0x8 SIZE: 0x4
+		void (__cdecl *setter)(actor_s *, const aifields *); //OFS: 0xC SIZE: 0x4
+		void (__cdecl *getter)(actor_s *, const aifields *); //OFS: 0x10 SIZE: 0x4
+	};
+	ASSERT_STRUCT_SIZE(aifields, 0x14);
+	ASSERT_STRUCT_OFFSET(aifields, name, 0x0);
+	ASSERT_STRUCT_OFFSET(aifields, ofs, 0x4);
+	ASSERT_STRUCT_OFFSET(aifields, type, 0x8);
+	ASSERT_STRUCT_OFFSET(aifields, setter, 0xC);
+	ASSERT_STRUCT_OFFSET(aifields, getter, 0x10);
+
+	struct ent_field_t
+	{
+		const char * name; //OFS: 0x0 SIZE: 0x4
+		int ofs; //OFS: 0x4 SIZE: 0x4
+		int type; //OFS: 0x8 SIZE: 0x4
+		void (__cdecl *callback)(gentity_s *, int); //OFS: 0xC SIZE: 0x4
+	};
+	ASSERT_STRUCT_SIZE(ent_field_t, 0x10);
+	ASSERT_STRUCT_OFFSET(ent_field_t, name, 0x0);
+	ASSERT_STRUCT_OFFSET(ent_field_t, ofs, 0x4);
+	ASSERT_STRUCT_OFFSET(ent_field_t, type, 0x8);
+	ASSERT_STRUCT_OFFSET(ent_field_t, callback, 0xC);
+
+	struct sentient_fields_s
+	{
+		const char * name; //OFS: 0x0 SIZE: 0x4
+		int ofs; //OFS: 0x4 SIZE: 0x4
+		fieldtype_t type; //OFS: 0x8 SIZE: 0x4
+		void (__cdecl *setter)(sentient_s *, const sentient_fields_s *); //OFS: 0xC SIZE: 0x4
+		void (__cdecl *getter)(sentient_s *, const sentient_fields_s *); //OFS: 0x10 SIZE: 0x4
+	};
+	ASSERT_STRUCT_SIZE(sentient_fields_s, 0x14);
+	ASSERT_STRUCT_OFFSET(sentient_fields_s, name, 0x0);
+	ASSERT_STRUCT_OFFSET(sentient_fields_s, ofs, 0x4);
+	ASSERT_STRUCT_OFFSET(sentient_fields_s, type, 0x8);
+	ASSERT_STRUCT_OFFSET(sentient_fields_s, setter, 0xC);
+	ASSERT_STRUCT_OFFSET(sentient_fields_s, getter, 0x10);
+
+	struct client_fields_s
+	{
+		const char * name; //OFS: 0x0 SIZE: 0x4
+		int ofs; //OFS: 0x4 SIZE: 0x4
+		int type; //OFS: 0x8 SIZE: 0x4
+		int type2; //OFS: 0xC SIZE: 0x4
+		void (__cdecl *setter)(gclient_s *, client_fields_s *); //OFS: 0x10 SIZE: 0x4
+		void (__cdecl *getter)(gclient_s *, client_fields_s *); //OFS: 0x14 SIZE: 0x4
+	};
+	ASSERT_STRUCT_SIZE(client_fields_s, 0x18);
+	ASSERT_STRUCT_OFFSET(client_fields_s, name, 0x0);
+	ASSERT_STRUCT_OFFSET(client_fields_s, ofs, 0x4);
+	ASSERT_STRUCT_OFFSET(client_fields_s, type, 0x8);
+	ASSERT_STRUCT_OFFSET(client_fields_s, type2, 0xC);
+	ASSERT_STRUCT_OFFSET(client_fields_s, setter, 0x10);
+	ASSERT_STRUCT_OFFSET(client_fields_s, getter, 0x14);
+
+	struct game_hudelem_field_t
+	{
+		const char * name; //OFS: 0x0 SIZE: 0x4
+		int ofs; //OFS: 0x4 SIZE: 0x4
+		fieldtype_t type; //OFS: 0x8 SIZE: 0x4
+		int mask; //OFS: 0xC SIZE: 0x4
+		int shift; //OFS: 0x10 SIZE: 0x4
+		void (__cdecl *setter)(game_hudelem_s *, int); //OFS: 0x14 SIZE: 0x4
+		void (__cdecl *getter)(game_hudelem_s *, int); //OFS: 0x18 SIZE: 0x4
+	};
+	ASSERT_STRUCT_SIZE(game_hudelem_field_t, 0x1C);
+	ASSERT_STRUCT_OFFSET(game_hudelem_field_t, name, 0x0);
+	ASSERT_STRUCT_OFFSET(game_hudelem_field_t, ofs, 0x4);
+	ASSERT_STRUCT_OFFSET(game_hudelem_field_t, type, 0x8);
+	ASSERT_STRUCT_OFFSET(game_hudelem_field_t, mask, 0xC);
+	ASSERT_STRUCT_OFFSET(game_hudelem_field_t, shift, 0x10);
+	ASSERT_STRUCT_OFFSET(game_hudelem_field_t, setter, 0x14);
+	ASSERT_STRUCT_OFFSET(game_hudelem_field_t, getter, 0x18);
+
+	struct node_field_t
+	{
+		const char * name; //OFS: 0x0 SIZE: 0x4
+		int ofs; //OFS: 0x4 SIZE: 0x4
+		fieldtype_t type; //OFS: 0x8 SIZE: 0x4
+		void (__cdecl *getter)(void *, int) ; //OFS: 0xC SIZE: 0x4
+	};
+	ASSERT_STRUCT_SIZE(node_field_t, 0x10);
+	ASSERT_STRUCT_OFFSET(node_field_t, name, 0x0);
+	ASSERT_STRUCT_OFFSET(node_field_t, ofs, 0x4);
+	ASSERT_STRUCT_OFFSET(node_field_t, type, 0x8);
+	ASSERT_STRUCT_OFFSET(node_field_t, getter, 0xC);
 
 #ifdef __cplusplus
 }

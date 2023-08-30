@@ -58,9 +58,9 @@
 
 #include "utils/hexrays_defs.h"
 
+#include "game/game.hpp"
 #include "game/enums.hpp"
 #include "game/structs.hpp"
-#include "game/game.hpp"
 #include "game/symbols.hpp"
 
 using namespace std::literals;

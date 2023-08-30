@@ -19,21 +19,58 @@ ASSERT_STRUCT_SIZE(void*, 4);
 ASSERT_STRUCT_SIZE(jmp_buf, 4 * 16);
 ASSERT_STRUCT_SIZE(CRITICAL_SECTION, 0x18);
 
+#ifdef __cplusplus
 #include "xasset.hpp"
-#include "clientscript_public.hpp"
+
+namespace game
+{
+#endif
+	struct XAnimTree_s;
+
+	struct actor_prone_info_s
+	{
+		bool bCorpseOrientation; //OFS: 0x0 SIZE: 0x1
+		bool orientPitch; //OFS: 0x1 SIZE: 0x1
+		bool prone; //OFS: 0x2 SIZE: 0x1
+		int iProneTime; //OFS: 0x4 SIZE: 0x4
+		int iProneTrans; //OFS: 0x8 SIZE: 0x4
+		float fBodyHeight; //OFS: 0xC SIZE: 0x4
+		float fBodyPitch; //OFS: 0x10 SIZE: 0x4
+		float fBodyRoll; //OFS: 0x14 SIZE: 0x4
+	};
+	ASSERT_STRUCT_SIZE(actor_prone_info_s, 0x18);
+	ASSERT_STRUCT_OFFSET(actor_prone_info_s, bCorpseOrientation, 0x0);
+	ASSERT_STRUCT_OFFSET(actor_prone_info_s, orientPitch, 0x1);
+	ASSERT_STRUCT_OFFSET(actor_prone_info_s, prone, 0x2);
+	ASSERT_STRUCT_OFFSET(actor_prone_info_s, iProneTime, 0x4);
+	ASSERT_STRUCT_OFFSET(actor_prone_info_s, iProneTrans, 0x8);
+	ASSERT_STRUCT_OFFSET(actor_prone_info_s, fBodyHeight, 0xC);
+	ASSERT_STRUCT_OFFSET(actor_prone_info_s, fBodyPitch, 0x10);
+	ASSERT_STRUCT_OFFSET(actor_prone_info_s, fBodyRoll, 0x14);
+
+	struct corpseInfo_t
+	{
+		XAnimTree_s * tree; //OFS: 0x0 SIZE: 0x4
+		int entnum; //OFS: 0x4 SIZE: 0x4
+		actor_prone_info_s proneInfo; //OFS: 0x8 SIZE: 0x18
+	};
+	ASSERT_STRUCT_SIZE(corpseInfo_t, 0x20);
+	ASSERT_STRUCT_OFFSET(corpseInfo_t, tree, 0x0);
+	ASSERT_STRUCT_OFFSET(corpseInfo_t, entnum, 0x4);
+	ASSERT_STRUCT_OFFSET(corpseInfo_t, proneInfo, 0x8);
 
 #ifdef __cplusplus
+}
+
+#include "clientscript_public.hpp"
+
 namespace game
 {
 #endif
 
 	struct client_s;
-	struct gclient_s;
-	struct gentity_s;
-	struct actor_s;
 	struct NitrousVehicle;
 	struct DObjModel_s;
-	struct game_hudelem_s;
 	struct z_stream_s;
 	struct flameGeneric_s;
 	struct flameStream_s;
@@ -229,6 +266,81 @@ namespace game
 	ASSERT_STRUCT_OFFSET(hudelem_s, fxDecayDuration, 0xA0);
 	ASSERT_STRUCT_OFFSET(hudelem_s, soundID, 0xA4);
 	ASSERT_STRUCT_OFFSET(hudelem_s, flags, 0xA8);
+
+	struct HunkUser
+	{
+		HunkUser * current; //OFS: 0x0 SIZE: 0x4
+		HunkUser * next; //OFS: 0x4 SIZE: 0x4
+		int maxSize; //OFS: 0x8 SIZE: 0x4
+		int end; //OFS: 0xC SIZE: 0x4
+		int pos; //OFS: 0x10 SIZE: 0x4
+		int locked; //OFS: 0x14 SIZE: 0x4
+		char * name; //OFS: 0x18 SIZE: 0x4
+		bool fixed; //OFS: 0x1C SIZE: 0x1
+		bool tempMem; //OFS: 0x1D SIZE: 0x1
+		bool debugMem; //OFS: 0x1E SIZE: 0x1
+		int type; //OFS: 0x20 SIZE: 0x4
+		unsigned __int8 buf[1]; //OFS: 0x24 SIZE: 0x1
+	};
+	ASSERT_STRUCT_SIZE(HunkUser, 0x28);
+	ASSERT_STRUCT_OFFSET(HunkUser, current, 0x0);
+	ASSERT_STRUCT_OFFSET(HunkUser, next, 0x4);
+	ASSERT_STRUCT_OFFSET(HunkUser, maxSize, 0x8);
+	ASSERT_STRUCT_OFFSET(HunkUser, end, 0xC);
+	ASSERT_STRUCT_OFFSET(HunkUser, pos, 0x10);
+	ASSERT_STRUCT_OFFSET(HunkUser, locked, 0x14);
+	ASSERT_STRUCT_OFFSET(HunkUser, name, 0x18);
+	ASSERT_STRUCT_OFFSET(HunkUser, fixed, 0x1C);
+	ASSERT_STRUCT_OFFSET(HunkUser, tempMem, 0x1D);
+	ASSERT_STRUCT_OFFSET(HunkUser, debugMem, 0x1E);
+	ASSERT_STRUCT_OFFSET(HunkUser, type, 0x20);
+	ASSERT_STRUCT_OFFSET(HunkUser, buf, 0x24);
+
+	struct __declspec(align(2)) XAnimParent
+	{
+		unsigned __int16 flags; //OFS: 0x0 SIZE: 0x2
+		unsigned __int16 children; //OFS: 0x2 SIZE: 0x2
+	};
+	ASSERT_STRUCT_SIZE(XAnimParent, 0x4);
+	ASSERT_STRUCT_OFFSET(XAnimParent, flags, 0x0);
+	ASSERT_STRUCT_OFFSET(XAnimParent, children, 0x2);
+
+	struct XAnimEntry
+	{
+		unsigned __int16 bCreated; //OFS: 0x0 SIZE: 0x2
+		unsigned __int16 numAnims; //OFS: 0x2 SIZE: 0x2
+		unsigned __int16 parent; //OFS: 0x4 SIZE: 0x2
+		__int16 field_6; //OFS: 0x6 SIZE: 0x2
+		XAnimParent animParent; //OFS: 0x8 SIZE: 0x4
+	};
+	ASSERT_STRUCT_SIZE(XAnimEntry, 0xC);
+	ASSERT_STRUCT_OFFSET(XAnimEntry, bCreated, 0x0);
+	ASSERT_STRUCT_OFFSET(XAnimEntry, numAnims, 0x2);
+	ASSERT_STRUCT_OFFSET(XAnimEntry, parent, 0x4);
+	ASSERT_STRUCT_OFFSET(XAnimEntry, field_6, 0x6);
+	ASSERT_STRUCT_OFFSET(XAnimEntry, animParent, 0x8);
+
+	struct XAnim_s
+	{
+		char * debugName; //OFS: 0x0 SIZE: 0x4
+		unsigned int size; //OFS: 0x4 SIZE: 0x4
+		char ** debugAnimNames; //OFS: 0x8 SIZE: 0x4
+		XAnimEntry entries[1]; //OFS: 0xC SIZE: 0xC
+	};
+	ASSERT_STRUCT_SIZE(XAnim_s, 0x18);
+	ASSERT_STRUCT_OFFSET(XAnim_s, debugName, 0x0);
+	ASSERT_STRUCT_OFFSET(XAnim_s, size, 0x4);
+	ASSERT_STRUCT_OFFSET(XAnim_s, debugAnimNames, 0x8);
+	ASSERT_STRUCT_OFFSET(XAnim_s, entries, 0xC);
+
+	struct XAnimTree_s
+	{
+		XAnim_s * anims; //OFS: 0x0 SIZE: 0x4
+		unsigned __int16 children; //OFS: 0x4 SIZE: 0x2
+	};
+	ASSERT_STRUCT_SIZE(XAnimTree_s, 0x8);
+	ASSERT_STRUCT_OFFSET(XAnimTree_s, anims, 0x0);
+	ASSERT_STRUCT_OFFSET(XAnimTree_s, children, 0x4);
 
 	union XAnimParent_u
 	{
@@ -1740,6 +1852,50 @@ namespace game
 	ASSERT_STRUCT_SIZE(potential_threat_t, 0xC);
 	ASSERT_STRUCT_OFFSET(potential_threat_t, isEnabled, 0x0);
 	ASSERT_STRUCT_OFFSET(potential_threat_t, direction, 0x4);
+
+	struct ai_orient_t
+	{
+		ai_orient_mode_t eMode; //OFS: 0x0 SIZE: 0x4
+		float fDesiredLookPitch; //OFS: 0x4 SIZE: 0x4
+		float fDesiredLookYaw; //OFS: 0x8 SIZE: 0x4
+		float fDesiredBodyYaw; //OFS: 0xC SIZE: 0x4
+	};
+	ASSERT_STRUCT_SIZE(ai_orient_t, 0x10);
+	ASSERT_STRUCT_OFFSET(ai_orient_t, eMode, 0x0);
+	ASSERT_STRUCT_OFFSET(ai_orient_t, fDesiredLookPitch, 0x4);
+	ASSERT_STRUCT_OFFSET(ai_orient_t, fDesiredLookYaw, 0x8);
+	ASSERT_STRUCT_OFFSET(ai_orient_t, fDesiredBodyYaw, 0xC);
+
+	struct actorBackup_s
+	{
+		ai_animmode_t eAnimMode; //OFS: 0x0 SIZE: 0x4
+		ai_animmode_t eDesiredAnimMode; //OFS: 0x4 SIZE: 0x4
+		ai_animmode_t eScriptSetAnimMode; //OFS: 0x8 SIZE: 0x4
+		bool bUseGoalWeight; //OFS: 0xC SIZE: 0x1
+		char gapD[1987]; //OFS: 0xD SIZE: 0x7C3
+		ai_orient_t ScriptOrient; //OFS: 0x7D0 SIZE: 0x10
+		ai_orient_t CodeOrient; //OFS: 0x7E0 SIZE: 0x10
+		float fDesiredBodyYaw; //OFS: 0x7F0 SIZE: 0x4
+		float currentOrigin[3]; //OFS: 0x7F4 SIZE: 0xC
+		float currentAngles[3]; //OFS: 0x800 SIZE: 0xC
+		float vLookForward[3]; //OFS: 0x80C SIZE: 0xC
+		float vLookRight[3]; //OFS: 0x818 SIZE: 0xC
+		float vLookUp[3]; //OFS: 0x824 SIZE: 0xC
+	};
+	ASSERT_STRUCT_SIZE(actorBackup_s, 0x830);
+	ASSERT_STRUCT_OFFSET(actorBackup_s, eAnimMode, 0x0);
+	ASSERT_STRUCT_OFFSET(actorBackup_s, eDesiredAnimMode, 0x4);
+	ASSERT_STRUCT_OFFSET(actorBackup_s, eScriptSetAnimMode, 0x8);
+	ASSERT_STRUCT_OFFSET(actorBackup_s, bUseGoalWeight, 0xC);
+	ASSERT_STRUCT_OFFSET(actorBackup_s, gapD, 0xD);
+	ASSERT_STRUCT_OFFSET(actorBackup_s, ScriptOrient, 0x7D0);
+	ASSERT_STRUCT_OFFSET(actorBackup_s, CodeOrient, 0x7E0);
+	ASSERT_STRUCT_OFFSET(actorBackup_s, fDesiredBodyYaw, 0x7F0);
+	ASSERT_STRUCT_OFFSET(actorBackup_s, currentOrigin, 0x7F4);
+	ASSERT_STRUCT_OFFSET(actorBackup_s, currentAngles, 0x800);
+	ASSERT_STRUCT_OFFSET(actorBackup_s, vLookForward, 0x80C);
+	ASSERT_STRUCT_OFFSET(actorBackup_s, vLookRight, 0x818);
+	ASSERT_STRUCT_OFFSET(actorBackup_s, vLookUp, 0x824);
 
 	struct actor_s
 	{
@@ -4898,54 +5054,6 @@ namespace game
 	ASSERT_STRUCT_OFFSET(shellshock_t, viewDelta, 0x14);
 	ASSERT_STRUCT_OFFSET(shellshock_t, hasSavedScreen, 0x1C);
 
-	struct animScriptCondition_t
-	{
-		int index; //OFS: 0x0 SIZE: 0x4
-		unsigned int value[2]; //OFS: 0x4 SIZE: 0x8
-	};
-	ASSERT_STRUCT_SIZE(animScriptCondition_t, 0xC);
-	ASSERT_STRUCT_OFFSET(animScriptCondition_t, index, 0x0);
-	ASSERT_STRUCT_OFFSET(animScriptCondition_t, value, 0x4);
-
-	struct animScriptCommand_t
-	{
-		__int16 bodyPart[2]; //OFS: 0x0 SIZE: 0x4
-		__int16 animIndex[2]; //OFS: 0x4 SIZE: 0x4
-		unsigned __int16 animDuration[2]; //OFS: 0x8 SIZE: 0x4
-		snd_alias_list_t * soundAlias; //OFS: 0xC SIZE: 0x4
-		unsigned __int16 tagName; //OFS: 0x10 SIZE: 0x2
-		unsigned __int16 flags; //OFS: 0x12 SIZE: 0x2
-	};
-	ASSERT_STRUCT_SIZE(animScriptCommand_t, 0x14);
-	ASSERT_STRUCT_OFFSET(animScriptCommand_t, bodyPart, 0x0);
-	ASSERT_STRUCT_OFFSET(animScriptCommand_t, animIndex, 0x4);
-	ASSERT_STRUCT_OFFSET(animScriptCommand_t, animDuration, 0x8);
-	ASSERT_STRUCT_OFFSET(animScriptCommand_t, soundAlias, 0xC);
-	ASSERT_STRUCT_OFFSET(animScriptCommand_t, tagName, 0x10);
-	ASSERT_STRUCT_OFFSET(animScriptCommand_t, flags, 0x12);
-
-	struct animScriptItem_t
-	{
-		int numConditions; //OFS: 0x0 SIZE: 0x4
-		animScriptCondition_t conditions[4]; //OFS: 0x4 SIZE: 0x30
-		int numCommands; //OFS: 0x34 SIZE: 0x4
-		animScriptCommand_t commands[8]; //OFS: 0x38 SIZE: 0xA0
-	};
-	ASSERT_STRUCT_SIZE(animScriptItem_t, 0xD8);
-	ASSERT_STRUCT_OFFSET(animScriptItem_t, numConditions, 0x0);
-	ASSERT_STRUCT_OFFSET(animScriptItem_t, conditions, 0x4);
-	ASSERT_STRUCT_OFFSET(animScriptItem_t, numCommands, 0x34);
-	ASSERT_STRUCT_OFFSET(animScriptItem_t, commands, 0x38);
-
-	struct animScript_t
-	{
-		int numItems; //OFS: 0x0 SIZE: 0x4
-		animScriptItem_t * items[128]; //OFS: 0x4 SIZE: 0x200
-	};
-	ASSERT_STRUCT_SIZE(animScript_t, 0x204);
-	ASSERT_STRUCT_OFFSET(animScript_t, numItems, 0x0);
-	ASSERT_STRUCT_OFFSET(animScript_t, items, 0x4);
-
 	struct __declspec(align(8)) animScriptData_t
 	{
 		animation_s animations[512]; //OFS: 0x0 SIZE: 0xD000
@@ -4980,29 +5088,6 @@ namespace game
 	ASSERT_STRUCT_OFFSET(animScriptData_t, legsAnim, 0x879E2);
 	ASSERT_STRUCT_OFFSET(animScriptData_t, soundAlias, 0x879E4);
 	ASSERT_STRUCT_OFFSET(animScriptData_t, playSoundAlias, 0x879E8);
-
-	struct __declspec(align(2)) scr_anim_u_u
-	{
-		unsigned __int16 index; //OFS: 0x0 SIZE: 0x2
-		unsigned __int16 tree; //OFS: 0x2 SIZE: 0x2
-	};
-	ASSERT_STRUCT_SIZE(scr_anim_u_u, 0x4);
-	ASSERT_STRUCT_OFFSET(scr_anim_u_u, index, 0x0);
-	ASSERT_STRUCT_OFFSET(scr_anim_u_u, tree, 0x2);
-
-	union scr_anim_u
-	{
-		scr_anim_u_u s; //OFS: 0x0 SIZE: 0x4
-		const char * linkPointer; //OFS: 0x1 SIZE: 0x4
-	};
-	ASSERT_STRUCT_SIZE(scr_anim_u, 0x4);
-
-	struct scr_anim_s
-	{
-		scr_anim_u u; //OFS: 0x0 SIZE: 0x4
-	};
-	ASSERT_STRUCT_SIZE(scr_anim_s, 0x4);
-	ASSERT_STRUCT_OFFSET(scr_anim_s, u, 0x0);
 
 	struct bgs_t_generic_human
 	{
@@ -5857,6 +5942,7 @@ namespace game
 	ASSERT_STRUCT_OFFSET(level_locals_s, finished, 0x5494);
 	ASSERT_STRUCT_OFFSET(level_locals_s, levelWasForceEnded, 0x5498);
 
+	// aaaaaaaaaaaaaaaaaaaaaaaaaaaa
 	struct FxBoltAndSortOrder_s1
 	{
 		__int32 _bf_0; //OFS: 0x0 SIZE: 0x4
@@ -5864,6 +5950,7 @@ namespace game
 	ASSERT_STRUCT_SIZE(FxBoltAndSortOrder_s1, 0x4);
 	ASSERT_STRUCT_OFFSET(FxBoltAndSortOrder_s1, _bf_0, 0x0);
 
+	// aaaaaaaaaaaaaaaaaaaaaaaaaaaa
 	struct FxBoltAndSortOrder_s2
 	{
 		__int32 _bf_0; //OFS: 0x0 SIZE: 0x4
@@ -7048,98 +7135,6 @@ namespace game
 	ASSERT_STRUCT_OFFSET(clientConnection_t, serverChallenge, 0x4161C);
 	ASSERT_STRUCT_OFFSET(clientConnection_t, clientChallenge, 0x41620);
 	ASSERT_STRUCT_OFFSET(clientConnection_t, nonce, 0x41624);
-
-	struct aifields
-	{
-		const char * name; //OFS: 0x0 SIZE: 0x4
-		int ofs; //OFS: 0x4 SIZE: 0x4
-		int type; //OFS: 0x8 SIZE: 0x4
-		void (__cdecl *setter)(actor_s *, const aifields *); //OFS: 0xC SIZE: 0x4
-		void (__cdecl *getter)(actor_s *, const aifields *); //OFS: 0x10 SIZE: 0x4
-	};
-	ASSERT_STRUCT_SIZE(aifields, 0x14);
-	ASSERT_STRUCT_OFFSET(aifields, name, 0x0);
-	ASSERT_STRUCT_OFFSET(aifields, ofs, 0x4);
-	ASSERT_STRUCT_OFFSET(aifields, type, 0x8);
-	ASSERT_STRUCT_OFFSET(aifields, setter, 0xC);
-	ASSERT_STRUCT_OFFSET(aifields, getter, 0x10);
-
-	struct ent_field_t
-	{
-		const char * name; //OFS: 0x0 SIZE: 0x4
-		int ofs; //OFS: 0x4 SIZE: 0x4
-		int type; //OFS: 0x8 SIZE: 0x4
-		void (__cdecl *callback)(gentity_s *, int); //OFS: 0xC SIZE: 0x4
-	};
-	ASSERT_STRUCT_SIZE(ent_field_t, 0x10);
-	ASSERT_STRUCT_OFFSET(ent_field_t, name, 0x0);
-	ASSERT_STRUCT_OFFSET(ent_field_t, ofs, 0x4);
-	ASSERT_STRUCT_OFFSET(ent_field_t, type, 0x8);
-	ASSERT_STRUCT_OFFSET(ent_field_t, callback, 0xC);
-
-	struct sentient_fields_s
-	{
-		const char * name; //OFS: 0x0 SIZE: 0x4
-		int ofs; //OFS: 0x4 SIZE: 0x4
-		fieldtype_t type; //OFS: 0x8 SIZE: 0x4
-		void (__cdecl *setter)(sentient_s *, const sentient_fields_s *); //OFS: 0xC SIZE: 0x4
-		void (__cdecl *getter)(sentient_s *, const sentient_fields_s *); //OFS: 0x10 SIZE: 0x4
-	};
-	ASSERT_STRUCT_SIZE(sentient_fields_s, 0x14);
-	ASSERT_STRUCT_OFFSET(sentient_fields_s, name, 0x0);
-	ASSERT_STRUCT_OFFSET(sentient_fields_s, ofs, 0x4);
-	ASSERT_STRUCT_OFFSET(sentient_fields_s, type, 0x8);
-	ASSERT_STRUCT_OFFSET(sentient_fields_s, setter, 0xC);
-	ASSERT_STRUCT_OFFSET(sentient_fields_s, getter, 0x10);
-
-	struct client_fields_s
-	{
-		const char * name; //OFS: 0x0 SIZE: 0x4
-		int ofs; //OFS: 0x4 SIZE: 0x4
-		int type; //OFS: 0x8 SIZE: 0x4
-		int type2; //OFS: 0xC SIZE: 0x4
-		void (__cdecl *setter)(gclient_s *, client_fields_s *); //OFS: 0x10 SIZE: 0x4
-		void (__cdecl *getter)(gclient_s *, client_fields_s *); //OFS: 0x14 SIZE: 0x4
-	};
-	ASSERT_STRUCT_SIZE(client_fields_s, 0x18);
-	ASSERT_STRUCT_OFFSET(client_fields_s, name, 0x0);
-	ASSERT_STRUCT_OFFSET(client_fields_s, ofs, 0x4);
-	ASSERT_STRUCT_OFFSET(client_fields_s, type, 0x8);
-	ASSERT_STRUCT_OFFSET(client_fields_s, type2, 0xC);
-	ASSERT_STRUCT_OFFSET(client_fields_s, setter, 0x10);
-	ASSERT_STRUCT_OFFSET(client_fields_s, getter, 0x14);
-
-	struct game_hudelem_field_t
-	{
-		const char * name; //OFS: 0x0 SIZE: 0x4
-		int ofs; //OFS: 0x4 SIZE: 0x4
-		fieldtype_t type; //OFS: 0x8 SIZE: 0x4
-		int mask; //OFS: 0xC SIZE: 0x4
-		int shift; //OFS: 0x10 SIZE: 0x4
-		void (__cdecl *setter)(game_hudelem_s *, int); //OFS: 0x14 SIZE: 0x4
-		void (__cdecl *getter)(game_hudelem_s *, int); //OFS: 0x18 SIZE: 0x4
-	};
-	ASSERT_STRUCT_SIZE(game_hudelem_field_t, 0x1C);
-	ASSERT_STRUCT_OFFSET(game_hudelem_field_t, name, 0x0);
-	ASSERT_STRUCT_OFFSET(game_hudelem_field_t, ofs, 0x4);
-	ASSERT_STRUCT_OFFSET(game_hudelem_field_t, type, 0x8);
-	ASSERT_STRUCT_OFFSET(game_hudelem_field_t, mask, 0xC);
-	ASSERT_STRUCT_OFFSET(game_hudelem_field_t, shift, 0x10);
-	ASSERT_STRUCT_OFFSET(game_hudelem_field_t, setter, 0x14);
-	ASSERT_STRUCT_OFFSET(game_hudelem_field_t, getter, 0x18);
-
-	struct node_field_t
-	{
-		const char * name; //OFS: 0x0 SIZE: 0x4
-		int ofs; //OFS: 0x4 SIZE: 0x4
-		fieldtype_t type; //OFS: 0x8 SIZE: 0x4
-		void (__cdecl *getter)(void *, int) ; //OFS: 0xC SIZE: 0x4
-	};
-	ASSERT_STRUCT_SIZE(node_field_t, 0x10);
-	ASSERT_STRUCT_OFFSET(node_field_t, name, 0x0);
-	ASSERT_STRUCT_OFFSET(node_field_t, ofs, 0x4);
-	ASSERT_STRUCT_OFFSET(node_field_t, type, 0x8);
-	ASSERT_STRUCT_OFFSET(node_field_t, getter, 0xC);
 
 	struct CmdText
 	{
@@ -10100,21 +10095,6 @@ namespace game
 	ASSERT_STRUCT_OFFSET(AimTargetGlob, targetCount, 0xB00);
 	ASSERT_STRUCT_OFFSET(AimTargetGlob, clientTargets, 0xB04);
 	ASSERT_STRUCT_OFFSET(AimTargetGlob, clientTargetCount, 0x1604);
-
-	struct cent_field_s
-	{
-		const char * name; //OFS: 0x0 SIZE: 0x4
-		int ofs; //OFS: 0x4 SIZE: 0x4
-		fieldtype_t type; //OFS: 0x8 SIZE: 0x4
-		void (__cdecl *setter)(centity_s *, const cent_field_s *); //OFS: 0xC SIZE: 0x4
-		void (__cdecl *getter)(centity_s *, const cent_field_s *); //OFS: 0x10 SIZE: 0x4
-	};
-	ASSERT_STRUCT_SIZE(cent_field_s, 0x14);
-	ASSERT_STRUCT_OFFSET(cent_field_s, name, 0x0);
-	ASSERT_STRUCT_OFFSET(cent_field_s, ofs, 0x4);
-	ASSERT_STRUCT_OFFSET(cent_field_s, type, 0x8);
-	ASSERT_STRUCT_OFFSET(cent_field_s, setter, 0xC);
-	ASSERT_STRUCT_OFFSET(cent_field_s, getter, 0x10);
 
 	struct ThreadDebugInfo
 	{
