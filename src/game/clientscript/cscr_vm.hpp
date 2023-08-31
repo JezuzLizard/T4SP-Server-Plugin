@@ -137,10 +137,9 @@ namespace game
 	void Scr_RunCurrentThreads(scriptInstance_t inst, void* call_addr = Scr_RunCurrentThreads_ADDR());
 	inline void* Scr_ResetTimeout_ADDR() { return CALL_ADDR(0x0, 0x69AE60); }
 	void Scr_ResetTimeout(scriptInstance_t inst, void* call_addr = Scr_ResetTimeout_ADDR());
+
 	void SetVariableFieldValue(scriptInstance_t inst, unsigned int id, VariableValue* value);
-
 	void SetNewVariableValue(scriptInstance_t inst, unsigned int id, VariableValue* value);
-
 	void Scr_ClearErrorMessage(scriptInstance_t inst);
 	void VM_Shutdown(scriptInstance_t inst);
 	void Scr_ShutdownVariables(scriptInstance_t inst);
