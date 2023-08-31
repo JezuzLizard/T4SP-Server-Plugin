@@ -7008,31 +7008,6 @@ namespace game
 	ASSERT_STRUCT_OFFSET(entityHandler_t, methodOfDeath, 0x24);
 	ASSERT_STRUCT_OFFSET(entityHandler_t, splashMethodOfDeath, 0x28);
 
-	struct yy_buffer_state
-	{
-		_iobuf * yy_input_file; //OFS: 0x0 SIZE: 0x4
-		char * yy_ch_buf; //OFS: 0x4 SIZE: 0x4
-		char * yy_buf_pos; //OFS: 0x8 SIZE: 0x4
-		unsigned int yy_buf_size; //OFS: 0xC SIZE: 0x4
-		int yy_n_chars; //OFS: 0x10 SIZE: 0x4
-		int yy_is_our_buffer; //OFS: 0x14 SIZE: 0x4
-		int yy_is_interactive; //OFS: 0x18 SIZE: 0x4
-		int yy_at_bol; //OFS: 0x1C SIZE: 0x4
-		int yy_fill_buffer; //OFS: 0x20 SIZE: 0x4
-		int yy_buffer_status; //OFS: 0x24 SIZE: 0x4
-	};
-	ASSERT_STRUCT_SIZE(yy_buffer_state, 0x28);
-	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_input_file, 0x0);
-	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_ch_buf, 0x4);
-	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_buf_pos, 0x8);
-	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_buf_size, 0xC);
-	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_n_chars, 0x10);
-	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_is_our_buffer, 0x14);
-	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_is_interactive, 0x18);
-	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_at_bol, 0x1C);
-	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_fill_buffer, 0x20);
-	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_buffer_status, 0x24);
-
 	struct CmdArgsPrivate
 	{
 		char textPool[8192]; //OFS: 0x0 SIZE: 0x2000
@@ -11254,15 +11229,6 @@ namespace game
 	ASSERT_STRUCT_OFFSET(struct_0, var_38, 0x10);
 	ASSERT_STRUCT_OFFSET(struct_0, var_34, 0x14);
 	ASSERT_STRUCT_OFFSET(struct_0, var_30, 0x18);
-
-	struct stype_t
-	{
-		sval_u val; //OFS: 0x0 SIZE: 0x4
-		unsigned int pos; //OFS: 0x4 SIZE: 0x4
-	};
-	ASSERT_STRUCT_SIZE(stype_t, 0x8);
-	ASSERT_STRUCT_OFFSET(stype_t, val, 0x0);
-	ASSERT_STRUCT_OFFSET(stype_t, pos, 0x4);
 
 	struct DObjModel_s
 	{

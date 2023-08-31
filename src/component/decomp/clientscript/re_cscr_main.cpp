@@ -223,7 +223,6 @@ namespace re_cscr_main
 		void Scr_EndLoadScripts_stub(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_MAIN_USE_WRAPPERS
-			game::plutonium::load_custom_script_func(inst);
 			Scr_EndLoadScripts_hook.invoke<void>(inst);
 #else
 			codsrc::Scr_EndLoadScripts(inst);
@@ -276,13 +275,13 @@ namespace re_cscr_main
 		void post_unpack() override
 		{
 			Scr_IsIdentifier_hook.create(game::Scr_IsIdentifier_ADDR(), Scr_IsIdentifier_stub);
-			Scr_GetFunctionHandle_hook.create(game::Scr_GetFunctionHandle_ADDR(), Scr_GetFunctionHandle_stub);
+			//Scr_GetFunctionHandle_hook.create(game::Scr_GetFunctionHandle_ADDR(), Scr_GetFunctionHandle_stub);
 			SL_TransferToCanonicalString_hook.create(game::SL_TransferToCanonicalString_ADDR(), SL_TransferToCanonicalString_stub);
 			SL_GetCanonicalString_hook.create(game::SL_GetCanonicalString_ADDR(), SL_GetCanonicalString_stub);
-			Scr_BeginLoadScripts_hook.create(game::Scr_BeginLoadScripts_ADDR(), Scr_BeginLoadScripts_stub);
+			//Scr_BeginLoadScripts_hook.create(game::Scr_BeginLoadScripts_ADDR(), Scr_BeginLoadScripts_stub);
 			Scr_BeginLoadAnimTrees_hook.create(game::Scr_BeginLoadAnimTrees_ADDR(), Scr_BeginLoadAnimTrees_stub);
 			Scr_ScanFile_hook.create(game::Scr_ScanFile_ADDR(), Scr_ScanFile_stub);
-			Scr_LoadScriptInternal_hook.create(game::Scr_LoadScriptInternal.get(), Scr_LoadScriptInternal_stub);
+			//Scr_LoadScriptInternal_hook.create(game::Scr_LoadScriptInternal.get(), Scr_LoadScriptInternal_stub);
 			Scr_LoadScript_hook.create(game::Scr_LoadScript_ADDR(), Scr_LoadScript_stub);
 			Scr_EndLoadScripts_hook.create(game::Scr_EndLoadScripts.get(), Scr_EndLoadScripts_stub);
 			Scr_PrecacheAnimTrees_hook.create(game::Scr_PrecacheAnimTrees.get(), Scr_PrecacheAnimTrees_stub);

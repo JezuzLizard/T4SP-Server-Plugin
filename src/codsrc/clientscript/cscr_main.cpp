@@ -59,7 +59,7 @@ namespace codsrc
 
         game::VariableValue val = game::Scr_EvalVariable(inst, filePosId);
 
-        assert(val.type == VAR_CODEPOS);
+        assert(val.type == game::VAR_CODEPOS);
 
         const char* pos = val.u.codePosValue;
         if (!game::Scr_IsInOpcodeMemory(inst, pos))
@@ -278,7 +278,7 @@ namespace codsrc
             formatExtString = "%s.csc";
         }
 
-        game::Com_sprintf(extFilename, 64, game::Com_sprintf_ADDR(), formatExtString, filename);
+        snprintf(extFilename, 64, formatExtString, filename);
         oldSourceBuf = game::gScrParserPub[inst].sourceBuf;
         codepos = (const char *)game::TempMalloc(0);
         sourceBuffer = game::Scr_AddSourceBuffer(inst, (int)filename, extFilename, codepos);
@@ -324,6 +324,10 @@ namespace codsrc
     // Decomp Status: Tested, Completed
     void Scr_EndLoadScripts(game::scriptInstance_t inst)
     {
+        // pluto
+        game::plutonium::load_custom_script_func(inst);
+        //
+
         game::SL_ShutdownSystem(inst, 2u);
         game::gScrCompilePub[inst].script_loading = 0;
         
@@ -376,10 +380,6 @@ namespace codsrc
 
         assert(game::gScrAnimPub[inst].animtrees);
 
-        // pluto
-        game::plutonium::load_custom_script_func(inst);
-        //
-
         game::ClearObject(game::gScrAnimPub[inst].animtrees, inst);
         game::RemoveRefToObject(game::gScrAnimPub[inst].animtrees, inst);
         animtreeNode = game::gScrAnimPub[inst].animtree_node;
@@ -403,7 +403,7 @@ namespace codsrc
     // Decomp Status: Tested, Completed
     void Scr_FreeScripts(game::scriptInstance_t inst)
     {
-        char sys = 1;
+        //char sys = 1;
 
         //assert(sys == SCR_SYS_GAME);
 

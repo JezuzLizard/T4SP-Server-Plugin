@@ -2170,6 +2170,40 @@ namespace game
 	ASSERT_STRUCT_OFFSET(node_field_t, type, 0x8);
 	ASSERT_STRUCT_OFFSET(node_field_t, getter, 0xC);
 
+	struct yy_buffer_state
+	{
+		_iobuf * yy_input_file; //OFS: 0x0 SIZE: 0x4
+		char * yy_ch_buf; //OFS: 0x4 SIZE: 0x4
+		char * yy_buf_pos; //OFS: 0x8 SIZE: 0x4
+		unsigned int yy_buf_size; //OFS: 0xC SIZE: 0x4
+		int yy_n_chars; //OFS: 0x10 SIZE: 0x4
+		int yy_is_our_buffer; //OFS: 0x14 SIZE: 0x4
+		int yy_is_interactive; //OFS: 0x18 SIZE: 0x4
+		int yy_at_bol; //OFS: 0x1C SIZE: 0x4
+		int yy_fill_buffer; //OFS: 0x20 SIZE: 0x4
+		int yy_buffer_status; //OFS: 0x24 SIZE: 0x4
+	};
+	ASSERT_STRUCT_SIZE(yy_buffer_state, 0x28);
+	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_input_file, 0x0);
+	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_ch_buf, 0x4);
+	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_buf_pos, 0x8);
+	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_buf_size, 0xC);
+	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_n_chars, 0x10);
+	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_is_our_buffer, 0x14);
+	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_is_interactive, 0x18);
+	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_at_bol, 0x1C);
+	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_fill_buffer, 0x20);
+	ASSERT_STRUCT_OFFSET(yy_buffer_state, yy_buffer_status, 0x24);
+
+	struct stype_t
+	{
+		sval_u val; //OFS: 0x0 SIZE: 0x4
+		unsigned int pos; //OFS: 0x4 SIZE: 0x4
+	};
+	ASSERT_STRUCT_SIZE(stype_t, 0x8);
+	ASSERT_STRUCT_OFFSET(stype_t, val, 0x0);
+	ASSERT_STRUCT_OFFSET(stype_t, pos, 0x4);
+
 #pragma endregion
 
 #ifdef __cplusplus
@@ -2196,12 +2230,68 @@ namespace game
 	WEAK symbol<scrParserPub_t> gScrParserPub{ 0x0, 0x3882B00 };
 	WEAK symbol<scr_classStruct_t*> gScrClassMap{ 0x0, 0x8CF568 };
 	WEAK symbol<scr_const_t> scr_const{ 0x0, 0x1F33B90 };
+	WEAK symbol<bool> loadedImpureScript{ 0x0, 0x22C1352 };
+
+	WEAK symbol<unsigned char> g_parse_user{ 0x0, 0x234F72E };
+	WEAK symbol<scriptInstance_t> gInst{ 0x0, 0x3BE624C };
+	WEAK symbol<int> yynerrs{ 0x0, 0x3BE6264 };
+	WEAK symbol<int> yychar{ 0x0, 0x3BE6260 };
+	WEAK symbol<stype_t> yylval{ 0x0, 0x3BE6240 };
+	WEAK symbol<unsigned int> g_sourcePos{ 0x0, 0x3BE623C };
+	WEAK symbol<sval_u> yaccResult{ 0x0, 0x3BE6258 };
+	WEAK symbol<sval_u> g_dummyVal{ 0x0, 0x3BE6254 };
+	WEAK symbol<int> yy_init{ 0x0, 0x8CF4A0 };
+	WEAK symbol<int> yy_start{ 0x0, 0x46E54D4 };
+	WEAK symbol<_iobuf*> yyin{ 0x0, 0x46E54D8 };
+	WEAK symbol<_iobuf*> yyout{ 0x0, 0x46E54DC };
+	WEAK symbol<yy_buffer_state*> yy_current_buffer{ 0x0, 0x46E54CC };
+	WEAK symbol<int> yy_n_chars{ 0x0, 0x3BE6250 };
+	WEAK symbol<char> yy_hold_char{ 0x0, 0x22C1353 };
+	WEAK symbol<int> yy_c_buf_p{ 0x0, 0x46E54D0 };
+	WEAK symbol<int> yy_last_accepting_state{ 0x0, 0x3BE626C };
+	WEAK symbol<char*> yy_last_accepting_cpos{ 0x0, 0x3BE2230 };
+	WEAK symbol<size_t> yyleng{ 0x0, 0x3BE6248 };
+	WEAK symbol<char*> yytext{ 0x0, 0x3BE2234 };
+	WEAK symbol<int> yy_did_buffer_switch_on_eof{ 0x0, 0x3BE6268 };
+	WEAK symbol<unsigned int> g_out_pos{ 0x0, 0x3BE625C };
+	WEAK symbol<char> ch_buf{ 0x0, 0x3BE2238 };
+	WEAK symbol<short> yypact{ 0x0, 0x82F2D0 };
+	WEAK symbol<char> yytranslate{ 0x0, 0x82ED08 };
+	WEAK symbol<short> yycheck{ 0x0, 0x82FFA0 };
+	WEAK symbol<short> yytable{ 0x0, 0x82F518 };
+	WEAK symbol<short> yyr1{ 0x0, 0x82EE68 };
+	WEAK symbol<short> yyr2{ 0x0, 0x82EF78 };
+	WEAK symbol<short> yydefact{ 0x0, 0x82F088 };
+	WEAK symbol<int> yy_ec{ 0x0, 0x830C30 };
+	WEAK symbol<short> yy_accept{ 0x0, 0x830A28 };
+	WEAK symbol<short> yy_chk{ 0x0, 0x831930 };
+	WEAK symbol<short> yy_base{ 0x0, 0x831120 };
+	WEAK symbol<short> yy_def{ 0x0, 0x831338 };
+	WEAK symbol<short> yy_nxt{ 0x0, 0x831550 };
+	WEAK symbol<unsigned char> yy_meta{ 0x0, 0x831030 };
 #pragma endregion
 
 #pragma region "functions"
+	WEAK symbol<BOOL(LPVOID lpAddress)>Hunk_UserDestroy{ 0x0, 0x5E4940 };
 
+	inline void* ScriptParse_ADDR() { return CALL_ADDR(0x0, 0x69D710); }
+	void ScriptParse(scriptInstance_t inst, sval_u* parseData, void* call_addr = ScriptParse_ADDR());
+	inline void* ScriptCompile_ADDR() { return CALL_ADDR(0x0, 0x688E70); }
+	void ScriptCompile(scriptInstance_t inst, sval_u val, unsigned int filePosId, unsigned int fileCountId, unsigned int scriptId, PrecacheEntry * entries, int entriesCount, void* call_addr = ScriptCompile_ADDR());
+	inline void* Scr_LoadAnimTreeAtIndex_ADDR() { return CALL_ADDR(0x0, 0x67E7D0); }
+	void Scr_LoadAnimTreeAtIndex(scriptInstance_t inst, int user, unsigned int index, void* (__cdecl* Alloc)(int), int modCheckSum, void* call_addr = Scr_LoadAnimTreeAtIndex_ADDR());
+	inline void* Hunk_UserCreate_ADDR() { return CALL_ADDR(0x0, 0x5E46E0); }
+	HunkUser* Hunk_UserCreate(signed int maxSize, const char* name, int fixed, int tempMem, int debugMem, int type, void* call_addr = Hunk_UserCreate_ADDR());
 #pragma endregion
 }
 
 #include "cscr_main.hpp"
+#include "cscr_memorytree.hpp"
+#include "cscr_parser.hpp"
+#include "cscr_parsetree.hpp"
+#include "cscr_readwrite.hpp"
+#include "cscr_stringlist.hpp"
+#include "cscr_tempmemory.hpp"
+#include "cscr_variable.hpp"
+#include "cscr_vm.hpp"
 #endif

@@ -50,6 +50,8 @@ workspace "t4sp-server-plugin"
 	warnings "Extra"
 	characterset "ASCII"
 
+	defines { "_CRT_SECURE_NO_WARNINGS" }
+
 	flags
 	{
 		"NoIncrementalLink",
