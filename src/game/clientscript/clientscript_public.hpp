@@ -1,5 +1,41 @@
 #pragma once
 
+#define VAR_STAT_FREE 0
+#define VAR_STAT_MASK 0x60
+#define VAR_STAT_MOVABLE 0x20
+#define VAR_STAT_HEAD 0x40
+#define VAR_STAT_EXTERNAL VAR_STAT_MASK
+
+#define VAR_MASK 0x1F
+#define VAR_ENT_MASK 0x3FFF
+#define VAR_CLIENT_MASK 0xE
+#define VAR_NAME_LOW_MASK 0xFF000000
+#define VAR_NAME_HIGH_MASK 0xFFFFFF00
+#define VAR_NAME_BIT_SHIFT 8
+#define VAR_PARENTID_BIT_SHIFT 8
+#define OBJECT_STACK 0x15FFE
+#define OBJECT_NOTIFY_LIST OBJECT_STACK
+
+#define VARIABLELIST_CHILD_SIZE 0x10000
+#define VARIABLELIST_CHILD_BEGIN 0x6000
+
+#define IsObject(__parentValue__) \
+	((__parentValue__->w.status & VAR_MASK) >= VAR_THREAD) \
+
+#define MT_NODE_BITS 16
+#define MT_NODE_SIZE sizeof(MemoryNode)
+#define MT_SIZE sizeof(scrMemTreeGlob_t::nodes)
+#define MT_NODE_COUNT (1 << MT_NODE_BITS)
+#define MT_NUM_BUCKETS 256
+
+#define HASH_STAT_MASK 0x30000
+#define HASH_STAT_HEAD 0x20000
+#define HASH_STAT_MOVABLE 0x10000
+#define HASH_STAT_FREE 0
+#define HASH_MAX_HASHES 25000
+#define SL_MAX_STRING_LEN 0x2000
+#define SL_MAX_STRING_INDEX 0x10000
+
 #ifdef __cplusplus
 namespace game
 {
@@ -271,7 +307,7 @@ namespace game
 		ENUM_argument = 0x59,
 	};
 
-	enum HASH_e
+	/*enum HASH_e
 	{
 		HASH_STAT_MASK = 0x30000,
 		HASH_STAT_HEAD = 0x20000,
@@ -297,7 +333,7 @@ namespace game
 		SL_MAX_STRING_INDEX = 0x10000,
 		OBJECT_STACK = 0x15FFE,
 		FIRST_OBJECT = 0x14,
-	};
+	};*/
 
 	enum VariableType
 	{
@@ -2136,45 +2172,36 @@ namespace game
 
 #pragma endregion
 
+#ifdef __cplusplus
 #pragma region "data"
+	WEAK symbol<scrVmPub_t> gScrVmPub{ 0x0, 0x3BD4700 };
+	WEAK symbol<scrVmGlob_t> gScrVmGlob{ 0x0, 0x3BDDDF8 };
+	WEAK symbol<scrVarPub_t> gScrVarPub{ 0x0, 0x3882B70 };
+	WEAK symbol<scrCompilePub_t> gScrCompilePub{ 0x0, 0x36BFF70 };
+	WEAK symbol<scrAnimPub_t> gScrAnimPub{ 0x0, 0x36BF738 };
+	WEAK symbol<jmp_buf> g_script_error{ 0x0, 0x3BDCD40 };
+	WEAK symbol<int> g_script_error_level{ 0x0, 0x3BDDDC0 };
+	WEAK symbol<function_stack_t> gFs{ 0x0, 0x3BDDDD0 };
+	WEAK symbol<OpcodeVM> gOpcode{ 0x0, 0x3BDDDC8 };
+	WEAK symbol<scrVarGlob_t> gScrVarGlob{ 0x0, 0x3914700 };
+	WEAK symbol<scrMemTreePub_t> gScrMemTreePub{ 0x0, 0x3702390 };
+	WEAK symbol<const char*> var_typename{ 0x0, 0x8CF4B0 };
+	WEAK symbol<int> gThreadCount{ 0x0, 0x3882B5C };
+	WEAK symbol<int> gCaseCount{ 0x0, 0x3882B54 };
+	WEAK symbol<scrMemTreeGlob_t> gScrMemTreeGlob{ 0x0, 0x3702400 };
+	WEAK symbol<int> gScrExecuteTime{ 0x0, 0x3882B4C };
+	WEAK symbol<char> g_EndPos{ 0x0, 0x46E54C3 };
+	WEAK symbol<scrStringGlob_t> gScrStringGlob{ 0x0, 0x38B2C00 };
+	WEAK symbol<scrParserGlob_t> gScrParserGlob{ 0x0, 0x3702398 };
+	WEAK symbol<scrParserPub_t> gScrParserPub{ 0x0, 0x3882B00 };
+	WEAK symbol<scr_classStruct_t*> gScrClassMap{ 0x0, 0x8CF568 };
+	WEAK symbol<scr_const_t> scr_const{ 0x0, 0x1F33B90 };
 #pragma endregion
 
 #pragma region "functions"
 
 #pragma endregion
-
-#pragma region "cscr_main"
-
-	WEAK symbol<unsigned int(scriptInstance_t inst, const char* file, PrecacheEntry* entries, int entriesCount)> Scr_LoadScriptInternal{ 0x0, 0x689980 };
-	WEAK symbol<void(scriptInstance_t a1)>Scr_EndLoadScripts{ 0x0, 0x689C80 };
-	WEAK symbol<void(scriptInstance_t inst, void *(__cdecl *Alloc)(int), int user, int modChecksum)> Scr_PrecacheAnimTrees{0x0, 0x689D60};
-	WEAK symbol<void(scriptInstance_t inst)>Scr_EndLoadAnimTrees{ 0x0, 0x689DC0 };
-
-	inline void* Scr_IsIdentifier_ADDR() { return CALL_ADDR(0x0, 0x689470); }
-	bool Scr_IsIdentifier(char* token, void* call_addr = Scr_IsIdentifier_ADDR());
-	inline void* Scr_GetFunctionHandle_ADDR() { return CALL_ADDR(0x0, 0x6894B0); }
-	unsigned int Scr_GetFunctionHandle(const char* file, scriptInstance_t inst, const char* handle, void* call_addr = Scr_GetFunctionHandle_ADDR());
-	inline void* SL_TransferToCanonicalString_ADDR() { return CALL_ADDR(0x0, 0x6895A0); }
-	unsigned int SL_TransferToCanonicalString(scriptInstance_t inst, unsigned int stringValue, void* call_addr = SL_TransferToCanonicalString_ADDR());
-	inline void* SL_GetCanonicalString_ADDR() { return CALL_ADDR(0x0, 0x6895F0); }
-	unsigned int SL_GetCanonicalString(const char* token, scriptInstance_t inst, void* call_addr = SL_GetCanonicalString_ADDR());
-	inline void* Scr_BeginLoadScripts_ADDR() { return CALL_ADDR(0x0, 0x689660); }
-	void Scr_BeginLoadScripts(scriptInstance_t inst, int user, void* call_addr = Scr_BeginLoadScripts_ADDR());
-	inline void* Scr_BeginLoadAnimTrees_ADDR() { return CALL_ADDR(0x0, 0x689880); }
-	void Scr_BeginLoadAnimTrees(scriptInstance_t inst, int user, void* call_addr = Scr_BeginLoadAnimTrees_ADDR());
-	inline void* Scr_ScanFile_ADDR() { return CALL_ADDR(0x0, 0x689900); }
-	int Scr_ScanFile(int max_size, char* buf, void* call_addr = Scr_ScanFile_ADDR());
-	inline void* Scr_LoadScript_ADDR() { return CALL_ADDR(0x0, 0x689C60); }
-	unsigned int Scr_LoadScript(const char* file, scriptInstance_t inst, void* call_addr = Scr_LoadScript_ADDR());
-	inline void* Scr_FreeScripts_ADDR() { return CALL_ADDR(0x0, 0x689E50); }
-	void Scr_FreeScripts(scriptInstance_t a1, void* call_addr = Scr_FreeScripts_ADDR());
-
-	int Scr_IsInOpcodeMemory(scriptInstance_t inst, const char* pos);
-	void SL_BeginLoadScripts(scriptInstance_t inst);
-	void Scr_SetLoadedImpureScript(bool loadedImpureScript);
-
-#pragma endregion
-
-#ifdef __cplusplus
 }
+
+#include "cscr_main.hpp"
 #endif

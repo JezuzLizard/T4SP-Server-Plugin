@@ -12,6 +12,6 @@ namespace game
 	{
 		WEAK symbol<int(const char* fmt, ...)> printf{0x0, 0x0};
 
-		WEAK symbol<void(game::scriptInstance_t)> load_custom_script_func{0x0, 0x0};
+		WEAK symbol<void(scriptInstance_t)> load_custom_script_func{0x0, 0x0};
 	}
 }

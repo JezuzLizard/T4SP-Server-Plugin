@@ -62,7 +62,7 @@ namespace game
 #ifdef __cplusplus
 }
 
-#include "clientscript_public.hpp"
+#include "clientscript/clientscript_public.hpp"
 
 namespace game
 {
