@@ -2295,6 +2295,8 @@ namespace game
 
 #pragma region "functions"
 	WEAK symbol<void(scriptInstance_t inst, VariableValue* value)>RemoveRefToValue{ 0x0, 0x67EB70 };
+	WEAK symbol<int(jmp_buf buf, int count)>_setjmp3{ 0x0, 0x7E1894 };
+	WEAK symbol<void(jmp_buf Buf, int Value)>longjmp{ 0x0, 0x7AD57C };
 
 	inline void* ScriptParse_ADDR() { return CALL_ADDR(0x0, 0x69D710); }
 	void ScriptParse(scriptInstance_t inst, sval_u* parseData, void* call_addr = ScriptParse_ADDR());

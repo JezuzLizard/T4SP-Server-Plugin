@@ -94,7 +94,7 @@ namespace game
 	inline void* Scr_GetType_ADDR() { return CALL_ADDR(0x0, 0x69A4E0); }
 	VariableType Scr_GetType(scriptInstance_t inst, unsigned int index, void* call_addr = Scr_GetType_ADDR());
 	inline void* Scr_GetTypeName_ADDR() { return CALL_ADDR(0x0, 0x69A530); }
-	char * Scr_GetTypeName(scriptInstance_t inst, void* call_addr = Scr_GetTypeName_ADDR());
+	const char * Scr_GetTypeName(scriptInstance_t inst, void* call_addr = Scr_GetTypeName_ADDR());
 	inline void* Scr_GetPointerType_ADDR() { return CALL_ADDR(0x0, 0x69A580); }
 	VariableType Scr_GetPointerType(scriptInstance_t inst, unsigned int a2, void* call_addr = Scr_GetPointerType_ADDR());
 	inline void* Scr_AddInt_ADDR() { return CALL_ADDR(0x0, 0x69A610); }

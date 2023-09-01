@@ -3,7 +3,7 @@
 #include "utils/hook.hpp"
 #include "codsrc/clientscript/cscr_main.hpp"
 
-#define RE_CSCR_MAIN_USE_WRAPPERS
+//#define RE_CSCR_MAIN_USE_WRAPPERS
 
 namespace re_cscr_main
 {

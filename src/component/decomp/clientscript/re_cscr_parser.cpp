@@ -3,7 +3,7 @@
 #include "utils/hook.hpp"
 #include "codsrc/clientscript/cscr_parser.hpp"
 
-#define RE_CSCR_PARSER_USE_WRAPPERS
+//#define RE_CSCR_PARSER_USE_WRAPPERS
 
 namespace re_cscr_parser
 {

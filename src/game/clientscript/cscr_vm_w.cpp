@@ -548,7 +548,7 @@ namespace game
 		return answer;
 	}
 
-	char * Scr_GetTypeName/*@<eax>*/(scriptInstance_t a1/*@<eax>*/, void* call_addr)
+	const char * Scr_GetTypeName/*@<eax>*/(scriptInstance_t a1/*@<eax>*/, void* call_addr)
 	{
 		char * answer;
 		

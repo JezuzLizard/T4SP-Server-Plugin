@@ -896,6 +896,13 @@ namespace codsrc
             }
         }
 
+        // pluto
+        if (!game::gScrVmPub[inst].terminal_error)
+        {
+            return;
+        }
+        //
+
         errNewline = dialogMessage;
         if (dialogMessage)
         {

@@ -3,7 +3,7 @@
 #include "utils/hook.hpp"
 #include "codsrc/clientscript/cscr_variable.hpp"
 
-#define RE_CSCR_VARIABLE_USE_WRAPPERS
+//#define RE_CSCR_VARIABLE_USE_WRAPPERS
 
 namespace re_cscr_variable
 {

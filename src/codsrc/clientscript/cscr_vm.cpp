@@ -2346,6 +2346,7 @@ namespace codsrc
 			assert(game::g_script_error_level[inst] >= 0);
 			assert(game::g_script_error_level[inst] < 33);
 			assert(inst == 0 || inst == 1);
+			//if (game::_setjmp3((int *)game::g_script_error.get() + 0x10 * (0x21 * inst + game::g_script_error_level[inst]), 0))
 			if (!setjmp(g_script_error[inst][game::g_script_error_level[inst]]))
 			{
 				break;

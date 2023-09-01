@@ -3,7 +3,7 @@
 #include "utils/hook.hpp"
 #include "codsrc/clientscript/cscr_vm.hpp"
 
-#define RE_CSCR_VM_USE_WRAPPERS
+//#define RE_CSCR_VM_USE_WRAPPERS
 
 namespace re_cscr_vm
 {
@@ -1050,7 +1050,7 @@ namespace re_cscr_vm
 			}
 		}
 
-		char* Scr_GetTypeName_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr)
+		const char* Scr_GetTypeName_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VM_USE_WRAPPERS
 			return game::Scr_GetTypeName(a1, Scr_GetTypeName_original);
