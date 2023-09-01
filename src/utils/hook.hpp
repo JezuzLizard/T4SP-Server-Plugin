@@ -99,7 +99,25 @@ namespace utils::hook
 		template <typename T, typename... Args>
 		T invoke(Args... args)
 		{
-			return static_cast<T(*)(Args ...)>(this->get_original())(args...);
+			return static_cast<T(__cdecl*)(Args ...)>(this->get_original())(args...);
+		}
+
+		template <typename T, typename... Args>
+		T invoke_pascal(Args... args)
+		{
+			return static_cast<T(__stdcall*)(Args ...)>(this->get_original())(args...);
+		}
+
+		template <typename T, typename... Args>
+		T invoke_this(Args... args)
+		{
+			return static_cast<T(__thiscall*)(Args ...)>(this->get_original())(args...);
+		}
+
+		template <typename T, typename... Args>
+		T invoke_fast(Args... args)
+		{
+			return static_cast<T(__fastcall*)(Args ...)>(this->get_original())(args...);
 		}
 
 		[[nodiscard]] void* get_original() const;
@@ -153,15 +171,63 @@ namespace utils::hook
 		return set<T>(reinterpret_cast<void*>(place), value);
 	}
 
+	template <typename T>
+	static T get(void* place)
+	{
+		return *static_cast<T*>(place);
+	}
+
+	template <typename T>
+	static T get(const size_t place)
+	{
+		return get<T>(reinterpret_cast<void*>(place));
+	}
+
 	template <typename T, typename... Args>
 	static T invoke(size_t func, Args... args)
 	{
-		return reinterpret_cast<T(*)(Args ...)>(func)(args...);
+		return reinterpret_cast<T(__cdecl*)(Args ...)>(func)(args...);
 	}
 
 	template <typename T, typename... Args>
 	static T invoke(void* func, Args... args)
 	{
-		return static_cast<T(*)(Args ...)>(func)(args...);
+		return static_cast<T(__cdecl*)(Args ...)>(func)(args...);
+	}
+
+	template <typename T, typename... Args>
+	static T invoke_pascal(size_t func, Args... args)
+	{
+		return reinterpret_cast<T(__stdcall*)(Args ...)>(func)(args...);
+	}
+
+	template <typename T, typename... Args>
+	static T invoke_pascal(void* func, Args... args)
+	{
+		return static_cast<T(__stdcall*)(Args ...)>(func)(args...);
+	}
+
+	template <typename T, typename... Args>
+	static T invoke_this(size_t func, Args... args)
+	{
+		return reinterpret_cast<T(__thiscall*)(Args ...)>(func)(args...);
+	}
+
+	template <typename T, typename... Args>
+	static T invoke_this(void* func, Args... args)
+	{
+		return static_cast<T(__thiscall*)(Args ...)>(func)(args...);
+	}
+
+	template <typename T, typename... Args>
+	static T invoke_fast(size_t func, Args... args)
+	{
+		return reinterpret_cast<T(__fastcall*)(Args ...)>(func)(args...);
+	}
+
+	template <typename T, typename... Args>
+	static T invoke_fast(void* func, Args... args)
+	{
+		return static_cast<T(__fastcall*)(Args ...)>(func)(args...);
 	}
 }
