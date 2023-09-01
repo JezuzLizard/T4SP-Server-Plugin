@@ -62,8 +62,8 @@ workspace "t4sp-server-plugin"
 		optimize "Full"
 		defines { "NDEBUG" }
 		flags {
-            "FatalCompileWarnings",
-        }
+			"FatalCompileWarnings",
+		}
 	filter {}
 
 	filter "configurations:Debug"
