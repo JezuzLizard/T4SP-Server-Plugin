@@ -13,8 +13,9 @@ BOOL APIENTRY DllMain(HMODULE /*module_*/, DWORD ul_reason_for_call, LPVOID /*re
 			if (!signatures::process())
 			{
 				MessageBoxA(NULL,
-					"This version of t4sp-server-plugin is outdated.\n" \
-					"Download the latest dll from here: https://github.com/JezuzLizard/T4SP-Server-Plugin/releases",
+					std::format("This version of t4sp-server-plugin is outdated.\n" \
+						"Download the latest dll from here: https://github.com/JezuzLizard/T4SP-Server-Plugin/releases\n" \
+						"'{}' failed", signatures::get_err_reason()).c_str(),
 					"ERROR", MB_ICONERROR);
 
 				return FALSE;

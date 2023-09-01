@@ -1275,7 +1275,10 @@ namespace codsrc
 			game::gScrVmPub[inst].function_frame->fs.localId = game::gFs[inst].localId;
 
 			// pluto
-			game::plutonium::vm_execute_update_codepos(inst);
+			if (game::plutonium::vm_execute_update_codepos != nullptr)
+			{
+				game::plutonium::vm_execute_update_codepos(inst);
+			}
 			//
 
 			assert(game::gFs[inst].pos);
@@ -4510,7 +4513,10 @@ namespace codsrc
 		const char* pos;
 
 		// pluto
-		game::plutonium::scr_execthread_update_codepos_func(inst, inst, &handle, &handle);
+		if (game::plutonium::scr_execthread_update_codepos_func != nullptr)
+		{
+			game::plutonium::scr_execthread_update_codepos_func(inst, inst, &handle, &handle);
+		}
 		//
 
 		pos = &game::gScrVarPub[inst].programBuffer[handle];
@@ -4555,7 +4561,10 @@ namespace codsrc
 		game::classNum_e classnum = game::CLASS_NUM_ENTITY;
 
 		// pluto
-		game::plutonium::scr_execentthread_update_codepos_func(inst, &handle);
+		if (game::plutonium::scr_execentthread_update_codepos_func != nullptr)
+		{
+			game::plutonium::scr_execentthread_update_codepos_func(inst, &handle);
+		}
 		//
 
 		pos = &game::gScrVarPub[inst].programBuffer[handle];
@@ -4598,7 +4607,10 @@ namespace codsrc
 		unsigned int paramcount = 0;
 
 		// pluto
-		game::plutonium::scr_addexecthread_update_codepos_func(inst, &handle);
+		if (game::plutonium::scr_addexecthread_update_codepos_func != nullptr)
+		{
+			game::plutonium::scr_addexecthread_update_codepos_func(inst, &handle);
+		}
 		//
 
 		if ( !game::gScrVmPub[inst].function_count )

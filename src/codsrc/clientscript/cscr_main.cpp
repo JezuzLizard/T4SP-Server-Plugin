@@ -300,9 +300,16 @@ namespace codsrc
 		game::gScrCompilePub[inst].parseBuf = sourceBuffer;
 
 		// pluto
-		game::plutonium::script_preprocess(sourceBuffer, inst, &parseData); // the pluto hook will call ScriptParse, so we dont have to
-		// game::ScriptParse(inst, &parseData);
+		if (game::plutonium::script_preprocess != nullptr)
+		{
+			game::plutonium::script_preprocess(sourceBuffer, inst, &parseData); // the pluto hook will call ScriptParse, so we dont have to
+		}
+
 		//
+		else
+		{
+			game::ScriptParse(inst, &parseData);
+		}
 
 		scriptPosVar = game::GetVariable(inst, game::gScrCompilePub[inst].scriptsPos, name);
 		filePosId = game::GetObject(inst, scriptPosVar);
@@ -330,7 +337,10 @@ namespace codsrc
 	void Scr_EndLoadScripts(game::scriptInstance_t inst)
 	{
 		// pluto
-		game::plutonium::load_custom_script_func(inst);
+		if (game::plutonium::load_custom_script_func != nullptr)
+		{
+			game::plutonium::load_custom_script_func(inst);
+		}
 		//
 
 		game::SL_ShutdownSystem(inst, 2u);

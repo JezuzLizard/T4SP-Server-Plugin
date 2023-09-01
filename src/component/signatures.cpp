@@ -86,11 +86,29 @@ namespace signatures
 		return image_size;
 	}
 
+	size_t load_iamge_base()
+	{
+		return reinterpret_cast<size_t>(GetModuleHandle("plutonium-bootstrapper-win32.exe"));
+	}
+
+	size_t get_image_base()
+	{
+		static const auto image_base = load_iamge_base();
+		return image_base;
+	}
+
+	bool addr_is_in_image_space(size_t wheree)
+	{
+		static const auto image_base = load_iamge_base();
+
+		return wheree >= image_base && wheree < image_base + get_image_size();
+	}
+
 	size_t find_string_ptr(const std::string& string)
 	{
 		const char* string_ptr = nullptr;
 		std::string mask(string.size(), 'x');
-		const auto base = reinterpret_cast<size_t>(GetModuleHandle("plutonium-bootstrapper-win32.exe"));
+		const auto base = get_image_base();
 		utils::hook::signature signature(base, get_image_size() - base);
 
 		signature.add({
@@ -119,6 +137,13 @@ namespace signatures
 		return find_string_ptr({bytes, 4});
 	}
 
+	std::string err_reason;
+
+	std::string get_err_reason()
+	{
+		return err_reason;
+	}
+
 	bool process_printf()
 	{
 		auto cache_info = get_cache_info_for_our_version();
@@ -132,6 +157,7 @@ namespace signatures
 		const auto string_ref = find_string_ref("A critical exception occured!\n");
 		if (!string_ref)
 		{
+			err_reason = "printf";
 			return false;
 		}
 
@@ -144,15 +170,34 @@ namespace signatures
 		return true;
 	}
 
+#define SAFE_SET_PLUTO_SYMBOL_DOUBLE(name, addr, off) \
+	addr2 = reinterpret_cast<size_t>(utils::hook::get_displacement_addr(addr)); \
+	if (!addr_is_in_image_space(addr2)) \
+	{ \
+		err_reason = #name " 1"; \
+		return false; \
+	} \
+	addr1 = reinterpret_cast<size_t>(utils::hook::get_displacement_addr(addr2 + off)); \
+	if (!addr_is_in_image_space(addr1)) \
+	{ \
+		err_reason = #name " 2"; \
+		return false; \
+	} \
+	game::plutonium::name.set(addr1)
+
+
 	bool handle_funcs()
 	{
-		game::plutonium::load_custom_script_func.set(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(0x689C80)) + 0x6)));
-		game::plutonium::script_preprocess.set(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(0x689BCF)) + 0x2)));
+		size_t addr1;
+		size_t addr2;
 
-		game::plutonium::vm_execute_update_codepos.set(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(0x69608C)) + 0x2)));
-		game::plutonium::scr_execthread_update_codepos_func.set(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(0x699560)) + 0x11)));
-		game::plutonium::scr_execentthread_update_codepos_func.set(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(0x699640)) + 0x7)));
-		game::plutonium::scr_addexecthread_update_codepos_func.set(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(0x699730)) + 0x7)));
+		SAFE_SET_PLUTO_SYMBOL_DOUBLE(load_custom_script_func, 0x689C80, 0x6);
+		SAFE_SET_PLUTO_SYMBOL_DOUBLE(script_preprocess, 0x689BCF, 0x2);
+
+		SAFE_SET_PLUTO_SYMBOL_DOUBLE(vm_execute_update_codepos, 0x69608C, 0x2);
+		SAFE_SET_PLUTO_SYMBOL_DOUBLE(scr_execthread_update_codepos_func, 0x699560, 0x11);
+		SAFE_SET_PLUTO_SYMBOL_DOUBLE(scr_execentthread_update_codepos_func, 0x699640, 0x7);
+		SAFE_SET_PLUTO_SYMBOL_DOUBLE(scr_addexecthread_update_codepos_func, 0x699730, 0x7);
 
 		return true;
 	}
@@ -161,8 +206,6 @@ namespace signatures
 	{
 		utils::cryptography::des::set_key("694201337");
 
-		handle_funcs();
-
-		return process_printf();
+		return handle_funcs() && process_printf();
 	}
 }
