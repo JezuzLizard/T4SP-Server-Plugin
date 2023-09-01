@@ -1,7 +1,7 @@
 #include <stdinc.hpp>
 #include "loader/component_loader.hpp"
 #include "utils/hook.hpp"
-//#include "codsrc/clientscript/cscr_memorytree.hpp"
+#include "codsrc/clientscript/cscr_memorytree.hpp"
 
 #define RE_CSCR_MEMORYTREE_USE_WRAPPERS
 

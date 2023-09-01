@@ -1,20 +1,20 @@
 #include <stdinc.hpp>
+#include "codsrc/clientscript/cscr_tempmemory.hpp"
 
 namespace game
 {
 	void TempMemorySetPos(char* pos)
 	{
-		//cscr_tempmemory::TempMemorySetPos(pos);
+		codsrc::TempMemorySetPos(pos);
 	}
 
 	void TempMemoryReset(HunkUser* user)
 	{
-		//cscr_tempmemory::TempMemoryReset(user);
+		codsrc::TempMemoryReset(user);
 	}
 
 	char* TempMalloc(int len)
 	{
-		//return cscr_tempmemory::TempMalloc(len);
-		return nullptr;
+		return codsrc::TempMalloc(len);
 	}
 }

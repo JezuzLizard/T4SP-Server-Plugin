@@ -9,9 +9,8 @@
 
 #pragma warning(disable: 4324)
 #pragma warning(disable: 4459)
+#pragma warning(disable: 4611)
 #pragma warning(error: 4409)
-
-#pragma warning(disable: 4100) // remove when decomp is imported
 
 #define DLL_EXPORT extern "C" __declspec(dllexport)
 #define WIN32_LEAN_AND_MEAN
@@ -36,6 +35,7 @@
 #include <variant>
 #include <optional>
 #include <Psapi.h>
+#include <timeapi.h>
 
 #ifdef max
 #undef max
@@ -58,6 +58,7 @@
 #pragma comment(lib, "urlmon.lib" )
 #pragma comment(lib, "iphlpapi.lib")
 #pragma comment(lib, "Crypt32.lib")
+#pragma comment(lib, "Winmm.lib")
 
 #include "utils/hexrays_defs.h"
 

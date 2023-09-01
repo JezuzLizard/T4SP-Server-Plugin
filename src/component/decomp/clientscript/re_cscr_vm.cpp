@@ -1,7 +1,7 @@
 #include <stdinc.hpp>
 #include "loader/component_loader.hpp"
 #include "utils/hook.hpp"
-//#include "codsrc/clientscript/cscr_vm.hpp"
+#include "codsrc/clientscript/cscr_vm.hpp"
 
 #define RE_CSCR_VM_USE_WRAPPERS
 
@@ -1552,7 +1552,6 @@ namespace re_cscr_vm
 			VM_Notify_hook.create(game::VM_Notify_ADDR(), VM_Notify_stub);
 			Scr_NotifyNum_Internal_hook.create(game::Scr_NotifyNum_Internal_ADDR(), Scr_NotifyNum_Internal_stub);
 			Scr_CancelNotifyList_hook.create(game::Scr_CancelNotifyList_ADDR(), Scr_CancelNotifyList_stub);
-
 			VM_TerminateTime_hook.create(game::VM_TerminateTime_ADDR(), VM_TerminateTime_stub);
 			VM_Resume_hook.create(game::VM_Resume_ADDR(), VM_Resume_stub);
 			VM_Execute_hook.create(game::VM_Execute.get(), VM_Execute_stub);

@@ -5,7 +5,6 @@
 
 #define RE_CSCR_MAIN_USE_WRAPPERS
 
-
 namespace re_cscr_main
 {
 	utils::hook::detour Scr_IsIdentifier_hook;

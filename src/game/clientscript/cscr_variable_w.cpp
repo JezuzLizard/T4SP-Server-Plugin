@@ -1,4 +1,5 @@
 #include <stdinc.hpp>
+#include "codsrc/clientscript/cscr_variable.hpp"
 
 namespace game
 {
@@ -1286,174 +1287,151 @@ namespace game
 
 	unsigned int FindObject(scriptInstance_t inst, unsigned int id)
 	{
-		//return cscr_variable::FindObject(inst, id);
-		return 0;
+		return codsrc::FindObject(inst, id);
 	}
 
 	float Scr_GetEntryUsageInternal(scriptInstance_t inst, unsigned int type, VariableUnion u)
 	{
-		//return cscr_variable::Scr_GetEntryUsageInternal(inst, type, u);
-		return 0;
+		return codsrc::Scr_GetEntryUsageInternal(inst, type, u);
 	}
 
 	float Scr_GetEntryUsage(scriptInstance_t inst, VariableValueInternal* entryValue)
 	{
-		//return cscr_variable::Scr_GetEntryUsage(inst, entryValue);
-		return 0;
+		return codsrc::Scr_GetEntryUsage(inst, entryValue);
 	}
 
 	unsigned int FindFirstSibling(scriptInstance_t inst, unsigned int id)
 	{
-		//return cscr_variable::FindFirstSibling(inst, id);
-		return 0;
+		return codsrc::FindFirstSibling(inst, id);
 	}
 
 	unsigned int FindNextSibling(scriptInstance_t inst, unsigned int id)
 	{
-		//return cscr_variable::FindNextSibling(inst, id);
-		return 0;
+		return codsrc::FindNextSibling(inst, id);
 	}
 
 	VariableValue Scr_GetArrayIndexValue(scriptInstance_t inst, unsigned int name)
 	{
-		//return cscr_variable::Scr_GetArrayIndexValue(inst, name);
-		VariableValue l;
-		l.type = VAR_UNDEFINED;
-		return l;
+		return codsrc::Scr_GetArrayIndexValue(inst, name);
 	}
 
 	void AddRefToObject(scriptInstance_t inst, unsigned int id)
 	{
-		//cscr_variable::AddRefToObject(inst, id);
+		codsrc::AddRefToObject(inst, id);
 	}
 
 	void RemoveRefToEmptyObject(scriptInstance_t inst, unsigned int id)
 	{
-		//cscr_variable::RemoveRefToEmptyObject(inst, id);
+		codsrc::RemoveRefToEmptyObject(inst, id);
 	}
 
 	void Scr_ClearThread(scriptInstance_t inst, unsigned int parentId)
 	{
-		//cscr_variable::Scr_ClearThread(inst, parentId);
+		codsrc::Scr_ClearThread(inst, parentId);
 	}
 
 	unsigned int FindObjectVariable(scriptInstance_t inst, unsigned int parentId, unsigned int id)
 	{
-		//return cscr_variable::FindObjectVariable(inst, parentId, id);
-		return 0;
+		return codsrc::FindObjectVariable(inst, parentId, id);
 	}
 
 	void RemoveObjectVariable(scriptInstance_t inst, unsigned int parentId, unsigned int id)
 	{
-		//cscr_variable::RemoveObjectVariable(inst, parentId, id);
+		codsrc::RemoveObjectVariable(inst, parentId, id);
 	}
 
 	VariableValueInternal_u* GetVariableValueAddress(scriptInstance_t inst, unsigned int id)
 	{
-		//return cscr_variable::GetVariableValueAddress(inst, id);
-		return nullptr;
+		return codsrc::GetVariableValueAddress(inst, id);
 	}
 
 	void Scr_KillEndonThread(scriptInstance_t inst, unsigned int threadId)
 	{
-		//cscr_variable::Scr_KillEndonThread(inst, threadId);
+		codsrc::Scr_KillEndonThread(inst, threadId);
 	}
 
 	BOOL IsValidArrayIndex(scriptInstance_t inst, unsigned int unsignedValue)
 	{
-		//return cscr_variable::IsValidArrayIndex(inst, unsignedValue);
-		return 0;
+		return codsrc::IsValidArrayIndex(inst, unsignedValue);
 	}
 
 	void RemoveArrayVariable(scriptInstance_t inst, unsigned int parentId, unsigned int unsignedValue)
 	{
-		//cscr_variable::RemoveArrayVariable(inst, parentId, unsignedValue);
+		codsrc::RemoveArrayVariable(inst, parentId, unsignedValue);
 	}
 
 	void SafeRemoveArrayVariable(scriptInstance_t inst, unsigned int parentId, unsigned int unsignedValue)
 	{
-		//cscr_variable::SafeRemoveArrayVariable(inst, parentId, unsignedValue);
+		codsrc::SafeRemoveArrayVariable(inst, parentId, unsignedValue);
 	}
 
 	void AddRefToVector(scriptInstance_t inst, const float* floatVal)
 	{
-		//cscr_variable::AddRefToVector(inst, floatVal);
+		codsrc::AddRefToVector(inst, floatVal);
 	}
 
 	unsigned int FindArrayVariableIndex(scriptInstance_t inst, unsigned int parentId, unsigned int unsignedValue)
 	{
-		//return cscr_variable::FindArrayVariableIndex(inst, parentId, unsignedValue);
-		return 0;
+		return codsrc::FindArrayVariableIndex(inst, parentId, unsignedValue);
 	}
 
 	unsigned int GetVariableIndexInternal(scriptInstance_t inst, unsigned int parentId, unsigned int name)
 	{
-		//return cscr_variable::GetVariableIndexInternal(inst, parentId, name);
-		return 0;
+		return codsrc::GetVariableIndexInternal(inst, parentId, name);
 	}
 
 	unsigned int GetNewVariableIndexInternal(scriptInstance_t inst, unsigned int parentId, unsigned int name)
 	{
-		//return cscr_variable::GetNewVariableIndexInternal(inst, parentId, name);
-		return 0;
+		return codsrc::GetNewVariableIndexInternal(inst, parentId, name);
 	}
 
 	unsigned int AllocObject(scriptInstance_t inst)
 	{
-		//return cscr_variable::AllocObject(inst);
-		return 0;
+		return codsrc::AllocObject(inst);
 	}
 
 	VariableType GetValueType(scriptInstance_t inst, unsigned int id)
 	{
-		//return cscr_variable::GetValueType(inst, id);
-		return (VariableType)0;
+		return codsrc::GetValueType(inst, id);
 	}
 
 	VariableType GetObjectType(scriptInstance_t inst, unsigned int id)
 	{
-		//return cscr_variable::GetObjectType(inst, id);
-		return (VariableType)0;
+		return codsrc::GetObjectType(inst, id);
 	}
 
 	float* Scr_AllocVector_(scriptInstance_t inst, const float* v)
 	{
-		//return cscr_variable::Scr_AllocVector_(inst, v);
-		return 0;
+		return codsrc::Scr_AllocVector_(inst, v);
 	}
 
 	void Scr_EvalInequality(scriptInstance_t inst, VariableValue* value1, VariableValue* value2)
 	{
-		//cscr_variable::Scr_EvalInequality(inst, value1, value2);
+		codsrc::Scr_EvalInequality(inst, value1, value2);
 	}
 
 	unsigned int Scr_EvalArrayRefInternal(scriptInstance_t inst, VariableValue* varValue, VariableValueInternal* parentValue)
 	{
-		//return cscr_variable::Scr_EvalArrayRefInternal(inst, varValue, parentValue);
-		return 0;
+		return codsrc::Scr_EvalArrayRefInternal(inst, varValue, parentValue);
 	}
 
 	unsigned int GetNewArrayVariableIndex(scriptInstance_t inst, unsigned int parentId, unsigned int unsignedValue)
 	{
-		//return cscr_variable::GetNewArrayVariableIndex(inst, parentId, unsignedValue);
-		return 0;
+		return codsrc::GetNewArrayVariableIndex(inst, parentId, unsignedValue);
 	}
 
 	unsigned int GetNewArrayVariable(scriptInstance_t inst, unsigned int parentId, unsigned int unsignedValue)
 	{
-		//return cscr_variable::GetNewArrayVariable(inst, parentId, unsignedValue);
-		return 0;
+		return codsrc::GetNewArrayVariable(inst, parentId, unsignedValue);
 	}
 
 	unsigned int GetArrayVariable(scriptInstance_t inst, unsigned int parentId, unsigned int unsignedValue)
 	{
-		//return cscr_variable::GetArrayVariable(inst, parentId, unsignedValue);
-		return 0;
+		return codsrc::GetArrayVariable(inst, parentId, unsignedValue);
 	}
 
 	unsigned int AllocThread(scriptInstance_t inst, unsigned int self)
 	{
-		//return cscr_variable::AllocThread(inst, self);
-		return 0;
+		return codsrc::AllocThread(inst, self);
 	}
 }

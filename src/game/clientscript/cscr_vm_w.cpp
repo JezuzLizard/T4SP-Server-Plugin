@@ -1,4 +1,5 @@
 #include <stdinc.hpp>
+#include "codsrc/clientscript/cscr_vm.hpp"
 
 namespace game
 {
@@ -783,224 +784,201 @@ namespace game
 
 	void SetVariableFieldValue(scriptInstance_t inst, unsigned int id, VariableValue* value)
 	{
-		//cscr_vm::SetVariableFieldValue(inst, id, value);
+		codsrc::SetVariableFieldValue(inst, id, value);
 	}
 
 	void SetNewVariableValue(scriptInstance_t inst, unsigned int id, VariableValue* value)
 	{
-		//cscr_vm::SetNewVariableValue(inst, id, value);
+		codsrc::SetNewVariableValue(inst, id, value);
 	}
 
 	void Scr_ClearErrorMessage(scriptInstance_t inst)
 	{
-		//cscr_vm::Scr_ClearErrorMessage(inst);
+		codsrc::Scr_ClearErrorMessage(inst);
 	}
 
 	void VM_Shutdown(scriptInstance_t inst)
 	{
-		//cscr_vm::VM_Shutdown(inst);
+		codsrc::VM_Shutdown(inst);
 	}
 
 	void Scr_ShutdownVariables(scriptInstance_t inst)
 	{
-		//cscr_vm::Scr_ShutdownVariables(inst);
+		codsrc::Scr_ShutdownVariables(inst);
 	}
 
 	void ClearVariableValue(scriptInstance_t inst, unsigned int id)
 	{
-		//cscr_vm::ClearVariableValue(inst, id);
+		codsrc::ClearVariableValue(inst, id);
 	}
 
 	unsigned int Scr_GetThreadNotifyName(scriptInstance_t inst, unsigned int startLocalId)
 	{
-		//return cscr_vm::Scr_GetThreadNotifyName(inst, startLocalId);
-		return 0;
+		return codsrc::Scr_GetThreadNotifyName(inst, startLocalId);
 	}
 
 	void Scr_RemoveThreadNotifyName(scriptInstance_t inst, unsigned int startLocalId)
 	{
-		//cscr_vm::Scr_RemoveThreadNotifyName(inst, startLocalId);
+		codsrc::Scr_RemoveThreadNotifyName(inst, startLocalId);
 	}
 
 	unsigned int GetArraySize(scriptInstance_t inst, unsigned int id)
 	{
-		//return cscr_vm::GetArraySize(inst, id);
-		return 0;
+		return codsrc::GetArraySize(inst, id);
 	}
 
 	void IncInParam(scriptInstance_t inst)
 	{
-		//cscr_vm::IncInParam(inst);
+		codsrc::IncInParam(inst);
 	}
 
 	unsigned int GetParentLocalId(scriptInstance_t inst, unsigned int threadId)
 	{
-		//return cscr_vm::GetParentLocalId(inst, threadId);
-		return 0;
+		return codsrc::GetParentLocalId(inst, threadId);
 	}
 
 	void Scr_ClearWaitTime(scriptInstance_t inst, unsigned int startLocalId)
 	{
-		//cscr_vm::Scr_ClearWaitTime(inst, startLocalId);
+		codsrc::Scr_ClearWaitTime(inst, startLocalId);
 	}
 
 	void Scr_SetThreadWaitTime(scriptInstance_t inst, unsigned int startLocalId, unsigned int waitTime)
 	{
-		//cscr_vm::Scr_SetThreadWaitTime(inst, startLocalId, waitTime);
+		codsrc::Scr_SetThreadWaitTime(inst, startLocalId, waitTime);
 	}
 
 	void Scr_SetThreadNotifyName(scriptInstance_t inst, unsigned int startLocalId, unsigned int stringValue)
 	{
-		//cscr_vm::Scr_SetThreadNotifyName(inst, startLocalId, stringValue);
+		codsrc::Scr_SetThreadNotifyName(inst, startLocalId, stringValue);
 	}
 
 	void Scr_DebugTerminateThread(scriptInstance_t inst, int topThread)
 	{
-		//cscr_vm::Scr_DebugTerminateThread(inst, topThread);
+		codsrc::Scr_DebugTerminateThread(inst, topThread);
 	}
 
 	unsigned int Scr_GetThreadWaitTime(scriptInstance_t inst, unsigned int startLocalId)
 	{
-		//return cscr_vm::Scr_GetThreadWaitTime(inst, startLocalId);
-		return 0;
+		return codsrc::Scr_GetThreadWaitTime(inst, startLocalId);
 	}
 
 	const char* Scr_GetStackThreadPos(scriptInstance_t inst, unsigned int endLocalId, VariableStackBuffer* stackValue, bool killThread)
 	{
-		//return cscr_vm::Scr_GetStackThreadPos(inst, endLocalId, stackValue, killThread);
-		return 0;
+		return codsrc::Scr_GetStackThreadPos(inst, endLocalId, stackValue, killThread);
 	}
 
 	unsigned int Scr_GetSelf(scriptInstance_t inst, unsigned int threadId)
 	{
-		//return cscr_vm::Scr_GetSelf(inst, threadId);
-		return 0;
+		return codsrc::Scr_GetSelf(inst, threadId);
 	}
 
 	unsigned int GetVariableKeyObject(scriptInstance_t inst, unsigned int id)
 	{
-		//return cscr_vm::GetVariableKeyObject(inst, id);
-		return 0;
+		return codsrc::GetVariableKeyObject(inst, id);
 	}
 
 	int MT_Realloc(scriptInstance_t inst, int oldNumBytes, int newNumbytes)
 	{
-		//return cscr_vm::MT_Realloc(inst, oldNumBytes, newNumbytes);
-		return 0;
+		return codsrc::MT_Realloc(inst, oldNumBytes, newNumbytes);
 	}
 
 	void CScr_GetObjectField(classNum_e classnum, int entnum, int clientNum, int offset)
 	{
-		//cscr_vm::CScr_GetObjectField(classnum, entnum, clientNum, offset);
+		codsrc::CScr_GetObjectField(classnum, entnum, clientNum, offset);
 	}
 
 	int CScr_SetObjectField(classNum_e classnum, int entnum, int clientNum, int offset)
 	{
-		//return cscr_vm::CScr_SetObjectField(classnum, entnum, clientNum, offset);
-		return 0;
+		return codsrc::CScr_SetObjectField(classnum, entnum, clientNum, offset);
 	}
 
 	void Scr_SetErrorMessage(scriptInstance_t inst, const char* error)
 	{
-		//cscr_vm::Scr_SetErrorMessage(inst, error);
+		codsrc::Scr_SetErrorMessage(inst, error);
 	}
 
 	bool Scr_IsStackClear(scriptInstance_t inst)
 	{
-		//return cscr_vm::Scr_IsStackClear(inst);
-		return 0;
+		return codsrc::Scr_IsStackClear(inst);
 	}
 
 	void SL_CheckExists(scriptInstance_t inst, unsigned int stringValue)
 	{
-		//cscr_vm::SL_CheckExists(inst, stringValue);
+		codsrc::SL_CheckExists(inst, stringValue);
 	}
 
 	const char* Scr_ReadCodePos(scriptInstance_t inst, const char** pos)
 	{
-		//return cscr_vm::Scr_ReadCodePos(inst, pos);
-		return 0;
+		return codsrc::Scr_ReadCodePos(inst, pos);
 	}
 
 	unsigned int Scr_ReadUnsignedInt(scriptInstance_t inst, const char** pos)
 	{
-		//return cscr_vm::Scr_ReadUnsignedInt(inst, pos);
-		return 0;
+		return codsrc::Scr_ReadUnsignedInt(inst, pos);
 	}
 
 	unsigned short Scr_ReadUnsignedShort(scriptInstance_t inst, const char** pos)
 	{
-		//return cscr_vm::Scr_ReadUnsignedShort(inst, pos);
-		return 0;
+		return codsrc::Scr_ReadUnsignedShort(inst, pos);
 	}
 
 	unsigned char Scr_ReadUnsignedByte(scriptInstance_t inst, const char** pos)
 	{
-		//return cscr_vm::Scr_ReadUnsignedByte(inst, pos);
-		return 0;
+		return codsrc::Scr_ReadUnsignedByte(inst, pos);
 	}
 
 	float Scr_ReadFloat(scriptInstance_t inst, const char** pos)
 	{
-		//return cscr_vm::Scr_ReadFloat(inst, pos);
-		return 0;
+		return codsrc::Scr_ReadFloat(inst, pos);
 	}
 
 	const float* Scr_ReadVector(scriptInstance_t inst, const char** pos)
 	{
-		//return cscr_vm::Scr_ReadVector(inst, pos);
-		return 0;
+		return codsrc::Scr_ReadVector(inst, pos);
 	}
 
 	BOOL IsFieldObject(scriptInstance_t inst, unsigned int id)
 	{
-		//return cscr_vm::IsFieldObject(inst, id);
-		return 0;
+		return codsrc::IsFieldObject(inst, id);
 	}
 
 	void RemoveVariableValue(scriptInstance_t inst, unsigned int parentId, unsigned int index)
 	{
-		//cscr_vm::RemoveVariableValue(inst, parentId, index);
+		codsrc::RemoveVariableValue(inst, parentId, index);
 	}
 
 	VariableStackBuffer* GetRefVariableStackBuffer(scriptInstance_t inst, int id)
 	{
-		//return cscr_vm::GetRefVariableStackBuffer(inst, id);
-		return 0;
+		return codsrc::GetRefVariableStackBuffer(inst, id);
 	}
 
 	unsigned int GetNewVariableIndexReverseInternal(scriptInstance_t inst, unsigned int parentId, unsigned int name)
 	{
-		//return cscr_vm::GetNewVariableIndexReverseInternal(inst, parentId, name);
-		return 0;
+		return codsrc::GetNewVariableIndexReverseInternal(inst, parentId, name);
 	}
 
 	unsigned int GetNewObjectVariableReverse(scriptInstance_t inst, unsigned int parentId, unsigned int id)
 	{
-		//return cscr_vm::GetNewObjectVariableReverse(inst, parentId, id);
-		return 0;
+		return codsrc::GetNewObjectVariableReverse(inst, parentId, id);
 	}
 
 	unsigned int Scr_GetLocalVar(scriptInstance_t inst, int pos)
 	{
-		//return cscr_vm::Scr_GetLocalVar(inst, pos);
-		return 0;
+		return codsrc::Scr_GetLocalVar(inst, pos);
 	}
 
 	void Scr_EvalBoolNot(scriptInstance_t inst, VariableValue* value)
 	{
-		//cscr_vm::Scr_EvalBoolNot(inst, value);
+		codsrc::Scr_EvalBoolNot(inst, value);
 	}
 
 	unsigned int GetInternalVariableIndex(scriptInstance_t inst, unsigned int unsignedValue)
 	{
-		//return cscr_vm::GetInternalVariableIndex(inst, unsignedValue);
-		return 0;
+		return codsrc::GetInternalVariableIndex(inst, unsignedValue);
 	}
 
 	const char* Scr_ReadData(scriptInstance_t inst, const char** pos, unsigned int count)
 	{
-		//return cscr_vm::Scr_ReadData(inst, pos, count);
-		return 0;
+		return codsrc::Scr_ReadData(inst, pos, count);
 	}
 }

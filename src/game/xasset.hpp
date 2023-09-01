@@ -5418,5 +5418,6 @@ namespace game
 	ASSERT_STRUCT_OFFSET(XZone, blocks, 0xC);
 
 #ifdef __cplusplus
+	WEAK symbol<XAssetHeader(XAssetType type, const char* name, bool errorIfMissing, int waitTime)>DB_FindXAssetHeader{ 0x0, 0x48DA30 };
 }
 #endif

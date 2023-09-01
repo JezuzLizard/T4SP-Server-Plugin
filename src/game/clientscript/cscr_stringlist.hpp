@@ -61,5 +61,4 @@ namespace game
 	int SL_ConvertFromString(scriptInstance_t inst, const char* str);
 	int SL_ConvertFromRefString(scriptInstance_t inst, RefString* refString);
 	RefString* GetRefString_0(scriptInstance_t inst, const char* str);
-	const char* SL_DebugConvertToString(unsigned int stringValue, scriptInstance_t inst);
 }

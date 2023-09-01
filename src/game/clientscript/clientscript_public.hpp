@@ -20,11 +20,11 @@
 #define VARIABLELIST_CHILD_BEGIN 0x6000
 
 #define IsObject(__parentValue__) \
-	((__parentValue__->w.status & VAR_MASK) >= VAR_THREAD) \
+	((__parentValue__->w.status & VAR_MASK) >= game::VAR_THREAD) \
 
 #define MT_NODE_BITS 16
-#define MT_NODE_SIZE sizeof(MemoryNode)
-#define MT_SIZE sizeof(scrMemTreeGlob_t::nodes)
+#define MT_NODE_SIZE sizeof(game::MemoryNode)
+#define MT_SIZE sizeof(game::scrMemTreeGlob_t::nodes)
 #define MT_NODE_COUNT (1 << MT_NODE_BITS)
 #define MT_NUM_BUCKETS 256
 
@@ -35,6 +35,8 @@
 #define HASH_MAX_HASHES 25000
 #define SL_MAX_STRING_LEN 0x2000
 #define SL_MAX_STRING_INDEX 0x10000
+
+#define MAX_VM_STACK_DEPTH 30
 
 #ifdef __cplusplus
 namespace game
@@ -51,6 +53,7 @@ namespace game
 	struct sentient_s;
 	struct gclient_s;
 	struct game_hudelem_s;
+	struct dvar_s;
 
 #pragma region "enums"
 
@@ -68,6 +71,13 @@ namespace game
 		SCRIPTINSTANCE_SERVER = 0x0,
 		SCRIPTINSTANCE_CLIENT = 0x1,
 		SCRIPT_INSTANCE_MAX = 0x2,
+	};
+
+	enum animUserInstance_t
+	{
+		ANIM_USER_CLIENT = 0x0,
+		ANIM_USER_SERVER = 0x1,
+		ANIM_USER_COUNT = 0x2
 	};
 
 	enum OpcodeVM : __int32
@@ -334,6 +344,16 @@ namespace game
 		OBJECT_STACK = 0x15FFE,
 		FIRST_OBJECT = 0x14,
 	};*/
+
+	enum ObjectTypes
+	{
+		FIRST_OBJECT = 0xD,
+		FIRST_CLEARABLE_OBJECT = 0x11,
+		LAST_NONENTITY_OBJECT = 0x11,
+		FIRST_ENTITY_OBJECT = 0x13,
+		FIRST_NONFIELD_OBJECT = 0x14,
+		FIRST_DEAD_OBJECT = 0x15,
+	};
 
 	enum VariableType
 	{
@@ -2231,6 +2251,8 @@ namespace game
 	WEAK symbol<scr_classStruct_t*> gScrClassMap{ 0x0, 0x8CF568 };
 	WEAK symbol<scr_const_t> scr_const{ 0x0, 0x1F33B90 };
 	WEAK symbol<bool> loadedImpureScript{ 0x0, 0x22C1352 };
+	WEAK symbol<dvar_s*> sv_clientside{ 0x0, 0x3882B6C };
+	WEAK symbol<char> error_message_buff{ 0x0, 0x3BE1E30 };
 
 	WEAK symbol<unsigned char> g_parse_user{ 0x0, 0x234F72E };
 	WEAK symbol<scriptInstance_t> gInst{ 0x0, 0x3BE624C };
@@ -2272,7 +2294,7 @@ namespace game
 #pragma endregion
 
 #pragma region "functions"
-	WEAK symbol<BOOL(LPVOID lpAddress)>Hunk_UserDestroy{ 0x0, 0x5E4940 };
+	WEAK symbol<void(scriptInstance_t inst, VariableValue* value)>RemoveRefToValue{ 0x0, 0x67EB70 };
 
 	inline void* ScriptParse_ADDR() { return CALL_ADDR(0x0, 0x69D710); }
 	void ScriptParse(scriptInstance_t inst, sval_u* parseData, void* call_addr = ScriptParse_ADDR());
@@ -2280,8 +2302,15 @@ namespace game
 	void ScriptCompile(scriptInstance_t inst, sval_u val, unsigned int filePosId, unsigned int fileCountId, unsigned int scriptId, PrecacheEntry * entries, int entriesCount, void* call_addr = ScriptCompile_ADDR());
 	inline void* Scr_LoadAnimTreeAtIndex_ADDR() { return CALL_ADDR(0x0, 0x67E7D0); }
 	void Scr_LoadAnimTreeAtIndex(scriptInstance_t inst, int user, unsigned int index, void* (__cdecl* Alloc)(int), int modCheckSum, void* call_addr = Scr_LoadAnimTreeAtIndex_ADDR());
-	inline void* Hunk_UserCreate_ADDR() { return CALL_ADDR(0x0, 0x5E46E0); }
-	HunkUser* Hunk_UserCreate(signed int maxSize, const char* name, int fixed, int tempMem, int debugMem, int type, void* call_addr = Hunk_UserCreate_ADDR());
+
+	inline void* CScr_SetEntityField_ADDR() { return CALL_ADDR(0x0, 0x671470); }
+	int CScr_SetEntityField(int ofs, int entnum, unsigned int clientnum, void* call_addr = CScr_SetEntityField_ADDR());
+	inline void* Scr_SetObjectField_ADDR() { return CALL_ADDR(0x0, 0x5469C0); }
+	int Scr_SetObjectField(int ofs, int entnum, classNum_e classnum, scriptInstance_t inst, void* call_addr = Scr_SetObjectField_ADDR());
+	inline void* CScr_GetEntityField_ADDR() { return CALL_ADDR(0x0, 0x671410); }
+	void CScr_GetEntityField(int ofs, int entnum, unsigned int clientnum, void* call_addr = CScr_GetEntityField_ADDR());
+	inline void* Scr_GetObjectField_ADDR() { return CALL_ADDR(0x0, 0x546D30); }
+	void Scr_GetObjectField(int ofs, int inst, classNum_e classnum, int entnum, void* call_addr = Scr_GetObjectField_ADDR());
 #pragma endregion
 }
 

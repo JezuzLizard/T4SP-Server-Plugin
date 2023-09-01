@@ -1,4 +1,5 @@
 #include <stdinc.hpp>
+#include "codsrc/clientscript/cscr_stringlist.hpp"
 
 namespace game
 {
@@ -324,52 +325,41 @@ namespace game
 
 	RefString* GetRefString(scriptInstance_t inst, unsigned int id)
 	{
-		//return cscr_stringlist::GetRefString(inst, id);
-		return nullptr;
+		return codsrc::GetRefString(inst, id);
 	}
 
 	void SL_AddRefToString(scriptInstance_t inst, unsigned int stringValue)
 	{
-		//cscr_stringlist::SL_AddRefToString(inst, stringValue);
+		codsrc::SL_AddRefToString(inst, stringValue);
 	}
 
 	void SL_RemoveRefToStringOfSize(scriptInstance_t inst, unsigned int stringValue, unsigned int len)
 	{
-		//cscr_stringlist::SL_RemoveRefToStringOfSize(inst, stringValue, len);
+		codsrc::SL_RemoveRefToStringOfSize(inst, stringValue, len);
 	}
 
 	int SL_GetRefStringLen(RefString* refString)
 	{
-		//return cscr_stringlist::SL_GetRefStringLen(refString);
-		return 0;
+		return codsrc::SL_GetRefStringLen(refString);
 	}
 
 	void SL_AddUser(unsigned int stringValue, unsigned int user, scriptInstance_t inst)
 	{
-		//cscr_stringlist::SL_AddUser(stringValue, user, inst);
+		codsrc::SL_AddUser(stringValue, user, inst);
 	}
 
 	int SL_ConvertFromString(scriptInstance_t inst, const char* str)
 	{
-		//return cscr_stringlist::SL_ConvertFromString(inst, str);
-		return 0;
+		return codsrc::SL_ConvertFromString(inst, str);
 	}
 
 	int SL_ConvertFromRefString(scriptInstance_t inst, RefString* refString)
 	{
-		//return cscr_stringlist::SL_ConvertFromRefString(inst, refString);
-		return 0;
+		return codsrc::SL_ConvertFromRefString(inst, refString);
 	}
 
 	RefString* GetRefString_0(scriptInstance_t inst, const char* str)
 	{
-		//return cscr_stringlist::GetRefString_0(inst, str);
-		return nullptr;
-	}
-
-	const char* SL_DebugConvertToString(unsigned int stringValue, scriptInstance_t inst)
-	{
-		//return cscr_stringlist::SL_DebugConvertToString(stringValue, inst);
-		return nullptr;
+		return codsrc::GetRefString_0(inst, str);
 	}
 }

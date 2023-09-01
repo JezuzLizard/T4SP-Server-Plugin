@@ -1,4 +1,5 @@
 #include <stdinc.hpp>
+#include "codsrc/clientscript/cscr_readwrite.hpp"
 
 namespace game
 {
@@ -38,7 +39,6 @@ namespace game
 
 	unsigned int FindVariableIndexInternal(scriptInstance_t inst, unsigned int parentId, unsigned int name)
 	{
-		//return cscr_readwrite::FindVariableIndexInternal(inst, parentId, name);
-		return 0;
+		return codsrc::FindVariableIndexInternal(inst, parentId, name);
 	}
 }

@@ -27,5 +27,4 @@ namespace game
 	char* MT_Alloc(int numBytes, scriptInstance_t inst, void* call_addr = MT_Alloc_ADDR());
 
 	RefVector* GetRefVector(scriptInstance_t inst, unsigned int id);
-	const char* MT_NodeInfoString(scriptInstance_t inst, unsigned int nodeNum);
 }

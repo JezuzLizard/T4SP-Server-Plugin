@@ -1,7 +1,7 @@
 #include <stdinc.hpp>
 #include "loader/component_loader.hpp"
 #include "utils/hook.hpp"
-//#include "codsrc/clientscript/cscr_parser.hpp"
+#include "codsrc/clientscript/cscr_parser.hpp"
 
 #define RE_CSCR_PARSER_USE_WRAPPERS
 

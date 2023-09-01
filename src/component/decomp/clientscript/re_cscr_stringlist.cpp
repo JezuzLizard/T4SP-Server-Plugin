@@ -1,10 +1,9 @@
 #include <stdinc.hpp>
 #include "loader/component_loader.hpp"
 #include "utils/hook.hpp"
-//#include "codsrc/clientscript/cscr_stringlist.hpp"
+#include "codsrc/clientscript/cscr_stringlist.hpp"
 
 #define RE_CSCR_STRINGLIST_USE_WRAPPERS
-
 
 namespace re_cscr_stringlist
 {
