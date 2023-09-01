@@ -1,7 +1,6 @@
 #include <stdinc.hpp>
 #include "hook.hpp"
 #include "string.hpp"
-// iw6x-client
 
 namespace utils::hook
 {

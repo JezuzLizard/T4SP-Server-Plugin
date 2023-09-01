@@ -10,26 +10,26 @@
 */
 
 #if defined(__GNUC__)
-  typedef          long long ll;
-  typedef unsigned long long ull;
-  #define __int64 long long
-  #define __int32 int
-  #define __int16 short
-  #define __int8  char
-  #define MAKELL(num) num ## LL
-  #define FMT_64 "ll"
+typedef          long long ll;
+typedef unsigned long long ull;
+#define __int64 long long
+#define __int32 int
+#define __int16 short
+#define __int8  char
+#define MAKELL(num) num ## LL
+#define FMT_64 "ll"
 #elif defined(_MSC_VER)
-  typedef          __int64 ll;
-  typedef unsigned __int64 ull;
-  #define MAKELL(num) num ## i64
-  #define FMT_64 "I64"
+typedef          __int64 ll;
+typedef unsigned __int64 ull;
+#define MAKELL(num) num ## i64
+#define FMT_64 "I64"
 #elif defined (__BORLANDC__)
-  typedef          __int64 ll;
-  typedef unsigned __int64 ull;
-  #define MAKELL(num) num ## i64
-  #define FMT_64 "L"
+typedef          __int64 ll;
+typedef unsigned __int64 ull;
+#define MAKELL(num) num ## i64
+#define FMT_64 "L"
 #else
-  #error "unknown compiler"
+#error "unknown compiler"
 #endif
 typedef unsigned int uint;
 typedef unsigned char uchar;
@@ -152,9 +152,9 @@ typedef int bool;       // we want to use bool in our C programs
 // Fill memory block with an integer value
 inline void memset32(void *ptr, uint32 value, int count)
 {
-  uint32 *p = (uint32 *)ptr;
-  for ( int i=0; i < count; i++ )
-    *p++ = value;
+	uint32 *p = (uint32 *)ptr;
+	for ( int i=0; i < count; i++ )
+		*p++ = value;
 }
 
 // Generate a reference to pair of operands
@@ -168,112 +168,112 @@ template<class T> uint64 __PAIR__(uint32 high, T low) { return (((uint64)high) <
 // rotate left
 template<class T> T __ROL__(T value, uint count)
 {
-  const uint nbits = sizeof(T) * 8;
-  count %= nbits;
+	const uint nbits = sizeof(T) * 8;
+	count %= nbits;
 
-  T high = value >> (nbits - count);
-  value <<= count;
-  value |= high;
-  return value;
+	T high = value >> (nbits - count);
+	value <<= count;
+	value |= high;
+	return value;
 }
 
 // rotate right
 template<class T> T __ROR__(T value, uint count)
 {
-  const uint nbits = sizeof(T) * 8;
-  count %= nbits;
+	const uint nbits = sizeof(T) * 8;
+	count %= nbits;
 
-  T low = value << (nbits - count);
-  value >>= count;
-  value |= low;
-  return value;
+	T low = value << (nbits - count);
+	value >>= count;
+	value |= low;
+	return value;
 }
 
 // carry flag of left shift
 template<class T> int8 __MKCSHL__(T value, uint count)
 {
-  const uint nbits = sizeof(T) * 8;
-  count %= nbits;
+	const uint nbits = sizeof(T) * 8;
+	count %= nbits;
 
-  return (value >> (nbits-count)) & 1;
+	return (value >> (nbits-count)) & 1;
 }
 
 // carry flag of right shift
 template<class T> int8 __MKCSHR__(T value, uint count)
 {
-  return (value >> (count-1)) & 1;
+	return (value >> (count-1)) & 1;
 }
 
 // sign flag
 template<class T> int8 __SETS__(T x)
 {
-  if ( sizeof(T) == 1 )
-    return int8(x) < 0;
-  if ( sizeof(T) == 2 )
-    return int16(x) < 0;
-  if ( sizeof(T) == 4 )
-    return int32(x) < 0;
-  return int64(x) < 0;
+	if ( sizeof(T) == 1 )
+		return int8(x) < 0;
+	if ( sizeof(T) == 2 )
+		return int16(x) < 0;
+	if ( sizeof(T) == 4 )
+		return int32(x) < 0;
+	return int64(x) < 0;
 }
 
 // overflow flag of subtraction (x-y)
 template<class T, class U> int8 __OFSUB__(T x, U y)
 {
-  if ( sizeof(T) < sizeof(U) )
-  {
-    U x2 = x;
-    int8 sx = __SETS__(x2);
-    return (sx ^ __SETS__(y)) & (sx ^ __SETS__(x2-y));
-  }
-  else
-  {
-    T y2 = y;
-    int8 sx = __SETS__(x);
-    return (sx ^ __SETS__(y2)) & (sx ^ __SETS__(x-y2));
-  }
+	if ( sizeof(T) < sizeof(U) )
+	{
+		U x2 = x;
+		int8 sx = __SETS__(x2);
+		return (sx ^ __SETS__(y)) & (sx ^ __SETS__(x2-y));
+	}
+	else
+	{
+		T y2 = y;
+		int8 sx = __SETS__(x);
+		return (sx ^ __SETS__(y2)) & (sx ^ __SETS__(x-y2));
+	}
 }
 
 // overflow flag of addition (x+y)
 template<class T, class U> int8 __OFADD__(T x, U y)
 {
-  if ( sizeof(T) < sizeof(U) )
-  {
-    U x2 = x;
-    int8 sx = __SETS__(x2);
-    return ((1 ^ sx) ^ __SETS__(y)) & (sx ^ __SETS__(x2+y));
-  }
-  else
-  {
-    T y2 = y;
-    int8 sx = __SETS__(x);
-    return ((1 ^ sx) ^ __SETS__(y2)) & (sx ^ __SETS__(x+y2));
-  }
+	if ( sizeof(T) < sizeof(U) )
+	{
+		U x2 = x;
+		int8 sx = __SETS__(x2);
+		return ((1 ^ sx) ^ __SETS__(y)) & (sx ^ __SETS__(x2+y));
+	}
+	else
+	{
+		T y2 = y;
+		int8 sx = __SETS__(x);
+		return ((1 ^ sx) ^ __SETS__(y2)) & (sx ^ __SETS__(x+y2));
+	}
 }
 
 // carry flag of subtraction (x-y)
 template<class T, class U> int8 __CFSUB__(T x, U y)
 {
-  int size = sizeof(T) > sizeof(U) ? sizeof(T) : sizeof(U);
-  if ( size == 1 )
-    return uint8(x) < uint8(y);
-  if ( size == 2 )
-    return uint16(x) < uint16(y);
-  if ( size == 4 )
-    return uint32(x) < uint32(y);
-  return uint64(x) < uint64(y);
+	int size = sizeof(T) > sizeof(U) ? sizeof(T) : sizeof(U);
+	if ( size == 1 )
+		return uint8(x) < uint8(y);
+	if ( size == 2 )
+		return uint16(x) < uint16(y);
+	if ( size == 4 )
+		return uint32(x) < uint32(y);
+	return uint64(x) < uint64(y);
 }
 
 // carry flag of addition (x+y)
 template<class T, class U> int8 __CFADD__(T x, U y)
 {
-  int size = sizeof(T) > sizeof(U) ? sizeof(T) : sizeof(U);
-  if ( size == 1 )
-    return uint8(x) > uint8(x+y);
-  if ( size == 2 )
-    return uint16(x) > uint16(x+y);
-  if ( size == 4 )
-    return uint32(x) > uint32(x+y);
-  return uint64(x) > uint64(x+y);
+	int size = sizeof(T) > sizeof(U) ? sizeof(T) : sizeof(U);
+	if ( size == 1 )
+		return uint8(x) > uint8(x+y);
+	if ( size == 2 )
+		return uint16(x) > uint16(x+y);
+	if ( size == 4 )
+		return uint32(x) > uint32(x+y);
+	return uint64(x) > uint64(x+y);
 }
 
 #else

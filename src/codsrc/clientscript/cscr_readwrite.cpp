@@ -21,9 +21,9 @@ namespace codsrc
 		return game::FindVariableIndexInternal2(inst, name, (parentId + name) % 0xFFFD + 1);
 	}
 
-    // Decomp Status: Tested, Completed
-    unsigned int FindVariableIndexInternal2(game::scriptInstance_t inst, unsigned int name, unsigned int index)
-    {
+	// Decomp Status: Tested, Completed
+	unsigned int FindVariableIndexInternal2(game::scriptInstance_t inst, unsigned int name, unsigned int index)
+	{
 		unsigned int newIndex;
 		game::VariableValueInternal* newEntryValue;
 		game::VariableValueInternal* entryValue;
@@ -76,11 +76,11 @@ namespace codsrc
 		}
 
 		return 0;
-    }
+	}
 
-    // Decomp Status: Tested, Completed
-    unsigned int FindLastSibling(unsigned int parentId, game::scriptInstance_t inst)
-    {
+	// Decomp Status: Tested, Completed
+	unsigned int FindLastSibling(unsigned int parentId, game::scriptInstance_t inst)
+	{
 		game::VariableValueInternal* parentValue;
 		unsigned int nextParentVarIndex;
 		unsigned int id;
@@ -101,10 +101,10 @@ namespace codsrc
 
 		id = game::gScrVarGlob[inst].parentVariables[nextParentVarIndex].hash.u.prev;
 
-        if (!id)
-        {
-            return 0;
-        }
+		if (!id)
+		{
+			return 0;
+		}
 
 		childVarName = game::gScrVarGlob[inst].childVariables[id].w.status >> VAR_NAME_BIT_SHIFT;
 
@@ -113,5 +113,5 @@ namespace codsrc
 		assert(index);
 
 		return index;
-    }
+	}
 }

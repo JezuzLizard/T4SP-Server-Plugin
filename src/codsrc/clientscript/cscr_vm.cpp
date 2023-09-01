@@ -1108,16 +1108,16 @@ namespace codsrc
 			game::gScrVmPub[inst].function_frame->fs.pos = game::gFs[inst].pos;
 			/*
 			if ( gScrVmGlob[inst].recordPlace )
-          Scr_GetFileAndLine(inst, localFs.pos, &gScrVmGlob[inst].lastFileName, &gScrVmGlob[inst].lastLine);
-        if ( gScrVmDebugPub[inst].func_table[builtinIndex].breakpointCount )
-        {
-          if ( gScrVmPub[inst].top != localFs.top - 1 && !Assert_MyHandler("C:\\projects_pc\\cod\\codsrc\\src\\clientscript\\cscr_vm.cpp", 1611, 0, "%s", "gScrVmPub[inst].top == localFs.top - 1") )
-            __debugbreak();
-          v104 = gScrVmPub[inst].outparamcount;
-          Scr_HitBuiltinBreakpoint(inst, localFs.top, debugpos, localFs.localId, gOpcode[inst], builtinIndex, v104 + 1);
-          gScrVmPub[inst].outparamcount = v104;
-          gScrVmPub[inst].top = localFs.top - 1;
-        }*/
+		  Scr_GetFileAndLine(inst, localFs.pos, &gScrVmGlob[inst].lastFileName, &gScrVmGlob[inst].lastLine);
+		if ( gScrVmDebugPub[inst].func_table[builtinIndex].breakpointCount )
+		{
+		  if ( gScrVmPub[inst].top != localFs.top - 1 && !Assert_MyHandler("C:\\projects_pc\\cod\\codsrc\\src\\clientscript\\cscr_vm.cpp", 1611, 0, "%s", "gScrVmPub[inst].top == localFs.top - 1") )
+			__debugbreak();
+		  v104 = gScrVmPub[inst].outparamcount;
+		  Scr_HitBuiltinBreakpoint(inst, localFs.top, debugpos, localFs.localId, gOpcode[inst], builtinIndex, v104 + 1);
+		  gScrVmPub[inst].outparamcount = v104;
+		  gScrVmPub[inst].top = localFs.top - 1;
+		}*/
 
 			assert(builtinIndex >= 0);
 			assert(builtinIndex < 1024);
@@ -5442,7 +5442,7 @@ namespace codsrc
 		}
 		else
 		{
-		 	return game::CScr_SetEntityField(offset, entnum, clientNum);
+			return game::CScr_SetEntityField(offset, entnum, clientNum);
 		}
 	}
 
