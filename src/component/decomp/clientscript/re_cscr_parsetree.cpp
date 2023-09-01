@@ -161,7 +161,7 @@ namespace re_cscr_parsetree
 	public:
 		void post_unpack() override
 		{
-			//Scr_InitAllocNode_hook.create(game::Scr_InitAllocNode.get(), Scr_InitAllocNode_stub);
+			Scr_InitAllocNode_hook.create(game::Scr_InitAllocNode.get(), Scr_InitAllocNode_stub);
 			node0_hook.create(game::node0.get(), node0_stub);
 			node1_hook.create(game::node1.get(), node1_stub);
 			node2_hook.create(game::node2.get(), node2_stub);
