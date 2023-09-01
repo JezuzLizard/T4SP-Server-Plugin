@@ -147,6 +147,12 @@ namespace signatures
 	bool handle_funcs()
 	{
 		game::plutonium::load_custom_script_func.set(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(0x689C80)) + 0x6)));
+		game::plutonium::script_preprocess.set(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(0x689BCF)) + 0x2)));
+
+		game::plutonium::vm_execute_update_codepos.set(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(0x69608C)) + 0x2)));
+		game::plutonium::scr_execthread_update_codepos_func.set(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(0x699560)) + 0x11)));
+		game::plutonium::scr_execentthread_update_codepos_func.set(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(0x699640)) + 0x7)));
+		game::plutonium::scr_addexecthread_update_codepos_func.set(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(reinterpret_cast<size_t>(utils::hook::get_displacement_addr(0x699730)) + 0x7)));
 
 		return true;
 	}

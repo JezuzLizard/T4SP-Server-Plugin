@@ -437,7 +437,10 @@ namespace codsrc
 		char* buffer;
 		int fh;
 
-		if (*(*game::fs_game)->current.string || (*game::com_developer)->current.enabled)
+		// pluto
+		if (true)
+		// if (*(*game::fs_game)->current.string || (*game::com_developer)->current.enabled)
+		//
 		{
 			*game::statmon_related_bool = 1;
 			if (game::FS_FOpenFileByMode(filename, &fh, game::FS_READ) < 0)

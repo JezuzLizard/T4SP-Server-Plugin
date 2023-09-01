@@ -1274,9 +1274,12 @@ namespace codsrc
 			++game::gScrVmPub[inst].function_frame;
 			game::gScrVmPub[inst].function_frame->fs.localId = game::gFs[inst].localId;
 
+			// pluto
+			game::plutonium::vm_execute_update_codepos(inst);
+			//
+
 			assert(game::gFs[inst].pos);
 
-			// replace func
 		}
 
 		void OP_ScriptFunctionCall(game::scriptInstance_t inst)
@@ -4207,7 +4210,17 @@ namespace codsrc
 		game::Scr_ClearOutParams(inst);
 		startTop = &game::gScrVmPub[inst].top[-paramcount];
 		paramcounta = game::gScrVmPub[inst].inparamcount - paramcount;
-		id = game::FindEntityId(classnum, entnum, inst);
+
+		// pluto
+		if (classnum == -1)
+		{
+			id = entnum; // this is for level notify
+		}
+		//
+		else
+		{
+			id = game::FindEntityId(classnum, entnum, inst);
+		}
 
 		if ( id )
 		{
@@ -4496,6 +4509,10 @@ namespace codsrc
 		unsigned short threadId;
 		const char* pos;
 
+		// pluto
+		game::plutonium::scr_execthread_update_codepos_func(inst, inst, &handle, &handle);
+		//
+
 		pos = &game::gScrVarPub[inst].programBuffer[handle];
 
 		if ( !game::gScrVmPub[inst].function_count )
@@ -4537,6 +4554,10 @@ namespace codsrc
 		const char* pos;
 		game::classNum_e classnum = game::CLASS_NUM_ENTITY;
 
+		// pluto
+		game::plutonium::scr_execentthread_update_codepos_func(inst, &handle);
+		//
+
 		pos = &game::gScrVarPub[inst].programBuffer[handle];
 
 		if ( !game::gScrVmPub[inst].function_count )
@@ -4575,6 +4596,10 @@ namespace codsrc
 		unsigned int threadId;
 		unsigned int thread;
 		unsigned int paramcount = 0;
+
+		// pluto
+		game::plutonium::scr_addexecthread_update_codepos_func(inst, &handle);
+		//
 
 		if ( !game::gScrVmPub[inst].function_count )
 		{

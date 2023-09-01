@@ -298,7 +298,12 @@ namespace codsrc
 		game::gScrParserPub[inst].scriptfilename = extFilename;
 		game:: gScrCompilePub[inst].in_ptr = "+";
 		game::gScrCompilePub[inst].parseBuf = sourceBuffer;
-		game::ScriptParse(inst, &parseData);
+
+		// pluto
+		game::plutonium::script_preprocess(sourceBuffer, inst, &parseData); // the pluto hook will call ScriptParse, so we dont have to
+		// game::ScriptParse(inst, &parseData);
+		//
+
 		scriptPosVar = game::GetVariable(inst, game::gScrCompilePub[inst].scriptsPos, name);
 		filePosId = game::GetObject(inst, scriptPosVar);
 		scriptCountVar = game::GetVariable(inst, game::gScrCompilePub[inst].scriptsCount, name);
