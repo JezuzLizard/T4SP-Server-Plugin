@@ -170,6 +170,7 @@ namespace signatures
 		return true;
 	}
 
+
 #define SAFE_SET_PLUTO_SYMBOL_DOUBLE(name, addr, off) \
 	addr2 = reinterpret_cast<size_t>(utils::hook::get_displacement_addr(addr)); \
 	if (!addr_is_in_image_space(addr2)) \
@@ -181,6 +182,16 @@ namespace signatures
 	if (!addr_is_in_image_space(addr1)) \
 	{ \
 		err_reason = #name " 2"; \
+		return false; \
+	} \
+	game::plutonium::name.set(addr1)
+
+
+#define SAFE_SET_PLUTO_SYMBOL(name, addr) \
+	addr1 = reinterpret_cast<size_t>(utils::hook::get_displacement_addr(addr)); \
+	if (!addr_is_in_image_space(addr1)) \
+	{ \
+		err_reason = #name; \
 		return false; \
 	} \
 	game::plutonium::name.set(addr1)
@@ -198,6 +209,9 @@ namespace signatures
 		SAFE_SET_PLUTO_SYMBOL_DOUBLE(scr_execthread_update_codepos_func, 0x699560, 0x11);
 		SAFE_SET_PLUTO_SYMBOL_DOUBLE(scr_execentthread_update_codepos_func, 0x699640, 0x7);
 		SAFE_SET_PLUTO_SYMBOL_DOUBLE(scr_addexecthread_update_codepos_func, 0x699730, 0x7);
+
+		SAFE_SET_PLUTO_SYMBOL(scr_get_function_stub, 0x682D99);
+		SAFE_SET_PLUTO_SYMBOL(scr_get_method_stub, 0x683043);
 
 		return true;
 	}

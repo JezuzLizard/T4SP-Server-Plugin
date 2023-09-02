@@ -123,11 +123,17 @@ namespace gsc
 		void post_unpack() override
 		{
 			// custom gsc methods
-			scr_getmethod_hook.create(utils::hook::get_displacement_addr(SELECT(0x0, 0x683043)), scr_getmethod_stub);
+			if (game::plutonium::scr_get_method_stub != nullptr)
+			{
+				scr_getmethod_hook.create(game::plutonium::scr_get_method_stub.get(), scr_getmethod_stub);
+			}
 			
 			// custom gsc funcs
-			scr_getfunction_stub_ret_loc = utils::hook::get_displacement_addr(SELECT(0x0, 0x682D99));
-			utils::hook::jump(SELECT(0x0, 0x682D99), scr_getfunction_stub);
+			if (game::plutonium::scr_get_function_stub != nullptr)
+			{
+				scr_getfunction_stub_ret_loc = game::plutonium::scr_get_function_stub.get();
+				utils::hook::jump(SELECT(0x0, 0x682D99), scr_getfunction_stub);
+			}
 		}
 
 	private:

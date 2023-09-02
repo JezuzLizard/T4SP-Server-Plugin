@@ -78,5 +78,8 @@ namespace game
 		WEAK symbol<void(game::scriptInstance_t, game::scriptInstance_t, unsigned int*, unsigned int*)> scr_execthread_update_codepos_func{0x0, 0x0};
 		WEAK symbol<void(game::scriptInstance_t, unsigned int*)> scr_execentthread_update_codepos_func{ 0x0, 0x0 };
 		WEAK symbol<void(game::scriptInstance_t, unsigned int*)> scr_addexecthread_update_codepos_func{ 0x0, 0x0 };
+
+		WEAK symbol<void()> scr_get_method_stub{ 0x0, 0x0 };
+		WEAK symbol<void()> scr_get_function_stub{ 0x0, 0x0 };
 	}
 }
