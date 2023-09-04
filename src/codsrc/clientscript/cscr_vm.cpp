@@ -2950,8 +2950,8 @@ namespace codsrc
 			case game::OP_CallBuiltin1:
 				VM::OP_CallBuiltin(inst, 1);
 				continue;
-			case game::OP_CallBuiltin2:
 
+			case game::OP_CallBuiltin2:
 				VM::OP_CallBuiltin(inst, 2);
 				continue;
 
@@ -3265,7 +3265,7 @@ namespace codsrc
 				goto interrupt_return;
 
 			default:
-				game::gScrVmPub[inst].terminal_error = 1;
+				// game::gScrVmPub[inst].terminal_error = 1;
 				game::RuntimeError(inst, game::gFs[inst].pos, 0, game::va("CODE ERROR: unknown opcode %d", game::gOpcode[inst]), nullptr);
 				continue;
 			}
