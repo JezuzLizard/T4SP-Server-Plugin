@@ -1678,7 +1678,20 @@ namespace codsrc
 					Com_Printf(game::CON_CHANNEL_PARSERSCRIPT, "EXCEED TIME: %d\n", v28);
 				}*/
 
-				if (!game::gScrVmGlob[inst].loading)
+				// pluto
+				static game::dvar_s* scr_kill_infinite_loops = nullptr;
+				if (!scr_kill_infinite_loops)
+				{
+					scr_kill_infinite_loops = game::Dvar_FindVar("scr_kill_infinite_loops");
+				}
+
+				bool kill_infinite_loops = scr_kill_infinite_loops && scr_kill_infinite_loops->current.enabled;
+				//
+
+				// if (!game::gScrVmGlob[inst].loading)
+				// pluto
+				if (kill_infinite_loops)
+				//
 				{
 					/*if (always_false())
 					{
@@ -1699,7 +1712,10 @@ namespace codsrc
 						Scr_Error(inst, "potential infinite loop in script", 0);
 					}*/
 
-					if (!game::gScrVmPub[inst].abort_on_error)
+					//if (!game::gScrVmPub[inst].abort_on_error)
+					// pluto
+					if (kill_infinite_loops)
+					//
 					{
 						// t5 added this extra string
 						const char* side = inst == game::SCRIPTINSTANCE_CLIENT ? "client" : "server";
@@ -5440,7 +5456,24 @@ namespace codsrc
 	{
 		game::Scr_SetErrorMessage(inst, error);
 
-		game::gScrVmPub[inst].terminal_error = is_terminal;
+		// pluto
+		if (is_terminal)
+		{
+			game::gScrVmPub[inst].terminal_error = is_terminal;
+		}
+
+		static game::dvar_s* all_gsc_errors_non_terminal = nullptr;
+		if (!all_gsc_errors_non_terminal)
+		{
+			all_gsc_errors_non_terminal = game::Dvar_FindVar("all_gsc_errors_non_terminal");
+		}
+
+		if (all_gsc_errors_non_terminal && all_gsc_errors_non_terminal->current.enabled)
+		{
+			game::gScrVmPub[inst].terminal_error = false;
+		}
+		//
+
 		game::Scr_ErrorInternal(inst);
 	}
 
@@ -5449,7 +5482,7 @@ namespace codsrc
 	{
 		game::Scr_DumpScriptThreads(inst);
 		game::gScrVmPub[inst].terminal_error = 1;
-		game::Scr_Error(error, inst, false);
+		game::Scr_Error(error, inst, false); // yes, this is a basegame bug, pluto fixes it above
 	}
 
 	// Decomp Status: Tested, Completed

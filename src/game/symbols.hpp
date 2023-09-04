@@ -20,6 +20,8 @@ namespace game
 
 	WEAK symbol<const char*(const char* Format, ...)>va{ 0x0, 0x5F6D80 };
 
+	WEAK symbol<dvar_s*(const char* dvarName)>Dvar_FindVar{ 0x0, 0x5EDE30 };
+
 	WEAK symbol<parseInfo_t* (const char* ArgList)>Com_BeginParseSession{ 0x0, 0x5F5830 };
 	WEAK symbol<void()> Com_EndParseSession{ 0x0, 0x5F5910 };
 	WEAK symbol<int()> Sys_Milliseconds{ 0x0, 0x603D40 };
@@ -78,6 +80,8 @@ namespace game
 		WEAK symbol<void(game::scriptInstance_t, game::scriptInstance_t, unsigned int*, unsigned int*)> scr_execthread_update_codepos_func{0x0, 0x0};
 		WEAK symbol<void(game::scriptInstance_t, unsigned int*)> scr_execentthread_update_codepos_func{ 0x0, 0x0 };
 		WEAK symbol<void(game::scriptInstance_t, unsigned int*)> scr_addexecthread_update_codepos_func{ 0x0, 0x0 };
+
+		WEAK symbol<const char*(game::scriptInstance_t, unsigned int)> at_codepose_va{ 0x0, 0x0 };
 
 		WEAK symbol<void()> scr_get_method_stub{ 0x0, 0x0 };
 		WEAK symbol<void()> scr_get_function_stub{ 0x0, 0x0 };
