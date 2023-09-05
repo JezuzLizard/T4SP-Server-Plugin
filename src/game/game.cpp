@@ -188,6 +188,33 @@ namespace game
 		return answer;
 	}
 
+	// cmd_function_s *__usercall Cmd_FindCommand@<eax>(const char *cmdName@<esi>)
+	cmd_function_s* Cmd_FindCommand(const char* cmdName, void* call_addr)
+	{
+		cmd_function_s* answer;
+
+		__asm
+		{
+			mov esi, cmdName;
+			call call_addr;
+			mov answer, eax;
+		}
+
+		return answer;
+	}
+
+	void Cmd_AddCommand(const char* name, void (__cdecl *function)())
+	{
+		cmd_function_s* newCmd = utils::memory::allocate<cmd_function_s>();
+
+		*newCmd = {};
+		newCmd->next = *cmd_functions;
+		newCmd->function = function;
+		newCmd->name = utils::memory::duplicate_string(name);
+
+		*cmd_functions = newCmd;
+	}
+
 	// restored
 	void Sys_EnterCriticalSection(CriticalSection critSect)
 	{

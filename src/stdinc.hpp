@@ -61,6 +61,7 @@
 #pragma comment(lib, "Winmm.lib")
 
 #include "utils/hexrays_defs.h"
+#include "utils/io.hpp"
 
 #undef GetObject
 
@@ -68,5 +69,6 @@
 #include "game/enums.hpp"
 #include "game/structs.hpp"
 #include "game/symbols.hpp"
+std::string get_full_gsc_state_str(game::scriptInstance_t inst);
 
 using namespace std::literals;

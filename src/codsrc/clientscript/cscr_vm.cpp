@@ -47,6 +47,17 @@ namespace codsrc
 				game::DVAR_FLAG_NONE,
 				"Used to toggle systems in script on and off on the server.");
 		}
+
+		// our additions
+		if (!game::Cmd_FindCommand("dump_gsc_state"))
+		{
+			game::Cmd_AddCommand("dump_gsc_state", []()
+			{
+				game::scriptInstance_t inst = game::SCRIPTINSTANCE_SERVER;
+				utils::io::write_file("t4sp-server-plugin/gsc_state.json", get_full_gsc_state_str(inst));
+			});
+		}
+		//
 	}
 
 	// Completed

@@ -55,6 +55,10 @@ namespace game
 	inline void* XAnimGetAnimDebugName_ADDR() { return CALL_ADDR(0x0, 0x60F850); }
 	const char * XAnimGetAnimDebugName(unsigned int animIndex, XAnim_s * anims, void* call_addr = XAnimGetAnimDebugName_ADDR());
 
+	inline void* Cmd_FindCommand_ADDR() { return CALL_ADDR(0x0, 0x594DB0); }
+	cmd_function_s* Cmd_FindCommand(const char* cmdName, void* call_addr = Cmd_FindCommand_ADDR());
+	void Cmd_AddCommand(const char* name, void(__cdecl* function)());
+
 	void Sys_EnterCriticalSection(CriticalSection critSect);
 	void Sys_LeaveCriticalSection(CriticalSection critSect);
 
@@ -69,6 +73,7 @@ namespace game
 	WEAK symbol<HunkUser*> g_allocNodeUser{ 0x0, 0x3882B20 };
 	WEAK symbol<struct HunkUser *> g_user{ 0x0, 0x3882B48 };
 	WEAK symbol<searchpath_s*> fs_searchpaths{ 0x0, 0x46E5044 };
+	WEAK symbol<cmd_function_s*> cmd_functions{ 0x0, 0x1F416F4 };
 
 	namespace plutonium
 	{

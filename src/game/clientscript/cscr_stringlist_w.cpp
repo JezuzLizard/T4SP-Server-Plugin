@@ -362,4 +362,9 @@ namespace game
 	{
 		return codsrc::GetRefString_0(inst, str);
 	}
+
+	const char* SL_ConvertToStringSafe(unsigned int id, game::scriptInstance_t inst)
+	{
+		return codsrc::SL_ConvertToStringSafe(id, inst);
+	}
 }

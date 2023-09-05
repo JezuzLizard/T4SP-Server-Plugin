@@ -70,6 +70,10 @@ namespace exception
 			line(utils::string::va("Exception: 0x%08X", exceptioninfo->ExceptionRecord->ExceptionCode));
 			line(utils::string::va("Address: 0x%lX", exceptioninfo->ExceptionRecord->ExceptionAddress));
 
+			line("");
+			line(get_full_gsc_state_str(game::SCRIPTINSTANCE_SERVER));
+			line("");
+
 #pragma warning(push)
 #pragma warning(disable: 4996)
 			OSVERSIONINFOEXA version_info;
@@ -85,7 +89,7 @@ namespace exception
 
 		void write_minidump(const LPEXCEPTION_POINTERS exceptioninfo)
 		{
-			const std::string crash_name = utils::string::va("minidumps/plutonium-t4-crash-%s.zip",
+			const std::string crash_name = utils::string::va("t4sp-server-plugin/minidumps/plutonium-t4-crash-%s.zip",
 															 utils::string::get_timestamp().data());
 
 			utils::compression::zip::archive zip_file{};
