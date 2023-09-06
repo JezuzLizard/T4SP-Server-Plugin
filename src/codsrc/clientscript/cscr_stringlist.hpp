@@ -38,6 +38,5 @@ namespace codsrc
 	int SL_ConvertFromString(game::scriptInstance_t inst, const char* str);
 	int SL_ConvertFromRefString(game::scriptInstance_t inst, game::RefString* refString);
 	game::RefString* GetRefString_0(game::scriptInstance_t inst, const char* str);
-	const char* SL_DebugConvertToString(unsigned int stringValue, game::scriptInstance_t inst);
 	const char* SL_ConvertToStringSafe(unsigned int id, game::scriptInstance_t inst);
 }

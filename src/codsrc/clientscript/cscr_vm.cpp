@@ -1066,6 +1066,8 @@ namespace codsrc
 			gScrVmPub[inst].outparamcount = outparamcount;
 			}*/
 
+			push_builtin_history(inst, builtinIndex);
+
 			assert(builtinIndex >= 0);
 			assert(builtinIndex < 1024);
 
@@ -1129,6 +1131,8 @@ namespace codsrc
 		  gScrVmPub[inst].outparamcount = v104;
 		  gScrVmPub[inst].top = localFs.top - 1;
 		}*/
+
+			push_builtin_history(inst, builtinIndex);
 
 			assert(builtinIndex >= 0);
 			assert(builtinIndex < 1024);
@@ -1290,6 +1294,10 @@ namespace codsrc
 			{
 				game::plutonium::vm_execute_update_codepos(inst);
 			}
+			//
+
+			// our additions
+			push_codepos_history(inst, game::gFs[inst].pos);
 			//
 
 			assert(game::gFs[inst].pos);
@@ -2682,7 +2690,7 @@ namespace codsrc
 					int currentCaseValue;
 					const char* currentCodePos;
 
-					do
+					do // Scr_ReadIntArray(2 * game::gCaseCount[inst])
 					{
 						currentCaseValue = game::Scr_ReadUnsignedInt(inst, &game::gFs[inst].pos);
 						currentCodePos = game::Scr_ReadCodePos(inst, &game::gFs[inst].pos);
@@ -2712,6 +2720,10 @@ namespace codsrc
 		{
 			game::gOpcode[inst] = (game::OpcodeVM)game::Scr_ReadUnsignedByte(inst, &game::gFs[inst].pos);
 		interrupt_return:
+			// our addition
+			push_opcode_to_history(inst, game::gOpcode[inst]);
+			//
+
 			switch ( game::gOpcode[inst] )
 			{
 			case game::OP_End:
