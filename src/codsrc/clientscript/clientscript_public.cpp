@@ -88,6 +88,66 @@ int op_idx[game::SCRIPT_INSTANCE_MAX] = { 0, 0 };
 bool op_idx_rolled_over[game::SCRIPT_INSTANCE_MAX] = { false, false };
 game::OpcodeVM op_history[game::SCRIPT_INSTANCE_MAX][128] = {};
 
+int builtin_idx[game::SCRIPT_INSTANCE_MAX] = { 0, 0 };
+bool builtin_idx_rolled_over[game::SCRIPT_INSTANCE_MAX] = { false, false };
+int builtin_history[game::SCRIPT_INSTANCE_MAX][128] = {};
+
+int codepos_idx[game::SCRIPT_INSTANCE_MAX] = { 0, 0 };
+bool codepos_idx_rolled_over[game::SCRIPT_INSTANCE_MAX] = { false, false };
+const char* codepos_history[game::SCRIPT_INSTANCE_MAX][128] = {};
+
+std::string build_builtin_history(game::scriptInstance_t inst)
+{
+	std::string answer{};
+
+	int count = builtin_idx_rolled_over[inst] ? ARRAY_COUNT(builtin_history[inst]) : builtin_idx[inst];
+
+	for (auto i = 0; i < count; i++)
+	{
+		auto idx = builtin_idx[inst] - 1 - i;
+		if (idx < 0)
+		{
+			idx += ARRAY_COUNT(builtin_history[inst]);
+		}
+
+		// todo, convert to builtin name
+		answer += std::format("{}\n", builtin_history[inst][idx]);
+	}
+
+	return answer;
+}
+
+std::string build_codepos_history(game::scriptInstance_t inst)
+{
+	std::string answer{};
+	int bufferIndex;
+	int prevSourcePos;
+	int col;
+	char line[1024];
+	int lineNum;
+	const char* fileName;
+
+	int count = codepos_idx_rolled_over[inst] ? ARRAY_COUNT(codepos_history[inst]) : codepos_idx[inst];
+
+	for (auto i = 0; i < count; i++)
+	{
+		auto idx = codepos_idx[inst] - 1 - i;
+		if (idx < 0)
+		{
+			idx += ARRAY_COUNT(codepos_history[inst]);
+		}
+
+		bufferIndex = game::Scr_GetSourceBuffer(inst, codepos_history[inst][idx]);
+		prevSourcePos = game::Scr_GetPrevSourcePos(inst, codepos_history[inst][idx], 0);
+		lineNum = game::Scr_GetLineInfo(&col, game::gScrParserPub[inst].sourceBufferLookup[bufferIndex].sourceBuf, prevSourcePos, line);
+		fileName = game::gScrParserPub[inst].sourceBufferLookup[bufferIndex].buf;
+
+		answer += std::format("{}({}, {}): '{}'\n", fileName, lineNum, col, line);
+	}
+
+	return answer;
+}
+
 std::string build_op_history(game::scriptInstance_t inst)
 {
 	static const char* OpcodeVMToString[] = {
@@ -307,6 +367,8 @@ std::string get_full_gsc_state_str(game::scriptInstance_t inst)
 	answer["codeCallStack"] = printStack();
 	answer["gscCallStack"] = get_gsc_call_stack(inst);
 	answer["opHistory"] = build_op_history(inst);
+	answer["builtinHistory"] = build_builtin_history(inst);
+	answer["codeposHistory"] = build_codepos_history(inst);
 
 	*game::gInst = t;
 
@@ -329,12 +391,28 @@ void push_opcode_to_history(game::scriptInstance_t inst, game::OpcodeVM op)
 
 void push_builtin_history(game::scriptInstance_t inst, int idx)
 {
-	inst = inst;
-	idx = idx;
+	assert(inst == 0 || inst == 1);
+	assert(idx >= 0 && idx < 1024);
+
+	builtin_history[inst][builtin_idx[inst]++] = idx;
+
+	if (builtin_idx[inst] >= ARRAY_COUNT(builtin_history[inst]))
+	{
+		builtin_idx_rolled_over[inst] = true;
+		builtin_idx[inst] = 0;
+	}
 }
 
 void push_codepos_history(game::scriptInstance_t inst, const char* pos)
 {
-	inst = inst;
-	pos = pos;
+	assert(inst == 0 || inst == 1);
+	assert(game::Scr_IsInOpcodeMemory(inst, pos));
+
+	codepos_history[inst][codepos_idx[inst]++] = pos;
+
+	if (codepos_idx[inst] >= ARRAY_COUNT(codepos_history[inst]))
+	{
+		codepos_idx_rolled_over[inst] = true;
+		codepos_idx[inst] = 0;
+	}
 }
