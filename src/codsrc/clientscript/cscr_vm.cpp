@@ -2220,7 +2220,7 @@ namespace codsrc
 		void OP_endswitch(game::scriptInstance_t inst)
 		{
 			game::gCaseCount[inst] = game::Scr_ReadUnsignedShort(inst, &game::gFs[inst].pos);
-			game::Scr_ReadData(inst, &game::gFs[inst].pos, 2 * game::gCaseCount[inst]);
+			game::Scr_ReadData(inst, &game::gFs[inst].pos, sizeof(unsigned int) * 2 * game::gCaseCount[inst]); // Scr_ReadIntArray
 		}
 
 		void OP_vector(game::scriptInstance_t inst)
