@@ -1397,10 +1397,6 @@ namespace re_cscr_vm
 
 		bool SetEntityFieldValue_call(game::scriptInstance_t inst, int offset_, int entnum, [[maybe_unused]] void* caller_addr, game::classNum_e classnum, int clientNum, game::VariableValue* value)
 		{
-#if CSCR_VARIABLE_EXTRA_CLASSMAPS
-			return script::SetEntityFieldValue_Override(inst, offset_, entnum, classnum, clientNum, value);
-#endif
-
 #ifdef RE_CSCR_VM_USE_WRAPPERS
 			return game::SetEntityFieldValue(inst, offset_, entnum, classnum, clientNum, value, SetEntityFieldValue_original);
 #else
