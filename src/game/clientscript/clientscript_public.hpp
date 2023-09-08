@@ -2254,6 +2254,7 @@ namespace game
 	WEAK symbol<dvar_s*> sv_clientside{ 0x0, 0x3882B6C };
 	WEAK symbol<char> error_message_buff{ 0x0, 0x3BE1E30 };
 	WEAK symbol<scrCompileGlob_t> gScrCompileGlob{ 0x0, 0x3701FE0 };
+	WEAK symbol<scrAnimGlob_t> gScrAnimGlob{ 0x0, 0x36BF320 };
 
 	WEAK symbol<unsigned char> g_parse_user{ 0x0, 0x234F72E };
 	WEAK symbol<scriptInstance_t> gInst{ 0x0, 0x3BE624C };
@@ -2298,11 +2299,6 @@ namespace game
 	WEAK symbol<int(jmp_buf buf, int count)>_setjmp3{ 0x0, 0x7E1894 };
 	WEAK symbol<void(jmp_buf Buf, int Value)>longjmp{ 0x0, 0x7AD57C };
 
-	inline void* ScriptParse_ADDR() { return CALL_ADDR(0x0, 0x69D710); }
-	void ScriptParse(scriptInstance_t inst, sval_u* parseData, void* call_addr = ScriptParse_ADDR());
-	inline void* Scr_LoadAnimTreeAtIndex_ADDR() { return CALL_ADDR(0x0, 0x67E7D0); }
-	void Scr_LoadAnimTreeAtIndex(scriptInstance_t inst, int user, unsigned int index, void* (__cdecl* Alloc)(int), int modCheckSum, void* call_addr = Scr_LoadAnimTreeAtIndex_ADDR());
-
 	inline void* CScr_SetEntityField_ADDR() { return CALL_ADDR(0x0, 0x671470); }
 	int CScr_SetEntityField(int ofs, int entnum, unsigned int clientnum, void* call_addr = CScr_SetEntityField_ADDR());
 	inline void* Scr_SetObjectField_ADDR() { return CALL_ADDR(0x0, 0x5469C0); }
@@ -2324,4 +2320,6 @@ namespace game
 #include "cscr_variable.hpp"
 #include "cscr_vm.hpp"
 #include "cscr_compiler.hpp"
+#include "cscr_yacc.hpp"
+#include "cscr_animtree.hpp"
 #endif
