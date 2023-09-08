@@ -2253,6 +2253,7 @@ namespace game
 	WEAK symbol<bool> loadedImpureScript{ 0x0, 0x22C1352 };
 	WEAK symbol<dvar_s*> sv_clientside{ 0x0, 0x3882B6C };
 	WEAK symbol<char> error_message_buff{ 0x0, 0x3BE1E30 };
+	WEAK symbol<scrCompileGlob_t> gScrCompileGlob{ 0x0, 0x3701FE0 };
 
 	WEAK symbol<unsigned char> g_parse_user{ 0x0, 0x234F72E };
 	WEAK symbol<scriptInstance_t> gInst{ 0x0, 0x3BE624C };
@@ -2294,14 +2295,11 @@ namespace game
 #pragma endregion
 
 #pragma region "functions"
-	WEAK symbol<void(scriptInstance_t inst, VariableValue* value)>RemoveRefToValue{ 0x0, 0x67EB70 };
 	WEAK symbol<int(jmp_buf buf, int count)>_setjmp3{ 0x0, 0x7E1894 };
 	WEAK symbol<void(jmp_buf Buf, int Value)>longjmp{ 0x0, 0x7AD57C };
 
 	inline void* ScriptParse_ADDR() { return CALL_ADDR(0x0, 0x69D710); }
 	void ScriptParse(scriptInstance_t inst, sval_u* parseData, void* call_addr = ScriptParse_ADDR());
-	inline void* ScriptCompile_ADDR() { return CALL_ADDR(0x0, 0x688E70); }
-	void ScriptCompile(scriptInstance_t inst, sval_u val, unsigned int filePosId, unsigned int fileCountId, unsigned int scriptId, PrecacheEntry * entries, int entriesCount, void* call_addr = ScriptCompile_ADDR());
 	inline void* Scr_LoadAnimTreeAtIndex_ADDR() { return CALL_ADDR(0x0, 0x67E7D0); }
 	void Scr_LoadAnimTreeAtIndex(scriptInstance_t inst, int user, unsigned int index, void* (__cdecl* Alloc)(int), int modCheckSum, void* call_addr = Scr_LoadAnimTreeAtIndex_ADDR());
 
@@ -2325,4 +2323,5 @@ namespace game
 #include "cscr_tempmemory.hpp"
 #include "cscr_variable.hpp"
 #include "cscr_vm.hpp"
+#include "cscr_compiler.hpp"
 #endif
