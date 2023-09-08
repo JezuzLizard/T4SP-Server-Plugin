@@ -3,8 +3,7 @@
 #include "utils/hook.hpp"
 #include "codsrc/clientscript/cscr_readwrite.hpp"
 
-//#define RE_CSCR_READWRITE_USE_WRAPPERS
-
+#ifndef DISABLE_RE_CSCR_READWRITE
 namespace re_cscr_readwrite
 {
 	utils::hook::detour FindVariableIndexInternal2_hook;
@@ -77,3 +76,4 @@ namespace re_cscr_readwrite
 	};
 }
 REGISTER_COMPONENT(re_cscr_readwrite::component)
+#endif

@@ -3,8 +3,7 @@
 #include "utils/hook.hpp"
 //#include "codsrc/clientscript/cscr_compiler.hpp"
 
-#define RE_CSCR_COMPILER_USE_WRAPPERS
-
+#ifndef DISABLE_RE_CSCR_COMPILER
 namespace re_cscr_compiler
 {
 	utils::hook::detour RemoveRefToValue_hook;
@@ -3327,3 +3326,4 @@ namespace re_cscr_compiler
 	};
 }
 REGISTER_COMPONENT(re_cscr_compiler::component)
+#endif

@@ -3,8 +3,7 @@
 #include "utils/hook.hpp"
 #include "codsrc/clientscript/cscr_vm.hpp"
 
-//#define RE_CSCR_VM_USE_WRAPPERS
-
+#ifndef DISABLE_RE_CSCR_VM
 namespace re_cscr_vm
 {
 	utils::hook::detour Scr_VM_Init_hook;
@@ -1677,3 +1676,4 @@ namespace re_cscr_vm
 	};
 }
 REGISTER_COMPONENT(re_cscr_vm::component)
+#endif

@@ -3,8 +3,7 @@
 #include "utils/hook.hpp"
 #include "codsrc/clientscript/cscr_stringlist.hpp"
 
-//#define RE_CSCR_STRINGLIST_USE_WRAPPERS
-
+#ifndef DISABLE_RE_CSCR_STRINGLIST
 namespace re_cscr_stringlist
 {
 	utils::hook::detour SL_ConvertToString_hook;
@@ -650,3 +649,4 @@ namespace re_cscr_stringlist
 	};
 }
 REGISTER_COMPONENT(re_cscr_stringlist::component)
+#endif

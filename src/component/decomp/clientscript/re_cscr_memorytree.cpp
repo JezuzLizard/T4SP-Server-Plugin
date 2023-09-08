@@ -3,8 +3,7 @@
 #include "utils/hook.hpp"
 #include "codsrc/clientscript/cscr_memorytree.hpp"
 
-//#define RE_CSCR_MEMORYTREE_USE_WRAPPERS
-
+#ifndef DISABLE_RE_CSCR_MEMORYTREE
 namespace re_cscr_memorytree
 {
 	utils::hook::detour MT_GetSubTreeSize_hook;
@@ -306,3 +305,4 @@ namespace re_cscr_memorytree
 	};
 }
 REGISTER_COMPONENT(re_cscr_memorytree::component)
+#endif

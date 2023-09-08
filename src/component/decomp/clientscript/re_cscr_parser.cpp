@@ -3,8 +3,7 @@
 #include "utils/hook.hpp"
 #include "codsrc/clientscript/cscr_parser.hpp"
 
-//#define RE_CSCR_PARSER_USE_WRAPPERS
-
+#ifndef DISABLE_RE_CSCR_PARSER
 namespace re_cscr_parser
 {
 	utils::hook::detour Scr_InitOpcodeLookup_hook;
@@ -588,3 +587,4 @@ namespace re_cscr_parser
 	};
 }
 REGISTER_COMPONENT(re_cscr_parser::component)
+#endif

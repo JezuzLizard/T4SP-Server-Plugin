@@ -3,8 +3,7 @@
 #include "utils/hook.hpp"
 //#include "codsrc/clientscript/cscr_yacc.hpp"
 
-#define RE_CSCR_YACC_USE_WRAPPERS
-
+#ifndef DISABLE_RE_CSCR_YACC
 namespace re_cscr_yacc
 {
 	utils::hook::detour LowerCase_hook;
@@ -230,3 +229,4 @@ namespace re_cscr_yacc
 	};
 }
 REGISTER_COMPONENT(re_cscr_yacc::component)
+#endif

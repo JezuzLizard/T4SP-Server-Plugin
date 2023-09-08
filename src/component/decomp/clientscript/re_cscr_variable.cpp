@@ -3,8 +3,7 @@
 #include "utils/hook.hpp"
 #include "codsrc/clientscript/cscr_variable.hpp"
 
-//#define RE_CSCR_VARIABLE_USE_WRAPPERS
-
+#ifndef DISABLE_RE_CSCR_VARIABLE
 namespace re_cscr_variable
 {
 	utils::hook::detour ThreadInfoCompare_hook;
@@ -2507,3 +2506,4 @@ namespace re_cscr_variable
 	};
 }
 REGISTER_COMPONENT(re_cscr_variable::component)
+#endif

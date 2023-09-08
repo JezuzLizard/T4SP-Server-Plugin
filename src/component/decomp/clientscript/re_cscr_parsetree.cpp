@@ -3,8 +3,7 @@
 #include "utils/hook.hpp"
 #include "codsrc/clientscript/cscr_parsetree.hpp"
 
-//#define RE_CSCR_PARSETREE_USE_WRAPPERS
-
+#ifndef DISABLE_RE_CSCR_PARSETREE
 namespace re_cscr_parsetree
 {
 	utils::hook::detour Scr_InitAllocNode_hook;
@@ -195,3 +194,4 @@ namespace re_cscr_parsetree
 	};
 }
 REGISTER_COMPONENT(re_cscr_parsetree::component)
+#endif

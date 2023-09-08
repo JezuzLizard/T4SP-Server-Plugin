@@ -3,8 +3,7 @@
 #include "utils/hook.hpp"
 #include "codsrc/clientscript/cscr_main.hpp"
 
-//#define RE_CSCR_MAIN_USE_WRAPPERS
-
+#ifndef DISABLE_RE_CSCR_MAIN
 namespace re_cscr_main
 {
 	utils::hook::detour Scr_IsIdentifier_hook;
@@ -307,3 +306,4 @@ namespace re_cscr_main
 	};
 }
 REGISTER_COMPONENT(re_cscr_main::component)
+#endif
