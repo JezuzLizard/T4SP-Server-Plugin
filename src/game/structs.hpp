@@ -6962,25 +6962,6 @@ namespace game
 	ASSERT_STRUCT_OFFSET(pointtrace_t, bLocational, 0x38);
 	ASSERT_STRUCT_OFFSET(pointtrace_t, priorityMap, 0x3C);
 
-	struct field_t
-	{
-		int cursor; //OFS: 0x0 SIZE: 0x4
-		int scroll; //OFS: 0x4 SIZE: 0x4
-		int drawWidth; //OFS: 0x8 SIZE: 0x4
-		int widthInPixels; //OFS: 0xC SIZE: 0x4
-		float charHeight; //OFS: 0x10 SIZE: 0x4
-		int fixedSize; //OFS: 0x14 SIZE: 0x4
-		char buffer[256]; //OFS: 0x18 SIZE: 0x100
-	};
-	ASSERT_STRUCT_SIZE(field_t, 0x118);
-	ASSERT_STRUCT_OFFSET(field_t, cursor, 0x0);
-	ASSERT_STRUCT_OFFSET(field_t, scroll, 0x4);
-	ASSERT_STRUCT_OFFSET(field_t, drawWidth, 0x8);
-	ASSERT_STRUCT_OFFSET(field_t, widthInPixels, 0xC);
-	ASSERT_STRUCT_OFFSET(field_t, charHeight, 0x10);
-	ASSERT_STRUCT_OFFSET(field_t, fixedSize, 0x14);
-	ASSERT_STRUCT_OFFSET(field_t, buffer, 0x18);
-
 	struct entityHandler_t
 	{
 		void (__cdecl *think)(gentity_s *); //OFS: 0x0 SIZE: 0x4
@@ -7122,19 +7103,6 @@ namespace game
 	ASSERT_STRUCT_OFFSET(CmdText, maxsize, 0x4);
 	ASSERT_STRUCT_OFFSET(CmdText, cmdsize, 0x8);
 
-	struct Console
-	{
-		_BYTE gap_0[66120]; //OFS: 0x0 SIZE: 0x10248
-		char outputVisible; //OFS: 0x10248 SIZE: 0x1
-		_BYTE gap_10249[18563]; //OFS: 0x10249 SIZE: 0x4883
-		int field_14ACC; //OFS: 0x14ACC SIZE: 0x4
-	};
-	ASSERT_STRUCT_SIZE(Console, 0x14AD0);
-	ASSERT_STRUCT_OFFSET(Console, gap_0, 0x0);
-	ASSERT_STRUCT_OFFSET(Console, outputVisible, 0x10248);
-	ASSERT_STRUCT_OFFSET(Console, gap_10249, 0x10249);
-	ASSERT_STRUCT_OFFSET(Console, field_14ACC, 0x14ACC);
-
 	struct vehicle_field_s
 	{
 		const char * name; //OFS: 0x0 SIZE: 0x4
@@ -7192,20 +7160,168 @@ namespace game
 	ASSERT_STRUCT_OFFSET(KeyState, binding, 0x8);
 	ASSERT_STRUCT_OFFSET(KeyState, binding_2, 0xC);
 
+	struct field_t
+	{
+		int cursor; //OFS: 0x0 SIZE: 0x4
+		int scroll; //OFS: 0x4 SIZE: 0x4
+		int drawWidth; //OFS: 0x8 SIZE: 0x4
+		int widthInPixels; //OFS: 0xC SIZE: 0x4
+		float charHeight; //OFS: 0x10 SIZE: 0x4
+		int fixedSize; //OFS: 0x14 SIZE: 0x4
+		char buffer[256]; //OFS: 0x18 SIZE: 0x100
+	};
+	ASSERT_STRUCT_SIZE(field_t, 0x118);
+	ASSERT_STRUCT_OFFSET(field_t, cursor, 0x0);
+	ASSERT_STRUCT_OFFSET(field_t, scroll, 0x4);
+	ASSERT_STRUCT_OFFSET(field_t, drawWidth, 0x8);
+	ASSERT_STRUCT_OFFSET(field_t, widthInPixels, 0xC);
+	ASSERT_STRUCT_OFFSET(field_t, charHeight, 0x10);
+	ASSERT_STRUCT_OFFSET(field_t, fixedSize, 0x14);
+	ASSERT_STRUCT_OFFSET(field_t, buffer, 0x18);
+
 	struct PlayerKeyState
 	{
-		int chat_team; //OFS: 0x0 SIZE: 0x4
-		_BYTE gap_4[4]; //OFS: 0x4 SIZE: 0x4
-		int anyKeyDown; //OFS: 0x8 SIZE: 0x4
-		KeyState keys[256]; //OFS: 0xC SIZE: 0x1000
-		LocSelInputState locSelInputState; //OFS: 0x100C SIZE: 0x4
+		field_t chatField; //OFS: 0x0 SIZE: 0x118
+		int chat_team; //OFS: 0x118 SIZE: 0x4
+		int overstrikeMode; //OFS: 0x11C SIZE: 0x4
+		int anyKeyDown; //OFS: 0x120 SIZE: 0x4
+		KeyState keys[256]; //OFS: 0x124 SIZE: 0x1000
+		LocSelInputState locSelInputState; //OFS: 0x1124 SIZE: 0x4
 	};
-	ASSERT_STRUCT_SIZE(PlayerKeyState, 0x1010);
-	ASSERT_STRUCT_OFFSET(PlayerKeyState, chat_team, 0x0);
-	ASSERT_STRUCT_OFFSET(PlayerKeyState, gap_4, 0x4);
-	ASSERT_STRUCT_OFFSET(PlayerKeyState, anyKeyDown, 0x8);
-	ASSERT_STRUCT_OFFSET(PlayerKeyState, keys, 0xC);
-	ASSERT_STRUCT_OFFSET(PlayerKeyState, locSelInputState, 0x100C);
+	ASSERT_STRUCT_SIZE(PlayerKeyState, 0x1128);
+	ASSERT_STRUCT_OFFSET(PlayerKeyState, chatField, 0x0);
+	ASSERT_STRUCT_OFFSET(PlayerKeyState, chat_team, 0x118);
+	ASSERT_STRUCT_OFFSET(PlayerKeyState, overstrikeMode, 0x11C);
+	ASSERT_STRUCT_OFFSET(PlayerKeyState, anyKeyDown, 0x120);
+	ASSERT_STRUCT_OFFSET(PlayerKeyState, keys, 0x124);
+	ASSERT_STRUCT_OFFSET(PlayerKeyState, locSelInputState, 0x1124);
+
+	struct MessageLine
+	{
+		int messageIndex; //OFS: 0x0 SIZE: 0x4
+		int textBufPos; //OFS: 0x4 SIZE: 0x4
+		int textBufSize; //OFS: 0x8 SIZE: 0x4
+		int typingStartTime; //OFS: 0xC SIZE: 0x4
+		int lastTypingSoundTime; //OFS: 0x10 SIZE: 0x4
+		int flags; //OFS: 0x14 SIZE: 0x4
+	};
+	ASSERT_STRUCT_SIZE(MessageLine, 0x18);
+	ASSERT_STRUCT_OFFSET(MessageLine, messageIndex, 0x0);
+	ASSERT_STRUCT_OFFSET(MessageLine, textBufPos, 0x4);
+	ASSERT_STRUCT_OFFSET(MessageLine, textBufSize, 0x8);
+	ASSERT_STRUCT_OFFSET(MessageLine, typingStartTime, 0xC);
+	ASSERT_STRUCT_OFFSET(MessageLine, lastTypingSoundTime, 0x10);
+	ASSERT_STRUCT_OFFSET(MessageLine, flags, 0x14);
+
+	struct Message
+	{
+		int startTime; //OFS: 0x0 SIZE: 0x4
+		int endTime; //OFS: 0x4 SIZE: 0x4
+	};
+	ASSERT_STRUCT_SIZE(Message, 0x8);
+	ASSERT_STRUCT_OFFSET(Message, startTime, 0x0);
+	ASSERT_STRUCT_OFFSET(Message, endTime, 0x4);
+
+	struct MessageWindow
+	{
+		MessageLine* lines; //OFS: 0x0 SIZE: 0x4
+		Message* messages; //OFS: 0x4 SIZE: 0x4
+		char* circularTextBuffer; //OFS: 0x8 SIZE: 0x4
+		int textBufSize; //OFS: 0xC SIZE: 0x4
+		int lineCount; //OFS: 0x10 SIZE: 0x4
+		int padding; //OFS: 0x14 SIZE: 0x4
+		int scrollTime; //OFS: 0x18 SIZE: 0x4
+		int fadeIn; //OFS: 0x1C SIZE: 0x4
+		int fadeOut; //OFS: 0x20 SIZE: 0x4
+		int textBufPos; //OFS: 0x24 SIZE: 0x4
+		int firstLineIndex; //OFS: 0x28 SIZE: 0x4
+		int activeLineCount; //OFS: 0x2C SIZE: 0x4
+		int messageIndex; //OFS: 0x30 SIZE: 0x4
+	};
+	ASSERT_STRUCT_SIZE(MessageWindow, 0x34);
+	ASSERT_STRUCT_OFFSET(MessageWindow, lines, 0x0);
+	ASSERT_STRUCT_OFFSET(MessageWindow, messages, 0x4);
+	ASSERT_STRUCT_OFFSET(MessageWindow, circularTextBuffer, 0x8);
+	ASSERT_STRUCT_OFFSET(MessageWindow, textBufSize, 0xC);
+	ASSERT_STRUCT_OFFSET(MessageWindow, lineCount, 0x10);
+	ASSERT_STRUCT_OFFSET(MessageWindow, padding, 0x14);
+	ASSERT_STRUCT_OFFSET(MessageWindow, scrollTime, 0x18);
+	ASSERT_STRUCT_OFFSET(MessageWindow, fadeIn, 0x1C);
+	ASSERT_STRUCT_OFFSET(MessageWindow, fadeOut, 0x20);
+	ASSERT_STRUCT_OFFSET(MessageWindow, textBufPos, 0x24);
+	ASSERT_STRUCT_OFFSET(MessageWindow, firstLineIndex, 0x28);
+	ASSERT_STRUCT_OFFSET(MessageWindow, activeLineCount, 0x2C);
+	ASSERT_STRUCT_OFFSET(MessageWindow, messageIndex, 0x30);
+
+	struct MessageBuffer
+	{
+		char gamemsgText[4][2048]; //OFS: 0x0 SIZE: 0x2000
+		MessageWindow gamemsgWindows[4]; //OFS: 0x2000 SIZE: 0xD0
+		MessageLine gamemsgLines[4][12]; //OFS: 0x20D0 SIZE: 0x480
+		Message gamemsgMessages[4][12]; //OFS: 0x2550 SIZE: 0x180
+		char miniconText[4096]; //OFS: 0x26D0 SIZE: 0x1000
+		MessageWindow miniconWindow; //OFS: 0x36D0 SIZE: 0x34
+		MessageLine miniconLines[100]; //OFS: 0x3704 SIZE: 0x960
+		Message miniconMessages[100]; //OFS: 0x4064 SIZE: 0x320
+		char errorText[1024]; //OFS: 0x4384 SIZE: 0x400
+		MessageWindow errorWindow; //OFS: 0x4784 SIZE: 0x34
+		MessageLine errorLines[5]; //OFS: 0x47B8 SIZE: 0x78
+		Message errorMessages[5]; //OFS: 0x4830 SIZE: 0x28
+	};
+	ASSERT_STRUCT_SIZE(MessageBuffer, 0x4858);
+	ASSERT_STRUCT_OFFSET(MessageBuffer, gamemsgText, 0x0);
+	ASSERT_STRUCT_OFFSET(MessageBuffer, gamemsgWindows, 0x2000);
+	ASSERT_STRUCT_OFFSET(MessageBuffer, gamemsgLines, 0x20D0);
+	ASSERT_STRUCT_OFFSET(MessageBuffer, gamemsgMessages, 0x2550);
+	ASSERT_STRUCT_OFFSET(MessageBuffer, miniconText, 0x26D0);
+	ASSERT_STRUCT_OFFSET(MessageBuffer, miniconWindow, 0x36D0);
+	ASSERT_STRUCT_OFFSET(MessageBuffer, miniconLines, 0x3704);
+	ASSERT_STRUCT_OFFSET(MessageBuffer, miniconMessages, 0x4064);
+	ASSERT_STRUCT_OFFSET(MessageBuffer, errorText, 0x4384);
+	ASSERT_STRUCT_OFFSET(MessageBuffer, errorWindow, 0x4784);
+	ASSERT_STRUCT_OFFSET(MessageBuffer, errorLines, 0x47B8);
+	ASSERT_STRUCT_OFFSET(MessageBuffer, errorMessages, 0x4830);
+
+	struct Console
+	{
+		dvar_s* outputWindowColor; //OFS: 0x0 SIZE: 0x4
+		int initialized; //OFS: 0x4 SIZE: 0x4
+		MessageWindow consoleWindow; //OFS: 0x8 SIZE: 0x34
+		MessageLine consoleLines[1024]; //OFS: 0x3C SIZE: 0x6000
+		Message consoleMessages[1024]; //OFS: 0x603C SIZE: 0x2000
+		char consoleText[32768]; //OFS: 0x803C SIZE: 0x8000
+		char textTempLine[512]; //OFS: 0x1003C SIZE: 0x200
+		unsigned int lineOffset; //OFS: 0x1023C SIZE: 0x4
+		int displayLineOffset; //OFS: 0x10240 SIZE: 0x4
+		int prevChannel; //OFS: 0x10244 SIZE: 0x4
+		char outputVisible; //OFS: 0x10248 SIZE: 0x1
+		int fontHeight; //OFS: 0x1024C SIZE: 0x4
+		int visibleLineCount; //OFS: 0x10250 SIZE: 0x4
+		int visiblePixelWidth; //OFS: 0x10254 SIZE: 0x4
+		float screenMin[2]; //OFS: 0x10258 SIZE: 0x8
+		float screenMax[2]; //OFS: 0x10260 SIZE: 0x8
+		MessageBuffer messageBuffer[1]; //OFS: 0x10268 SIZE: 0x4858
+		float color[4]; //OFS: 0x14AC0 SIZE: 0x10
+	};
+	ASSERT_STRUCT_SIZE(Console, 0x14AD0);
+	ASSERT_STRUCT_OFFSET(Console, outputWindowColor, 0x0);
+	ASSERT_STRUCT_OFFSET(Console, initialized, 0x4);
+	ASSERT_STRUCT_OFFSET(Console, consoleWindow, 0x8);
+	ASSERT_STRUCT_OFFSET(Console, consoleLines, 0x3C);
+	ASSERT_STRUCT_OFFSET(Console, consoleMessages, 0x603C);
+	ASSERT_STRUCT_OFFSET(Console, consoleText, 0x803C);
+	ASSERT_STRUCT_OFFSET(Console, textTempLine, 0x1003C);
+	ASSERT_STRUCT_OFFSET(Console, lineOffset, 0x1023C);
+	ASSERT_STRUCT_OFFSET(Console, displayLineOffset, 0x10240);
+	ASSERT_STRUCT_OFFSET(Console, prevChannel, 0x10244);
+	ASSERT_STRUCT_OFFSET(Console, outputVisible, 0x10248);
+	ASSERT_STRUCT_OFFSET(Console, fontHeight, 0x1024C);
+	ASSERT_STRUCT_OFFSET(Console, visibleLineCount, 0x10250);
+	ASSERT_STRUCT_OFFSET(Console, visiblePixelWidth, 0x10254);
+	ASSERT_STRUCT_OFFSET(Console, screenMin, 0x10258);
+	ASSERT_STRUCT_OFFSET(Console, screenMax, 0x10260);
+	ASSERT_STRUCT_OFFSET(Console, messageBuffer, 0x10268);
+	ASSERT_STRUCT_OFFSET(Console, color, 0x14AC0);
 
 	union qfile_gus
 	{
