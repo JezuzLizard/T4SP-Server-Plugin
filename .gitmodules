@@ -26,3 +26,6 @@
 [submodule "deps/csv-parser"]
 	path = deps/csv-parser
 	url = https://github.com/AriaFallah/csv-parser
+[submodule "deps/SQLiteCpp"]
+	path = deps/SQLiteCpp
+	url = https://github.com/SRombauts/SQLiteCpp
