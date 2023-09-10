@@ -4,7 +4,7 @@
 #define VAR_STAT_MASK 0x60
 #define VAR_STAT_MOVABLE 0x20
 #define VAR_STAT_HEAD 0x40
-#define VAR_STAT_EXTERNAL VAR_STAT_MASK
+#define VAR_STAT_EXTERNAL 0x60
 
 #define VAR_MASK 0x1F
 #define VAR_ENT_MASK 0x3FFF
@@ -14,7 +14,7 @@
 #define VAR_NAME_BIT_SHIFT 8
 #define VAR_PARENTID_BIT_SHIFT 8
 #define OBJECT_STACK 0x15FFE
-#define OBJECT_NOTIFY_LIST OBJECT_STACK
+#define OBJECT_NOTIFY_LIST 0x15FFE
 
 #define VARIABLELIST_CHILD_SIZE 0x10000
 #define VARIABLELIST_CHILD_BEGIN 0x6000
@@ -739,15 +739,13 @@ namespace game
 	ASSERT_STRUCT_OFFSET(MemoryNode, next, 0x2);
 	ASSERT_STRUCT_OFFSET(MemoryNode, padding, 0x4);
 
-	struct scrMemTreeGlob_t
+	struct __declspec(align(128)) scrMemTreeGlob_t
 	{
-		MemoryNode nodes[65536]; //OFS: 0x0 SIZE: 0xC0000
-		unsigned __int8 leftBits[256]; //OFS: 0xC0000 SIZE: 0x100
-		unsigned __int8 numBits[256]; //OFS: 0xC0100 SIZE: 0x100
-		unsigned __int8 logBits[256]; //OFS: 0xC0200 SIZE: 0x100
-		unsigned __int16 head[17]; //OFS: 0xC0300 SIZE: 0x22
-		_BYTE gap_C0322[93]; //OFS: 0xC0322 SIZE: 0x5D
-		char field_C037F; //OFS: 0xC037F SIZE: 0x1
+		MemoryNode nodes[MT_NODE_COUNT];
+		unsigned __int8 leftBits[MT_NUM_BUCKETS];
+		unsigned __int8 numBits[MT_NUM_BUCKETS];
+		unsigned __int8 logBits[MT_NUM_BUCKETS];
+		unsigned __int16 head[MT_NODE_BITS + 1];
 	};
 	ASSERT_STRUCT_SIZE(scrMemTreeGlob_t, 0xC0380);
 	ASSERT_STRUCT_OFFSET(scrMemTreeGlob_t, nodes, 0x0);
@@ -755,8 +753,6 @@ namespace game
 	ASSERT_STRUCT_OFFSET(scrMemTreeGlob_t, numBits, 0xC0100);
 	ASSERT_STRUCT_OFFSET(scrMemTreeGlob_t, logBits, 0xC0200);
 	ASSERT_STRUCT_OFFSET(scrMemTreeGlob_t, head, 0xC0300);
-	ASSERT_STRUCT_OFFSET(scrMemTreeGlob_t, gap_C0322, 0xC0322);
-	ASSERT_STRUCT_OFFSET(scrMemTreeGlob_t, field_C037F, 0xC037F);
 
 	struct OpcodeLookup
 	{
@@ -2192,7 +2188,7 @@ namespace game
 
 	struct yy_buffer_state
 	{
-		_iobuf * yy_input_file; //OFS: 0x0 SIZE: 0x4
+		FILE * yy_input_file; //OFS: 0x0 SIZE: 0x4
 		char * yy_ch_buf; //OFS: 0x4 SIZE: 0x4
 		char * yy_buf_pos; //OFS: 0x8 SIZE: 0x4
 		unsigned int yy_buf_size; //OFS: 0xC SIZE: 0x4

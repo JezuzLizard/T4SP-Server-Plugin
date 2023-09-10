@@ -7209,7 +7209,7 @@ namespace game
 
 	union qfile_gus
 	{
-		_iobuf * o; //OFS: 0x0 SIZE: 0x4
+		FILE * o; //OFS: 0x0 SIZE: 0x4
 		char * z; //OFS: 0x1 SIZE: 0x4
 	};
 	ASSERT_STRUCT_SIZE(qfile_gus, 0x4);
@@ -12712,7 +12712,7 @@ namespace game
 		unsigned int pos_local_extrafield; //OFS: 0x48 SIZE: 0x4
 		unsigned int rest_read_compressed; //OFS: 0x4C SIZE: 0x4
 		unsigned int rest_read_uncompressed; //OFS: 0x50 SIZE: 0x4
-		_iobuf * file; //OFS: 0x54 SIZE: 0x4
+		FILE * file; //OFS: 0x54 SIZE: 0x4
 		unsigned int compression_method; //OFS: 0x58 SIZE: 0x4
 		unsigned int byte_before_the_zipfile; //OFS: 0x5C SIZE: 0x4
 	};
