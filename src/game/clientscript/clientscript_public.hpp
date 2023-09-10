@@ -2266,12 +2266,12 @@ namespace game
 	WEAK symbol<sval_u> g_dummyVal{ 0x0, 0x3BE6254 };
 	WEAK symbol<int> yy_init{ 0x0, 0x8CF4A0 };
 	WEAK symbol<int> yy_start{ 0x0, 0x46E54D4 };
-	WEAK symbol<_iobuf*> yyin{ 0x0, 0x46E54D8 };
-	WEAK symbol<_iobuf*> yyout{ 0x0, 0x46E54DC };
+	WEAK symbol<FILE*> yyin{ 0x0, 0x46E54D8 };
+	WEAK symbol<FILE*> yyout{ 0x0, 0x46E54DC };
 	WEAK symbol<yy_buffer_state*> yy_current_buffer{ 0x0, 0x46E54CC };
 	WEAK symbol<int> yy_n_chars{ 0x0, 0x3BE6250 };
 	WEAK symbol<char> yy_hold_char{ 0x0, 0x22C1353 };
-	WEAK symbol<int> yy_c_buf_p{ 0x0, 0x46E54D0 };
+	WEAK symbol<char*> yy_c_buf_p{ 0x0, 0x46E54D0 };
 	WEAK symbol<int> yy_last_accepting_state{ 0x0, 0x3BE626C };
 	WEAK symbol<char*> yy_last_accepting_cpos{ 0x0, 0x3BE2230 };
 	WEAK symbol<size_t> yyleng{ 0x0, 0x3BE6248 };
@@ -2292,7 +2292,9 @@ namespace game
 	WEAK symbol<short> yy_base{ 0x0, 0x831120 };
 	WEAK symbol<short> yy_def{ 0x0, 0x831338 };
 	WEAK symbol<short> yy_nxt{ 0x0, 0x831550 };
-	WEAK symbol<unsigned char> yy_meta{ 0x0, 0x831030 };
+	WEAK symbol<int> yy_meta{ 0x0, 0x831030 };
+	WEAK symbol<short> yypgoto{ 0x0, 0x82F426 };
+	WEAK symbol<short> yydefgoto{ 0x0, 0x82F1DE };
 #pragma endregion
 
 #pragma region "functions"
