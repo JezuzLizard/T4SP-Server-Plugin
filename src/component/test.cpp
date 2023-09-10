@@ -9,6 +9,7 @@
 #include <utils/string.hpp>
 #include <utils/http.hpp>
 #include <json.hpp>
+#include <parser.hpp>
 
 namespace test
 {
@@ -30,6 +31,21 @@ namespace test
 
 			//Disable unknown dvar spam
 			utils::hook::nop(0x5F04AF, 5);
+
+			if (utils::io::file_exists("some_file.csv"))
+			{
+				std::ifstream f("some_file.csv");
+				aria::csv::CsvParser parser(f);
+				for (auto& row : parser)
+				{
+					for (auto& field : row)
+					{
+						printf("%s", std::format("{} | ", field).c_str());
+					}
+
+					printf("\n");
+				}
+			}
 		}
 
 	private:
