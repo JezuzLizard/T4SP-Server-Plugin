@@ -23,3 +23,6 @@
 [submodule "deps/libtommath"]
 	path = deps/libtommath
 	url = https://github.com/libtom/libtommath.git
+[submodule "deps/csv-parser"]
+	path = deps/csv-parser
+	url = https://github.com/AriaFallah/csv-parser
