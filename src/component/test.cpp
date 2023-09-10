@@ -10,6 +10,7 @@
 #include <utils/http.hpp>
 #include <json.hpp>
 #include <parser.hpp>
+#include <SQLiteCpp/Database.h>
 
 namespace test
 {
@@ -45,6 +46,17 @@ namespace test
 
 					printf("\n");
 				}
+			}
+
+			{
+				SQLite::Database db("test.db3", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+				db.exec("CREATE TABLE test (id INTEGER PRIMARY KEY, value TEXT, weight INTEGER)");
+
+				db.exec("INSERT INTO test VALUES (NULL, \"first\",  3)");
+				db.exec("INSERT INTO test VALUES (NULL, \"second\", 5)");
+				db.exec("INSERT INTO test VALUES (NULL, \"third\",  7)");
+
+				printf("%s %s %d\n", db.execAndGet("SELECT value FROM test WHERE id=2").getString().c_str(), db.execAndGet("SELECT value FROM test WHERE weight=7").getString().c_str(), db.execAndGet("SELECT weight FROM test WHERE value=\"first\"").getInt());
 			}
 		}
 

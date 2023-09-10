@@ -22,6 +22,7 @@ function SQLiteCpp.project()
 
         files {
             path.join(path.join(SQLiteCpp.source, "src"), "**.cpp"),
+            path.join(path.join(SQLiteCpp.source, "include"), "**.h"),
             path.join(path.join(SQLiteCpp.source, "sqlite3"), "**.c"),
             path.join(path.join(SQLiteCpp.source, "sqlite3"), "**.h")
         }
