@@ -49,7 +49,7 @@ namespace test
 			}
 
 			{
-				SQLite::Database db("test.db3", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+				SQLite::Database db(":memory:", SQLite::OPEN_READWRITE);
 				db.exec("CREATE TABLE test (id INTEGER PRIMARY KEY, value TEXT, weight INTEGER)");
 
 				db.exec("INSERT INTO test VALUES (NULL, \"first\",  3)");
