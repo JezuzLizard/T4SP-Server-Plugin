@@ -112,9 +112,6 @@ namespace codsrc
 	// Completed
 	void Scr_ErrorInternal(game::scriptInstance_t inst)
 	{
-		std::string a = "OH NO";
-		printf("%s\n", a.c_str());
-
 		assert(game::gScrVarPub[inst].error_message);
 
 		if ( !game::gScrVarPub[inst].evaluate && !game::gScrCompilePub[inst].script_loading )
