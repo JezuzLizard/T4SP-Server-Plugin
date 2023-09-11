@@ -28,6 +28,14 @@ namespace game
 
 	WEAK symbol<void(char* Destination, const char* Source, size_t Count)>I_strncpyz{ 0x0, 0x7AA9C0 };
 
+	WEAK symbol<_iobuf* ()>__iob_func{ 0x0, 0x7AE0DE };
+	WEAK symbol<size_t(const void* Buffer, size_t ElementSize, size_t ElementCount, FILE* Stream)>_fwrite{ 0x0, 0x7ACBDA };
+	WEAK symbol<int(const char* const Buffer, const char* const Format, ...)>_sscanf{ 0x0, 0x7AB559 };
+	WEAK symbol<int(FILE* const Stream, const char* const Format, ...)>_fprintf{ 0x0, 0x7AE406 };
+	WEAK symbol<void(int Code)>_exit{ 0x0, 0x7AC431 };
+	WEAK symbol<void* (void* Block, size_t Size)>_realloc{ 0x0, 0x7AECAC };
+	WEAK symbol<void* (size_t Size)>Z_TryMalloc{ 0x0, 0x7AAD36 };
+
 	inline void* I_strncmp_ADDR() { return CALL_ADDR(0x0, 0x5F6A40); }
 	int I_strncmp(const char* str1, const char* str2, int len, void* call_addr = I_strncmp_ADDR());
 

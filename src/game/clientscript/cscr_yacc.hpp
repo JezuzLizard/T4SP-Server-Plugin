@@ -19,4 +19,9 @@ namespace game
 	void yy_flush_buffer(yy_buffer_state* result, void* call_addr = yy_flush_buffer());
 	inline void* ScriptParse() { return CALL_ADDR(0x0, 0x69D710); }
 	void ScriptParse(scriptInstance_t a1, sval_u* parseData, void* call_addr = ScriptParse());
+
+	FILE* yy_load_buffer_state();
+	void yy_fatal_error(const char* err);
+	void* yy_flex_realloc(void* ptr, unsigned int size);
+	void yy_init_buffer(yy_buffer_state* b, FILE* file);
 }

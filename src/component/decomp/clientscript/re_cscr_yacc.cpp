@@ -1,7 +1,7 @@
 #include <stdinc.hpp>
 #include "loader/component_loader.hpp"
 #include "utils/hook.hpp"
-//#include "codsrc/clientscript/cscr_yacc.hpp"
+#include "codsrc/clientscript/cscr_yacc.hpp"
 
 #ifndef DISABLE_RE_CSCR_YACC
 namespace re_cscr_yacc
@@ -38,7 +38,7 @@ namespace re_cscr_yacc
 #ifdef RE_CSCR_YACC_USE_WRAPPERS
 			return game::LowerCase(strVal, LowerCase_original);
 #else
-			return cscr_yacc::LowerCase(strVal);
+			return codsrc::LowerCase(strVal);
 #endif
 		}
 
@@ -59,7 +59,7 @@ namespace re_cscr_yacc
 #ifdef RE_CSCR_YACC_USE_WRAPPERS
 			return yyparse_hook.invoke<int>();
 #else
-			return cscr_yacc::yyparse();
+			return codsrc::yyparse();
 #endif
 		}
 
@@ -68,7 +68,7 @@ namespace re_cscr_yacc
 #ifdef RE_CSCR_YACC_USE_WRAPPERS
 			return game::StringValue(len, str_, StringValue_original);
 #else
-			return cscr_yacc::StringValue(len, str_);
+			return codsrc::StringValue(len, str_);
 #endif
 		}
 
@@ -90,7 +90,7 @@ namespace re_cscr_yacc
 #ifdef RE_CSCR_YACC_USE_WRAPPERS
 			return yylex_hook.invoke<int>();
 #else
-			return cscr_yacc::yylex();
+			return codsrc::yylex();
 #endif
 		}
 
@@ -99,7 +99,7 @@ namespace re_cscr_yacc
 #ifdef RE_CSCR_YACC_USE_WRAPPERS
 			return yy_get_next_buffer_hook.invoke<int>();
 #else
-			return cscr_yacc::yy_get_next_buffer();
+			return codsrc::yy_get_next_buffer();
 #endif
 		}
 
@@ -108,7 +108,7 @@ namespace re_cscr_yacc
 #ifdef RE_CSCR_YACC_USE_WRAPPERS
 			return yy_get_previous_state_hook.invoke<int>();
 #else
-			return cscr_yacc::yy_get_previous_state();
+			return codsrc::yy_get_previous_state();
 #endif
 		}
 
@@ -117,7 +117,7 @@ namespace re_cscr_yacc
 #ifdef RE_CSCR_YACC_USE_WRAPPERS
 			return game::yy_try_NUL_trans(yy_current_state, yy_try_NUL_trans_original);
 #else
-			return cscr_yacc::yy_try_NUL_trans(yy_current_state);
+			return codsrc::yy_try_NUL_trans(yy_current_state);
 #endif
 		}
 
@@ -138,7 +138,7 @@ namespace re_cscr_yacc
 #ifdef RE_CSCR_YACC_USE_WRAPPERS
 			yyrestart_hook.invoke<void>();
 #else
-			cscr_yacc::yyrestart();
+			codsrc::yyrestart();
 #endif
 		}
 
@@ -147,7 +147,7 @@ namespace re_cscr_yacc
 #ifdef RE_CSCR_YACC_USE_WRAPPERS
 			return yy_create_buffer_hook.invoke<game::yy_buffer_state *>();
 #else
-			return cscr_yacc::yy_create_buffer();
+			return codsrc::yy_create_buffer();
 #endif
 		}
 
@@ -156,7 +156,7 @@ namespace re_cscr_yacc
 #ifdef RE_CSCR_YACC_USE_WRAPPERS
 			game::yy_flush_buffer(result, yy_flush_buffer_original);
 #else
-			cscr_yacc::yy_flush_buffer(result);
+			codsrc::yy_flush_buffer(result);
 #endif
 		}
 
@@ -177,7 +177,7 @@ namespace re_cscr_yacc
 #ifdef RE_CSCR_YACC_USE_WRAPPERS
 			game::ScriptParse(a1, parseData, ScriptParse_original);
 #else
-			cscr_yacc::ScriptParse(a1, parseData);
+			codsrc::ScriptParse(a1, parseData);
 #endif
 		}
 

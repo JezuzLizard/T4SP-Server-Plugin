@@ -9,3 +9,4 @@
 #include "cscr_tempmemory.hpp"
 #include "cscr_variable.hpp"
 #include "cscr_vm.hpp"
+#include "cscr_yacc.hpp"

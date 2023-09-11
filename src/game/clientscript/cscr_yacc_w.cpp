@@ -1,5 +1,5 @@
 #include <stdinc.hpp>
-//#include "codsrc/clientscript/cscr_yacc.hpp"
+#include "codsrc/clientscript/cscr_yacc.hpp"
 
 namespace game
 {
@@ -69,5 +69,25 @@ namespace game
 			call call_addr;
 			add esp, 0x4;
 		}
+	}
+
+	FILE* yy_load_buffer_state()
+	{
+		return codsrc::yy_load_buffer_state();
+	}
+
+	void yy_fatal_error(const char* err)
+	{
+		codsrc::yy_fatal_error(err);
+	}
+
+	void* yy_flex_realloc(void* ptr, unsigned int size)
+	{
+		return codsrc::yy_flex_realloc(ptr, size);
+	}
+
+	void yy_init_buffer(yy_buffer_state* b, FILE* file)
+	{
+		codsrc::yy_init_buffer(b, file);
 	}
 }
