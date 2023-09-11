@@ -103,8 +103,6 @@ workspace "t4sp-server-plugin"
 
 		dependencies.imports()
 
-		exceptionhandling ("Off")
-
 		if _OPTIONS["copy-to"] then
 			postbuildcommands {"copy /y \"$(TargetPath)\" \"" .. _OPTIONS["copy-to"] .. "\""}
 		else

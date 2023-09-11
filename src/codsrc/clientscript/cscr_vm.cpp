@@ -109,11 +109,12 @@ namespace codsrc
 		}
 	}
 
-	jmp_buf g_script_error[2][33];
-
 	// Completed
 	void Scr_ErrorInternal(game::scriptInstance_t inst)
 	{
+		std::string a = "OH NO";
+		printf("%s\n", a.c_str());
+
 		assert(game::gScrVarPub[inst].error_message);
 
 		if ( !game::gScrVarPub[inst].evaluate && !game::gScrCompilePub[inst].script_loading )
@@ -126,8 +127,9 @@ namespace codsrc
 
 				assert(game::g_script_error_level[inst] < 33);
 
-				//game::longjmp((int*)game::g_script_error.get() + 0x10 * (0x21 * inst + game::g_script_error_level[inst]), -1);
-				longjmp(g_script_error[inst][game::g_script_error_level[inst]], -1);
+				// use game's longjmp so we can enable c++ exceptions in our project without crashing due to stack unwinding a c++ object
+				auto jmp_bufs = reinterpret_cast<jmp_buf(*)[2][33]>(game::g_script_error.get());
+				game::longjmp((*jmp_bufs)[inst][game::g_script_error_level[inst]], -1);
 			}
 
 			game::Sys_Error("%s", game::gScrVarPub[inst].error_message);
@@ -2387,8 +2389,9 @@ namespace codsrc
 			assert(game::g_script_error_level[inst] >= 0);
 			assert(game::g_script_error_level[inst] < 33);
 			assert(inst == 0 || inst == 1);
-			//if (game::_setjmp3((int *)game::g_script_error.get() + 0x10 * (0x21 * inst + game::g_script_error_level[inst]), 0))
-			if (!setjmp(g_script_error[inst][game::g_script_error_level[inst]]))
+
+			auto jmp_bufs = reinterpret_cast<jmp_buf(*)[2][33]>(game::g_script_error.get());
+			if (!game::_setjmp3((*jmp_bufs)[inst][game::g_script_error_level[inst]], 0))
 			{
 				break;
 			}
