@@ -316,7 +316,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			RemoveRefToValue_hook.invoke<void>(inst, value);
 #else
-			cscr_compiler::RemoveRefToValue(inst, value);
+			codsrc::RemoveRefToValue(inst, value);
 #endif
 		}
 
@@ -325,7 +325,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::Scr_CompileRemoveRefToString(inst, stringVal, Scr_CompileRemoveRefToString_original);
 #else
-			cscr_compiler::Scr_CompileRemoveRefToString(inst, stringVal);
+			codsrc::Scr_CompileRemoveRefToString(inst, stringVal);
 #endif
 		}
 
@@ -347,7 +347,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitCanonicalString(inst, stringVal, EmitCanonicalString_original);
 #else
-			cscr_compiler::EmitCanonicalString(inst, stringVal);
+			codsrc::EmitCanonicalString(inst, stringVal);
 #endif
 		}
 
@@ -369,7 +369,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::CompileTransferRefToString(stringValue, inst, user, CompileTransferRefToString_original);
 #else
-			cscr_compiler::CompileTransferRefToString(stringValue, inst, user);
+			codsrc::CompileTransferRefToString(stringValue, inst, user);
 #endif
 		}
 
@@ -391,7 +391,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitOpcode_hook.invoke<void>(inst, op, offset, callType);
 #else
-			cscr_compiler::EmitOpcode(inst, op, offset, callType);
+			codsrc::EmitOpcode(inst, op, offset, callType);
 #endif
 		}
 
@@ -400,7 +400,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitEnd(inst, EmitEnd_original);
 #else
-			cscr_compiler::EmitEnd(inst);
+			codsrc::EmitEnd(inst);
 #endif
 		}
 
@@ -421,7 +421,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitReturn(inst, EmitReturn_original);
 #else
-			cscr_compiler::EmitReturn(inst);
+			codsrc::EmitReturn(inst);
 #endif
 		}
 
@@ -442,7 +442,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitCodepos(inst, codepos, EmitCodepos_original);
 #else
-			cscr_compiler::EmitCodepos(inst, codepos);
+			codsrc::EmitCodepos(inst, codepos);
 #endif
 		}
 
@@ -463,7 +463,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitShort(inst, value, EmitShort_original);
 #else
-			cscr_compiler::EmitShort(inst, value);
+			codsrc::EmitShort(inst, value);
 #endif
 		}
 
@@ -484,7 +484,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitByte(inst, value, EmitByte_original);
 #else
-			cscr_compiler::EmitByte(inst, value);
+			codsrc::EmitByte(inst, value);
 #endif
 		}
 
@@ -505,7 +505,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitGetInteger(inst, value, sourcePos, EmitGetInteger_original);
 #else
-			cscr_compiler::EmitGetInteger(inst, value, sourcePos);
+			codsrc::EmitGetInteger(inst, value, sourcePos);
 #endif
 		}
 
@@ -526,7 +526,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitGetFloat(inst, value, sourcePos, EmitGetFloat_original);
 #else
-			cscr_compiler::EmitGetFloat(inst, value, sourcePos);
+			codsrc::EmitGetFloat(inst, value, sourcePos);
 #endif
 		}
 
@@ -547,7 +547,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitAnimTree(inst, sourcePos, EmitAnimTree_original);
 #else
-			cscr_compiler::EmitAnimTree(inst, sourcePos);
+			codsrc::EmitAnimTree(inst, sourcePos);
 #endif
 		}
 
@@ -568,7 +568,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			return Scr_FindLocalVarIndex_hook.invoke<int>(inst, name, sourcePos, create, block);
 #else
-			return cscr_compiler::Scr_FindLocalVarIndex(inst, name, sourcePos, create, block);
+			return codsrc::Scr_FindLocalVarIndex(inst, name, sourcePos, create, block);
 #endif
 		}
 
@@ -577,7 +577,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitCreateLocalVars_hook.invoke<void>(inst, block);
 #else
-			cscr_compiler::EmitCreateLocalVars(inst, block);
+			codsrc::EmitCreateLocalVars(inst, block);
 #endif
 		}
 
@@ -586,7 +586,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitRemoveLocalVars(inst, outerBlock, block, EmitRemoveLocalVars_original);
 #else
-			cscr_compiler::EmitRemoveLocalVars(inst, outerBlock, block);
+			codsrc::EmitRemoveLocalVars(inst, outerBlock, block);
 #endif
 		}
 
@@ -608,7 +608,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitNOP2(block, inst, lastStatement, endSourcePos, EmitNOP2_original);
 #else
-			cscr_compiler::EmitNOP2(block, inst, lastStatement, endSourcePos);
+			codsrc::EmitNOP2(block, inst, lastStatement, endSourcePos);
 #endif
 		}
 
@@ -630,7 +630,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			Scr_InitFromChildBlocks_hook.invoke<void>(childBlocks, childCount, block);
 #else
-			cscr_compiler::Scr_InitFromChildBlocks(childBlocks, childCount, block);
+			codsrc::Scr_InitFromChildBlocks(childBlocks, childCount, block);
 #endif
 		}
 
@@ -639,7 +639,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::Scr_AppendChildBlocks(block, childBlocks, childCount, Scr_AppendChildBlocks_original);
 #else
-			cscr_compiler::Scr_AppendChildBlocks(block, childBlocks, childCount);
+			codsrc::Scr_AppendChildBlocks(block, childBlocks, childCount);
 #endif
 		}
 
@@ -660,7 +660,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			Scr_MergeChildBlocks_hook.invoke<void>(childBlocks, childCount, block);
 #else
-			cscr_compiler::Scr_MergeChildBlocks(childBlocks, childCount, block);
+			codsrc::Scr_MergeChildBlocks(childBlocks, childCount, block);
 #endif
 		}
 
@@ -669,7 +669,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::Scr_TransferBlock(to, from, Scr_TransferBlock_original);
 #else
-			cscr_compiler::Scr_TransferBlock(to, from);
+			codsrc::Scr_TransferBlock(to, from);
 #endif
 		}
 
@@ -690,7 +690,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitSafeSetVariableField(block, inst, expr, sourcePos, EmitSafeSetVariableField_original);
 #else
-			cscr_compiler::EmitSafeSetVariableField(block, inst, expr, sourcePos);
+			codsrc::EmitSafeSetVariableField(block, inst, expr, sourcePos);
 #endif
 		}
 
@@ -712,7 +712,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitSafeSetWaittillVariableField(block, inst, expr, sourcePos, EmitSafeSetWaittillVariableField_original);
 #else
-			cscr_compiler::EmitSafeSetWaittillVariableField(block, inst, expr, sourcePos);
+			codsrc::EmitSafeSetWaittillVariableField(block, inst, expr, sourcePos);
 #endif
 		}
 
@@ -734,7 +734,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitGetString(value, inst, sourcePos, EmitGetString_original);
 #else
-			cscr_compiler::EmitGetString(value, inst, sourcePos);
+			codsrc::EmitGetString(value, inst, sourcePos);
 #endif
 		}
 
@@ -756,7 +756,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitGetIString(value, inst, sourcePos, EmitGetIString_original);
 #else
-			cscr_compiler::EmitGetIString(value, inst, sourcePos);
+			codsrc::EmitGetIString(value, inst, sourcePos);
 #endif
 		}
 
@@ -778,7 +778,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitGetVector(value, inst, sourcePos, EmitGetVector_original);
 #else
-			cscr_compiler::EmitGetVector(value, inst, sourcePos);
+			codsrc::EmitGetVector(value, inst, sourcePos);
 #endif
 		}
 
@@ -799,7 +799,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitValue_hook.invoke<void>(inst, constValue);
 #else
-			cscr_compiler::EmitValue(inst, constValue);
+			codsrc::EmitValue(inst, constValue);
 #endif
 		}
 
@@ -808,7 +808,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::Scr_PushValue(inst, constValue, Scr_PushValue_original);
 #else
-			cscr_compiler::Scr_PushValue(inst, constValue);
+			codsrc::Scr_PushValue(inst, constValue);
 #endif
 		}
 
@@ -830,7 +830,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitCastBool(inst, sourcePos, EmitCastBool_original);
 #else
-			cscr_compiler::EmitCastBool(inst, sourcePos);
+			codsrc::EmitCastBool(inst, sourcePos);
 #endif
 		}
 
@@ -851,7 +851,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitBoolNot(inst, sourcePos, EmitBoolNot_original);
 #else
-			cscr_compiler::EmitBoolNot(inst, sourcePos);
+			codsrc::EmitBoolNot(inst, sourcePos);
 #endif
 		}
 
@@ -872,7 +872,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitBoolComplement(inst, sourcePos, EmitBoolComplement_original);
 #else
-			cscr_compiler::EmitBoolComplement(inst, sourcePos);
+			codsrc::EmitBoolComplement(inst, sourcePos);
 #endif
 		}
 
@@ -893,7 +893,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitSize(block, inst, expr, sourcePos, EmitSize_original);
 #else
-			cscr_compiler::EmitSize(block, inst, expr, sourcePos);
+			codsrc::EmitSize(block, inst, expr, sourcePos);
 #endif
 		}
 
@@ -915,7 +915,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitSelf(inst, sourcePos, EmitSelf_original);
 #else
-			cscr_compiler::EmitSelf(inst, sourcePos);
+			codsrc::EmitSelf(inst, sourcePos);
 #endif
 		}
 
@@ -936,7 +936,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitLevel(inst, sourcePos, EmitLevel_original);
 #else
-			cscr_compiler::EmitLevel(inst, sourcePos);
+			codsrc::EmitLevel(inst, sourcePos);
 #endif
 		}
 
@@ -957,7 +957,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitGame(inst, sourcePos, EmitGame_original);
 #else
-			cscr_compiler::EmitGame(inst, sourcePos);
+			codsrc::EmitGame(inst, sourcePos);
 #endif
 		}
 
@@ -978,7 +978,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitAnim(inst, sourcePos, EmitAnim_original);
 #else
-			cscr_compiler::EmitAnim(inst, sourcePos);
+			codsrc::EmitAnim(inst, sourcePos);
 #endif
 		}
 
@@ -999,7 +999,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitSelfObject(inst, sourcePos, EmitSelfObject_original);
 #else
-			cscr_compiler::EmitSelfObject(inst, sourcePos);
+			codsrc::EmitSelfObject(inst, sourcePos);
 #endif
 		}
 
@@ -1020,7 +1020,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitLevelObject(inst, sourcePos, EmitLevelObject_original);
 #else
-			cscr_compiler::EmitLevelObject(inst, sourcePos);
+			codsrc::EmitLevelObject(inst, sourcePos);
 #endif
 		}
 
@@ -1041,7 +1041,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitAnimObject(inst, sourcePos, EmitAnimObject_original);
 #else
-			cscr_compiler::EmitAnimObject(inst, sourcePos);
+			codsrc::EmitAnimObject(inst, sourcePos);
 #endif
 		}
 
@@ -1062,7 +1062,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitLocalVariable(block, inst, expr, sourcePos, EmitLocalVariable_original);
 #else
-			cscr_compiler::EmitLocalVariable(block, inst, expr, sourcePos);
+			codsrc::EmitLocalVariable(block, inst, expr, sourcePos);
 #endif
 		}
 
@@ -1084,7 +1084,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitLocalVariableRef(block, inst, expr, sourcePos, EmitLocalVariableRef_original);
 #else
-			cscr_compiler::EmitLocalVariableRef(block, inst, expr, sourcePos);
+			codsrc::EmitLocalVariableRef(block, inst, expr, sourcePos);
 #endif
 		}
 
@@ -1106,7 +1106,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			Scr_RegisterLocalVar_hook.invoke<void>(name, sourcePos, block);
 #else
-			cscr_compiler::Scr_RegisterLocalVar(name, sourcePos, block);
+			codsrc::Scr_RegisterLocalVar(name, sourcePos, block);
 #endif
 		}
 
@@ -1115,7 +1115,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitGameRef(inst, sourcePos, EmitGameRef_original);
 #else
-			cscr_compiler::EmitGameRef(inst, sourcePos);
+			codsrc::EmitGameRef(inst, sourcePos);
 #endif
 		}
 
@@ -1136,7 +1136,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitClearArray(inst, sourcePos, indexSourcePos, EmitClearArray_original);
 #else
-			cscr_compiler::EmitClearArray(inst, sourcePos, indexSourcePos);
+			codsrc::EmitClearArray(inst, sourcePos, indexSourcePos);
 #endif
 		}
 
@@ -1157,7 +1157,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitEmptyArray(inst, sourcePos, EmitEmptyArray_original);
 #else
-			cscr_compiler::EmitEmptyArray(inst, sourcePos);
+			codsrc::EmitEmptyArray(inst, sourcePos);
 #endif
 		}
 
@@ -1178,7 +1178,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitAnimation(inst, anim, sourcePos, EmitAnimation_original);
 #else
-			cscr_compiler::EmitAnimation(inst, anim, sourcePos);
+			codsrc::EmitAnimation(inst, anim, sourcePos);
 #endif
 		}
 
@@ -1199,7 +1199,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitFieldVariable(block, inst, expr, field, sourcePos, EmitFieldVariable_original);
 #else
-			cscr_compiler::EmitFieldVariable(block, inst, expr, field, sourcePos);
+			codsrc::EmitFieldVariable(block, inst, expr, field, sourcePos);
 #endif
 		}
 
@@ -1216,12 +1216,12 @@ namespace re_cscr_compiler
 			}
 		}
 
-		void EmitFieldVariableRef_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u field, game::sval_u sourcePos)
+		void EmitFieldVariableRef_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u field, game::sval_u sourcePos, game::sval_u rhsSourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitFieldVariableRef(block, inst, expr, field, sourcePos, EmitFieldVariableRef_original);
+			game::EmitFieldVariableRef(block, inst, expr, field, sourcePos, rhsSourcePos, EmitFieldVariableRef_original);
 #else
-			cscr_compiler::EmitFieldVariableRef(block, inst, expr, field, sourcePos);
+			codsrc::EmitFieldVariableRef(block, inst, expr, field, sourcePos, rhsSourcePos);
 #endif
 		}
 
@@ -1243,7 +1243,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitObject(inst, expr, sourcePos, EmitObject_original);
 #else
-			cscr_compiler::EmitObject(inst, expr, sourcePos);
+			codsrc::EmitObject(inst, expr, sourcePos);
 #endif
 		}
 
@@ -1264,7 +1264,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitDecTop(inst, EmitDecTop_original);
 #else
-			cscr_compiler::EmitDecTop(inst);
+			codsrc::EmitDecTop(inst);
 #endif
 		}
 
@@ -1285,7 +1285,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitCastFieldObject_hook.invoke<void>(inst, sourcePos);
 #else
-			cscr_compiler::EmitCastFieldObject(inst, sourcePos);
+			codsrc::EmitCastFieldObject(inst, sourcePos);
 #endif
 		}
 
@@ -1294,7 +1294,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitArrayVariable(block, inst, expr, index, sourcePos, indexSourcePos, EmitArrayVariable_original);
 #else
-			cscr_compiler::EmitArrayVariable(block, inst, expr, index, sourcePos, indexSourcePos);
+			codsrc::EmitArrayVariable(block, inst, expr, index, sourcePos, indexSourcePos);
 #endif
 		}
 
@@ -1316,7 +1316,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitArrayVariableRef(block, inst, expr, index, sourcePos, indexSourcePos, EmitArrayVariableRef_original);
 #else
-			cscr_compiler::EmitArrayVariableRef(block, inst, expr, index, sourcePos, indexSourcePos);
+			codsrc::EmitArrayVariableRef(block, inst, expr, index, sourcePos, indexSourcePos);
 #endif
 		}
 
@@ -1338,7 +1338,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitClearArrayVariable(block, inst, expr, index, sourcePos, indexSourcePos, EmitClearArrayVariable_original);
 #else
-			cscr_compiler::EmitClearArrayVariable(block, inst, expr, index, sourcePos, indexSourcePos);
+			codsrc::EmitClearArrayVariable(block, inst, expr, index, sourcePos, indexSourcePos);
 #endif
 		}
 
@@ -1360,7 +1360,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitVariableExpression_hook.invoke<void>(inst, expr, block);
 #else
-			cscr_compiler::EmitVariableExpression(inst, expr, block);
+			codsrc::EmitVariableExpression(inst, expr, block);
 #endif
 		}
 
@@ -1369,7 +1369,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			return EmitExpressionList_hook.invoke<int>(inst, exprlist, block);
 #else
-			return cscr_compiler::EmitExpressionList(inst, exprlist, block);
+			return codsrc::EmitExpressionList(inst, exprlist, block);
 #endif
 		}
 
@@ -1378,7 +1378,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::AddExpressionListOpcodePos(inst, exprlist, AddExpressionListOpcodePos_original);
 #else
-			cscr_compiler::AddExpressionListOpcodePos(inst, exprlist);
+			codsrc::AddExpressionListOpcodePos(inst, exprlist);
 #endif
 		}
 
@@ -1399,7 +1399,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::AddFilePrecache(inst, filename, sourcePos, include, filePosId, fileCountId, AddFilePrecache_original);
 #else
-			cscr_compiler::AddFilePrecache(inst, filename, sourcePos, include, filePosId, fileCountId);
+			codsrc::AddFilePrecache(inst, filename, sourcePos, include, filePosId, fileCountId);
 #endif
 		}
 
@@ -1420,7 +1420,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitFunction(inst, func, sourcePos, EmitFunction_original);
 #else
-			cscr_compiler::EmitFunction(inst, func, sourcePos);
+			codsrc::EmitFunction(inst, func, sourcePos);
 #endif
 		}
 
@@ -1441,7 +1441,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitGetFunction(inst, func, sourcePos, EmitGetFunction_original);
 #else
-			cscr_compiler::EmitGetFunction(inst, func, sourcePos);
+			codsrc::EmitGetFunction(inst, func, sourcePos);
 #endif
 		}
 
@@ -1462,7 +1462,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			return AddFunction_hook.invoke<int>(inst, func);
 #else
-			return cscr_compiler::AddFunction(inst, func);
+			return codsrc::AddFunction(inst, func);
 #endif
 		}
 
@@ -1471,7 +1471,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitPostScriptFunction_hook.invoke<void>(inst, func, param_count, bMethod, nameSourcePos);
 #else
-			cscr_compiler::EmitPostScriptFunction(inst, func, param_count, bMethod, nameSourcePos);
+			codsrc::EmitPostScriptFunction(inst, func, param_count, bMethod, nameSourcePos);
 #endif
 		}
 
@@ -1480,7 +1480,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitPostScriptFunctionPointer(block, inst, expr, param_count, bMethod, nameSourcePos, sourcePos, EmitPostScriptFunctionPointer_original);
 #else
-			cscr_compiler::EmitPostScriptFunctionPointer(block, inst, expr, param_count, bMethod, nameSourcePos, sourcePos);
+			codsrc::EmitPostScriptFunctionPointer(block, inst, expr, param_count, bMethod, nameSourcePos, sourcePos);
 #endif
 		}
 
@@ -1502,7 +1502,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitPostScriptThread(inst, func, param_count, bMethod, sourcePos, EmitPostScriptThread_original);
 #else
-			cscr_compiler::EmitPostScriptThread(inst, func, param_count, bMethod, sourcePos);
+			codsrc::EmitPostScriptThread(inst, func, param_count, bMethod, sourcePos);
 #endif
 		}
 
@@ -1523,7 +1523,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitPostScriptThreadPointer(block, inst, expr, param_count, bMethod, sourcePos, EmitPostScriptThreadPointer_original);
 #else
-			cscr_compiler::EmitPostScriptThreadPointer(block, inst, expr, param_count, bMethod, sourcePos);
+			codsrc::EmitPostScriptThreadPointer(block, inst, expr, param_count, bMethod, sourcePos);
 #endif
 		}
 
@@ -1545,7 +1545,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitPostScriptFunctionCall(inst, bMethod, param_count, func_name, nameSourcePos, block, EmitPostScriptFunctionCall_original);
 #else
-			cscr_compiler::EmitPostScriptFunctionCall(inst, bMethod, param_count, func_name, nameSourcePos, block);
+			codsrc::EmitPostScriptFunctionCall(inst, bMethod, param_count, func_name, nameSourcePos, block);
 #endif
 		}
 
@@ -1568,7 +1568,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitPostScriptThreadCall(inst, isMethod, param_count, func_name, sourcePos, nameSourcePos, block, EmitPostScriptThreadCall_original);
 #else
-			cscr_compiler::EmitPostScriptThreadCall(inst, isMethod, param_count, func_name, sourcePos, nameSourcePos, block);
+			codsrc::EmitPostScriptThreadCall(inst, isMethod, param_count, func_name, sourcePos, nameSourcePos, block);
 #endif
 		}
 
@@ -1591,7 +1591,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitPreFunctionCall(inst, EmitPreFunctionCall_original);
 #else
-			cscr_compiler::EmitPreFunctionCall(inst);
+			codsrc::EmitPreFunctionCall(inst);
 #endif
 		}
 
@@ -1612,7 +1612,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitPostFunctionCall(inst, bMethod, func_name, param_count, block, EmitPostFunctionCall_original);
 #else
-			cscr_compiler::EmitPostFunctionCall(inst, bMethod, func_name, param_count, block);
+			codsrc::EmitPostFunctionCall(inst, bMethod, func_name, param_count, block);
 #endif
 		}
 
@@ -1634,7 +1634,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::Scr_BeginDevScript(isnt, type_, savedPos, Scr_BeginDevScript_original);
 #else
-			cscr_compiler::Scr_BeginDevScript(isnt, type_, savedPos);
+			codsrc::Scr_BeginDevScript(isnt, type_, savedPos);
 #endif
 		}
 
@@ -1656,7 +1656,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::Scr_EndDevScript(inst, savedPos, Scr_EndDevScript_original);
 #else
-			cscr_compiler::Scr_EndDevScript(inst, savedPos);
+			codsrc::Scr_EndDevScript(inst, savedPos);
 #endif
 		}
 
@@ -1678,7 +1678,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitCallBuiltinOpcode(inst, param_count, sourcePos, EmitCallBuiltinOpcode_original);
 #else
-			cscr_compiler::EmitCallBuiltinOpcode(inst, param_count, sourcePos);
+			codsrc::EmitCallBuiltinOpcode(inst, param_count, sourcePos);
 #endif
 		}
 
@@ -1699,7 +1699,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitCallBuiltinMethodOpcode(inst, param_count, sourcePos, EmitCallBuiltinMethodOpcode_original);
 #else
-			cscr_compiler::EmitCallBuiltinMethodOpcode(inst, param_count, sourcePos);
+			codsrc::EmitCallBuiltinMethodOpcode(inst, param_count, sourcePos);
 #endif
 		}
 
@@ -1720,7 +1720,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitCall(inst, func_name, params, bStatement, block, EmitCall_original);
 #else
-			cscr_compiler::EmitCall(inst, func_name, params, bStatement, block);
+			codsrc::EmitCall(inst, func_name, params, bStatement, block);
 #endif
 		}
 
@@ -1741,7 +1741,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitMethod_hook.invoke<void>(inst, expr, func_name, params, methodSourcePos, bStatement, block);
 #else
-			cscr_compiler::EmitMethod(inst, expr, func_name, params, methodSourcePos, bStatement, block);
+			codsrc::EmitMethod(inst, expr, func_name, params, methodSourcePos, bStatement, block);
 #endif
 		}
 
@@ -1750,7 +1750,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::LinkThread(inst, threadCountId, pos, allowFarCall, LinkThread_original);
 #else
-			cscr_compiler::LinkThread(inst, threadCountId, pos, allowFarCall);
+			codsrc::LinkThread(inst, threadCountId, pos, allowFarCall);
 #endif
 		}
 
@@ -1772,7 +1772,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::LinkFile(inst, filePosId, fileCountId, LinkFile_original);
 #else
-			cscr_compiler::LinkFile(inst, filePosId, fileCountId);
+			codsrc::LinkFile(inst, filePosId, fileCountId);
 #endif
 		}
 
@@ -1793,7 +1793,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			CheckThreadPosition_hook.invoke<void>(inst, posId, name, sourcePos);
 #else
-			cscr_compiler::CheckThreadPosition(inst, posId, name, sourcePos);
+			codsrc::CheckThreadPosition(inst, posId, name, sourcePos);
 #endif
 		}
 
@@ -1802,7 +1802,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitCallExpression(inst, block, expr, bStatement, EmitCallExpression_original);
 #else
-			cscr_compiler::EmitCallExpression(inst, block, expr, bStatement);
+			codsrc::EmitCallExpression(inst, block, expr, bStatement);
 #endif
 		}
 
@@ -1824,7 +1824,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitCallExpressionFieldObject(block, inst, expr, EmitCallExpressionFieldObject_original);
 #else
-			cscr_compiler::EmitCallExpressionFieldObject(block, inst, expr);
+			codsrc::EmitCallExpressionFieldObject(block, inst, expr);
 #endif
 		}
 
@@ -1846,7 +1846,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::Scr_CreateVector(inst, constValue, value, Scr_CreateVector_original);
 #else
-			cscr_compiler::Scr_CreateVector(inst, constValue, value);
+			codsrc::Scr_CreateVector(inst, constValue, value);
 #endif
 		}
 
@@ -1867,7 +1867,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			return EvalPrimitiveExpressionList_hook.invoke<bool>(inst, exprlist, sourcePos, constValue);
 #else
-			return cscr_compiler::EvalPrimitiveExpressionList(inst, exprlist, sourcePos, constValue);
+			return codsrc::EvalPrimitiveExpressionList(inst, exprlist, sourcePos, constValue);
 #endif
 		}
 
@@ -1876,7 +1876,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			return game::EmitOrEvalPrimitiveExpressionList(inst, exprlist, sourcePos, constValue, a5, EmitOrEvalPrimitiveExpressionList_original);
 #else
-			return cscr_compiler::EmitOrEvalPrimitiveExpressionList(inst, exprlist, sourcePos, constValue, a5);
+			return codsrc::EmitOrEvalPrimitiveExpressionList(inst, exprlist, sourcePos, constValue, a5);
 #endif
 		}
 
@@ -1897,7 +1897,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitExpressionListFieldObject(inst, exprlist, sourcePos, block, EmitExpressionListFieldObject_original);
 #else
-			cscr_compiler::EmitExpressionListFieldObject(inst, exprlist, sourcePos, block);
+			codsrc::EmitExpressionListFieldObject(inst, exprlist, sourcePos, block);
 #endif
 		}
 
@@ -1918,7 +1918,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			return EvalPrimitiveExpression_hook.invoke<bool>(inst, expr, constValue);
 #else
-			return cscr_compiler::EvalPrimitiveExpression(inst, expr, constValue);
+			return codsrc::EvalPrimitiveExpression(inst, expr, constValue);
 #endif
 		}
 
@@ -1927,7 +1927,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			return EmitOrEvalPrimitiveExpression_hook.invoke<bool>(inst, expr, constValue, block);
 #else
-			return cscr_compiler::EmitOrEvalPrimitiveExpression(inst, expr, constValue, block);
+			return codsrc::EmitOrEvalPrimitiveExpression(inst, expr, constValue, block);
 #endif
 		}
 
@@ -1936,7 +1936,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitBoolOrExpression(inst, expr1, expr2, expr1sourcePos, expr2sourcePos, block, EmitBoolOrExpression_original);
 #else
-			cscr_compiler::EmitBoolOrExpression(inst, expr1, expr2, expr1sourcePos, expr2sourcePos, block);
+			codsrc::EmitBoolOrExpression(inst, expr1, expr2, expr1sourcePos, expr2sourcePos, block);
 #endif
 		}
 
@@ -1957,7 +1957,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitBoolAndExpression(inst, expr1, expr2, expr1sourcePos, expr2sourcePos, a6, EmitBoolAndExpression_original);
 #else
-			cscr_compiler::EmitBoolAndExpression(inst, expr1, expr2, expr1sourcePos, expr2sourcePos, a6);
+			codsrc::EmitBoolAndExpression(inst, expr1, expr2, expr1sourcePos, expr2sourcePos, a6);
 #endif
 		}
 
@@ -1978,7 +1978,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			return EvalBinaryOperatorExpression_hook.invoke<bool>(inst, expr1, expr2, opcode, sourcePos, constValue);
 #else
-			return cscr_compiler::EvalBinaryOperatorExpression(inst, expr1, expr2, opcode, sourcePos, constValue);
+			return codsrc::EvalBinaryOperatorExpression(inst, expr1, expr2, opcode, sourcePos, constValue);
 #endif
 		}
 
@@ -1987,7 +1987,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			return game::EmitOrEvalBinaryOperatorExpression(inst, expr1, expr2, opcode, sourcePos, constValue, a8, EmitOrEvalBinaryOperatorExpression_original);
 #else
-			return cscr_compiler::EmitOrEvalBinaryOperatorExpression(inst, expr1, expr2, opcode, sourcePos, constValue, a8);
+			return codsrc::EmitOrEvalBinaryOperatorExpression(inst, expr1, expr2, opcode, sourcePos, constValue, a8);
 #endif
 		}
 
@@ -2008,7 +2008,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitBinaryEqualsOperatorExpression(block, inst, lhs, rhs, opcode, sourcePos, EmitBinaryEqualsOperatorExpression_original);
 #else
-			cscr_compiler::EmitBinaryEqualsOperatorExpression(block, inst, lhs, rhs, opcode, sourcePos);
+			codsrc::EmitBinaryEqualsOperatorExpression(block, inst, lhs, rhs, opcode, sourcePos);
 #endif
 		}
 
@@ -2030,7 +2030,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::Scr_CalcLocalVarsVariableExpressionRef(block, expr, Scr_CalcLocalVarsVariableExpressionRef_original);
 #else
-			cscr_compiler::Scr_CalcLocalVarsVariableExpressionRef(block, expr);
+			codsrc::Scr_CalcLocalVarsVariableExpressionRef(block, expr);
 #endif
 		}
 
@@ -2051,7 +2051,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			return game::EvalExpression(constValue, inst, expr, EvalExpression_original);
 #else
-			return cscr_compiler::EvalExpression(constValue, inst, expr);
+			return codsrc::EvalExpression(constValue, inst, expr);
 #endif
 		}
 
@@ -2073,7 +2073,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			return EmitOrEvalExpression_hook.invoke<bool>(inst, expr, constValue, block);
 #else
-			return cscr_compiler::EmitOrEvalExpression(inst, expr, constValue, block);
+			return codsrc::EmitOrEvalExpression(inst, expr, constValue, block);
 #endif
 		}
 
@@ -2082,7 +2082,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitExpression_hook.invoke<void>(inst, expr, block);
 #else
-			cscr_compiler::EmitExpression(inst, expr, block);
+			codsrc::EmitExpression(inst, expr, block);
 #endif
 		}
 
@@ -2091,7 +2091,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitVariableExpressionRef_hook.invoke<void>(inst, expr, block);
 #else
-			cscr_compiler::EmitVariableExpressionRef(inst, expr, block);
+			codsrc::EmitVariableExpressionRef(inst, expr, block);
 #endif
 		}
 
@@ -2100,7 +2100,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitArrayPrimitiveExpressionRef(inst, expr, sourcePos, block, EmitArrayPrimitiveExpressionRef_original);
 #else
-			cscr_compiler::EmitArrayPrimitiveExpressionRef(inst, expr, sourcePos, block);
+			codsrc::EmitArrayPrimitiveExpressionRef(inst, expr, sourcePos, block);
 #endif
 		}
 
@@ -2121,7 +2121,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			Scr_CalcLocalVarsArrayVariableRef_hook.invoke<void>(expr, block);
 #else
-			cscr_compiler::Scr_CalcLocalVarsArrayVariableRef(expr, block);
+			codsrc::Scr_CalcLocalVarsArrayVariableRef(expr, block);
 #endif
 		}
 
@@ -2130,7 +2130,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitPrimitiveExpressionFieldObject_hook.invoke<void>(inst, expr, sourcePos, block);
 #else
-			cscr_compiler::EmitPrimitiveExpressionFieldObject(inst, expr, sourcePos, block);
+			codsrc::EmitPrimitiveExpressionFieldObject(inst, expr, sourcePos, block);
 #endif
 		}
 
@@ -2139,7 +2139,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::ConnectBreakStatements(inst, ConnectBreakStatements_original);
 #else
-			cscr_compiler::ConnectBreakStatements(inst);
+			codsrc::ConnectBreakStatements(inst);
 #endif
 		}
 
@@ -2160,7 +2160,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::ConnectContinueStatements(inst, ConnectContinueStatements_original);
 #else
-			cscr_compiler::ConnectContinueStatements(inst);
+			codsrc::ConnectContinueStatements(inst);
 #endif
 		}
 
@@ -2181,7 +2181,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			return game::EmitClearVariableExpression(block, inst, expr, rhsSourcePos, EmitClearVariableExpression_original);
 #else
-			return cscr_compiler::EmitClearVariableExpression(block, inst, expr, rhsSourcePos);
+			return codsrc::EmitClearVariableExpression(block, inst, expr, rhsSourcePos);
 #endif
 		}
 
@@ -2203,7 +2203,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitAssignmentStatement(inst, lhs, rhs, sourcePos, rhsSourcePos, block, EmitAssignmentStatement_original);
 #else
-			cscr_compiler::EmitAssignmentStatement(inst, lhs, rhs, sourcePos, rhsSourcePos, block);
+			codsrc::EmitAssignmentStatement(inst, lhs, rhs, sourcePos, rhsSourcePos, block);
 #endif
 		}
 
@@ -2224,7 +2224,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitCallExpressionStatement(inst, block, expr, EmitCallExpressionStatement_original);
 #else
-			cscr_compiler::EmitCallExpressionStatement(inst, block, expr);
+			codsrc::EmitCallExpressionStatement(inst, block, expr);
 #endif
 		}
 
@@ -2246,7 +2246,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitReturnStatement(block, inst, expr, sourcePos, EmitReturnStatement_original);
 #else
-			cscr_compiler::EmitReturnStatement(block, inst, expr, sourcePos);
+			codsrc::EmitReturnStatement(block, inst, expr, sourcePos);
 #endif
 		}
 
@@ -2268,7 +2268,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitWaitStatement(block, inst, expr, sourcePos, waitSourcePos, EmitWaitStatement_original);
 #else
-			cscr_compiler::EmitWaitStatement(block, inst, expr, sourcePos, waitSourcePos);
+			codsrc::EmitWaitStatement(block, inst, expr, sourcePos, waitSourcePos);
 #endif
 		}
 
@@ -2290,7 +2290,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitWaittillFrameEnd(inst, sourcePos, EmitWaittillFrameEnd_original);
 #else
-			cscr_compiler::EmitWaittillFrameEnd(inst, sourcePos);
+			codsrc::EmitWaittillFrameEnd(inst, sourcePos);
 #endif
 		}
 
@@ -2311,7 +2311,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitIfStatement(inst, expr, stmt, sourcePos, lastStatement, endSourcePos, block, ifStatBlock, EmitIfStatement_original);
 #else
-			cscr_compiler::EmitIfStatement(inst, expr, stmt, sourcePos, lastStatement, endSourcePos, block, ifStatBlock);
+			codsrc::EmitIfStatement(inst, expr, stmt, sourcePos, lastStatement, endSourcePos, block, ifStatBlock);
 #endif
 		}
 
@@ -2332,7 +2332,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			Scr_CalcLocalVarsIfStatement_hook.invoke<void>(inst, stmt, block, ifStatBlock);
 #else
-			cscr_compiler::Scr_CalcLocalVarsIfStatement(inst, stmt, block, ifStatBlock);
+			codsrc::Scr_CalcLocalVarsIfStatement(inst, stmt, block, ifStatBlock);
 #endif
 		}
 
@@ -2341,7 +2341,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitIfElseStatement_hook.invoke<void>(inst, expr, stmt1, stmt2, sourcePos, elseSourcePos, lastStatement, endSourcePos, block, ifStatBlock, elseStatBlock);
 #else
-			cscr_compiler::EmitIfElseStatement(inst, expr, stmt1, stmt2, sourcePos, elseSourcePos, lastStatement, endSourcePos, block, ifStatBlock, elseStatBlock);
+			codsrc::EmitIfElseStatement(inst, expr, stmt1, stmt2, sourcePos, elseSourcePos, lastStatement, endSourcePos, block, ifStatBlock, elseStatBlock);
 #endif
 		}
 
@@ -2350,7 +2350,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			Scr_CalcLocalVarsIfElseStatement_hook.invoke<void>(inst, stmt1, stmt2, block, ifStatBlock, elseStatBlock);
 #else
-			cscr_compiler::Scr_CalcLocalVarsIfElseStatement(inst, stmt1, stmt2, block, ifStatBlock, elseStatBlock);
+			codsrc::Scr_CalcLocalVarsIfElseStatement(inst, stmt1, stmt2, block, ifStatBlock, elseStatBlock);
 #endif
 		}
 
@@ -2359,7 +2359,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::Scr_AddBreakBlock(inst, block, Scr_AddBreakBlock_original);
 #else
-			cscr_compiler::Scr_AddBreakBlock(inst, block);
+			codsrc::Scr_AddBreakBlock(inst, block);
 #endif
 		}
 
@@ -2381,7 +2381,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::Scr_AddContinueBlock(inst, block, Scr_AddContinueBlock_original);
 #else
-			cscr_compiler::Scr_AddContinueBlock(inst, block);
+			codsrc::Scr_AddContinueBlock(inst, block);
 #endif
 		}
 
@@ -2403,7 +2403,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitWhileStatement_hook.invoke<void>(inst, expr, stmt, sourcePos, whileSourcePos, block, whileStatBlock);
 #else
-			cscr_compiler::EmitWhileStatement(inst, expr, stmt, sourcePos, whileSourcePos, block, whileStatBlock);
+			codsrc::EmitWhileStatement(inst, expr, stmt, sourcePos, whileSourcePos, block, whileStatBlock);
 #endif
 		}
 
@@ -2412,7 +2412,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			Scr_CalcLocalVarsWhileStatement_hook.invoke<void>(inst, expr, stmt, block, whileStatBlock);
 #else
-			cscr_compiler::Scr_CalcLocalVarsWhileStatement(inst, expr, stmt, block, whileStatBlock);
+			codsrc::Scr_CalcLocalVarsWhileStatement(inst, expr, stmt, block, whileStatBlock);
 #endif
 		}
 
@@ -2421,7 +2421,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitForStatement_hook.invoke<void>(inst, stmt1, expr, stmt2, stmt, sourcePos, forSourcePos, block, forStatBlock, forStatPostBlock);
 #else
-			cscr_compiler::EmitForStatement(inst, stmt1, expr, stmt2, stmt, sourcePos, forSourcePos, block, forStatBlock, forStatPostBlock);
+			codsrc::EmitForStatement(inst, stmt1, expr, stmt2, stmt, sourcePos, forSourcePos, block, forStatBlock, forStatPostBlock);
 #endif
 		}
 
@@ -2430,7 +2430,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			Scr_CalcLocalVarsForStatement_hook.invoke<void>(inst, stmt1, expr, stmt2, stmt, block, forStatBlock, forStatPostBlock);
 #else
-			cscr_compiler::Scr_CalcLocalVarsForStatement(inst, stmt1, expr, stmt2, stmt, block, forStatBlock, forStatPostBlock);
+			codsrc::Scr_CalcLocalVarsForStatement(inst, stmt1, expr, stmt2, stmt, block, forStatBlock, forStatPostBlock);
 #endif
 		}
 
@@ -2439,7 +2439,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitIncStatement(block, inst, expr, sourcePos, EmitIncStatement_original);
 #else
-			cscr_compiler::EmitIncStatement(block, inst, expr, sourcePos);
+			codsrc::EmitIncStatement(block, inst, expr, sourcePos);
 #endif
 		}
 
@@ -2461,7 +2461,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitDecStatement(block, inst, expr, sourcePos, EmitDecStatement_original);
 #else
-			cscr_compiler::EmitDecStatement(block, inst, expr, sourcePos);
+			codsrc::EmitDecStatement(block, inst, expr, sourcePos);
 #endif
 		}
 
@@ -2483,7 +2483,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::Scr_CalcLocalVarsFormalParameterListInternal(node, block, Scr_CalcLocalVarsFormalParameterListInternal_original);
 #else
-			cscr_compiler::Scr_CalcLocalVarsFormalParameterListInternal(node, block);
+			codsrc::Scr_CalcLocalVarsFormalParameterListInternal(node, block);
 #endif
 		}
 
@@ -2505,7 +2505,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitWaittillStatement(inst, obj, exprlist, sourcePos, waitSourcePos, block, EmitWaittillStatement_original);
 #else
-			cscr_compiler::EmitWaittillStatement(inst, obj, exprlist, sourcePos, waitSourcePos, block);
+			codsrc::EmitWaittillStatement(inst, obj, exprlist, sourcePos, waitSourcePos, block);
 #endif
 		}
 
@@ -2526,7 +2526,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitWaittillmatchStatement(inst, obj, exprlist, sourcePos, waitSourcePos, block, EmitWaittillmatchStatement_original);
 #else
-			cscr_compiler::EmitWaittillmatchStatement(inst, obj, exprlist, sourcePos, waitSourcePos, block);
+			codsrc::EmitWaittillmatchStatement(inst, obj, exprlist, sourcePos, waitSourcePos, block);
 #endif
 		}
 
@@ -2547,7 +2547,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitNotifyStatement(inst, obj, exprlist, sourcePos, notifySourcePos, block, EmitNotifyStatement_original);
 #else
-			cscr_compiler::EmitNotifyStatement(inst, obj, exprlist, sourcePos, notifySourcePos, block);
+			codsrc::EmitNotifyStatement(inst, obj, exprlist, sourcePos, notifySourcePos, block);
 #endif
 		}
 
@@ -2568,7 +2568,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitEndOnStatement(block, inst, obj, expr, sourcePos, exprSourcePos, EmitEndOnStatement_original);
 #else
-			cscr_compiler::EmitEndOnStatement(block, inst, obj, expr, sourcePos, exprSourcePos);
+			codsrc::EmitEndOnStatement(block, inst, obj, expr, sourcePos, exprSourcePos);
 #endif
 		}
 
@@ -2590,7 +2590,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			return CompareCaseInfo_hook.invoke<int>(elem1, elem2);
 #else
-			return cscr_compiler::CompareCaseInfo(elem1, elem2);
+			return codsrc::CompareCaseInfo(elem1, elem2);
 #endif
 		}
 
@@ -2599,7 +2599,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitCaseStatement(inst, expr, sourcePos, EmitCaseStatement_original);
 #else
-			cscr_compiler::EmitCaseStatement(inst, expr, sourcePos);
+			codsrc::EmitCaseStatement(inst, expr, sourcePos);
 #endif
 		}
 
@@ -2620,7 +2620,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitSwitchStatementList_hook.invoke<void>(inst, val, lastStatement, endSourcePos, block);
 #else
-			cscr_compiler::EmitSwitchStatementList(inst, val, lastStatement, endSourcePos, block);
+			codsrc::EmitSwitchStatementList(inst, val, lastStatement, endSourcePos, block);
 #endif
 		}
 
@@ -2629,7 +2629,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			Scr_CalcLocalVarsSwitchStatement_hook.invoke<void>(inst, stmtlist, block);
 #else
-			cscr_compiler::Scr_CalcLocalVarsSwitchStatement(inst, stmtlist, block);
+			codsrc::Scr_CalcLocalVarsSwitchStatement(inst, stmtlist, block);
 #endif
 		}
 
@@ -2638,7 +2638,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitSwitchStatement_hook.invoke<void>(inst, expr, stmtlist, sourcePos, lastStatement, endSourcePos, block);
 #else
-			cscr_compiler::EmitSwitchStatement(inst, expr, stmtlist, sourcePos, lastStatement, endSourcePos, block);
+			codsrc::EmitSwitchStatement(inst, expr, stmtlist, sourcePos, lastStatement, endSourcePos, block);
 #endif
 		}
 
@@ -2647,7 +2647,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitCaseStatementInfo(inst, name, sourcePos, EmitCaseStatementInfo_original);
 #else
-			cscr_compiler::EmitCaseStatementInfo(inst, name, sourcePos);
+			codsrc::EmitCaseStatementInfo(inst, name, sourcePos);
 #endif
 		}
 
@@ -2668,7 +2668,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitBreakStatement(block, inst, sourcePos, EmitBreakStatement_original);
 #else
-			cscr_compiler::EmitBreakStatement(block, inst, sourcePos);
+			codsrc::EmitBreakStatement(block, inst, sourcePos);
 #endif
 		}
 
@@ -2689,7 +2689,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitContinueStatement(block, inst, sourcePos, EmitContinueStatement_original);
 #else
-			cscr_compiler::EmitContinueStatement(block, inst, sourcePos);
+			codsrc::EmitContinueStatement(block, inst, sourcePos);
 #endif
 		}
 
@@ -2710,7 +2710,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitProfStatement(inst, profileName, sourcePos, op, EmitProfStatement_original);
 #else
-			cscr_compiler::EmitProfStatement(inst, profileName, sourcePos, op);
+			codsrc::EmitProfStatement(inst, profileName, sourcePos, op);
 #endif
 		}
 
@@ -2731,7 +2731,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitStatement_hook.invoke<void>(inst, val, lastStatement, endSourcePos, block);
 #else
-			cscr_compiler::EmitStatement(inst, val, lastStatement, endSourcePos, block);
+			codsrc::EmitStatement(inst, val, lastStatement, endSourcePos, block);
 #endif
 		}
 
@@ -2740,7 +2740,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			Scr_CalcLocalVarsStatement_hook.invoke<void>(inst, val, block);
 #else
-			cscr_compiler::Scr_CalcLocalVarsStatement(inst, val, block);
+			codsrc::Scr_CalcLocalVarsStatement(inst, val, block);
 #endif
 		}
 
@@ -2749,7 +2749,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitStatementList_hook.invoke<void>(inst, val, lastStatement, endSourcePos, block);
 #else
-			cscr_compiler::EmitStatementList(inst, val, lastStatement, endSourcePos, block);
+			codsrc::EmitStatementList(inst, val, lastStatement, endSourcePos, block);
 #endif
 		}
 
@@ -2758,7 +2758,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::Scr_CalcLocalVarsStatementList(block, inst, val, Scr_CalcLocalVarsStatementList_original);
 #else
-			cscr_compiler::Scr_CalcLocalVarsStatementList(block, inst, val);
+			codsrc::Scr_CalcLocalVarsStatementList(block, inst, val);
 #endif
 		}
 
@@ -2779,7 +2779,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			Scr_CalcLocalVarsDeveloperStatementList_hook.invoke<void>(inst, val, block, devStatBlock);
 #else
-			cscr_compiler::Scr_CalcLocalVarsDeveloperStatementList(inst, val, block, devStatBlock);
+			codsrc::Scr_CalcLocalVarsDeveloperStatementList(inst, val, block, devStatBlock);
 #endif
 		}
 
@@ -2788,7 +2788,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitDeveloperStatementList_hook.invoke<void>(inst, val, sourcePos, block, devStatBlock);
 #else
-			cscr_compiler::EmitDeveloperStatementList(inst, val, sourcePos, block, devStatBlock);
+			codsrc::EmitDeveloperStatementList(inst, val, sourcePos, block, devStatBlock);
 #endif
 		}
 
@@ -2797,7 +2797,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitFormalParameterList(inst, exprlist, sourcePos, block, EmitFormalParameterList_original);
 #else
-			cscr_compiler::EmitFormalParameterList(inst, exprlist, sourcePos, block);
+			codsrc::EmitFormalParameterList(inst, exprlist, sourcePos, block);
 #endif
 		}
 
@@ -2818,7 +2818,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::SpecifyThread(inst, val, SpecifyThread_original);
 #else
-			cscr_compiler::SpecifyThread(inst, val);
+			codsrc::SpecifyThread(inst, val);
 #endif
 		}
 
@@ -2839,7 +2839,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitThreadInternal(inst, val, sourcePos, endSourcePos, block, EmitThreadInternal_original);
 #else
-			cscr_compiler::EmitThreadInternal(inst, val, sourcePos, endSourcePos, block);
+			codsrc::EmitThreadInternal(inst, val, sourcePos, endSourcePos, block);
 #endif
 		}
 
@@ -2860,7 +2860,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::Scr_CalcLocalVarsThread(stmttblock, inst, exprlist, stmtlist, Scr_CalcLocalVarsThread_original);
 #else
-			cscr_compiler::Scr_CalcLocalVarsThread(stmttblock, inst, exprlist, stmtlist);
+			codsrc::Scr_CalcLocalVarsThread(stmttblock, inst, exprlist, stmtlist);
 #endif
 		}
 
@@ -2881,7 +2881,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::InitThread(type_, inst, InitThread_original);
 #else
-			cscr_compiler::InitThread(type_, inst);
+			codsrc::InitThread(type_, inst);
 #endif
 		}
 
@@ -2903,7 +2903,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitNormalThread(inst, val, stmttblock, EmitNormalThread_original);
 #else
-			cscr_compiler::EmitNormalThread(inst, val, stmttblock);
+			codsrc::EmitNormalThread(inst, val, stmttblock);
 #endif
 		}
 
@@ -2924,7 +2924,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitDeveloperThread(inst, val, stmttblock, EmitDeveloperThread_original);
 #else
-			cscr_compiler::EmitDeveloperThread(inst, val, stmttblock);
+			codsrc::EmitDeveloperThread(inst, val, stmttblock);
 #endif
 		}
 
@@ -2945,7 +2945,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitThread(inst, val, EmitThread_original);
 #else
-			cscr_compiler::EmitThread(inst, val);
+			codsrc::EmitThread(inst, val);
 #endif
 		}
 
@@ -2966,7 +2966,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			EmitThreadList_hook.invoke<void>(inst, val);
 #else
-			cscr_compiler::EmitThreadList(inst, val);
+			codsrc::EmitThreadList(inst, val);
 #endif
 		}
 
@@ -2975,7 +2975,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitInclude(inst, val, EmitInclude_original);
 #else
-			cscr_compiler::EmitInclude(inst, val);
+			codsrc::EmitInclude(inst, val);
 #endif
 		}
 
@@ -2996,7 +2996,7 @@ namespace re_cscr_compiler
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::ScriptCompile(inst, val, filePosId, fileCountId, scriptId, entries, entriesCount, ScriptCompile_original);
 #else
-			cscr_compiler::ScriptCompile(inst, val, filePosId, fileCountId, scriptId, entries, entriesCount);
+			codsrc::ScriptCompile(inst, val, filePosId, fileCountId, scriptId, entries, entriesCount);
 #endif
 		}
 
