@@ -122,8 +122,8 @@ namespace game
 	void EmitAnimation(scriptInstance_t inst, sval_u anim, sval_u sourcePos, void* call_addr = EmitAnimation_ADDR());
 	inline void* EmitFieldVariable_ADDR() { return CALL_ADDR(0x0, 0x6811C0); }
 	void EmitFieldVariable(scr_block_s* block, scriptInstance_t inst, sval_u expr, sval_u field, sval_u sourcePos, void* call_addr = EmitFieldVariable_ADDR());
-	inline void* EmitFieldVariableRef_ADDR() { return CALL_ADDR(0x0, 0x681200); }
-	void EmitFieldVariableRef(scr_block_s* block, scriptInstance_t inst, sval_u expr, sval_u field, sval_u sourcePos, sval_u rhsSourcePos, void* call_addr = EmitFieldVariableRef_ADDR());
+	inline void* EmitClearFieldVariable_ADDR() { return CALL_ADDR(0x0, 0x681200); }
+	void EmitClearFieldVariable(scr_block_s* block, scriptInstance_t inst, sval_u expr, sval_u field, sval_u sourcePos, sval_u rhsSourcePos, void* call_addr = EmitClearFieldVariable_ADDR());
 	inline void* EmitObject_ADDR() { return CALL_ADDR(0x0, 0x681310); }
 	void EmitObject(scriptInstance_t inst, sval_u expr, sval_u sourcePos, void* call_addr = EmitObject_ADDR());
 	inline void* EmitDecTop_ADDR() { return CALL_ADDR(0x0, 0x681630); }

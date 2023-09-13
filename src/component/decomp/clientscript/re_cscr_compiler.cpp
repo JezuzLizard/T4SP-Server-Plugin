@@ -53,7 +53,7 @@ namespace re_cscr_compiler
 	utils::hook::detour EmitEmptyArray_hook;
 	utils::hook::detour EmitAnimation_hook;
 	utils::hook::detour EmitFieldVariable_hook;
-	utils::hook::detour EmitFieldVariableRef_hook;
+	utils::hook::detour EmitClearFieldVariable_hook;
 	utils::hook::detour EmitObject_hook;
 	utils::hook::detour EmitDecTop_hook;
 	utils::hook::detour EmitCastFieldObject_hook;
@@ -204,7 +204,7 @@ namespace re_cscr_compiler
 	void* EmitEmptyArray_original;
 	void* EmitAnimation_original;
 	void* EmitFieldVariable_original;
-	void* EmitFieldVariableRef_original;
+	void* EmitClearFieldVariable_original;
 	void* EmitObject_original;
 	void* EmitDecTop_original;
 	void* EmitCastFieldObject_original;
@@ -1216,23 +1216,23 @@ namespace re_cscr_compiler
 			}
 		}
 
-		void EmitFieldVariableRef_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u field, game::sval_u sourcePos, game::sval_u rhsSourcePos)
+		void EmitClearFieldVariable_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u field, game::sval_u sourcePos, game::sval_u rhsSourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitFieldVariableRef(block, inst, expr, field, sourcePos, rhsSourcePos, EmitFieldVariableRef_original);
+			game::EmitClearFieldVariable(block, inst, expr, field, sourcePos, rhsSourcePos, EmitClearFieldVariable_original);
 #else
-			codsrc::EmitFieldVariableRef(block, inst, expr, field, sourcePos, rhsSourcePos);
+			codsrc::EmitClearFieldVariable(block, inst, expr, field, sourcePos, rhsSourcePos);
 #endif
 		}
 
-		// void __usercall EmitFieldVariableRef(game::scr_block_s *block@<eax>, game::scriptInstance_t inst@<esi>, game::sval_u expr, game::sval_u field, game::sval_u sourcePos)
-		NAKED void EmitFieldVariableRef_stub()
+		// void __usercall EmitClearFieldVariable(game::scr_block_s *block@<eax>, game::scriptInstance_t inst@<esi>, game::sval_u expr, game::sval_u field, game::sval_u sourcePos)
+		NAKED void EmitClearFieldVariable_stub()
 		{
 			_asm
 			{
 				push esi;
 				push eax;
-				call EmitFieldVariableRef_call;
+				call EmitClearFieldVariable_call;
 				add esp, 0x8;
 				ret;
 			}
@@ -3065,7 +3065,7 @@ namespace re_cscr_compiler
 			EmitEmptyArray_hook.create(game::EmitEmptyArray_ADDR(), EmitEmptyArray_stub);
 			EmitAnimation_hook.create(game::EmitAnimation_ADDR(), EmitAnimation_stub);
 			EmitFieldVariable_hook.create(game::EmitFieldVariable_ADDR(), EmitFieldVariable_stub);
-			EmitFieldVariableRef_hook.create(game::EmitFieldVariableRef_ADDR(), EmitFieldVariableRef_stub);
+			EmitClearFieldVariable_hook.create(game::EmitClearFieldVariable_ADDR(), EmitClearFieldVariable_stub);
 			EmitObject_hook.create(game::EmitObject_ADDR(), EmitObject_stub);
 			EmitDecTop_hook.create(game::EmitDecTop_ADDR(), EmitDecTop_stub);
 			EmitCastFieldObject_hook.create(game::EmitCastFieldObject.get(), EmitCastFieldObject_stub);
@@ -3217,7 +3217,7 @@ namespace re_cscr_compiler
 			EmitEmptyArray_original = EmitEmptyArray_hook.get_original();
 			EmitAnimation_original = EmitAnimation_hook.get_original();
 			EmitFieldVariable_original = EmitFieldVariable_hook.get_original();
-			EmitFieldVariableRef_original = EmitFieldVariableRef_hook.get_original();
+			EmitClearFieldVariable_original = EmitClearFieldVariable_hook.get_original();
 			EmitObject_original = EmitObject_hook.get_original();
 			EmitDecTop_original = EmitDecTop_hook.get_original();
 			EmitCastFieldObject_original = EmitCastFieldObject_hook.get_original();

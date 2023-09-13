@@ -489,8 +489,8 @@ namespace game
 		}
 	}
 
-	// void __usercall EmitFieldVariableRef(scr_block_s *block@<eax>, scriptInstance_t inst@<esi>, sval_u expr, sval_u field, sval_u sourcePos)
-	void EmitFieldVariableRef(scr_block_s* block, scriptInstance_t inst, sval_u expr, sval_u field, sval_u sourcePos, sval_u rhsSourcePos, void* call_addr)
+	// void __usercall EmitClearFieldVariable(scr_block_s *block@<eax>, scriptInstance_t inst@<esi>, sval_u expr, sval_u field, sval_u sourcePos)
+	void EmitClearFieldVariable(scr_block_s* block, scriptInstance_t inst, sval_u expr, sval_u field, sval_u sourcePos, sval_u rhsSourcePos, void* call_addr)
 	{
 		__asm
 		{
