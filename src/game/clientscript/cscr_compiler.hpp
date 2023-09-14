@@ -175,7 +175,7 @@ namespace game
 	inline void* EmitCallExpressionFieldObject_ADDR() { return CALL_ADDR(0x0, 0x683690); }
 	void EmitCallExpressionFieldObject(scr_block_s* block, scriptInstance_t inst, sval_u expr, void* call_addr = EmitCallExpressionFieldObject_ADDR());
 	inline void* Scr_CreateVector_ADDR() { return CALL_ADDR(0x0, 0x6836F0); }
-	void Scr_CreateVector(scriptInstance_t inst, VariableCompileValue* constValue, VariableCompileValue* value, void* call_addr = Scr_CreateVector_ADDR());
+	void Scr_CreateVector(scriptInstance_t inst, VariableCompileValue* constValue, VariableValue* value, void* call_addr = Scr_CreateVector_ADDR());
 	inline void* EmitOrEvalPrimitiveExpressionList_ADDR() { return CALL_ADDR(0x0, 0x6838D0); }
 	bool EmitOrEvalPrimitiveExpressionList(scriptInstance_t inst, sval_u exprlist, sval_u sourcePos, VariableCompileValue* constValue, scr_block_s* a5, void* call_addr = EmitOrEvalPrimitiveExpressionList_ADDR());
 	inline void* EmitExpressionListFieldObject_ADDR() { return CALL_ADDR(0x0, 0x683AF0); }

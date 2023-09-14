@@ -855,8 +855,8 @@ namespace game
 		}
 	}
 
-	// void __usercall Scr_CreateVector(scriptInstance_t inst@<eax>, VariableCompileValue *constValue, VariableCompileValue *value)
-	void Scr_CreateVector(scriptInstance_t inst, VariableCompileValue* constValue, VariableCompileValue* value, void* call_addr)
+	// void __usercall Scr_CreateVector(scriptInstance_t inst@<eax>, VariableCompileValue *constValue, VariableValue *value)
+	void Scr_CreateVector(scriptInstance_t inst, VariableCompileValue* constValue, VariableValue* value, void* call_addr)
 	{
 		__asm
 		{

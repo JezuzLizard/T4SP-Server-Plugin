@@ -1841,7 +1841,7 @@ namespace re_cscr_compiler
 			}
 		}
 
-		void Scr_CreateVector_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::VariableCompileValue* constValue, game::VariableCompileValue* value)
+		void Scr_CreateVector_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::VariableCompileValue* constValue, game::VariableValue* value)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::Scr_CreateVector(inst, constValue, value, Scr_CreateVector_original);
@@ -1850,7 +1850,7 @@ namespace re_cscr_compiler
 #endif
 		}
 
-		// void __usercall Scr_CreateVector(game::scriptInstance_t inst@<eax>, game::VariableCompileValue *constValue, game::VariableCompileValue *value)
+		// void __usercall Scr_CreateVector(game::scriptInstance_t inst@<eax>, game::VariableCompileValue *constValue, game::VariableValue *value)
 		NAKED void Scr_CreateVector_stub()
 		{
 			_asm
