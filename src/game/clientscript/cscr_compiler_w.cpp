@@ -774,7 +774,7 @@ namespace game
 	}
 
 	// void __usercall EmitCallBuiltinMethodOpcode(int inst@<eax>, int param_count, sval_u sourcePos)
-	void EmitCallBuiltinMethodOpcode(int inst, int param_count, sval_u sourcePos, void* call_addr)
+	void EmitCallBuiltinMethodOpcode(scriptInstance_t inst, int param_count, sval_u sourcePos, void* call_addr)
 	{
 		__asm
 		{

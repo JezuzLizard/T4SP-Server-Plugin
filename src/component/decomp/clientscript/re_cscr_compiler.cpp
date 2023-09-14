@@ -1694,7 +1694,7 @@ namespace re_cscr_compiler
 			}
 		}
 
-		void EmitCallBuiltinMethodOpcode_call(int inst, [[maybe_unused]] void* caller_addr, int param_count, game::sval_u sourcePos)
+		void EmitCallBuiltinMethodOpcode_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, int param_count, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
 			game::EmitCallBuiltinMethodOpcode(inst, param_count, sourcePos, EmitCallBuiltinMethodOpcode_original);

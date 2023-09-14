@@ -163,7 +163,7 @@ namespace game
 	inline void* EmitCallBuiltinOpcode_ADDR() { return CALL_ADDR(0x0, 0x682BD0); }
 	void EmitCallBuiltinOpcode(scriptInstance_t inst, int param_count, sval_u sourcePos, void* call_addr = EmitCallBuiltinOpcode_ADDR());
 	inline void* EmitCallBuiltinMethodOpcode_ADDR() { return CALL_ADDR(0x0, 0x682C40); }
-	void EmitCallBuiltinMethodOpcode(int inst, int param_count, sval_u sourcePos, void* call_addr = EmitCallBuiltinMethodOpcode_ADDR());
+	void EmitCallBuiltinMethodOpcode(scriptInstance_t inst, int param_count, sval_u sourcePos, void* call_addr = EmitCallBuiltinMethodOpcode_ADDR());
 	inline void* EmitCall_ADDR() { return CALL_ADDR(0x0, 0x682CA0); }
 	void EmitCall(scriptInstance_t inst, sval_u func_name, sval_u params, int bStatement, scr_block_s* block, void* call_addr = EmitCall_ADDR());
 	inline void* LinkThread_ADDR() { return CALL_ADDR(0x0, 0x683250); }
