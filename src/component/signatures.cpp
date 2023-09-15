@@ -139,15 +139,13 @@ namespace signatures
 
 	std::string err_reason;
 
-	std::string get_err_reason()
+	const std::string& get_err_reason()
 	{
 		return err_reason;
 	}
 
-	bool process_printf()
+	bool process_printf(std::unordered_map<std::string, std::string> &cache_info)
 	{
-		auto cache_info = get_cache_info_for_our_version();
-
 		if (cache_info.contains("printf"))
 		{
 			game::plutonium::printf.set(std::atoi(cache_info.at("printf").c_str()));
@@ -165,7 +163,6 @@ namespace signatures
 		game::plutonium::printf.set(string_ref + 4 + 5 + offset);
 
 		cache_info.insert_or_assign("printf", std::to_string(string_ref + 4 + 5 + offset));
-		save_cache_info_for_our_version(cache_info);
 
 		return true;
 	}
@@ -201,6 +198,12 @@ namespace signatures
 	{
 		size_t addr1;
 		size_t addr2;
+		auto cache_info = get_cache_info_for_our_version();
+
+		if (!process_printf(cache_info))
+		{
+			return false;
+		}
 
 		SAFE_SET_PLUTO_SYMBOL_DOUBLE(load_custom_script_func, 0x689C80, 0x6);
 		SAFE_SET_PLUTO_SYMBOL_DOUBLE(script_preprocess, 0x689BCF, 0x2);
@@ -210,9 +213,16 @@ namespace signatures
 		SAFE_SET_PLUTO_SYMBOL_DOUBLE(scr_execentthread_update_codepos_func, 0x699640, 0x7);
 		SAFE_SET_PLUTO_SYMBOL_DOUBLE(scr_addexecthread_update_codepos_func, 0x699730, 0x7);
 		SAFE_SET_PLUTO_SYMBOL_DOUBLE(at_codepose_va, 0x68B3A5, 0xA);
+		SAFE_SET_PLUTO_SYMBOL_DOUBLE(store_func_codepos, 0x688909, 0x3);
 
+		SAFE_SET_PLUTO_SYMBOL(cscr_get_function_hook, 0x682DC0);
 		SAFE_SET_PLUTO_SYMBOL(scr_get_function_stub, 0x682D99);
 		SAFE_SET_PLUTO_SYMBOL(scr_get_method_stub, 0x683043);
+		SAFE_SET_PLUTO_SYMBOL(cscr_get_method_hook, 0x68305C);
+		SAFE_SET_PLUTO_SYMBOL_DOUBLE(scr_get_method_hook, 0x683043, 0x4);
+		SAFE_SET_PLUTO_SYMBOL_DOUBLE(scr_get_function_hook, 0x682D99, 0x8);
+
+		save_cache_info_for_our_version(cache_info);
 
 		return true;
 	}
@@ -221,6 +231,6 @@ namespace signatures
 	{
 		utils::cryptography::des::set_key("694201337");
 
-		return handle_funcs() && process_printf();
+		return handle_funcs();
 	}
 }

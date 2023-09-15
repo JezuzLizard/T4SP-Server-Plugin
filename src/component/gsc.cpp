@@ -1,5 +1,6 @@
 #include <stdinc.hpp>
 #include "loader/component_loader.hpp"
+#include "gsc.hpp"
 
 #include "scheduler.hpp"
 
@@ -107,6 +108,11 @@ namespace gsc
 		{
 			functions.insert_or_assign(name, function);
 		}
+
+		const std::unordered_map<std::string, game::BuiltinFunction>& get()
+		{
+			return functions;
+		}
 	}
 
 	namespace method
@@ -115,6 +121,11 @@ namespace gsc
 		{
 			methods.insert_or_assign(name, method);
 		}
+
+		const std::unordered_map<std::string, game::BuiltinMethod>& get()
+		{
+			return methods;
+		}
 	}
 
 	class component final : public component_interface
@@ -122,6 +133,7 @@ namespace gsc
 	public:
 		void post_unpack() override
 		{
+			// for when we dont use the decomp
 			// custom gsc methods
 			if (game::plutonium::scr_get_method_stub != nullptr)
 			{

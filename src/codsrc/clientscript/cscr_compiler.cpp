@@ -1997,10 +1997,29 @@ LABEL_17:
 	{
 		if ( inst )
 		{
-			return game::CScr_GetFunction(pName, type);
+			// pluto
+			if (game::plutonium::cscr_get_function_hook != nullptr)
+			{
+				return game::plutonium::cscr_get_function_hook(pName, type);
+			}
+			//
+			else
+			{
+				return game::CScr_GetFunction(pName, type);
+			}
+
 		}
-			
-		return game::Scr_GetFunction(pName, type);
+
+		// pluto
+		if (game::plutonium::scr_get_function_hook != nullptr)
+		{
+			return game::plutonium::scr_get_function_hook(pName, type);
+		}
+		//
+		else
+		{
+			return game::Scr_GetFunction(pName, type);
+		}
 	}
 
 	// Completed
@@ -2114,10 +2133,28 @@ LABEL_17:
 	{
 		if ( inst )
 		{
-			return game::CScr_GetMethod(pName, type);
+			// pluto
+			if (game::plutonium::cscr_get_method_hook != nullptr)
+			{
+				return game::plutonium::cscr_get_method_hook(pName, type);
+			}
+			//
+			else
+			{
+				return game::CScr_GetMethod(pName, type);
+			}
 		}
 
-		return game::Scr_GetMethod(type, pName);
+		// pluto
+		if (game::plutonium::scr_get_method_hook != nullptr)
+		{
+			return game::plutonium::scr_get_method_hook(pName, type);
+		}
+		//
+		else
+		{
+			return game::Scr_GetMethod(type, pName);
+		}
 	}
 
 	// Completed
@@ -2345,8 +2382,10 @@ LABEL_17:
 		pos = game::Scr_EvalVariable(inst, posId);
 		if ( pos.type != game::VAR_UNDEFINED )
 		{
-			// crash BUG! need to check in developer (vanilla)
-			if ( pos.u.intValue )
+			// pluto
+			auto* developer = game::Dvar_FindVar("developer");
+			if ( pos.u.intValue && developer && developer->current.enabled )
+			//
 			{
 				game::CompileError(inst, sourcePos, "function '%s' already defined in '%s'", game::SL_ConvertToString(name, inst), game::gScrParserPub[inst].sourceBufferLookup[game::Scr_GetSourceBuffer(inst, pos.u.codePosValue)].buf);
 			}
@@ -4980,6 +5019,14 @@ LABEL_17:
 		game::gScrCompileGlob[inst].cumulOffset = 0;
 		game::gScrCompileGlob[inst].maxOffset = 0;
 		game::gScrCompileGlob[inst].maxCallOffset = 0;
+
+		// pluto
+		if (game::plutonium::store_func_codepos != nullptr)
+		{
+			game::plutonium::store_func_codepos(inst, val.node[1].stringValue);
+		}
+		//
+
 		game::CompileTransferRefToString(val.node[1].stringValue, inst, 2u);
 		game::EmitFormalParameterList(inst, val.node[2], sourcePos, block);
 		game::EmitStatementList(inst, val.node[3], 1, endSourcePos.stringValue, block);

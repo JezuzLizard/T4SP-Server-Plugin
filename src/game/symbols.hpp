@@ -106,5 +106,12 @@ namespace game
 
 		WEAK symbol<void()> scr_get_method_stub{ 0x0, 0x0 };
 		WEAK symbol<void()> scr_get_function_stub{ 0x0, 0x0 };
+
+		WEAK symbol<game::BuiltinMethod(const char** name, int* type)> scr_get_method_hook{ 0x0, 0x0 };
+		WEAK symbol<game::BuiltinFunction(const char** name, int* type)> scr_get_function_hook{ 0x0, 0x0 };
+		WEAK symbol<game::BuiltinMethod(const char** name, int* type)> cscr_get_method_hook{ 0x0, 0x0 };
+		WEAK symbol<game::BuiltinFunction(const char** name, int* type)> cscr_get_function_hook{ 0x0, 0x0 };
+
+		WEAK symbol<void(int scrInstance, int str_num)> store_func_codepos{ 0x0, 0x0 };
 	}
 }
