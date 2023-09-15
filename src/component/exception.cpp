@@ -71,7 +71,7 @@ namespace exception
 			line(utils::string::va("Address: 0x%lX", exceptioninfo->ExceptionRecord->ExceptionAddress));
 
 			line("");
-			line(get_full_gsc_state_str(game::SCRIPTINSTANCE_SERVER));
+			line(build_gsc_dump(game::SCRIPTINSTANCE_SERVER));
 			line("");
 
 #pragma warning(push)

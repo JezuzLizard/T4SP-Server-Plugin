@@ -69,8 +69,9 @@
 #include "game/enums.hpp"
 #include "game/structs.hpp"
 #include "game/symbols.hpp"
-std::string get_full_gsc_state_str(game::scriptInstance_t inst);
-void push_opcode_to_history(game::scriptInstance_t inst, game::OpcodeVM op);
+
+std::string build_gsc_dump(game::scriptInstance_t inst);
+void push_opcode_history(game::scriptInstance_t inst, game::OpcodeVM op);
 void push_builtin_history(game::scriptInstance_t inst, int idx);
 void push_codepos_history(game::scriptInstance_t inst, const char* pos);
 

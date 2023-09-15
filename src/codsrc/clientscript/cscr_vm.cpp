@@ -54,7 +54,7 @@ namespace codsrc
 			game::Cmd_AddCommand("dump_gsc_state", []()
 			{
 				game::scriptInstance_t inst = game::SCRIPTINSTANCE_SERVER;
-				utils::io::write_file("t4sp-server-plugin/gsc_state.json", get_full_gsc_state_str(inst));
+				utils::io::write_file("t4sp-server-plugin/gsc_state.json", build_gsc_dump(inst));
 			});
 		}
 		//
@@ -2725,7 +2725,7 @@ namespace codsrc
 			game::gOpcode[inst] = (game::OpcodeVM)game::Scr_ReadUnsignedByte(inst, &game::gFs[inst].pos);
 		interrupt_return:
 			// our addition
-			push_opcode_to_history(inst, game::gOpcode[inst]);
+			push_opcode_history(inst, game::gOpcode[inst]);
 			//
 
 			switch ( game::gOpcode[inst] )

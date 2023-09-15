@@ -15,7 +15,7 @@
 #define assert(expr) \
 	if (!!!(expr)) \
 	{ \
-		utils::io::write_file("t4sp-server-plugin/gsc_state_assert.json", get_full_gsc_state_str(game::SCRIPTINSTANCE_SERVER)); \
+		utils::io::write_file("t4sp-server-plugin/gsc_state_assert.json", build_gsc_dump(game::SCRIPTINSTANCE_SERVER)); \
 		_wassert(_CRT_WIDE(#expr), _CRT_WIDE(__FILE__), (unsigned)(__LINE__)); \
 	}
 #endif
