@@ -1065,7 +1065,9 @@ namespace codsrc
 			gScrVmPub[inst].outparamcount = outparamcount;
 			}*/
 
+			// our addition
 			push_builtin_history(inst, builtinIndex);
+			//
 
 			assert(builtinIndex >= 0);
 			assert(builtinIndex < 1024);
@@ -1131,7 +1133,9 @@ namespace codsrc
 		  gScrVmPub[inst].top = localFs.top - 1;
 		}*/
 
+			// our addition
 			push_builtin_history(inst, builtinIndex);
+			//
 
 			assert(builtinIndex >= 0);
 			assert(builtinIndex < 1024);
@@ -1295,7 +1299,7 @@ namespace codsrc
 			}
 			//
 
-			// our additions
+			// our addition
 			push_codepos_history(inst, game::gFs[inst].pos);
 			//
 
