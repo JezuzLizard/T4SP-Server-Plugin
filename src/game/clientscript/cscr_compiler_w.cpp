@@ -1,5 +1,5 @@
 #include <stdinc.hpp>
-//#include "codsrc/clientscript/cscr_compiler.hpp"
+#include "codsrc/clientscript/cscr_compiler.hpp"
 
 namespace game
 {
@@ -1480,4 +1480,233 @@ namespace game
 		}
 	}
 
+	void EmitFloat(scriptInstance_t inst, float value)
+	{
+		codsrc::EmitFloat(inst, value);
+	}
+
+	void EmitCanonicalStringConst(scriptInstance_t inst, unsigned int stringValue)
+	{
+		codsrc::EmitCanonicalStringConst(inst, stringValue);
+	}
+
+	int Scr_FindLocalVar(scr_block_s* block, int startIndex, unsigned int name)
+	{
+		return codsrc::Scr_FindLocalVar(block, startIndex, name);
+	}
+
+	void Scr_CheckLocalVarsCount(int localVarsCount)
+	{
+		codsrc::Scr_CheckLocalVarsCount(localVarsCount);
+	}
+
+	void EmitGetUndefined(scriptInstance_t inst, sval_u sourcePos)
+	{
+		codsrc::EmitGetUndefined(inst, sourcePos);
+	}
+
+	void EmitPrimitiveExpression(scriptInstance_t inst, sval_u expr, scr_block_s* block)
+	{
+		codsrc::EmitPrimitiveExpression(inst, expr, block);
+	}
+
+	void Scr_EmitAnimation(scriptInstance_t inst, char* pos, unsigned int animName, unsigned int sourcePos)
+	{
+		codsrc::Scr_EmitAnimation(inst, pos, animName, sourcePos);
+	}
+
+	void EmitEvalArray(scriptInstance_t inst, sval_u sourcePos, sval_u indexSourcePos)
+	{
+		codsrc::EmitEvalArray(inst, sourcePos, indexSourcePos);
+	}
+
+	void EmitEvalArrayRef(scriptInstance_t inst, sval_u sourcePos, sval_u indexSourcePos)
+	{
+		codsrc::EmitEvalArrayRef(inst, sourcePos, indexSourcePos);
+	}
+
+	unsigned int Scr_GetBuiltin(scriptInstance_t inst, sval_u func_name)
+	{
+		return codsrc::Scr_GetBuiltin(inst, func_name);
+	}
+
+	int Scr_GetUncacheType(int type)
+	{
+		return codsrc::Scr_GetUncacheType(type);
+	}
+
+	int Scr_GetCacheType(int type)
+	{
+		return codsrc::Scr_GetCacheType(type);
+	}
+
+	BuiltinFunction Scr_GetFunction(const char** pName, int* type)
+	{
+		return codsrc::Scr_GetFunction(pName, type);
+	}
+
+	BuiltinFunction GetFunction(scriptInstance_t inst, const char** pName, int* type)
+	{
+		return codsrc::GetFunction(inst, pName, type);
+	}
+
+	BuiltinMethod GetMethod(scriptInstance_t inst, const char** pName, int* type)
+	{
+		return codsrc::GetMethod(inst, pName, type);
+	}
+
+	unsigned int GetVariableName(scriptInstance_t inst, unsigned int id)
+	{
+		return codsrc::GetVariableName(inst, id);
+	}
+
+	int GetExpressionCount(sval_u exprlist)
+	{
+		return codsrc::GetExpressionCount(exprlist);
+	}
+
+	sval_u* GetSingleParameter(sval_u exprlist)
+	{
+		return codsrc::GetSingleParameter(exprlist);
+	}
+
+	void EmitExpressionFieldObject(scriptInstance_t inst, sval_u expr, sval_u sourcePos, scr_block_s* block)
+	{
+		codsrc::EmitExpressionFieldObject(inst, expr, sourcePos, block);
+	}
+
+	void EvalInteger(int value, sval_u sourcePos, VariableCompileValue* constValue)
+	{
+		codsrc::EvalInteger(value, sourcePos, constValue);
+	}
+
+	void EvalFloat(float value, sval_u sourcePos, VariableCompileValue* constValue)
+	{
+		codsrc::EvalFloat(value, sourcePos, constValue);
+	}
+
+	void EvalString(unsigned int value, sval_u sourcePos, VariableCompileValue* constValue)
+	{
+		codsrc::EvalString(value, sourcePos, constValue);
+	}
+
+	void EvalIString(unsigned int value, sval_u sourcePos, VariableCompileValue* constValue)
+	{
+		codsrc::EvalIString(value, sourcePos, constValue);
+	}
+
+	void EvalUndefined(sval_u sourcePos, VariableCompileValue* constValue)
+	{
+		codsrc::EvalUndefined(sourcePos, constValue);
+	}
+
+	void Scr_PopValue(scriptInstance_t inst)
+	{
+		codsrc::Scr_PopValue(inst);
+	}
+
+	void EmitSetVariableField(scriptInstance_t inst, sval_u sourcePos)
+	{
+		codsrc::EmitSetVariableField(inst, sourcePos);
+	}
+
+	void EmitFieldVariableRef(scriptInstance_t inst, sval_u expr, sval_u field, sval_u sourcePos, scr_block_s* block)
+	{
+		codsrc::EmitFieldVariableRef(inst, expr, field, sourcePos, block);
+	}
+
+	void Scr_CalcLocalVarsArrayPrimitiveExpressionRef(sval_u expr, scr_block_s* block)
+	{
+		codsrc::Scr_CalcLocalVarsArrayPrimitiveExpressionRef(expr, block);
+	}
+
+	BOOL IsUndefinedPrimitiveExpression(sval_u expr)
+	{
+		return codsrc::IsUndefinedPrimitiveExpression(expr);
+	}
+
+	bool IsUndefinedExpression(sval_u expr)
+	{
+		return codsrc::IsUndefinedExpression(expr);
+	}
+
+	void Scr_CopyBlock(scr_block_s* from, scr_block_s** to)
+	{
+		codsrc::Scr_CopyBlock(from, to);
+	}
+
+	void Scr_CheckMaxSwitchCases(int count)
+	{
+		codsrc::Scr_CheckMaxSwitchCases(count);
+	}
+
+	void Scr_CalcLocalVarsSafeSetVariableField(sval_u expr, sval_u sourcePos, scr_block_s* block)
+	{
+		codsrc::Scr_CalcLocalVarsSafeSetVariableField(expr, sourcePos, block);
+	}
+
+	void EmitFormalWaittillParameterListRefInternal(scriptInstance_t inst, sval_u* node, scr_block_s* block)
+	{
+		codsrc::EmitFormalWaittillParameterListRefInternal(inst, node, block);
+	}
+
+	void EmitDefaultStatement(scriptInstance_t inst, sval_u sourcePos)
+	{
+		codsrc::EmitDefaultStatement(inst, sourcePos);
+	}
+
+	char Scr_IsLastStatement(scriptInstance_t inst, sval_u* node)
+	{
+		return codsrc::Scr_IsLastStatement(inst, node);
+	}
+
+	void EmitEndStatement(scriptInstance_t inst, sval_u sourcePos, scr_block_s* block)
+	{
+		codsrc::EmitEndStatement(inst, sourcePos, block);
+	}
+
+	void EmitProfBeginStatement(scriptInstance_t inst, sval_u profileName, sval_u sourcePos)
+	{
+		codsrc::EmitProfBeginStatement(inst, profileName, sourcePos);
+	}
+
+	void EmitProfEndStatement(scriptInstance_t inst, sval_u profileName, sval_u sourcePos)
+	{
+		codsrc::EmitProfEndStatement(inst, profileName, sourcePos);
+	}
+
+	void Scr_CalcLocalVarsIncStatement(sval_u expr, scr_block_s* block)
+	{
+		codsrc::Scr_CalcLocalVarsIncStatement(expr, block);
+	}
+
+	void Scr_CalcLocalVarsWaittillStatement(sval_u exprlist, scr_block_s* block)
+	{
+		codsrc::Scr_CalcLocalVarsWaittillStatement(exprlist, block);
+	}
+
+	void EmitFormalParameterListInternal(scriptInstance_t inst, sval_u* node, scr_block_s* block)
+	{
+		codsrc::EmitFormalParameterListInternal(inst, node, block);
+	}
+
+	unsigned int SpecifyThreadPosition(scriptInstance_t inst, unsigned int posId, unsigned int name, unsigned int sourcePos, int type)
+	{
+		return codsrc::SpecifyThreadPosition(inst, posId, name, sourcePos, type);
+	}
+
+	void Scr_CalcLocalVarsFormalParameterList(sval_u exprlist, scr_block_s* block)
+	{
+		codsrc::Scr_CalcLocalVarsFormalParameterList(exprlist, block);
+	}
+
+	void SetThreadPosition(scriptInstance_t inst, unsigned int posId)
+	{
+		codsrc::SetThreadPosition(inst, posId);
+	}
+
+	void EmitIncludeList(scriptInstance_t inst, sval_u val)
+	{
+		codsrc::EmitIncludeList(inst, val);
+	}
 }

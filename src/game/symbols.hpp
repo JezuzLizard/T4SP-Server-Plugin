@@ -36,6 +36,11 @@ namespace game
 	WEAK symbol<void* (void* Block, size_t Size)>_realloc{ 0x0, 0x7AECAC };
 	WEAK symbol<void* (size_t Size)>Z_TryMalloc{ 0x0, 0x7AAD36 };
 
+	WEAK symbol<BuiltinFunction(const char** pName)>Sentient_GetFunction{ 0x0, 0x5676F0 };
+	WEAK symbol<BuiltinFunction(const char** pName, int* type_1)>BuiltIn_GetFunction{ 0x0, 0x52F0B0 };
+	WEAK symbol<BuiltinFunction(const char** pName, int* type)>CScr_GetFunction{ 0x0, 0x66EA30 };
+	WEAK symbol<BuiltinMethod(const char** pName, int* type)>CScr_GetMethod{ 0x0, 0x671110 };
+
 	inline void* I_strncmp_ADDR() { return CALL_ADDR(0x0, 0x5F6A40); }
 	int I_strncmp(const char* str1, const char* str2, int len, void* call_addr = I_strncmp_ADDR());
 
@@ -66,6 +71,9 @@ namespace game
 	inline void* Cmd_FindCommand_ADDR() { return CALL_ADDR(0x0, 0x594DB0); }
 	cmd_function_s* Cmd_FindCommand(const char* cmdName, void* call_addr = Cmd_FindCommand_ADDR());
 	void Cmd_AddCommand(const char* name, void(__cdecl* function)());
+
+	inline void* Scr_GetMethod_ADDR() { return CALL_ADDR(0x0, 0x530630); }
+	BuiltinMethod Scr_GetMethod(int* type_, const char** pName, void* call_addr = Scr_GetMethod_ADDR());
 
 	void Sys_EnterCriticalSection(CriticalSection critSect);
 	void Sys_LeaveCriticalSection(CriticalSection critSect);

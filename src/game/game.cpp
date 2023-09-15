@@ -203,6 +203,22 @@ namespace game
 		return answer;
 	}
 
+	// BuiltinMethod __usercall Scr_GetMethod@<eax>(int *type@<edi>, const char **pName@<esi>)
+	BuiltinMethod Scr_GetMethod(int* type_, const char** pName, void* call_addr)
+	{
+		BuiltinMethod answer;
+
+		__asm
+		{
+			mov edi, type_;
+			mov esi, pName;
+			call call_addr;
+			mov answer, eax;
+		}
+
+		return answer;
+	}
+
 	void Cmd_AddCommand(const char* name, void (__cdecl *function)())
 	{
 		cmd_function_s* newCmd = utils::memory::allocate<cmd_function_s>();

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cscr_compiler.hpp"
 #include "cscr_main.hpp"
 #include "cscr_memorytree.hpp"
 #include "cscr_parser.hpp"

@@ -1,7 +1,7 @@
 #include <stdinc.hpp>
 #include "loader/component_loader.hpp"
 #include "utils/hook.hpp"
-//#include "codsrc/clientscript/cscr_compiler.hpp"
+#include "codsrc/clientscript/cscr_compiler.hpp"
 
 #ifndef DISABLE_RE_CSCR_COMPILER
 namespace re_cscr_compiler
