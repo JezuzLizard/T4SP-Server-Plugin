@@ -109,9 +109,17 @@ namespace gsc
 			functions.insert_or_assign(name, function);
 		}
 
-		const std::unordered_map<std::string, game::BuiltinFunction>& get()
+		game::BuiltinFunction get(const char** name, int* type)
 		{
-			return functions;
+			auto got = functions.find(*name);
+
+			if (got == functions.end())
+			{
+				return nullptr;
+			}
+
+			*type = 0;
+			return got->second;
 		}
 	}
 
@@ -122,9 +130,17 @@ namespace gsc
 			methods.insert_or_assign(name, method);
 		}
 
-		const std::unordered_map<std::string, game::BuiltinMethod>& get()
+		game::BuiltinMethod get(const char** name, int* type)
 		{
-			return methods;
+			auto got = methods.find(*name);
+
+			if (got == methods.end())
+			{
+				return nullptr;
+			}
+
+			*type = 0;
+			return got->second;
 		}
 	}
 

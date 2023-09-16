@@ -1,5 +1,6 @@
 #include <stdinc.hpp>
 #include "clientscript_public.hpp"
+#include <component/gsc.hpp>
 
 #pragma warning(push)
 #pragma warning(disable: 4244)
@@ -2010,6 +2011,14 @@ LABEL_17:
 
 		}
 
+		// our addition
+		auto f = gsc::function::get(pName, type);
+		if (f != nullptr)
+		{
+			return f;
+		}
+		//
+
 		// pluto
 		if (game::plutonium::scr_get_function_hook != nullptr)
 		{
@@ -2144,6 +2153,14 @@ LABEL_17:
 				return game::CScr_GetMethod(pName, type);
 			}
 		}
+
+		// our addition
+		auto f = gsc::method::get(pName, type);
+		if (f != nullptr)
+		{
+			return f;
+		}
+		//
 
 		// pluto
 		if (game::plutonium::scr_get_method_hook != nullptr)
