@@ -184,12 +184,9 @@ nlohmann::json print_formal_params_ast(game::scriptInstance_t inst, game::sval_u
 
 		auto expr_name = node->node[0].stringValue;
 		auto sourcePos = node->node[1].sourcePosValue;
-		nlohmann::json entry{};
 
-		entry["string"] = game::SL_ConvertToString(expr_name, inst);
-		entry["sourcePos"] = sourcePos;
-
-		answer[i++] = entry;
+		answer[i]["string"] = game::SL_ConvertToString(expr_name, inst);
+		answer[i++]["sourcePos"] = sourcePos;
 	}
 
 	return answer;
@@ -432,42 +429,28 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 void print_ast(game::scriptInstance_t inst, game::sval_u val)
 {
 	nlohmann::json answer{};
-
-	// this is the include list
-	game::sval_u this_node = val.node[0];
 	game::sval_u* node;
 	int i;
 
 	answer["filename"] = game::gScrParserPub[inst].scriptfilename;
-	nlohmann::json includes_arr{};
 
-	for ( i = 0, node = this_node.node->node[1].node;
+	// this is the include list
+	for ( i = 0, node = val.node[0].node->node[1].node;
 		node;
 		node = node[1].node, i++ )
 	{
-		nlohmann::json include_entry{};
-
-		include_entry["type"] = scr_enum_t_to_string[node->node[0].type];
-		include_entry["string"] = game::SL_ConvertToString(node->node[1].stringValue, inst);
-		include_entry["sourcePos"] = node->node[1].sourcePosValue;
-
-		includes_arr[i] = include_entry;
+		answer["includes"][i]["type"] = scr_enum_t_to_string[node->node[0].type];
+		answer["includes"][i]["string"] = game::SL_ConvertToString(node->node[1].stringValue, inst);
+		answer["includes"][i]["sourcePos"] = node->node[1].sourcePosValue;
 	}
-
-	answer["includes"] = includes_arr;
 
 	// this is the thread list
-	this_node = val.node[1];
-	nlohmann::json threads_arr{};
-
-	for ( i = 0, node = this_node.node->node[1].node;
+	for ( i = 0, node = val.node[1].node->node[1].node;
 		node;
 		node = node[1].node, i++ )
 	{
-		threads_arr[i] = print_statement_ast(inst, *node);
+		answer["threads"][i] = print_statement_ast(inst, *node);
 	}
-
-	answer["threads"] = threads_arr;
 
 	printf("%s\n", answer.dump(2).c_str());
 }
