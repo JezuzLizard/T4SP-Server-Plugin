@@ -1563,7 +1563,7 @@ LABEL_17:
 
 		if ( game::gScrCompilePub[inst].developer_statement == 2 )
 		{
-			game::Scr_CompileRemoveRefToString(inst, func.node[1].type);
+			game::Scr_CompileRemoveRefToString(inst, func.node[1].stringValue);
 
 			if ( func.node[0].type != game::ENUM_far_function )
 			{
