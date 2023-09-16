@@ -147,51 +147,6 @@ static const char* scr_enum_t_to_string[] =
 	"ENUM_argument"
 };
 
-nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val);
-
-nlohmann::json print_statement_list_ast(game::scriptInstance_t inst, game::sval_u *val)
-{
-	nlohmann::json answer{};
-
-	game::sval_u *node;
-	game::sval_u *nextNode;
-	int i;
-
-	for (i = 0, node = val->node[1].node;
-		node;
-		node = nextNode, i++)
-	{
-		nextNode = node[1].node;
-
-		answer[i] = print_statement_ast(inst, *node);
-	}
-
-	return answer;
-}
-
-nlohmann::json print_formal_params_ast(game::scriptInstance_t inst, game::sval_u *node)
-{
-	nlohmann::json answer{};
-
-	int i = 0;
-	while ( 1 )
-	{
-		node = node[1].node;
-		if ( !node )
-		{
-			break;
-		}
-
-		auto expr_name = node->node[0].stringValue;
-		auto sourcePos = node->node[1].sourcePosValue;
-
-		answer[i]["string"] = game::SL_ConvertToString(expr_name, inst);
-		answer[i++]["sourcePos"] = sourcePos;
-	}
-
-	return answer;
-}
-
 nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val)
 {
 	nlohmann::json answer{};
@@ -202,22 +157,22 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 	{
 	case game::ENUM_local_variable:
 	{
-		auto var_name = val.node[1].stringValue;
+		auto name = val.node[1].stringValue;
 		auto sourcePos = val.node[2].sourcePosValue;
 
-		answer["string"] = game::SL_ConvertToString(var_name, inst);
+		answer["name"] = game::SL_ConvertToString(name, inst);
 		answer["sourcePos"] = sourcePos;
 		break;
 	}
 	case game::ENUM_array_variable:
 	{
-		auto prim_expr = val.node[1];
-		auto index_expr = val.node[2];
+		auto expr = val.node[1];
+		auto index = val.node[2];
 		auto sourcePos = val.node[3].sourcePosValue;
 		auto indexSourcePos = val.node[4].sourcePosValue;
 
-		answer["primitiveExpr"] = print_statement_ast(inst, prim_expr);
-		answer["indexExpr"] = print_statement_ast(inst, index_expr);
+		answer["expr"] = print_statement_ast(inst, expr);
+		answer["index"] = print_statement_ast(inst, index);
 		answer["sourcePos"] = sourcePos;
 		answer["indexSourcePos"] = indexSourcePos;
 		break;
@@ -229,7 +184,7 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 		auto sourcePos = val.node[3].sourcePosValue;
 
 		answer["sourcePos"] = sourcePos;
-		answer["string"] = game::SL_ConvertToString(field, inst);
+		answer["field"] = game::SL_ConvertToString(field, inst);
 		answer["expr"] = print_statement_ast(inst, expr);
 		break;
 	}
@@ -255,11 +210,20 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 		answer["filename"] = game::SL_ConvertToString(filename, inst);
 		break;
 	}
+	case game::ENUM_local_function:
+	{
+		auto threadName = val.node[1].stringValue;
+
+		answer["threadName"] = game::SL_ConvertToString(threadName, inst);
+		break;
+	}
 	case game::ENUM_function:
 	{
 		auto func = val.node[1];
+		auto sourcePos = val.node[2].sourcePosValue;
 
 		answer["func"] = print_statement_ast(inst, func);
+		answer["sourcePos"] = sourcePos;
 		break;
 	}
 	case game::ENUM_function_pointer:
@@ -276,7 +240,7 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 		auto func_name = val.node[1].stringValue;
 		auto nameSourcePos = val.node[2].sourcePosValue;
 
-		answer["string"] = game::SL_ConvertToString(func_name, inst);
+		answer["func_name"] = game::SL_ConvertToString(func_name, inst);
 		answer["nameSourcePos"] = nameSourcePos;
 		break;
 	}
@@ -286,16 +250,9 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 		auto sourcePos = val.node[2].sourcePosValue;
 		auto nameSourcePos = val.node[3].sourcePosValue;
 
-		answer["string"] = game::SL_ConvertToString(func_name, inst);
+		answer["func_name"] = game::SL_ConvertToString(func_name, inst);
 		answer["sourcePos"] = sourcePos;
 		answer["nameSourcePos"] = nameSourcePos;
-		break;
-	}
-	case game::ENUM_local_function:
-	{
-		auto threadName = val.node[1].stringValue;
-
-		answer["string"] = game::SL_ConvertToString(threadName, inst);
 		break;
 	}
 	case game::ENUM_call:
@@ -304,7 +261,7 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 		auto params = val.node[2];
 		auto sourcePos = val.node[3].sourcePosValue;
 
-		answer["string"] = game::SL_ConvertToString(func_name, inst);
+		answer["func_name"] = game::SL_ConvertToString(func_name, inst);
 		answer["params"] = print_statement_ast(inst, params);
 		answer["sourcePos"] = sourcePos;
 		break;
@@ -319,7 +276,7 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 
 		answer["methodSourcePos"] = methodSourcePos;
 		answer["expr"] = print_statement_ast(inst, expr);
-		answer["string"] = game::SL_ConvertToString(func_name, inst);
+		answer["func_name"] = game::SL_ConvertToString(func_name, inst);
 		answer["params"] = print_statement_ast(inst, params);
 		answer["sourcePos"] = sourcePos;
 		break;
@@ -370,6 +327,7 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 		int i;
 		game::sval_u* node;
 
+		answer["exprlist"] = nlohmann::json::array();
 		for (i = 0, node = exprlist.node->node;
 			node;
 			node = node[1].node, i++)
@@ -382,7 +340,10 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 	}
 	case game::ENUM_thread:
 	{
-		auto thread_name = val.node[1].stringValue;
+		game::sval_u *node;
+		int i;
+
+		auto threadName = val.node[1].stringValue;
 		auto exprlist = val.node[2].node;  
 		auto stmtlist = val.node[3].node;
 		auto sourcePos = val.node[4].sourcePosValue;
@@ -390,11 +351,30 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 		auto stmtblock = &val.node[6].block;
 		stmtblock = stmtblock;
 
-		answer["string"] = game::SL_ConvertToString(thread_name, inst);
+		answer["threadName"] = game::SL_ConvertToString(threadName, inst);
 		answer["sourcePos"] = sourcePos;
 		answer["endSourcePos"] = endSourcePos;
-		answer["formalParams"] = print_formal_params_ast(inst, exprlist->node);
-		answer["statements"] = print_statement_list_ast(inst, stmtlist);
+
+		answer["formalParams"] = nlohmann::json::array();
+		for (i = 0, node = exprlist->node[1].node;
+			node;
+			node = node[1].node, i++)
+		{
+			auto expr_name = node->node[0].stringValue;
+			auto sourcePos = node->node[1].sourcePosValue;
+
+			answer["formalParams"][i]["expr_name"] = game::SL_ConvertToString(expr_name, inst);
+			answer["formalParams"][i]["sourcePos"] = sourcePos;
+		}
+
+		answer["statements"] = nlohmann::json::array();
+		for (i = 0, node = stmtlist->node[1].node;
+			node;
+			node = node[1].node, i++)
+		{
+			answer["statements"][i] = print_statement_ast(inst, *node);
+		}
+
 		break;
 	}
 	case game::ENUM_begin_developer_thread:
@@ -435,16 +415,18 @@ void print_ast(game::scriptInstance_t inst, game::sval_u val)
 	answer["filename"] = game::gScrParserPub[inst].scriptfilename;
 
 	// this is the include list
+	answer["includes"] = nlohmann::json::array();
 	for ( i = 0, node = val.node[0].node->node[1].node;
 		node;
 		node = node[1].node, i++ )
 	{
 		answer["includes"][i]["type"] = scr_enum_t_to_string[node->node[0].type];
-		answer["includes"][i]["string"] = game::SL_ConvertToString(node->node[1].stringValue, inst);
+		answer["includes"][i]["filename"] = game::SL_ConvertToString(node->node[1].stringValue, inst);
 		answer["includes"][i]["sourcePos"] = node->node[1].sourcePosValue;
 	}
 
 	// this is the thread list
+	answer["threads"] = nlohmann::json::array();
 	for ( i = 0, node = val.node[1].node->node[1].node;
 		node;
 		node = node[1].node, i++ )
