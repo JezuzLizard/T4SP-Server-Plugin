@@ -361,10 +361,10 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 			node = node[1].node, i++)
 		{
 			auto expr_name = node->node[0].stringValue;
-			auto sourcePos = node->node[1].sourcePosValue;
+			auto sourcePos_ = node->node[1].sourcePosValue;
 
 			answer["formalParams"][i]["expr_name"] = game::SL_ConvertToString(expr_name, inst);
-			answer["formalParams"][i]["sourcePos"] = sourcePos;
+			answer["formalParams"][i]["sourcePos"] = sourcePos_;
 		}
 
 		answer["statements"] = nlohmann::json::array();
