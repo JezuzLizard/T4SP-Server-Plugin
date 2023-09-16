@@ -53,6 +53,285 @@ namespace game
 	}
 }
 
+static const char* scr_enum_t_to_string[] =
+{
+	"ENUM_NOP",
+	"ENUM_program",
+	"ENUM_assignment",
+	"ENUM_unknown_variable",
+	"ENUM_duplicate_variable",
+	"ENUM_local_variable",
+	"ENUM_local_variable_frozen",
+	"ENUM_duplicate_expression",
+	"ENUM_primitive_expression",
+	"ENUM_integer",
+	"ENUM_float",
+	"ENUM_minus_integer",
+	"ENUM_minus_float",
+	"ENUM_string",
+	"ENUM_istring",
+	"ENUM_array_variable",
+	"ENUM_unknown_field",
+	"ENUM_field_variable",
+	"ENUM_field_variable_frozen",
+	"ENUM_variable",
+	"ENUM_function",
+	"ENUM_call_expression",
+	"ENUM_local_function",
+	"ENUM_far_function",
+	"ENUM_function_pointer",
+	"ENUM_call",
+	"ENUM_method",
+	"ENUM_call_expression_statement",
+	"ENUM_script_call",
+	"ENUM_return",
+	"ENUM_return2",
+	"ENUM_wait",
+	"ENUM_script_thread_call",
+	"ENUM_undefined",
+	"ENUM_self",
+	"ENUM_self_frozen",
+	"ENUM_level",
+	"ENUM_game",
+	"ENUM_anim",
+	"ENUM_if",
+	"ENUM_if_else",
+	"ENUM_while",
+	"ENUM_for",
+	"ENUM_inc",
+	"ENUM_dec",
+	"ENUM_binary_equals",
+	"ENUM_statement_list",
+	"ENUM_developer_statement_list",
+	"ENUM_expression_list",
+	"ENUM_bool_or",
+	"ENUM_bool_and",
+	"ENUM_binary",
+	"ENUM_bool_not",
+	"ENUM_bool_complement",
+	"ENUM_size_field",
+	"ENUM_self_field",
+	"ENUM_precachetree",
+	"ENUM_waittill",
+	"ENUM_waittillmatch",
+	"ENUM_waittillFrameEnd",
+	"ENUM_notify",
+	"ENUM_endon",
+	"ENUM_switch",
+	"ENUM_case",
+	"ENUM_default",
+	"ENUM_break",
+	"ENUM_continue",
+	"ENUM_expression",
+	"ENUM_empty_array",
+	"ENUM_animation",
+	"ENUM_thread",
+	"ENUM_begin_developer_thread",
+	"ENUM_end_developer_thread",
+	"ENUM_usingtree",
+	"ENUM_false",
+	"ENUM_true",
+	"ENUM_animtree",
+	"ENUM_breakon",
+	"ENUM_breakpoint",
+	"ENUM_prof_begin",
+	"ENUM_prof_end",
+	"ENUM_vector",
+	"ENUM_object",
+	"ENUM_thread_object",
+	"ENUM_local",
+	"ENUM_statement",
+	"ENUM_bad_expression",
+	"ENUM_bad_statement",
+	"ENUM_include",
+	"ENUM_argument"
+};
+
+void print_statement_ast(game::scriptInstance_t inst, game::sval_u val, int depth);
+
+void print_depth(int depth)
+{
+	for (auto i = 0; i < depth; i++)
+	{
+		printf("  ");
+	}
+}
+
+void print_statement_list_ast(game::scriptInstance_t inst, game::sval_u *val, int depth)
+{
+	game::sval_u *node;
+	game::sval_u *nextNode;
+
+	printf("statements:\n");
+
+	for (node = val->node[1].node;
+		node;
+		node = nextNode)
+	{
+		nextNode = node[1].node;
+
+		print_statement_ast(inst, *node, depth + 1);
+		printf("\n");
+	}
+}
+
+void print_formal_params_ast(game::scriptInstance_t inst, game::sval_u *node)
+{
+	printf("formal params:");
+	while ( 1 )
+	{
+		node = node[1].node;
+		if ( !node )
+		{
+			break;
+		}
+
+		auto expr_name = node->node[0].stringValue;
+		auto sourcePos = node->node[1].sourcePosValue;
+
+		printf(" %s %d, ", game::SL_ConvertToString(expr_name, inst), sourcePos);
+	}
+}
+
+void print_statement_ast(game::scriptInstance_t inst, game::sval_u val, int depth)
+{
+	print_depth(depth);
+
+	printf("%s", scr_enum_t_to_string[val.node[0].type]);
+
+	switch (val.node[0].type)
+	{
+	case game::ENUM_assignment:
+	{
+		auto lhs = val.node[1];
+		auto rhs = val.node[2];
+		auto sourcePos = val.node[3].sourcePosValue;
+		auto rhsSourcePos = val.node[4].sourcePosValue;
+
+		printf(" lhs %d\n", sourcePos);
+		print_statement_ast(inst, lhs, depth + 1);
+		printf("\n");
+
+		print_depth(depth);
+		printf("rhs %d\n", rhsSourcePos);
+		print_statement_ast(inst, rhs, depth + 1);
+		break;
+	}
+	case game::ENUM_local_variable:
+	{
+		auto var_name = val.node[1].stringValue;
+		auto sourcePos = val.node[2].sourcePosValue;
+
+		printf(" %s %d", game::SL_ConvertToString(var_name, inst), sourcePos);
+		break;
+	}
+	case game::ENUM_array_variable:
+	{
+		auto prim_expr = val.node[1];
+		auto index_expr = val.node[2];
+		auto sourcePos = val.node[3].sourcePosValue;
+		auto indexSourcePos = val.node[4].sourcePosValue;
+
+		printf(" prim_expr %d\n", sourcePos);
+		print_statement_ast(inst, prim_expr, depth + 1);
+		printf("\n");
+
+		print_depth(depth);
+		printf("index_expr %d\n", indexSourcePos);
+		print_statement_ast(inst, index_expr, depth + 1);
+		break;
+	}
+	case game::ENUM_field_variable:
+	{
+		auto expr = val.node[1];
+		auto field = val.node[2].stringValue;
+		auto sourcePos = val.node[3].sourcePosValue;
+
+		printf(" %s %d\n", game::SL_ConvertToString(field, inst), sourcePos);
+		print_statement_ast(inst, expr, depth + 1);
+		break;
+	}
+	case game::ENUM_thread:
+	{
+		auto thread_name = val.node[1].stringValue;
+		auto exprlist = val.node[2].node;  
+		auto stmtlist = val.node[3].node;
+		auto sourcePos = val.node[4].sourcePosValue;
+		auto endSourcePos = val.node[5].sourcePosValue;
+		auto stmtblock = &val.node[6].block;
+		stmtblock = stmtblock;
+
+		printf(" %s %d %d\n", game::SL_ConvertToString(thread_name, inst), sourcePos, endSourcePos);
+		print_depth(depth);
+
+		print_formal_params_ast(inst, exprlist->node);
+		printf("\n");
+		print_depth(depth);
+
+		print_statement_list_ast(inst, stmtlist, depth);
+		break;
+	}
+	case game::ENUM_begin_developer_thread:
+	{
+		auto sourcePos = val.node[1].sourcePosValue;
+
+		printf(" %d", sourcePos);
+		break;
+	}
+	case game::ENUM_end_developer_thread:
+	{
+		auto sourcePos = val.node[1].sourcePosValue;
+
+		printf(" %d", sourcePos);
+		break;
+	}
+	case game::ENUM_usingtree:
+	{
+		auto string_val = val.node[1].stringValue;
+		auto sourcePos = val.node[2].sourcePosValue;
+		auto sourcePos2 = val.node[3].sourcePosValue;
+
+		printf(" %s %d %d", game::SL_ConvertToString(string_val, inst), sourcePos, sourcePos2);
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void print_ast(game::scriptInstance_t inst, game::sval_u val)
+{
+	// this is the include list
+	game::sval_u this_node = val.node[0];
+	game::sval_u* node;
+
+	printf("%s\n", game::gScrParserPub[inst].scriptfilename);
+	printf("includes\n");
+
+	for ( node = this_node.node->node[1].node;
+		node;
+		node = node[1].node )
+	{
+		print_depth(1);
+		printf("%s %s %d\n", scr_enum_t_to_string[node->node[0].type], game::SL_ConvertToString(node->node[1].stringValue, inst), node->node[1].sourcePosValue);
+	}
+
+	printf("threads\n");
+
+	// this is the thread list
+	this_node = val.node[1];
+
+	for ( node = this_node.node->node[1].node;
+		node;
+		node = node[1].node )
+	{
+		print_statement_ast(inst, *node, 1);
+		printf("\n");
+	}
+
+	printf("done\n");
+}
+
 // https://stackoverflow.com/questions/5693192/win32-backtrace-from-c-code
 std::string build_code_stack()
 {

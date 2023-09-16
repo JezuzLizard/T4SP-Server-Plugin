@@ -74,5 +74,6 @@ std::string build_gsc_dump(game::scriptInstance_t inst);
 void push_opcode_history(game::scriptInstance_t inst, game::OpcodeVM op);
 void push_builtin_history(game::scriptInstance_t inst, int idx);
 void push_codepos_history(game::scriptInstance_t inst, const char* pos);
+void print_ast(game::scriptInstance_t inst, game::sval_u node);
 
 using namespace std::literals;

@@ -1,4 +1,5 @@
 #include <stdinc.hpp>
+#include <utils/flags.hpp>
 #include "clientscript_public.hpp"
 
 #pragma warning(push)
@@ -2053,6 +2054,13 @@ namespace codsrc
 		game::yyparse();
 
 		*parseData = *game::yaccResult;
+
+		// our addition
+		if (utils::flags::has_flag("dump_asts"))
+		{
+			print_ast(inst, *parseData);
+		}
+		//
 	}
 }
 #pragma warning(pop)
