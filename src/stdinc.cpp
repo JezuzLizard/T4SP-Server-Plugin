@@ -147,37 +147,33 @@ static const char* scr_enum_t_to_string[] =
 	"ENUM_argument"
 };
 
-void print_statement_ast(game::scriptInstance_t inst, game::sval_u val, int depth);
+nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val);
 
-void print_depth(int depth)
+nlohmann::json print_statement_list_ast(game::scriptInstance_t inst, game::sval_u *val)
 {
-	for (auto i = 0; i < depth; i++)
-	{
-		printf("  ");
-	}
-}
+	nlohmann::json answer{};
 
-void print_statement_list_ast(game::scriptInstance_t inst, game::sval_u *val, int depth)
-{
 	game::sval_u *node;
 	game::sval_u *nextNode;
+	int i;
 
-	printf("statements:\n");
-
-	for (node = val->node[1].node;
+	for (i = 0, node = val->node[1].node;
 		node;
-		node = nextNode)
+		node = nextNode, i++)
 	{
 		nextNode = node[1].node;
 
-		print_statement_ast(inst, *node, depth + 1);
-		printf("\n");
+		answer[i] = print_statement_ast(inst, *node);
 	}
+
+	return answer;
 }
 
-void print_formal_params_ast(game::scriptInstance_t inst, game::sval_u *node)
+nlohmann::json print_formal_params_ast(game::scriptInstance_t inst, game::sval_u *node)
 {
-	printf("formal params:");
+	nlohmann::json answer{};
+
+	int i = 0;
 	while ( 1 )
 	{
 		node = node[1].node;
@@ -188,41 +184,32 @@ void print_formal_params_ast(game::scriptInstance_t inst, game::sval_u *node)
 
 		auto expr_name = node->node[0].stringValue;
 		auto sourcePos = node->node[1].sourcePosValue;
+		nlohmann::json entry{};
 
-		printf(" %s %d, ", game::SL_ConvertToString(expr_name, inst), sourcePos);
+		entry["string"] = game::SL_ConvertToString(expr_name, inst);
+		entry["sourcePos"] = sourcePos;
+
+		answer[i++] = entry;
 	}
+
+	return answer;
 }
 
-void print_statement_ast(game::scriptInstance_t inst, game::sval_u val, int depth)
+nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val)
 {
-	print_depth(depth);
+	nlohmann::json answer{};
 
-	printf("%s", scr_enum_t_to_string[val.node[0].type]);
+	answer["type"] = scr_enum_t_to_string[val.node[0].type];
 
 	switch (val.node[0].type)
 	{
-	case game::ENUM_assignment:
-	{
-		auto lhs = val.node[1];
-		auto rhs = val.node[2];
-		auto sourcePos = val.node[3].sourcePosValue;
-		auto rhsSourcePos = val.node[4].sourcePosValue;
-
-		printf(" lhs %d\n", sourcePos);
-		print_statement_ast(inst, lhs, depth + 1);
-		printf("\n");
-
-		print_depth(depth);
-		printf("rhs %d\n", rhsSourcePos);
-		print_statement_ast(inst, rhs, depth + 1);
-		break;
-	}
 	case game::ENUM_local_variable:
 	{
 		auto var_name = val.node[1].stringValue;
 		auto sourcePos = val.node[2].sourcePosValue;
 
-		printf(" %s %d", game::SL_ConvertToString(var_name, inst), sourcePos);
+		answer["string"] = game::SL_ConvertToString(var_name, inst);
+		answer["sourcePos"] = sourcePos;
 		break;
 	}
 	case game::ENUM_array_variable:
@@ -232,13 +219,10 @@ void print_statement_ast(game::scriptInstance_t inst, game::sval_u val, int dept
 		auto sourcePos = val.node[3].sourcePosValue;
 		auto indexSourcePos = val.node[4].sourcePosValue;
 
-		printf(" prim_expr %d\n", sourcePos);
-		print_statement_ast(inst, prim_expr, depth + 1);
-		printf("\n");
-
-		print_depth(depth);
-		printf("index_expr %d\n", indexSourcePos);
-		print_statement_ast(inst, index_expr, depth + 1);
+		answer["primitiveExpr"] = print_statement_ast(inst, prim_expr);
+		answer["indexExpr"] = print_statement_ast(inst, index_expr);
+		answer["sourcePos"] = sourcePos;
+		answer["indexSourcePos"] = indexSourcePos;
 		break;
 	}
 	case game::ENUM_field_variable:
@@ -247,8 +231,151 @@ void print_statement_ast(game::scriptInstance_t inst, game::sval_u val, int dept
 		auto field = val.node[2].stringValue;
 		auto sourcePos = val.node[3].sourcePosValue;
 
-		printf(" %s %d\n", game::SL_ConvertToString(field, inst), sourcePos);
-		print_statement_ast(inst, expr, depth + 1);
+		answer["sourcePos"] = sourcePos;
+		answer["string"] = game::SL_ConvertToString(field, inst);
+		answer["expr"] = print_statement_ast(inst, expr);
+		break;
+	}
+	case game::ENUM_assignment:
+	{
+		auto lhs = val.node[1];
+		auto rhs = val.node[2];
+		auto sourcePos = val.node[3].sourcePosValue;
+		auto rhsSourcePos = val.node[4].sourcePosValue;
+
+		answer["lhs"] = print_statement_ast(inst, lhs);
+		answer["rhs"] = print_statement_ast(inst, rhs);
+		answer["sourcePos"] = sourcePos;
+		answer["rhsSourcePos"] = rhsSourcePos;
+		break;
+	}
+	case game::ENUM_far_function:
+	{
+		auto filename = val.node[1].stringValue;
+		auto threadName = val.node[2].stringValue;
+
+		answer["threadName"] = game::SL_ConvertToString(threadName, inst);
+		answer["filename"] = game::SL_ConvertToString(filename, inst);
+		break;
+	}
+	case game::ENUM_function:
+	{
+		auto func = val.node[1];
+
+		answer["func"] = print_statement_ast(inst, func);
+		break;
+	}
+	case game::ENUM_function_pointer:
+	{
+		auto func = val.node[1];
+		auto sourcePos = val.node[2].sourcePosValue;
+
+		answer["func"] = print_statement_ast(inst, func);
+		answer["sourcePos"] = sourcePos;
+		break;
+	}
+	case game::ENUM_script_call:
+	{
+		auto func_name = val.node[1].stringValue;
+		auto nameSourcePos = val.node[2].sourcePosValue;
+
+		answer["string"] = game::SL_ConvertToString(func_name, inst);
+		answer["nameSourcePos"] = nameSourcePos;
+		break;
+	}
+	case game::ENUM_script_thread_call:
+	{
+		auto func_name = val.node[1].stringValue;
+		auto sourcePos = val.node[2].sourcePosValue;
+		auto nameSourcePos = val.node[3].sourcePosValue;
+
+		answer["string"] = game::SL_ConvertToString(func_name, inst);
+		answer["sourcePos"] = sourcePos;
+		answer["nameSourcePos"] = nameSourcePos;
+		break;
+	}
+	case game::ENUM_local_function:
+	{
+		auto threadName = val.node[1].stringValue;
+
+		answer["string"] = game::SL_ConvertToString(threadName, inst);
+		break;
+	}
+	case game::ENUM_call:
+	{
+		auto func_name = val.node[1].stringValue;
+		auto params = val.node[2];
+		auto sourcePos = val.node[3].sourcePosValue;
+
+		answer["string"] = game::SL_ConvertToString(func_name, inst);
+		answer["params"] = print_statement_ast(inst, params);
+		answer["sourcePos"] = sourcePos;
+		break;
+	}
+	case game::ENUM_method:
+	{
+		auto expr = val.node[1];
+		auto func_name = val.node[2].stringValue;
+		auto params = val.node[3];
+		auto methodSourcePos = val.node[4].sourcePosValue;
+		auto sourcePos = val.node[5].sourcePosValue;
+
+		answer["methodSourcePos"] = methodSourcePos;
+		answer["expr"] = print_statement_ast(inst, expr);
+		answer["string"] = game::SL_ConvertToString(func_name, inst);
+		answer["params"] = print_statement_ast(inst, params);
+		answer["sourcePos"] = sourcePos;
+		break;
+	}
+	case game::ENUM_primitive_expression:
+	{
+		auto expr = val.node[1];
+		auto sourcePos = val.node[2].sourcePosValue;
+
+		answer["expr"] = print_statement_ast(inst, expr);
+		answer["sourcePos"] = sourcePos;
+		break;
+	}
+	case game::ENUM_integer:
+	case game::ENUM_minus_integer:
+	{
+		auto value = val.node[1].intValue;
+		auto sourcePos = val.node[2].sourcePosValue;
+
+		answer["value"] = value;
+		answer["sourcePos"] = sourcePos;
+		break;
+	}
+	case game::ENUM_float:
+	case game::ENUM_minus_float:
+	{
+		auto value = val.node[1].floatValue;
+		auto sourcePos = val.node[2].sourcePosValue;
+
+		answer["value"] = value;
+		answer["sourcePos"] = sourcePos;
+		break;
+	}
+	case game::ENUM_string:
+	case game::ENUM_istring:
+	{
+		auto value = val.node[1].stringValue;
+		auto sourcePos = val.node[2].sourcePosValue;
+
+		answer["value"] = game::SL_ConvertToString(value, inst);
+		answer["sourcePos"] = sourcePos;
+		break;
+	}
+	case game::ENUM_expression_list:
+	{
+		auto exprlist = val.node[1];
+		auto sourcePos = val.node[2].sourcePosValue;
+
+		// answer["exprlist"] = print_statement_ast(inst, exprlist);
+
+		// auto expr_count = game::GetExpressionCount(exprlist);
+
+		answer["sourcePos"] = sourcePos;
 		break;
 	}
 	case game::ENUM_thread:
@@ -261,28 +388,22 @@ void print_statement_ast(game::scriptInstance_t inst, game::sval_u val, int dept
 		auto stmtblock = &val.node[6].block;
 		stmtblock = stmtblock;
 
-		printf(" %s %d %d\n", game::SL_ConvertToString(thread_name, inst), sourcePos, endSourcePos);
-		print_depth(depth);
-
-		print_formal_params_ast(inst, exprlist->node);
-		printf("\n");
-		print_depth(depth);
-
-		print_statement_list_ast(inst, stmtlist, depth);
+		answer["string"] = game::SL_ConvertToString(thread_name, inst);
+		answer["sourcePos"] = sourcePos;
+		answer["endSourcePos"] = endSourcePos;
+		answer["formalParams"] = print_formal_params_ast(inst, exprlist->node);
+		answer["statements"] = print_statement_list_ast(inst, stmtlist);
 		break;
 	}
 	case game::ENUM_begin_developer_thread:
-	{
-		auto sourcePos = val.node[1].sourcePosValue;
-
-		printf(" %d", sourcePos);
-		break;
-	}
 	case game::ENUM_end_developer_thread:
+	case game::ENUM_undefined:
+	case game::ENUM_false:
+	case game::ENUM_true:
 	{
 		auto sourcePos = val.node[1].sourcePosValue;
 
-		printf(" %d", sourcePos);
+		answer["sourcePos"] = sourcePos;
 		break;
 	}
 	case game::ENUM_usingtree:
@@ -291,45 +412,59 @@ void print_statement_ast(game::scriptInstance_t inst, game::sval_u val, int dept
 		auto sourcePos = val.node[2].sourcePosValue;
 		auto sourcePos2 = val.node[3].sourcePosValue;
 
-		printf(" %s %d %d", game::SL_ConvertToString(string_val, inst), sourcePos, sourcePos2);
+		answer["string"] = game::SL_ConvertToString(string_val, inst);
+		answer["sourcePos"] = sourcePos;
+		answer["sourcePos2"] = sourcePos2;
 		break;
 	}
 	default:
 		break;
 	}
+
+	return answer;
 }
 
 void print_ast(game::scriptInstance_t inst, game::sval_u val)
 {
+	nlohmann::json answer{};
+
 	// this is the include list
 	game::sval_u this_node = val.node[0];
 	game::sval_u* node;
+	int i;
 
-	printf("%s\n", game::gScrParserPub[inst].scriptfilename);
-	printf("includes\n");
+	answer["filename"] = game::gScrParserPub[inst].scriptfilename;
+	nlohmann::json includes_arr{};
 
-	for ( node = this_node.node->node[1].node;
+	for ( i = 0, node = this_node.node->node[1].node;
 		node;
-		node = node[1].node )
+		node = node[1].node, i++ )
 	{
-		print_depth(1);
-		printf("%s %s %d\n", scr_enum_t_to_string[node->node[0].type], game::SL_ConvertToString(node->node[1].stringValue, inst), node->node[1].sourcePosValue);
+		nlohmann::json include_entry{};
+
+		include_entry["type"] = scr_enum_t_to_string[node->node[0].type];
+		include_entry["string"] = game::SL_ConvertToString(node->node[1].stringValue, inst);
+		include_entry["sourcePos"] = node->node[1].sourcePosValue;
+
+		includes_arr[i] = include_entry;
 	}
 
-	printf("threads\n");
+	answer["includes"] = includes_arr;
 
 	// this is the thread list
 	this_node = val.node[1];
+	nlohmann::json threads_arr{};
 
-	for ( node = this_node.node->node[1].node;
+	for ( i = 0, node = this_node.node->node[1].node;
 		node;
-		node = node[1].node )
+		node = node[1].node, i++ )
 	{
-		print_statement_ast(inst, *node, 1);
-		printf("\n");
+		threads_arr[i] = print_statement_ast(inst, *node);
 	}
 
-	printf("done\n");
+	answer["threads"] = threads_arr;
+
+	printf("%s\n", answer.dump(2).c_str());
 }
 
 // https://stackoverflow.com/questions/5693192/win32-backtrace-from-c-code
