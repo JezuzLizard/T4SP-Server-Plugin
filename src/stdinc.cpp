@@ -370,10 +370,15 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 	{
 		auto exprlist = val.node[1];
 		auto sourcePos = val.node[2].sourcePosValue;
+		int i;
+		game::sval_u* node;
 
-		// answer["exprlist"] = print_statement_ast(inst, exprlist);
-
-		// auto expr_count = game::GetExpressionCount(exprlist);
+		for (i = 0, node = exprlist.node->node;
+			node;
+			node = node[1].node, i++)
+		{
+			answer["exprlist"][i] = print_statement_ast(inst, *node->node);
+		}
 
 		answer["sourcePos"] = sourcePos;
 		break;
