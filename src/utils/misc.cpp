@@ -305,6 +305,7 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 {
 	nlohmann::json answer{};
 	game::sval_u *node;
+	game::sval_u *start_node;
 	int i;
 
 	answer["type"] = scr_enum_t_to_string[val.node[0].type];
@@ -312,6 +313,9 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 	switch (val.node[0].type)
 	{
 	case game::ENUM_local_variable:
+	case game::ENUM_prof_begin:
+	case game::ENUM_prof_end:
+	case game::ENUM_animation:
 		answer["name"] = game::SL_ConvertToString(val.node[1].stringValue, inst);
 		answer["sourcePos"] = val.node[2].sourcePosValue;
 		break;
@@ -579,6 +583,29 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 		answer["sourcePos"] = val.node[4].sourcePosValue;
 		break;
 
+	case game::ENUM_endon:
+		answer["obj"] = print_statement_ast(inst, val.node[1]);
+		answer["expr"] = print_statement_ast(inst, val.node[2]);
+		answer["sourcePos"] = val.node[3].sourcePosValue;
+		answer["exprSourcePos"] = val.node[4].sourcePosValue;
+		break;
+
+	case game::ENUM_notify:
+		answer["obj"] = print_statement_ast(inst, val.node[1]);
+
+		answer["exprlist"] = nlohmann::json::array();
+		for (i = 0, node = val.node[2].node->node;
+			node;
+			node = node[1].node, i++)
+		{
+			start_node = node;
+			answer["exprlist"][i] = print_statement_ast(inst, *node->node);
+		}
+
+		answer["startNodeSourcePos"] = start_node->node[1].sourcePosValue;
+		answer["sourcePos"] = val.node[3].sourcePosValue;
+		answer["notifySourcePos"] = val.node[4].sourcePosValue;
+		break;
 
 	case game::ENUM_waittill:
 		answer["obj"] = print_statement_ast(inst, val.node[1]);
@@ -611,6 +638,10 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 	case game::ENUM_game:
 	case game::ENUM_anim:
 	case game::ENUM_empty_array:
+	case game::ENUM_waittillFrameEnd:
+	case game::ENUM_break:
+	case game::ENUM_continue:
+	case game::ENUM_animtree:
 		answer["sourcePos"] = val.node[1].sourcePosValue;
 		break;
 
@@ -652,22 +683,15 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 	case game::ENUM_argument:
 	case game::ENUM_thread_object:
 	case game::ENUM_vector:
+	case game::ENUM_breakon:
+	case game::ENUM_breakpoint:
 
 	case game::ENUM_waittillmatch:
-	case game::ENUM_waittillFrameEnd:
-	case game::ENUM_notify:
-	case game::ENUM_endon:
+
 	case game::ENUM_switch:
 	case game::ENUM_case:
 	case game::ENUM_default:
-	case game::ENUM_break:
-	case game::ENUM_continue:
-	case game::ENUM_animation:
-	case game::ENUM_animtree:
-	case game::ENUM_breakon:
-	case game::ENUM_breakpoint:
-	case game::ENUM_prof_begin:
-	case game::ENUM_prof_end:
+
 	default:
 		break;
 	}
