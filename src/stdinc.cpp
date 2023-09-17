@@ -218,14 +218,6 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 		break;
 	}
 	case game::ENUM_function:
-	{
-		auto func = val.node[1];
-		auto sourcePos = val.node[2].sourcePosValue;
-
-		answer["func"] = print_statement_ast(inst, func);
-		answer["sourcePos"] = sourcePos;
-		break;
-	}
 	case game::ENUM_function_pointer:
 	{
 		auto func = val.node[1];
@@ -237,57 +229,70 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 	}
 	case game::ENUM_script_call:
 	{
-		auto func_name = val.node[1].stringValue;
+		auto func_name = val.node[1];
 		auto nameSourcePos = val.node[2].sourcePosValue;
 
-		answer["func_name"] = game::SL_ConvertToString(func_name, inst);
+		answer["func_name"] = print_statement_ast(inst, func_name);
 		answer["nameSourcePos"] = nameSourcePos;
 		break;
 	}
 	case game::ENUM_script_thread_call:
 	{
-		auto func_name = val.node[1].stringValue;
+		auto func_name = val.node[1];
 		auto sourcePos = val.node[2].sourcePosValue;
 		auto nameSourcePos = val.node[3].sourcePosValue;
 
-		answer["func_name"] = game::SL_ConvertToString(func_name, inst);
+		answer["func_name"] = print_statement_ast(inst, func_name);
 		answer["sourcePos"] = sourcePos;
 		answer["nameSourcePos"] = nameSourcePos;
 		break;
 	}
 	case game::ENUM_call:
 	{
-		auto func_name = val.node[1].stringValue;
+		auto func_name = val.node[1];
 		auto params = val.node[2];
 		auto sourcePos = val.node[3].sourcePosValue;
 
-		answer["func_name"] = game::SL_ConvertToString(func_name, inst);
-		answer["params"] = print_statement_ast(inst, params);
+		answer["func_name"] = print_statement_ast(inst, func_name);
 		answer["sourcePos"] = sourcePos;
+
+		int i;
+		game::sval_u *node;
+
+		answer["params"] = nlohmann::json::array();
+		for (i = 0, node = params.node[0].node;
+			node;
+			node = node[1].node, i++)
+		{
+			answer["params"][i] = print_statement_ast(inst, node->node[0]);
+		}
+
 		break;
 	}
 	case game::ENUM_method:
 	{
 		auto expr = val.node[1];
-		auto func_name = val.node[2].stringValue;
+		auto func_name = val.node[2];
 		auto params = val.node[3];
 		auto methodSourcePos = val.node[4].sourcePosValue;
 		auto sourcePos = val.node[5].sourcePosValue;
 
 		answer["methodSourcePos"] = methodSourcePos;
 		answer["expr"] = print_statement_ast(inst, expr);
-		answer["func_name"] = game::SL_ConvertToString(func_name, inst);
-		answer["params"] = print_statement_ast(inst, params);
+		answer["func_name"] = print_statement_ast(inst, func_name);
 		answer["sourcePos"] = sourcePos;
-		break;
-	}
-	case game::ENUM_primitive_expression:
-	{
-		auto expr = val.node[1];
-		auto sourcePos = val.node[2].sourcePosValue;
 
-		answer["expr"] = print_statement_ast(inst, expr);
-		answer["sourcePos"] = sourcePos;
+		int i;
+		game::sval_u *node;
+
+		answer["params"] = nlohmann::json::array();
+		for (i = 0, node = params.node[0].node;
+			node;
+			node = node[1].node, i++)
+		{
+			answer["params"][i] = print_statement_ast(inst, node->node[0]);
+		}
+
 		break;
 	}
 	case game::ENUM_integer:
@@ -377,17 +382,7 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 
 		break;
 	}
-	case game::ENUM_begin_developer_thread:
-	case game::ENUM_end_developer_thread:
-	case game::ENUM_undefined:
-	case game::ENUM_false:
-	case game::ENUM_true:
-	{
-		auto sourcePos = val.node[1].sourcePosValue;
 
-		answer["sourcePos"] = sourcePos;
-		break;
-	}
 	case game::ENUM_usingtree:
 	{
 		auto string_val = val.node[1].stringValue;
@@ -399,6 +394,98 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 		answer["sourcePos2"] = sourcePos2;
 		break;
 	}
+
+	case game::ENUM_begin_developer_thread:
+	case game::ENUM_end_developer_thread:
+	case game::ENUM_undefined:
+	case game::ENUM_false:
+	case game::ENUM_true:
+	{
+		auto sourcePos = val.node[1].sourcePosValue;
+
+		answer["sourcePos"] = sourcePos;
+		break;
+	}
+	case game::ENUM_duplicate_variable:
+	case game::ENUM_duplicate_expression:
+	case game::ENUM_call_expression:
+	case game::ENUM_call_expression_statement:
+	{
+		auto expr = val.node[1];
+
+		answer["expr"] = print_statement_ast(inst, expr);
+		break;
+	}
+	case game::ENUM_variable:
+	case game::ENUM_primitive_expression:
+	{
+		auto expr = val.node[1];
+		auto sourcePos = val.node[2].sourcePosValue;
+
+		answer["expr"] = print_statement_ast(inst, expr);
+		answer["sourcePos"] = sourcePos;
+		break;
+	}
+
+	case game::ENUM_NOP:
+	case game::ENUM_program:
+	case game::ENUM_unknown_variable:
+	case game::ENUM_local_variable_frozen:
+	case game::ENUM_unknown_field:
+	case game::ENUM_field_variable_frozen:
+
+	case game::ENUM_return:
+	case game::ENUM_return2:
+	case game::ENUM_wait:
+	case game::ENUM_self:
+	case game::ENUM_self_frozen:
+	case game::ENUM_level:
+	case game::ENUM_game:
+	case game::ENUM_anim:
+	case game::ENUM_if:
+	case game::ENUM_if_else:
+	case game::ENUM_while:
+	case game::ENUM_for:
+	case game::ENUM_inc:
+	case game::ENUM_dec:
+	case game::ENUM_binary_equals:
+	case game::ENUM_statement_list:
+	case game::ENUM_developer_statement_list:
+	case game::ENUM_bool_or:
+	case game::ENUM_bool_and:
+	case game::ENUM_binary:
+	case game::ENUM_bool_not:
+	case game::ENUM_bool_complement:
+	case game::ENUM_size_field:
+	case game::ENUM_self_field:
+	case game::ENUM_precachetree:
+	case game::ENUM_waittill:
+	case game::ENUM_waittillmatch:
+	case game::ENUM_waittillFrameEnd:
+	case game::ENUM_notify:
+	case game::ENUM_endon:
+	case game::ENUM_switch:
+	case game::ENUM_case:
+	case game::ENUM_default:
+	case game::ENUM_break:
+	case game::ENUM_continue:
+	case game::ENUM_expression:
+	case game::ENUM_empty_array:
+	case game::ENUM_animation:
+	case game::ENUM_animtree:
+	case game::ENUM_breakon:
+	case game::ENUM_breakpoint:
+	case game::ENUM_prof_begin:
+	case game::ENUM_prof_end:
+	case game::ENUM_vector:
+	case game::ENUM_object:
+	case game::ENUM_thread_object:
+	case game::ENUM_local:
+	case game::ENUM_statement:
+	case game::ENUM_bad_expression:
+	case game::ENUM_bad_statement:
+	case game::ENUM_include:
+	case game::ENUM_argument:
 	default:
 		break;
 	}
@@ -434,7 +521,7 @@ void print_ast(game::scriptInstance_t inst, game::sval_u val)
 		answer["threads"][i] = print_statement_ast(inst, *node);
 	}
 
-	printf("%s\n", answer.dump(2).c_str());
+	utils::io::write_file(std::format("t4sp-server-plugin/ast-{}.json", game::gScrParserPub[inst].scriptfilename), answer.dump(2));
 }
 
 // https://stackoverflow.com/questions/5693192/win32-backtrace-from-c-code
