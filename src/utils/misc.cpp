@@ -312,14 +312,6 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 
 	switch (val.node[0].type)
 	{
-	case game::ENUM_local_variable:
-	case game::ENUM_prof_begin:
-	case game::ENUM_prof_end:
-	case game::ENUM_animation:
-		answer["name"] = game::SL_ConvertToString(val.node[1].stringValue, inst);
-		answer["sourcePos"] = val.node[2].sourcePosValue;
-		break;
-
 	case game::ENUM_array_variable:
 		answer["expr"] = print_statement_ast(inst, val.node[1]);
 		answer["index"] = print_statement_ast(inst, val.node[2]);
@@ -343,10 +335,12 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 	case game::ENUM_far_function:
 		answer["filename"] = game::SL_ConvertToString(val.node[1].stringValue, inst);
 		answer["threadName"] = game::SL_ConvertToString(val.node[2].stringValue, inst);
+		answer["sourcePos"] = val.node[3].sourcePosValue;
 		break;
 
 	case game::ENUM_local_function:
 		answer["threadName"] = game::SL_ConvertToString(val.node[1].stringValue, inst);
+		answer["sourcePos"] = val.node[2].sourcePosValue;
 		break;
 
 	case game::ENUM_function:
@@ -503,7 +497,6 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 		answer["sourcePos"] = val.node[3].sourcePosValue;
 
 		{
-
 			auto ifStatBlock = val.node[4].block;
 			ifStatBlock = ifStatBlock;
 		}
@@ -517,7 +510,6 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 		answer["elseSourcePos"] = val.node[5].sourcePosValue;
 
 		{
-
 			auto ifBlock = val.node[6].block;
 			auto elseBlock = val.node[7].block;
 			ifBlock = ifBlock;
@@ -560,6 +552,7 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 		answer["expr2"] = print_statement_ast(inst, val.node[2]);
 		answer["expr1SourcePos"] = val.node[3].sourcePosValue;
 		answer["expr2SourcePos"] = val.node[4].sourcePosValue;
+		answer["sourcePos"] = val.node[5].sourcePosValue;
 		break;
 
 	case game::ENUM_binary:
@@ -627,6 +620,64 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 		answer["waitSourcePos"] = val.node[4].sourcePosValue;
 		break;
 
+
+	case game::ENUM_switch:
+		answer["expr"] = print_statement_ast(inst, val.node[1]);
+
+		answer["stmtlist"] = nlohmann::json::array();
+		for (i = 0, node = val.node[2].node->node[1].node;
+			node;
+			node = node[1].node, i++)
+		{
+			answer["stmtlist"][i] = print_statement_ast(inst, *node);
+		}
+
+		answer["sourcePos"] = val.node[3].sourcePosValue;
+		break;
+
+	case game::ENUM_default:
+		answer["sourcePos"] = val.node[1].sourcePosValue;
+
+		{
+			auto breakBlock = val.node[2].block;
+			breakBlock = breakBlock;
+		}
+		break;
+
+	case game::ENUM_case:
+		answer["expr"] = print_statement_ast(inst, val.node[1]);
+		answer["sourcePos"] = val.node[2].sourcePosValue;
+
+		{
+			auto caseBlock = val.node[3].block;
+			caseBlock = caseBlock;
+		}
+		break;
+
+	case game::ENUM_waittillmatch:
+		answer["obj"] = print_statement_ast(inst, val.node[1]);
+
+		answer["exprlist"] = nlohmann::json::array();
+		for (i = 0, node = val.node[2].node->node[1].node;
+			node;
+			node = node[1].node, i++)
+		{
+			answer["exprlist"][i]["expr"] = print_statement_ast(inst, *node->node);
+			answer["exprlist"][i]["sourcePos"] = node->node[1].sourcePosValue;
+		}
+
+		answer["sourcePos"] = val.node[3].sourcePosValue;
+		answer["waitSourcePos"] = val.node[4].sourcePosValue;
+		break;
+
+	case game::ENUM_local_variable:
+	case game::ENUM_prof_begin:
+	case game::ENUM_prof_end:
+	case game::ENUM_animation:
+		answer["name"] = game::SL_ConvertToString(val.node[1].stringValue, inst);
+		answer["sourcePos"] = val.node[2].sourcePosValue;
+		break;
+
 	case game::ENUM_begin_developer_thread:
 	case game::ENUM_end_developer_thread:
 	case game::ENUM_undefined:
@@ -642,6 +693,7 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 	case game::ENUM_break:
 	case game::ENUM_continue:
 	case game::ENUM_animtree:
+	case game::ENUM_breakpoint:
 		answer["sourcePos"] = val.node[1].sourcePosValue;
 		break;
 
@@ -650,6 +702,7 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 	case game::ENUM_call_expression:
 	case game::ENUM_call_expression_statement:
 	case game::ENUM_expression:
+	case game::ENUM_statement:
 		answer["expr"] = print_statement_ast(inst, val.node[1]);
 		break;
 
@@ -666,32 +719,23 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 		break;
 
 	case game::ENUM_NOP:
-	case game::ENUM_program:
-	case game::ENUM_unknown_variable:
-	case game::ENUM_local_variable_frozen:
-	case game::ENUM_unknown_field:
-	case game::ENUM_field_variable_frozen:
-	case game::ENUM_self_frozen:
-	case game::ENUM_include:
-	case game::ENUM_self_field:
-	case game::ENUM_object:
-	case game::ENUM_precachetree:
-	case game::ENUM_local:
-	case game::ENUM_statement:
-	case game::ENUM_bad_expression:
-	case game::ENUM_bad_statement:
-	case game::ENUM_argument:
-	case game::ENUM_thread_object:
-	case game::ENUM_vector:
-	case game::ENUM_breakon:
-	case game::ENUM_breakpoint:
-
-	case game::ENUM_waittillmatch:
-
-	case game::ENUM_switch:
-	case game::ENUM_case:
-	case game::ENUM_default:
-
+	case game::ENUM_program: // unk
+	case game::ENUM_unknown_variable: // unk
+	case game::ENUM_local_variable_frozen: // unk, debugger?
+	case game::ENUM_unknown_field: // unk
+	case game::ENUM_field_variable_frozen: // unk, debugger?
+	case game::ENUM_self_frozen: // unk, debugger?
+	case game::ENUM_include: // handled
+	case game::ENUM_self_field: // debugger
+	case game::ENUM_object: // debugger
+	case game::ENUM_precachetree: // unk
+	case game::ENUM_local: // unk
+	case game::ENUM_bad_expression: // unk
+	case game::ENUM_bad_statement: // unk
+	case game::ENUM_argument: // unk
+	case game::ENUM_thread_object: // unk
+	case game::ENUM_vector: // unk
+	case game::ENUM_breakon: // debugger unk 2 vals 1 pos
 	default:
 		break;
 	}
