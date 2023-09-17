@@ -395,11 +395,123 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 		break;
 	}
 
+	case game::ENUM_wait:
+	{
+		auto expr = val.node[1];
+		auto sourcePos = val.node[2].sourcePosValue;
+		auto waitSourcePos = val.node[3].sourcePosValue;
+
+		answer["expr"] = print_statement_ast(inst, expr);
+		answer["sourcePos"] = sourcePos;
+		answer["waitSourcePos"] = waitSourcePos;
+		break;
+	}
+
+	case game::ENUM_statement_list:
+	{
+		game::sval_u *node;
+		int i;
+
+		auto list = val.node[1];
+		auto sourcePos = val.node[2].sourcePosValue;
+		auto sourcePos2 = val.node[3].sourcePosValue;
+
+		answer["sourcePos"] = sourcePos;
+		answer["sourcePos2"] = sourcePos2;
+
+		answer["list"] = nlohmann::json::array();
+		for (i = 0, node = list.node->node[1].node;
+			node;
+			node = node[1].node, i++)
+		{
+			answer["list"][i] = print_statement_ast(inst, *node);
+		}
+
+		break;
+	}
+
+	case game::ENUM_if:
+	{
+		auto expr = val.node[1];
+		auto stmt = val.node[2];
+		auto sourcePos = val.node[3].sourcePosValue;
+		auto ifStatBlock = val.node[4].block;
+		ifStatBlock = ifStatBlock;
+
+		answer["expr"] = print_statement_ast(inst, expr);
+		answer["stmt"] = print_statement_ast(inst, stmt);
+		answer["sourcePos"] = sourcePos;
+		break;
+	}
+
+	case game::ENUM_if_else:
+	{
+		auto expr = val.node[1];
+		auto stmt1 = val.node[2];
+		auto stmt2 = val.node[3];
+		auto sourcePos = val.node[4].sourcePosValue;
+		auto elseSourcePos = val.node[5].sourcePosValue;
+		auto ifBlock = val.node[6].block;
+		auto elseBlock = val.node[7].block;
+		ifBlock = ifBlock;
+		elseBlock = elseBlock;
+
+		answer["expr"] = print_statement_ast(inst, expr);
+		answer["stmt1"] = print_statement_ast(inst, stmt1);
+		answer["stmt2"] = print_statement_ast(inst, stmt2);
+		answer["sourcePos"] = sourcePos;
+		answer["elseSourcePos"] = elseSourcePos;
+		break;
+	}
+
+	case game::ENUM_while:
+	{
+		auto expr = val.node[1];
+		auto stmt = val.node[2];
+		auto sourcePos = val.node[3].sourcePosValue;
+		auto whileSourcePos = val.node[4].sourcePosValue;
+		auto whileStatBlock = val.node[5].block;
+		whileStatBlock = whileStatBlock;
+
+		answer["expr"] = print_statement_ast(inst, expr);
+		answer["stmt"] = print_statement_ast(inst, stmt);
+		answer["sourcePos"] = sourcePos;
+		answer["whileSourcePos"] = whileSourcePos;
+		break;
+	}
+
+	case game::ENUM_for:
+	{
+		auto stmt1 = val.node[1];
+		auto expr = val.node[2];
+		auto stmt2 = val.node[3];
+		auto stmt = val.node[4];
+		auto sourcePos = val.node[5].sourcePosValue;
+		auto forSourcePos = val.node[6].sourcePosValue;
+		auto forStatBlock = val.node[7].block;
+		auto forStatPostBlock = val.node[8].block;
+		forStatBlock = forStatBlock;
+		forStatPostBlock = forStatPostBlock;
+
+		answer["expr"] = print_statement_ast(inst, expr);
+		answer["stmt"] = print_statement_ast(inst, stmt);
+		answer["stmt1"] = print_statement_ast(inst, stmt1);
+		answer["stmt2"] = print_statement_ast(inst, stmt2);
+		answer["sourcePos"] = sourcePos;
+		answer["forSourcePos"] = forSourcePos;
+		break;
+	}
+
 	case game::ENUM_begin_developer_thread:
 	case game::ENUM_end_developer_thread:
 	case game::ENUM_undefined:
 	case game::ENUM_false:
 	case game::ENUM_true:
+	case game::ENUM_return2:
+	case game::ENUM_self:
+	case game::ENUM_level:
+	case game::ENUM_game:
+	case game::ENUM_anim:
 	{
 		auto sourcePos = val.node[1].sourcePosValue;
 
@@ -418,6 +530,9 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 	}
 	case game::ENUM_variable:
 	case game::ENUM_primitive_expression:
+	case game::ENUM_return:
+	case game::ENUM_inc:
+	case game::ENUM_dec:
 	{
 		auto expr = val.node[1];
 		auto sourcePos = val.node[2].sourcePosValue;
@@ -433,23 +548,9 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 	case game::ENUM_local_variable_frozen:
 	case game::ENUM_unknown_field:
 	case game::ENUM_field_variable_frozen:
-
-	case game::ENUM_return:
-	case game::ENUM_return2:
-	case game::ENUM_wait:
-	case game::ENUM_self:
 	case game::ENUM_self_frozen:
-	case game::ENUM_level:
-	case game::ENUM_game:
-	case game::ENUM_anim:
-	case game::ENUM_if:
-	case game::ENUM_if_else:
-	case game::ENUM_while:
-	case game::ENUM_for:
-	case game::ENUM_inc:
-	case game::ENUM_dec:
+
 	case game::ENUM_binary_equals:
-	case game::ENUM_statement_list:
 	case game::ENUM_developer_statement_list:
 	case game::ENUM_bool_or:
 	case game::ENUM_bool_and:
