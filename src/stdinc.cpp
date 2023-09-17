@@ -147,360 +147,446 @@ static const char* scr_enum_t_to_string[] =
 	"ENUM_argument"
 };
 
+static const char* OpcodeVMToString[] = {
+	"OP_End",
+	"OP_Return",
+	"OP_GetUndefined",
+	"OP_GetZero",
+	"OP_GetByte",
+	"OP_GetNegByte",
+	"OP_GetUnsignedShort",
+	"OP_GetNegUnsignedShort",
+	"OP_GetInteger",
+	"OP_GetFloat",
+	"OP_GetString",
+	"OP_GetIString",
+	"OP_GetVector",
+	"OP_GetLevelObject",
+	"OP_GetAnimObject",
+	"OP_GetSelf",
+	"OP_GetLevel",
+	"OP_GetGame",
+	"OP_GetAnim",
+	"OP_GetAnimation",
+	"OP_GetGameRef",
+	"OP_GetFunction",
+	"OP_CreateLocalVariable",
+	"OP_RemoveLocalVariables",
+	"OP_EvalLocalVariableCached0",
+	"OP_EvalLocalVariableCached1",
+	"OP_EvalLocalVariableCached2",
+	"OP_EvalLocalVariableCached3",
+	"OP_EvalLocalVariableCached4",
+	"OP_EvalLocalVariableCached5",
+	"OP_EvalLocalVariableCached",
+	"OP_EvalLocalArrayCached",
+	"OP_EvalArray",
+	"OP_EvalLocalArrayRefCached0",
+	"OP_EvalLocalArrayRefCached",
+	"OP_EvalArrayRef",
+	"OP_ClearArray",
+	"OP_EmptyArray",
+	"OP_GetSelfObject",
+	"OP_EvalLevelFieldVariable",
+	"OP_EvalAnimFieldVariable",
+	"OP_EvalSelfFieldVariable",
+	"OP_EvalFieldVariable",
+	"OP_EvalLevelFieldVariableRef",
+	"OP_EvalAnimFieldVariableRef",
+	"OP_EvalSelfFieldVariableRef",
+	"OP_EvalFieldVariableRef",
+	"OP_ClearFieldVariable",
+	"OP_SafeCreateVariableFieldCached",
+	"OP_SafeSetVariableFieldCached0",
+	"OP_SafeSetVariableFieldCached",
+	"OP_SafeSetWaittillVariableFieldCached",
+	"OP_clearparams",
+	"OP_checkclearparams",
+	"OP_EvalLocalVariableRefCached0",
+	"OP_EvalLocalVariableRefCached",
+	"OP_SetLevelFieldVariableField",
+	"OP_SetVariableField",
+	"OP_SetAnimFieldVariableField",
+	"OP_SetSelfFieldVariableField",
+	"OP_SetLocalVariableFieldCached0",
+	"OP_SetLocalVariableFieldCached",
+	"OP_CallBuiltin0",
+	"OP_CallBuiltin1",
+	"OP_CallBuiltin2",
+	"OP_CallBuiltin3",
+	"OP_CallBuiltin4",
+	"OP_CallBuiltin5",
+	"OP_CallBuiltin",
+	"OP_CallBuiltinMethod0",
+	"OP_CallBuiltinMethod1",
+	"OP_CallBuiltinMethod2",
+	"OP_CallBuiltinMethod3",
+	"OP_CallBuiltinMethod4",
+	"OP_CallBuiltinMethod5",
+	"OP_CallBuiltinMethod",
+	"OP_wait",
+	"OP_waittillFrameEnd",
+	"OP_PreScriptCall",
+	"OP_ScriptFunctionCall2",
+	"OP_ScriptFunctionCall",
+	"OP_ScriptFunctionCallPointer",
+	"OP_ScriptMethodCall",
+	"OP_ScriptMethodCallPointer",
+	"OP_ScriptThreadCall",
+	"OP_ScriptThreadCallPointer",
+	"OP_ScriptMethodThreadCall",
+	"OP_ScriptMethodThreadCallPointer",
+	"OP_DecTop",
+	"OP_CastFieldObject",
+	"OP_EvalLocalVariableObjectCached",
+	"OP_CastBool",
+	"OP_BoolNot",
+	"OP_BoolComplement",
+	"OP_JumpOnFalse",
+	"OP_JumpOnTrue",
+	"OP_JumpOnFalseExpr",
+	"OP_JumpOnTrueExpr",
+	"OP_jump",
+	"OP_jumpback",
+	"OP_inc",
+	"OP_dec",
+	"OP_bit_or",
+	"OP_bit_ex_or",
+	"OP_bit_and",
+	"OP_equality",
+	"OP_inequality",
+	"OP_less",
+	"OP_greater",
+	"OP_less_equal",
+	"OP_greater_equal",
+	"OP_shift_left",
+	"OP_shift_right",
+	"OP_plus",
+	"OP_minus",
+	"OP_multiply",
+	"OP_divide",
+	"OP_mod",
+	"OP_size",
+	"OP_waittillmatch",
+	"OP_waittill",
+	"OP_notify",
+	"OP_endon",
+	"OP_voidCodepos",
+	"OP_switch",
+	"OP_endswitch",
+	"OP_vector",
+	"OP_NOP",
+	"OP_abort",
+	"OP_object",
+	"OP_thread_object",
+	"OP_EvalLocalVariable",
+	"OP_EvalLocalVariableRef",
+	"OP_prof_begin",
+	"OP_prof_end",
+	"OP_breakpoint",
+	"OP_assignmentBreakpoint",
+	"OP_manualAndAssignmentBreakpoint",
+	"OP_count"
+};
+
 nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val)
 {
 	nlohmann::json answer{};
+	game::sval_u *node;
+	int i;
 
 	answer["type"] = scr_enum_t_to_string[val.node[0].type];
 
 	switch (val.node[0].type)
 	{
 	case game::ENUM_local_variable:
-	{
-		auto name = val.node[1].stringValue;
-		auto sourcePos = val.node[2].sourcePosValue;
-
-		answer["name"] = game::SL_ConvertToString(name, inst);
-		answer["sourcePos"] = sourcePos;
+		answer["name"] = game::SL_ConvertToString(val.node[1].stringValue, inst);
+		answer["sourcePos"] = val.node[2].sourcePosValue;
 		break;
-	}
+
 	case game::ENUM_array_variable:
-	{
-		auto expr = val.node[1];
-		auto index = val.node[2];
-		auto sourcePos = val.node[3].sourcePosValue;
-		auto indexSourcePos = val.node[4].sourcePosValue;
-
-		answer["expr"] = print_statement_ast(inst, expr);
-		answer["index"] = print_statement_ast(inst, index);
-		answer["sourcePos"] = sourcePos;
-		answer["indexSourcePos"] = indexSourcePos;
+		answer["expr"] = print_statement_ast(inst, val.node[1]);
+		answer["index"] = print_statement_ast(inst, val.node[2]);
+		answer["sourcePos"] = val.node[3].sourcePosValue;
+		answer["indexSourcePos"] = val.node[4].sourcePosValue;
 		break;
-	}
+
 	case game::ENUM_field_variable:
-	{
-		auto expr = val.node[1];
-		auto field = val.node[2].stringValue;
-		auto sourcePos = val.node[3].sourcePosValue;
-
-		answer["sourcePos"] = sourcePos;
-		answer["field"] = game::SL_ConvertToString(field, inst);
-		answer["expr"] = print_statement_ast(inst, expr);
+		answer["expr"] = print_statement_ast(inst, val.node[1]);
+		answer["field"] = game::SL_ConvertToString(val.node[2].stringValue, inst);
+		answer["sourcePos"] = val.node[3].sourcePosValue;
 		break;
-	}
+
 	case game::ENUM_assignment:
-	{
-		auto lhs = val.node[1];
-		auto rhs = val.node[2];
-		auto sourcePos = val.node[3].sourcePosValue;
-		auto rhsSourcePos = val.node[4].sourcePosValue;
-
-		answer["lhs"] = print_statement_ast(inst, lhs);
-		answer["rhs"] = print_statement_ast(inst, rhs);
-		answer["sourcePos"] = sourcePos;
-		answer["rhsSourcePos"] = rhsSourcePos;
+		answer["lhs"] = print_statement_ast(inst, val.node[1]);
+		answer["rhs"] = print_statement_ast(inst, val.node[2]);
+		answer["sourcePos"] = val.node[3].sourcePosValue;
+		answer["rhsSourcePos"] = val.node[4].sourcePosValue;
 		break;
-	}
+
 	case game::ENUM_far_function:
-	{
-		auto filename = val.node[1].stringValue;
-		auto threadName = val.node[2].stringValue;
-
-		answer["threadName"] = game::SL_ConvertToString(threadName, inst);
-		answer["filename"] = game::SL_ConvertToString(filename, inst);
+		answer["filename"] = game::SL_ConvertToString(val.node[1].stringValue, inst);
+		answer["threadName"] = game::SL_ConvertToString(val.node[2].stringValue, inst);
 		break;
-	}
+
 	case game::ENUM_local_function:
-	{
-		auto threadName = val.node[1].stringValue;
-
-		answer["threadName"] = game::SL_ConvertToString(threadName, inst);
+		answer["threadName"] = game::SL_ConvertToString(val.node[1].stringValue, inst);
 		break;
-	}
+
 	case game::ENUM_function:
 	case game::ENUM_function_pointer:
-	{
-		auto func = val.node[1];
-		auto sourcePos = val.node[2].sourcePosValue;
-
-		answer["func"] = print_statement_ast(inst, func);
-		answer["sourcePos"] = sourcePos;
+		answer["func"] = print_statement_ast(inst, val.node[1]);
+		answer["sourcePos"] = val.node[2].sourcePosValue;
 		break;
-	}
+
 	case game::ENUM_script_call:
-	{
-		auto func_name = val.node[1];
-		auto nameSourcePos = val.node[2].sourcePosValue;
-
-		answer["func_name"] = print_statement_ast(inst, func_name);
-		answer["nameSourcePos"] = nameSourcePos;
+		answer["func_name"] = print_statement_ast(inst, val.node[1]);
+		answer["nameSourcePos"] = val.node[2].sourcePosValue;
 		break;
-	}
+
 	case game::ENUM_script_thread_call:
-	{
-		auto func_name = val.node[1];
-		auto sourcePos = val.node[2].sourcePosValue;
-		auto nameSourcePos = val.node[3].sourcePosValue;
-
-		answer["func_name"] = print_statement_ast(inst, func_name);
-		answer["sourcePos"] = sourcePos;
-		answer["nameSourcePos"] = nameSourcePos;
+		answer["func_name"] = print_statement_ast(inst, val.node[1]);
+		answer["sourcePos"] = val.node[2].sourcePosValue;
+		answer["nameSourcePos"] = val.node[3].sourcePosValue;
 		break;
-	}
+
 	case game::ENUM_call:
-	{
-		auto func_name = val.node[1];
-		auto params = val.node[2];
-		auto sourcePos = val.node[3].sourcePosValue;
-
-		answer["func_name"] = print_statement_ast(inst, func_name);
-		answer["sourcePos"] = sourcePos;
-
-		int i;
-		game::sval_u *node;
+		answer["func_name"] = print_statement_ast(inst, val.node[1]);
 
 		answer["params"] = nlohmann::json::array();
-		for (i = 0, node = params.node[0].node;
+		for (i = 0, node = val.node[2].node[0].node;
 			node;
 			node = node[1].node, i++)
 		{
 			answer["params"][i] = print_statement_ast(inst, node->node[0]);
 		}
 
+		answer["sourcePos"] = val.node[3].sourcePosValue;
 		break;
-	}
+
 	case game::ENUM_method:
-	{
-		auto expr = val.node[1];
-		auto func_name = val.node[2];
-		auto params = val.node[3];
-		auto methodSourcePos = val.node[4].sourcePosValue;
-		auto sourcePos = val.node[5].sourcePosValue;
-
-		answer["methodSourcePos"] = methodSourcePos;
-		answer["expr"] = print_statement_ast(inst, expr);
-		answer["func_name"] = print_statement_ast(inst, func_name);
-		answer["sourcePos"] = sourcePos;
-
-		int i;
-		game::sval_u *node;
+		answer["expr"] = print_statement_ast(inst, val.node[1]);
+		answer["func_name"] = print_statement_ast(inst, val.node[2]);
 
 		answer["params"] = nlohmann::json::array();
-		for (i = 0, node = params.node[0].node;
+		for (i = 0, node = val.node[3].node[0].node;
 			node;
 			node = node[1].node, i++)
 		{
 			answer["params"][i] = print_statement_ast(inst, node->node[0]);
 		}
 
+		answer["sourcePos"] = val.node[4].sourcePosValue;
+		answer["methodSourcePos"] = val.node[5].sourcePosValue;
 		break;
-	}
+
 	case game::ENUM_integer:
 	case game::ENUM_minus_integer:
-	{
-		auto value = val.node[1].intValue;
-		auto sourcePos = val.node[2].sourcePosValue;
-
-		answer["value"] = value;
-		answer["sourcePos"] = sourcePos;
+		answer["value"] = val.node[1].intValue;
+		answer["sourcePos"] = val.node[2].sourcePosValue;
 		break;
-	}
+
 	case game::ENUM_float:
 	case game::ENUM_minus_float:
-	{
-		auto value = val.node[1].floatValue;
-		auto sourcePos = val.node[2].sourcePosValue;
-
-		answer["value"] = value;
-		answer["sourcePos"] = sourcePos;
+		answer["value"] = val.node[1].floatValue;
+		answer["sourcePos"] = val.node[2].sourcePosValue;
 		break;
-	}
+
 	case game::ENUM_string:
 	case game::ENUM_istring:
-	{
-		auto value = val.node[1].stringValue;
-		auto sourcePos = val.node[2].sourcePosValue;
-
-		answer["value"] = game::SL_ConvertToString(value, inst);
-		answer["sourcePos"] = sourcePos;
+		answer["value"] = game::SL_ConvertToString(val.node[1].stringValue, inst);
+		answer["sourcePos"] = val.node[2].sourcePosValue;
 		break;
-	}
-	case game::ENUM_expression_list:
-	{
-		auto exprlist = val.node[1];
-		auto sourcePos = val.node[2].sourcePosValue;
-		int i;
-		game::sval_u* node;
 
+	case game::ENUM_expression_list:
 		answer["exprlist"] = nlohmann::json::array();
-		for (i = 0, node = exprlist.node->node;
+		for (i = 0, node = val.node[1].node->node;
 			node;
 			node = node[1].node, i++)
 		{
 			answer["exprlist"][i] = print_statement_ast(inst, *node->node);
 		}
 
-		answer["sourcePos"] = sourcePos;
+		answer["sourcePos"] = val.node[2].sourcePosValue;
 		break;
-	}
+
 	case game::ENUM_thread:
-	{
-		game::sval_u *node;
-		int i;
-
-		auto threadName = val.node[1].stringValue;
-		auto exprlist = val.node[2].node;  
-		auto stmtlist = val.node[3].node;
-		auto sourcePos = val.node[4].sourcePosValue;
-		auto endSourcePos = val.node[5].sourcePosValue;
-		auto stmtblock = &val.node[6].block;
-		stmtblock = stmtblock;
-
-		answer["threadName"] = game::SL_ConvertToString(threadName, inst);
-		answer["sourcePos"] = sourcePos;
-		answer["endSourcePos"] = endSourcePos;
+		answer["threadName"] = game::SL_ConvertToString(val.node[1].stringValue, inst);
 
 		answer["formalParams"] = nlohmann::json::array();
-		for (i = 0, node = exprlist->node[1].node;
+		for (i = 0, node = val.node[2].node->node[1].node;
 			node;
 			node = node[1].node, i++)
 		{
-			auto expr_name = node->node[0].stringValue;
-			auto sourcePos_ = node->node[1].sourcePosValue;
-
-			answer["formalParams"][i]["expr_name"] = game::SL_ConvertToString(expr_name, inst);
-			answer["formalParams"][i]["sourcePos"] = sourcePos_;
+			answer["formalParams"][i]["expr_name"] = game::SL_ConvertToString(node->node[0].stringValue, inst);
+			answer["formalParams"][i]["sourcePos"] = node->node[1].sourcePosValue;
 		}
 
 		answer["statements"] = nlohmann::json::array();
-		for (i = 0, node = stmtlist->node[1].node;
+		for (i = 0, node = val.node[3].node->node[1].node;
 			node;
 			node = node[1].node, i++)
 		{
 			answer["statements"][i] = print_statement_ast(inst, *node);
 		}
 
+		answer["sourcePos"] = val.node[4].sourcePosValue;
+		answer["endSourcePos"] = val.node[5].sourcePosValue;
+
+		{
+			auto stmtblock = &val.node[6].block;
+			stmtblock = stmtblock;
+		}
 		break;
-	}
 
 	case game::ENUM_usingtree:
-	{
-		auto string_val = val.node[1].stringValue;
-		auto sourcePos = val.node[2].sourcePosValue;
-		auto sourcePos2 = val.node[3].sourcePosValue;
-
-		answer["string"] = game::SL_ConvertToString(string_val, inst);
-		answer["sourcePos"] = sourcePos;
-		answer["sourcePos2"] = sourcePos2;
+		answer["string"] = game::SL_ConvertToString(val.node[1].stringValue, inst);
+		answer["sourcePos"] = val.node[2].sourcePosValue;
+		answer["sourcePos2"] = val.node[3].sourcePosValue;
 		break;
-	}
 
 	case game::ENUM_wait:
-	{
-		auto expr = val.node[1];
-		auto sourcePos = val.node[2].sourcePosValue;
-		auto waitSourcePos = val.node[3].sourcePosValue;
-
-		answer["expr"] = print_statement_ast(inst, expr);
-		answer["sourcePos"] = sourcePos;
-		answer["waitSourcePos"] = waitSourcePos;
+		answer["expr"] = print_statement_ast(inst, val.node[1]);
+		answer["sourcePos"] = val.node[2].sourcePosValue;
+		answer["waitSourcePos"] = val.node[3].sourcePosValue;
 		break;
-	}
 
-	case game::ENUM_statement_list:
-	{
-		game::sval_u *node;
-		int i;
-
-		auto list = val.node[1];
-		auto sourcePos = val.node[2].sourcePosValue;
-		auto sourcePos2 = val.node[3].sourcePosValue;
-
-		answer["sourcePos"] = sourcePos;
-		answer["sourcePos2"] = sourcePos2;
-
+	case game::ENUM_developer_statement_list:
 		answer["list"] = nlohmann::json::array();
-		for (i = 0, node = list.node->node[1].node;
+		for (i = 0, node = val.node[1].node->node[1].node;
 			node;
 			node = node[1].node, i++)
 		{
 			answer["list"][i] = print_statement_ast(inst, *node);
 		}
 
+		answer["sourcePos"] = val.node[2].sourcePosValue;
+
+		{
+			auto devStatBlock = val.node[3].block;
+			devStatBlock = devStatBlock;
+		}
 		break;
-	}
+
+	case game::ENUM_statement_list:
+		answer["list"] = nlohmann::json::array();
+		for (i = 0, node = val.node[1].node->node[1].node;
+			node;
+			node = node[1].node, i++)
+		{
+			answer["list"][i] = print_statement_ast(inst, *node);
+		}
+
+		answer["sourcePos"] = val.node[2].sourcePosValue;
+		answer["sourcePos2"] = val.node[3].sourcePosValue;
+		break;
 
 	case game::ENUM_if:
-	{
-		auto expr = val.node[1];
-		auto stmt = val.node[2];
-		auto sourcePos = val.node[3].sourcePosValue;
-		auto ifStatBlock = val.node[4].block;
-		ifStatBlock = ifStatBlock;
+		answer["expr"] = print_statement_ast(inst, val.node[1]);
+		answer["stmt"] = print_statement_ast(inst, val.node[2]);
+		answer["sourcePos"] = val.node[3].sourcePosValue;
 
-		answer["expr"] = print_statement_ast(inst, expr);
-		answer["stmt"] = print_statement_ast(inst, stmt);
-		answer["sourcePos"] = sourcePos;
+		{
+
+			auto ifStatBlock = val.node[4].block;
+			ifStatBlock = ifStatBlock;
+		}
 		break;
-	}
 
 	case game::ENUM_if_else:
-	{
-		auto expr = val.node[1];
-		auto stmt1 = val.node[2];
-		auto stmt2 = val.node[3];
-		auto sourcePos = val.node[4].sourcePosValue;
-		auto elseSourcePos = val.node[5].sourcePosValue;
-		auto ifBlock = val.node[6].block;
-		auto elseBlock = val.node[7].block;
-		ifBlock = ifBlock;
-		elseBlock = elseBlock;
+		answer["expr"] = print_statement_ast(inst, val.node[1]);
+		answer["stmt1"] = print_statement_ast(inst, val.node[2]);
+		answer["stmt2"] = print_statement_ast(inst, val.node[3]);
+		answer["sourcePos"] = val.node[4].sourcePosValue;
+		answer["elseSourcePos"] = val.node[5].sourcePosValue;
 
-		answer["expr"] = print_statement_ast(inst, expr);
-		answer["stmt1"] = print_statement_ast(inst, stmt1);
-		answer["stmt2"] = print_statement_ast(inst, stmt2);
-		answer["sourcePos"] = sourcePos;
-		answer["elseSourcePos"] = elseSourcePos;
+		{
+
+			auto ifBlock = val.node[6].block;
+			auto elseBlock = val.node[7].block;
+			ifBlock = ifBlock;
+			elseBlock = elseBlock;
+		}
 		break;
-	}
 
 	case game::ENUM_while:
-	{
-		auto expr = val.node[1];
-		auto stmt = val.node[2];
-		auto sourcePos = val.node[3].sourcePosValue;
-		auto whileSourcePos = val.node[4].sourcePosValue;
-		auto whileStatBlock = val.node[5].block;
-		whileStatBlock = whileStatBlock;
+		answer["expr"] = print_statement_ast(inst, val.node[1]);
+		answer["stmt"] = print_statement_ast(inst, val.node[2]);
+		answer["sourcePos"] = val.node[3].sourcePosValue;
+		answer["whileSourcePos"] = val.node[4].sourcePosValue;
 
-		answer["expr"] = print_statement_ast(inst, expr);
-		answer["stmt"] = print_statement_ast(inst, stmt);
-		answer["sourcePos"] = sourcePos;
-		answer["whileSourcePos"] = whileSourcePos;
+		{
+
+			auto whileStatBlock = val.node[5].block;
+			whileStatBlock = whileStatBlock;
+		}
 		break;
-	}
 
 	case game::ENUM_for:
-	{
-		auto stmt1 = val.node[1];
-		auto expr = val.node[2];
-		auto stmt2 = val.node[3];
-		auto stmt = val.node[4];
-		auto sourcePos = val.node[5].sourcePosValue;
-		auto forSourcePos = val.node[6].sourcePosValue;
-		auto forStatBlock = val.node[7].block;
-		auto forStatPostBlock = val.node[8].block;
-		forStatBlock = forStatBlock;
-		forStatPostBlock = forStatPostBlock;
+		answer["stmt1"] = print_statement_ast(inst, val.node[1]);
+		answer["expr"] = print_statement_ast(inst, val.node[2]);
+		answer["stmt2"] = print_statement_ast(inst, val.node[3]);
+		answer["stmt"] = print_statement_ast(inst, val.node[4]);
+		answer["sourcePos"] = val.node[5].sourcePosValue;
+		answer["forSourcePos"] = val.node[6].sourcePosValue;
 
-		answer["expr"] = print_statement_ast(inst, expr);
-		answer["stmt"] = print_statement_ast(inst, stmt);
-		answer["stmt1"] = print_statement_ast(inst, stmt1);
-		answer["stmt2"] = print_statement_ast(inst, stmt2);
+		{
+			auto forStatBlock = val.node[7].block;
+			auto forStatPostBlock = val.node[8].block;
+			forStatBlock = forStatBlock;
+			forStatPostBlock = forStatPostBlock;
+		}
+		break;
+
+	case game::ENUM_bool_or:
+	case game::ENUM_bool_and:
+		answer["expr1"] = print_statement_ast(inst, val.node[1]);
+		answer["expr2"] = print_statement_ast(inst, val.node[2]);
+		answer["expr1SourcePos"] = val.node[3].sourcePosValue;
+		answer["expr2SourcePos"] = val.node[4].sourcePosValue;
+		break;
+
+	case game::ENUM_binary:
+	{
+		auto expr1 = val.node[1];
+		auto expr2 = val.node[2];
+		auto opcode = val.node[3].type;
+		auto sourcePos = val.node[4].sourcePosValue;
+
+		answer["opcode"] = OpcodeVMToString[opcode];
 		answer["sourcePos"] = sourcePos;
-		answer["forSourcePos"] = forSourcePos;
+		answer["expr1"] = print_statement_ast(inst, expr1);
+		answer["expr2"] = print_statement_ast(inst, expr2);
 		break;
 	}
+
+	case game::ENUM_binary_equals:
+		answer["lhs"] = print_statement_ast(inst, val.node[1]);
+		answer["rhs"] = print_statement_ast(inst, val.node[2]);
+		answer["opcode"] = OpcodeVMToString[val.node[3].type];
+		answer["sourcePos"] = val.node[4].sourcePosValue;
+		break;
+
+
+	case game::ENUM_waittill:
+		answer["obj"] = print_statement_ast(inst, val.node[1]);
+
+		node = val.node[2].node->node[1].node;
+		answer["expr"]["expr"] = print_statement_ast(inst, *node->node);
+		answer["expr"]["sourcePos"] = node->node[1].sourcePosValue;
+
+		answer["exprlist"] = nlohmann::json::array();
+		for (i = 0, node = node[1].node;
+			node;
+			node = node[1].node, i++)
+		{
+			answer["exprlist"][i]["expr"] = game::SL_ConvertToString(node[0].node->stringValue, inst);
+			answer["exprlist"][i]["sourcePos"] = node->node[1].sourcePosValue;
+		}
+
+		answer["sourcePos"] = val.node[3].sourcePosValue;
+		answer["waitSourcePos"] = val.node[4].sourcePosValue;
+		break;
 
 	case game::ENUM_begin_developer_thread:
 	case game::ENUM_end_developer_thread:
@@ -512,35 +598,29 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 	case game::ENUM_level:
 	case game::ENUM_game:
 	case game::ENUM_anim:
-	{
-		auto sourcePos = val.node[1].sourcePosValue;
-
-		answer["sourcePos"] = sourcePos;
+	case game::ENUM_empty_array:
+		answer["sourcePos"] = val.node[1].sourcePosValue;
 		break;
-	}
+
 	case game::ENUM_duplicate_variable:
 	case game::ENUM_duplicate_expression:
 	case game::ENUM_call_expression:
 	case game::ENUM_call_expression_statement:
-	{
-		auto expr = val.node[1];
-
-		answer["expr"] = print_statement_ast(inst, expr);
+	case game::ENUM_expression:
+		answer["expr"] = print_statement_ast(inst, val.node[1]);
 		break;
-	}
+
 	case game::ENUM_variable:
 	case game::ENUM_primitive_expression:
 	case game::ENUM_return:
 	case game::ENUM_inc:
 	case game::ENUM_dec:
-	{
-		auto expr = val.node[1];
-		auto sourcePos = val.node[2].sourcePosValue;
-
-		answer["expr"] = print_statement_ast(inst, expr);
-		answer["sourcePos"] = sourcePos;
+	case game::ENUM_bool_not:
+	case game::ENUM_bool_complement:
+	case game::ENUM_size_field:
+		answer["expr"] = print_statement_ast(inst, val.node[1]);
+		answer["sourcePos"] = val.node[2].sourcePosValue;
 		break;
-	}
 
 	case game::ENUM_NOP:
 	case game::ENUM_program:
@@ -549,18 +629,18 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 	case game::ENUM_unknown_field:
 	case game::ENUM_field_variable_frozen:
 	case game::ENUM_self_frozen:
-
-	case game::ENUM_binary_equals:
-	case game::ENUM_developer_statement_list:
-	case game::ENUM_bool_or:
-	case game::ENUM_bool_and:
-	case game::ENUM_binary:
-	case game::ENUM_bool_not:
-	case game::ENUM_bool_complement:
-	case game::ENUM_size_field:
+	case game::ENUM_include:
 	case game::ENUM_self_field:
+	case game::ENUM_object:
 	case game::ENUM_precachetree:
-	case game::ENUM_waittill:
+	case game::ENUM_local:
+	case game::ENUM_statement:
+	case game::ENUM_bad_expression:
+	case game::ENUM_bad_statement:
+	case game::ENUM_argument:
+	case game::ENUM_thread_object:
+	case game::ENUM_vector:
+
 	case game::ENUM_waittillmatch:
 	case game::ENUM_waittillFrameEnd:
 	case game::ENUM_notify:
@@ -570,23 +650,12 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 	case game::ENUM_default:
 	case game::ENUM_break:
 	case game::ENUM_continue:
-	case game::ENUM_expression:
-	case game::ENUM_empty_array:
 	case game::ENUM_animation:
 	case game::ENUM_animtree:
 	case game::ENUM_breakon:
 	case game::ENUM_breakpoint:
 	case game::ENUM_prof_begin:
 	case game::ENUM_prof_end:
-	case game::ENUM_vector:
-	case game::ENUM_object:
-	case game::ENUM_thread_object:
-	case game::ENUM_local:
-	case game::ENUM_statement:
-	case game::ENUM_bad_expression:
-	case game::ENUM_bad_statement:
-	case game::ENUM_include:
-	case game::ENUM_argument:
 	default:
 		break;
 	}
@@ -722,148 +791,6 @@ std::string build_codepos_history(game::scriptInstance_t inst)
 
 std::string build_op_history(game::scriptInstance_t inst)
 {
-	static const char* OpcodeVMToString[] = {
-		"OP_End",
-		"OP_Return",
-		"OP_GetUndefined",
-		"OP_GetZero",
-		"OP_GetByte",
-		"OP_GetNegByte",
-		"OP_GetUnsignedShort",
-		"OP_GetNegUnsignedShort",
-		"OP_GetInteger",
-		"OP_GetFloat",
-		"OP_GetString",
-		"OP_GetIString",
-		"OP_GetVector",
-		"OP_GetLevelObject",
-		"OP_GetAnimObject",
-		"OP_GetSelf",
-		"OP_GetLevel",
-		"OP_GetGame",
-		"OP_GetAnim",
-		"OP_GetAnimation",
-		"OP_GetGameRef",
-		"OP_GetFunction",
-		"OP_CreateLocalVariable",
-		"OP_RemoveLocalVariables",
-		"OP_EvalLocalVariableCached0",
-		"OP_EvalLocalVariableCached1",
-		"OP_EvalLocalVariableCached2",
-		"OP_EvalLocalVariableCached3",
-		"OP_EvalLocalVariableCached4",
-		"OP_EvalLocalVariableCached5",
-		"OP_EvalLocalVariableCached",
-		"OP_EvalLocalArrayCached",
-		"OP_EvalArray",
-		"OP_EvalLocalArrayRefCached0",
-		"OP_EvalLocalArrayRefCached",
-		"OP_EvalArrayRef",
-		"OP_ClearArray",
-		"OP_EmptyArray",
-		"OP_GetSelfObject",
-		"OP_EvalLevelFieldVariable",
-		"OP_EvalAnimFieldVariable",
-		"OP_EvalSelfFieldVariable",
-		"OP_EvalFieldVariable",
-		"OP_EvalLevelFieldVariableRef",
-		"OP_EvalAnimFieldVariableRef",
-		"OP_EvalSelfFieldVariableRef",
-		"OP_EvalFieldVariableRef",
-		"OP_ClearFieldVariable",
-		"OP_SafeCreateVariableFieldCached",
-		"OP_SafeSetVariableFieldCached0",
-		"OP_SafeSetVariableFieldCached",
-		"OP_SafeSetWaittillVariableFieldCached",
-		"OP_clearparams",
-		"OP_checkclearparams",
-		"OP_EvalLocalVariableRefCached0",
-		"OP_EvalLocalVariableRefCached",
-		"OP_SetLevelFieldVariableField",
-		"OP_SetVariableField",
-		"OP_SetAnimFieldVariableField",
-		"OP_SetSelfFieldVariableField",
-		"OP_SetLocalVariableFieldCached0",
-		"OP_SetLocalVariableFieldCached",
-		"OP_CallBuiltin0",
-		"OP_CallBuiltin1",
-		"OP_CallBuiltin2",
-		"OP_CallBuiltin3",
-		"OP_CallBuiltin4",
-		"OP_CallBuiltin5",
-		"OP_CallBuiltin",
-		"OP_CallBuiltinMethod0",
-		"OP_CallBuiltinMethod1",
-		"OP_CallBuiltinMethod2",
-		"OP_CallBuiltinMethod3",
-		"OP_CallBuiltinMethod4",
-		"OP_CallBuiltinMethod5",
-		"OP_CallBuiltinMethod",
-		"OP_wait",
-		"OP_waittillFrameEnd",
-		"OP_PreScriptCall",
-		"OP_ScriptFunctionCall2",
-		"OP_ScriptFunctionCall",
-		"OP_ScriptFunctionCallPointer",
-		"OP_ScriptMethodCall",
-		"OP_ScriptMethodCallPointer",
-		"OP_ScriptThreadCall",
-		"OP_ScriptThreadCallPointer",
-		"OP_ScriptMethodThreadCall",
-		"OP_ScriptMethodThreadCallPointer",
-		"OP_DecTop",
-		"OP_CastFieldObject",
-		"OP_EvalLocalVariableObjectCached",
-		"OP_CastBool",
-		"OP_BoolNot",
-		"OP_BoolComplement",
-		"OP_JumpOnFalse",
-		"OP_JumpOnTrue",
-		"OP_JumpOnFalseExpr",
-		"OP_JumpOnTrueExpr",
-		"OP_jump",
-		"OP_jumpback",
-		"OP_inc",
-		"OP_dec",
-		"OP_bit_or",
-		"OP_bit_ex_or",
-		"OP_bit_and",
-		"OP_equality",
-		"OP_inequality",
-		"OP_less",
-		"OP_greater",
-		"OP_less_equal",
-		"OP_greater_equal",
-		"OP_shift_left",
-		"OP_shift_right",
-		"OP_plus",
-		"OP_minus",
-		"OP_multiply",
-		"OP_divide",
-		"OP_mod",
-		"OP_size",
-		"OP_waittillmatch",
-		"OP_waittill",
-		"OP_notify",
-		"OP_endon",
-		"OP_voidCodepos",
-		"OP_switch",
-		"OP_endswitch",
-		"OP_vector",
-		"OP_NOP",
-		"OP_abort",
-		"OP_object",
-		"OP_thread_object",
-		"OP_EvalLocalVariable",
-		"OP_EvalLocalVariableRef",
-		"OP_prof_begin",
-		"OP_prof_end",
-		"OP_breakpoint",
-		"OP_assignmentBreakpoint",
-		"OP_manualAndAssignmentBreakpoint",
-		"OP_count"
-	};
-
 	std::string answer{};
 
 	int count = op_idx_rolled_over[inst] ? ARRAY_COUNT(op_history[inst]) : op_idx[inst];
