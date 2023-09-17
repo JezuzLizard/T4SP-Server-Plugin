@@ -587,6 +587,7 @@ nlohmann::json print_statement_ast(game::scriptInstance_t inst, game::sval_u val
 		answer["obj"] = print_statement_ast(inst, val.node[1]);
 
 		answer["exprlist"] = nlohmann::json::array();
+		start_node = nullptr;
 		for (i = 0, node = val.node[2].node->node;
 			node;
 			node = node[1].node, i++)
