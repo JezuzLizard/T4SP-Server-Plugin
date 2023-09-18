@@ -3,7 +3,7 @@
 #include "utils/hook.hpp"
 //#include "codsrc/clientscript/cscr_animtree.hpp"
 
-#ifndef DISABLE_RE_CSCR_YACC
+#ifndef DISABLE_RE_CSCR_ANIMTREE
 namespace re_cscr_animtree
 {
 	utils::hook::detour AnimTreeCompileError_hook;

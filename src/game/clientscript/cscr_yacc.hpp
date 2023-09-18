@@ -9,16 +9,16 @@ namespace game
 	WEAK symbol<void()>yyrestart{ 0x0, 0x69D5C0 };
 	WEAK symbol<yy_buffer_state* ()>yy_create_buffer{ 0x0, 0x69D620 };
 
-	inline void* LowerCase() { return CALL_ADDR(0x0, 0x69AEA0); }
-	unsigned int LowerCase(unsigned int strVal, void* call_addr = LowerCase());
-	inline void* StringValue() { return CALL_ADDR(0x0, 0x69BFF0); }
-	int StringValue(int len, const char* str_, void* call_addr = StringValue());
-	inline void* yy_try_NUL_trans() { return CALL_ADDR(0x0, 0x69D520); }
-	int yy_try_NUL_trans(int yy_current_state, void* call_addr = yy_try_NUL_trans());
-	inline void* yy_flush_buffer() { return CALL_ADDR(0x0, 0x69D690); }
-	void yy_flush_buffer(yy_buffer_state* result, void* call_addr = yy_flush_buffer());
-	inline void* ScriptParse() { return CALL_ADDR(0x0, 0x69D710); }
-	void ScriptParse(scriptInstance_t a1, sval_u* parseData, void* call_addr = ScriptParse());
+	inline void* LowerCase_ADDR() { return CALL_ADDR(0x0, 0x69AEA0); }
+	unsigned int LowerCase(unsigned int strVal, void* call_addr = LowerCase_ADDR());
+	inline void* StringValue_ADDR() { return CALL_ADDR(0x0, 0x69BFF0); }
+	int StringValue(int len, const char* str_, void* call_addr = StringValue_ADDR());
+	inline void* yy_try_NUL_trans_ADDR() { return CALL_ADDR(0x0, 0x69D520); }
+	int yy_try_NUL_trans(int yy_current_state, void* call_addr = yy_try_NUL_trans_ADDR());
+	inline void* yy_flush_buffer_ADDR() { return CALL_ADDR(0x0, 0x69D690); }
+	void yy_flush_buffer(yy_buffer_state* result, void* call_addr = yy_flush_buffer_ADDR());
+	inline void* ScriptParse_ADDR() { return CALL_ADDR(0x0, 0x69D710); }
+	void ScriptParse(scriptInstance_t a1, sval_u* parseData, void* call_addr = ScriptParse_ADDR());
 
 	FILE* yy_load_buffer_state();
 	void yy_fatal_error(const char* err);
