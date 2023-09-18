@@ -21,21 +21,6 @@ namespace re_cscr_memorytree
 	utils::hook::detour MT_Alloc_hook;
 	utils::hook::detour MT_Free_hook;
 
-	void* MT_GetSubTreeSize_original;
-	void* MT_DumpTree_original;
-	void* MT_InitBits_original;
-	void* MT_GetScore_original;
-	void* MT_AddMemoryNode_original;
-	void* MT_RemoveMemoryNode_original;
-	void* MT_RemoveHeadMemoryNode_original;
-	void* MT_Init_original;
-	void* MT_Error_original;
-	void* MT_GetSize_original;
-	void* MT_AllocIndex_original;
-	void* MT_FreeIndex_original;
-	void* MT_Alloc_original;
-	void* MT_Free_original;
-
 	namespace
 	{
 		int MT_GetSubTreeSize_stub(game::scriptInstance_t inst, int nodeNum, [[maybe_unused]] void* caller_addr)
@@ -59,7 +44,7 @@ namespace re_cscr_memorytree
 		void MT_InitBits_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_MEMORYTREE_USE_WRAPPERS
-			game::MT_InitBits(a1, MT_InitBits_original);
+			game::MT_InitBits(a1, MT_InitBits_hook.get_original());
 #else
 			codsrc::MT_InitBits(a1);
 #endif
@@ -80,7 +65,7 @@ namespace re_cscr_memorytree
 		int MT_GetScore_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr, int num)
 		{
 #ifdef RE_CSCR_MEMORYTREE_USE_WRAPPERS
-			return game::MT_GetScore(a1, num, MT_GetScore_original);
+			return game::MT_GetScore(a1, num, MT_GetScore_hook.get_original());
 #else
 			return codsrc::MT_GetScore(a1, num);
 #endif
@@ -129,7 +114,7 @@ namespace re_cscr_memorytree
 		void MT_Init_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_MEMORYTREE_USE_WRAPPERS
-			game::MT_Init(a1, MT_Init_original);
+			game::MT_Init(a1, MT_Init_hook.get_original());
 #else
 			codsrc::MT_Init(a1);
 #endif
@@ -150,7 +135,7 @@ namespace re_cscr_memorytree
 		void MT_Error_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr, const char* funcName, int numBytes)
 		{
 #ifdef RE_CSCR_MEMORYTREE_USE_WRAPPERS
-			game::MT_Error(a1, funcName, numBytes, MT_Error_original);
+			game::MT_Error(a1, funcName, numBytes, MT_Error_hook.get_original());
 #else
 			codsrc::MT_Error(a1, funcName, numBytes);
 #endif
@@ -171,7 +156,7 @@ namespace re_cscr_memorytree
 		int MT_GetSize_call(int numBytes, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_MEMORYTREE_USE_WRAPPERS
-			return game::MT_GetSize(numBytes, inst, MT_GetSize_original);
+			return game::MT_GetSize(numBytes, inst, MT_GetSize_hook.get_original());
 #else
 			return codsrc::MT_GetSize(numBytes, inst);
 #endif
@@ -193,7 +178,7 @@ namespace re_cscr_memorytree
 		unsigned __int16 MT_AllocIndex_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, int size_)
 		{
 #ifdef RE_CSCR_MEMORYTREE_USE_WRAPPERS
-			return game::MT_AllocIndex(inst, size_, MT_AllocIndex_original);
+			return game::MT_AllocIndex(inst, size_, MT_AllocIndex_hook.get_original());
 #else
 			return codsrc::MT_AllocIndex(inst, size_);
 #endif
@@ -214,7 +199,7 @@ namespace re_cscr_memorytree
 		void MT_FreeIndex_call(int numBytes, [[maybe_unused]] void* caller_addr, game::scriptInstance_t a1, int nodeNum)
 		{
 #ifdef RE_CSCR_MEMORYTREE_USE_WRAPPERS
-			game::MT_FreeIndex(numBytes, a1, nodeNum, MT_FreeIndex_original);
+			game::MT_FreeIndex(numBytes, a1, nodeNum, MT_FreeIndex_hook.get_original());
 #else
 			codsrc::MT_FreeIndex(numBytes, a1, nodeNum);
 #endif
@@ -235,7 +220,7 @@ namespace re_cscr_memorytree
 		char* MT_Alloc_call(int numBytes, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_MEMORYTREE_USE_WRAPPERS
-			return game::MT_Alloc(numBytes, inst, MT_Alloc_original);
+			return game::MT_Alloc(numBytes, inst, MT_Alloc_hook.get_original());
 #else
 			return codsrc::MT_Alloc(numBytes, inst);
 #endif
@@ -269,36 +254,25 @@ namespace re_cscr_memorytree
 	public:
 		void post_unpack() override
 		{
-			MT_GetSubTreeSize_hook.create(game::MT_GetSubTreeSize.get(), MT_GetSubTreeSize_stub);
-			MT_DumpTree_hook.create(game::MT_DumpTree.get(), MT_DumpTree_stub);
-			MT_InitBits_hook.create(game::MT_InitBits_ADDR(), MT_InitBits_stub);
-			MT_GetScore_hook.create(game::MT_GetScore_ADDR(), MT_GetScore_stub);
-			MT_AddMemoryNode_hook.create(game::MT_AddMemoryNode.get(), MT_AddMemoryNode_stub);
-			MT_RemoveMemoryNode_hook.create(game::MT_RemoveMemoryNode.get(), MT_RemoveMemoryNode_stub);
-			MT_RemoveHeadMemoryNode_hook.create(game::MT_RemoveHeadMemoryNode.get(), MT_RemoveHeadMemoryNode_stub);
-			MT_Init_hook.create(game::MT_Init_ADDR(), MT_Init_stub);
-			MT_Error_hook.create(game::MT_Error_ADDR(), MT_Error_stub);
-			MT_GetSize_hook.create(game::MT_GetSize_ADDR(), MT_GetSize_stub);
-			MT_AllocIndex_hook.create(game::MT_AllocIndex_ADDR(), MT_AllocIndex_stub);
-			MT_FreeIndex_hook.create(game::MT_FreeIndex_ADDR(), MT_FreeIndex_stub);
-			MT_Alloc_hook.create(game::MT_Alloc_ADDR(), MT_Alloc_stub);
-			MT_Free_hook.create(game::MT_Free.get(), MT_Free_stub);
+			bool quick = true;
+#ifdef RE_CSCR_MEMORYTREE_USE_WRAPPERS
+			quick = false;
+#endif
 
-			//Original hook function addresses
-			MT_GetSubTreeSize_original = MT_GetSubTreeSize_hook.get_original();
-			MT_DumpTree_original = MT_DumpTree_hook.get_original();
-			MT_InitBits_original = MT_InitBits_hook.get_original();
-			MT_GetScore_original = MT_GetScore_hook.get_original();
-			MT_AddMemoryNode_original = MT_AddMemoryNode_hook.get_original();
-			MT_RemoveMemoryNode_original = MT_RemoveMemoryNode_hook.get_original();
-			MT_RemoveHeadMemoryNode_original = MT_RemoveHeadMemoryNode_hook.get_original();
-			MT_Init_original = MT_Init_hook.get_original();
-			MT_Error_original = MT_Error_hook.get_original();
-			MT_GetSize_original = MT_GetSize_hook.get_original();
-			MT_AllocIndex_original = MT_AllocIndex_hook.get_original();
-			MT_FreeIndex_original = MT_FreeIndex_hook.get_original();
-			MT_Alloc_original = MT_Alloc_hook.get_original();
-			MT_Free_original = MT_Free_hook.get_original();
+			MT_GetSubTreeSize_hook.create(game::MT_GetSubTreeSize.get(), MT_GetSubTreeSize_stub, quick);
+			MT_DumpTree_hook.create(game::MT_DumpTree.get(), MT_DumpTree_stub, quick);
+			MT_InitBits_hook.create(game::MT_InitBits_ADDR(), MT_InitBits_stub, quick);
+			MT_GetScore_hook.create(game::MT_GetScore_ADDR(), MT_GetScore_stub, quick);
+			MT_AddMemoryNode_hook.create(game::MT_AddMemoryNode.get(), MT_AddMemoryNode_stub, quick);
+			MT_RemoveMemoryNode_hook.create(game::MT_RemoveMemoryNode.get(), MT_RemoveMemoryNode_stub, quick);
+			MT_RemoveHeadMemoryNode_hook.create(game::MT_RemoveHeadMemoryNode.get(), MT_RemoveHeadMemoryNode_stub, quick);
+			MT_Init_hook.create(game::MT_Init_ADDR(), MT_Init_stub, quick);
+			MT_Error_hook.create(game::MT_Error_ADDR(), MT_Error_stub, quick);
+			MT_GetSize_hook.create(game::MT_GetSize_ADDR(), MT_GetSize_stub, quick);
+			MT_AllocIndex_hook.create(game::MT_AllocIndex_ADDR(), MT_AllocIndex_stub, quick);
+			MT_FreeIndex_hook.create(game::MT_FreeIndex_ADDR(), MT_FreeIndex_stub, quick);
+			MT_Alloc_hook.create(game::MT_Alloc_ADDR(), MT_Alloc_stub, quick);
+			MT_Free_hook.create(game::MT_Free.get(), MT_Free_stub, quick);
 		}
 
 	private:

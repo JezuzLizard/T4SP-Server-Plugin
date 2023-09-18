@@ -20,20 +20,6 @@ namespace re_cscr_parsetree
 	utils::hook::detour prepend_node_hook;
 	utils::hook::detour append_node_hook;
 
-	void* Scr_InitAllocNode_original;
-	void* node0_original;
-	void* node1_original;
-	void* node2_original;
-	void* node3_original;
-	void* node4_original;
-	void* node5_original;
-	void* node6_original;
-	void* node7_original;
-	void* node8_original;
-	void* linked_list_end_original;
-	void* prepend_node_original;
-	void* append_node_original;
-
 	namespace
 	{
 
@@ -160,34 +146,24 @@ namespace re_cscr_parsetree
 	public:
 		void post_unpack() override
 		{
-			Scr_InitAllocNode_hook.create(game::Scr_InitAllocNode.get(), Scr_InitAllocNode_stub);
-			node0_hook.create(game::node0.get(), node0_stub);
-			node1_hook.create(game::node1.get(), node1_stub);
-			node2_hook.create(game::node2.get(), node2_stub);
-			node3_hook.create(game::node3.get(), node3_stub);
-			node4_hook.create(game::node4.get(), node4_stub);
-			node5_hook.create(game::node5.get(), node5_stub);
-			node6_hook.create(game::node6.get(), node6_stub);
-			node7_hook.create(game::node7.get(), node7_stub);
-			node8_hook.create(game::node8.get(), node8_stub);
-			linked_list_end_hook.create(game::linked_list_end.get(), linked_list_end_stub);
-			prepend_node_hook.create(game::prepend_node.get(), prepend_node_stub);
-			append_node_hook.create(game::append_node.get(), append_node_stub);
+			bool quick = true;
+#ifdef RE_CSCR_PARSETREE_USE_WRAPPERS
+			quick = false;
+#endif
 
-			//Original hook function addresses
-			Scr_InitAllocNode_original = Scr_InitAllocNode_hook.get_original();
-			node0_original = node0_hook.get_original();
-			node1_original = node1_hook.get_original();
-			node2_original = node2_hook.get_original();
-			node3_original = node3_hook.get_original();
-			node4_original = node4_hook.get_original();
-			node5_original = node5_hook.get_original();
-			node6_original = node6_hook.get_original();
-			node7_original = node7_hook.get_original();
-			node8_original = node8_hook.get_original();
-			linked_list_end_original = linked_list_end_hook.get_original();
-			prepend_node_original = prepend_node_hook.get_original();
-			append_node_original = append_node_hook.get_original();
+			Scr_InitAllocNode_hook.create(game::Scr_InitAllocNode.get(), Scr_InitAllocNode_stub, quick);
+			node0_hook.create(game::node0.get(), node0_stub, quick);
+			node1_hook.create(game::node1.get(), node1_stub, quick);
+			node2_hook.create(game::node2.get(), node2_stub, quick);
+			node3_hook.create(game::node3.get(), node3_stub, quick);
+			node4_hook.create(game::node4.get(), node4_stub, quick);
+			node5_hook.create(game::node5.get(), node5_stub, quick);
+			node6_hook.create(game::node6.get(), node6_stub, quick);
+			node7_hook.create(game::node7.get(), node7_stub, quick);
+			node8_hook.create(game::node8.get(), node8_stub, quick);
+			linked_list_end_hook.create(game::linked_list_end.get(), linked_list_end_stub, quick);
+			prepend_node_hook.create(game::prepend_node.get(), prepend_node_stub, quick);
+			append_node_hook.create(game::append_node.get(), append_node_stub, quick);
 		}
 
 	private:

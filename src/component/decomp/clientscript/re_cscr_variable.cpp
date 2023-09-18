@@ -112,112 +112,6 @@ namespace re_cscr_variable
 	utils::hook::detour Scr_FreeGameVariable_hook;
 	utils::hook::detour Scr_SLHasLowercaseString_hook;
 
-	void* ThreadInfoCompare_original;
-	void* Scr_DumpScriptThreads_original;
-	void* Scr_InitVariableRange_original;
-	void* Scr_InitClassMap_original;
-	void* GetNewVariableIndexInternal3_original;
-	void* GetNewVariableIndexInternal2_original;
-	void* GetNewVariableIndexReverseInternal2_original;
-	void* MakeVariableExternal_original;
-	void* FreeChildValue_original;
-	void* ClearObjectInternal_original;
-	void* ClearObject_original;
-	void* Scr_StopThread_original;
-	void* GetSafeParentLocalId_original;
-	void* GetStartLocalId_original;
-	void* Scr_KillThread_original;
-	void* AllocVariable_original;
-	void* FreeVariable_original;
-	void* AllocValue_original;
-	void* AllocEntity_original;
-	void* Scr_AllocArray_original;
-	void* AllocChildThread_original;
-	void* FreeValue_original;
-	void* RemoveRefToObject_original;
-	void* Scr_AllocVector_original;
-	void* RemoveRefToVector_original;
-	void* AddRefToValue_original;
-	void* RemoveRefToValueInternal_original;
-	void* FindArrayVariable_original;
-	void* FindVariable_original;
-	void* GetArrayVariableIndex_original;
-	void* Scr_GetVariableFieldIndex_original;
-	void* Scr_FindVariableField_original;
-	void* ClearVariableField_original;
-	void* GetVariable_original;
-	void* GetNewVariable_original;
-	void* GetObjectVariable_original;
-	void* GetNewObjectVariable_original;
-	void* RemoveVariable_original;
-	void* RemoveNextVariable_original;
-	void* SafeRemoveVariable_original;
-	void* CopyArray_original;
-	void* SetVariableValue_original;
-	void* SetVariableEntityFieldValue_original;
-	void* Scr_EvalVariable_original;
-	void* Scr_EvalVariableObject_original;
-	void* Scr_EvalVariableEntityField_original;
-	void* Scr_EvalVariableField_original;
-	void* Scr_EvalSizeValue_original;
-	void* GetObject_original;
-	void* GetArray_original;
-	void* Scr_EvalBoolComplement_original;
-	void* Scr_CastBool_original;
-	void* Scr_CastString_original;
-	void* Scr_CastDebugString_original;
-	void* Scr_ClearVector_original;
-	void* Scr_CastVector_original;
-	void* Scr_EvalFieldObject_original;
-	void* Scr_UnmatchingTypesError_original;
-	void* Scr_CastWeakerPair_original;
-	void* Scr_CastWeakerStringPair_original;
-	void* Scr_EvalOr_original;
-	void* Scr_EvalExOr_original;
-	void* Scr_EvalAnd_original;
-	void* Scr_EvalEquality_original;
-	void* Scr_EvalLess_original;
-	void* Scr_EvalGreaterEqual_original;
-	void* Scr_EvalGreater_original;
-	void* Scr_EvalLessEqual_original;
-	void* Scr_EvalShiftLeft_original;
-	void* Scr_EvalShiftRight_original;
-	void* Scr_EvalPlus_original;
-	void* Scr_EvalMinus_original;
-	void* Scr_EvalMultiply_original;
-	void* Scr_EvalDivide_original;
-	void* Scr_EvalMod_original;
-	void* Scr_EvalBinaryOperator_original;
-	void* Scr_FreeEntityNum_original;
-	void* Scr_FreeEntityList_original;
-	void* Scr_FreeObjects_original;
-	void* Scr_SetClassMap_original;
-	void* Scr_RemoveClassMap_original;
-	void* Scr_AddClassField_original;
-	void* Scr_GetOffset_original;
-	void* FindEntityId_original;
-	void* Scr_GetEntityId_original;
-	void* Scr_FindArrayIndex_original;
-	void* Scr_EvalArray_original;
-	void* Scr_EvalArrayRef_original;
-	void* ClearArray_original;
-	void* SetEmptyArray_original;
-	void* Scr_AddArrayKeys_original;
-	void* Scr_GetEntityIdRef_original;
-	void* CopyEntity_original;
-	void* Scr_GetEndonUsage_original;
-	void* Scr_GetObjectUsage_original;
-	void* Scr_GetThreadUsage_original;
-	void* Scr_FindField_original;
-	void* Scr_GetSourceFile_LoadObj_original;
-	void* Scr_GetSourceFile_FastFile_original;
-	void* Scr_AddFieldsForFile_original;
-	void* Scr_AddFields_LoadObj_original;
-	void* Scr_AddFields_FastFile_original;
-	void* Scr_MakeValuePrimitive_original;
-	void* Scr_FreeGameVariable_original;
-	void* Scr_SLHasLowercaseString_original;
-
 	namespace
 	{
 
@@ -242,7 +136,7 @@ namespace re_cscr_variable
 		void Scr_InitVariableRange_call(unsigned int a1, unsigned int a2, [[maybe_unused]] void* caller_addr, game::scriptInstance_t a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_InitVariableRange(a1, a2, a3, Scr_InitVariableRange_original);
+			game::Scr_InitVariableRange(a1, a2, a3, Scr_InitVariableRange_hook.get_original());
 #else
 			codsrc::Scr_InitVariableRange(a1, a2, a3);
 #endif
@@ -264,7 +158,7 @@ namespace re_cscr_variable
 		void Scr_InitClassMap_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_InitClassMap(a1, Scr_InitClassMap_original);
+			game::Scr_InitClassMap(a1, Scr_InitClassMap_hook.get_original());
 #else
 			codsrc::Scr_InitClassMap(a1);
 #endif
@@ -294,7 +188,7 @@ namespace re_cscr_variable
 		unsigned int GetNewVariableIndexInternal2_call(unsigned int name, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, unsigned int parentId, unsigned int index)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::GetNewVariableIndexInternal2(name, inst, parentId, index, GetNewVariableIndexInternal2_original);
+			return game::GetNewVariableIndexInternal2(name, inst, parentId, index, GetNewVariableIndexInternal2_hook.get_original());
 #else
 			return codsrc::GetNewVariableIndexInternal2(name, inst, parentId, index);
 #endif
@@ -315,7 +209,7 @@ namespace re_cscr_variable
 		unsigned int GetNewVariableIndexReverseInternal2_call(unsigned int name, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, unsigned int parentId, unsigned int index)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::GetNewVariableIndexReverseInternal2(name, inst, parentId, index, GetNewVariableIndexReverseInternal2_original);
+			return game::GetNewVariableIndexReverseInternal2(name, inst, parentId, index, GetNewVariableIndexReverseInternal2_hook.get_original());
 #else
 			return codsrc::GetNewVariableIndexReverseInternal2(name, inst, parentId, index);
 #endif
@@ -336,7 +230,7 @@ namespace re_cscr_variable
 		void MakeVariableExternal_call(game::VariableValueInternal * parentValue, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, unsigned int index)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::MakeVariableExternal(parentValue, inst, index, MakeVariableExternal_original);
+			game::MakeVariableExternal(parentValue, inst, index, MakeVariableExternal_hook.get_original());
 #else
 			codsrc::MakeVariableExternal(parentValue, inst, index);
 #endif
@@ -357,7 +251,7 @@ namespace re_cscr_variable
 		void FreeChildValue_call(unsigned int id, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, unsigned int parentId)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::FreeChildValue(id, inst, parentId, FreeChildValue_original);
+			game::FreeChildValue(id, inst, parentId, FreeChildValue_hook.get_original());
 #else
 			codsrc::FreeChildValue(id, inst, parentId);
 #endif
@@ -387,7 +281,7 @@ namespace re_cscr_variable
 		void ClearObject_call(unsigned int a1, [[maybe_unused]] void* caller_addr, game::scriptInstance_t a2)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::ClearObject(a1, a2, ClearObject_original);
+			game::ClearObject(a1, a2, ClearObject_hook.get_original());
 #else
 			codsrc::ClearObject(a1, a2);
 #endif
@@ -408,7 +302,7 @@ namespace re_cscr_variable
 		void Scr_StopThread_call(game::scriptInstance_t inst, unsigned int a2, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_StopThread(inst, a2, Scr_StopThread_original);
+			game::Scr_StopThread(inst, a2, Scr_StopThread_hook.get_original());
 #else
 			codsrc::Scr_StopThread(inst, a2);
 #endif
@@ -430,7 +324,7 @@ namespace re_cscr_variable
 		unsigned int GetSafeParentLocalId_call(game::scriptInstance_t a1, [[maybe_unused]] unsigned int localId, [[maybe_unused]] void* caller_addr, unsigned int a2)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::GetSafeParentLocalId(a1, a2, GetSafeParentLocalId_original);
+			return game::GetSafeParentLocalId(a1, a2, GetSafeParentLocalId_hook.get_original());
 #else
 			return codsrc::GetSafeParentLocalId(a1, a2);
 #endif
@@ -456,7 +350,7 @@ namespace re_cscr_variable
 		unsigned int GetStartLocalId_call(unsigned int result, game::scriptInstance_t a2, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::GetStartLocalId(result, a2, GetStartLocalId_original);
+			return game::GetStartLocalId(result, a2, GetStartLocalId_hook.get_original());
 #else
 			return codsrc::GetStartLocalId(result, a2);
 #endif
@@ -478,7 +372,7 @@ namespace re_cscr_variable
 		void Scr_KillThread_call(game::scriptInstance_t inst, unsigned int parentId_1, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_KillThread(inst, parentId_1, Scr_KillThread_original);
+			game::Scr_KillThread(inst, parentId_1, Scr_KillThread_hook.get_original());
 #else
 			codsrc::Scr_KillThread(inst, parentId_1);
 #endif
@@ -500,7 +394,7 @@ namespace re_cscr_variable
 		unsigned __int16 AllocVariable_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::AllocVariable(inst, AllocVariable_original);
+			return game::AllocVariable(inst, AllocVariable_hook.get_original());
 #else
 			return codsrc::AllocVariable(inst);
 #endif
@@ -521,7 +415,7 @@ namespace re_cscr_variable
 		void FreeVariable_call(unsigned int a1, game::scriptInstance_t a2, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::FreeVariable(a1, a2, FreeVariable_original);
+			game::FreeVariable(a1, a2, FreeVariable_hook.get_original());
 #else
 			codsrc::FreeVariable(a1, a2);
 #endif
@@ -543,7 +437,7 @@ namespace re_cscr_variable
 		unsigned int AllocValue_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::AllocValue(inst, AllocValue_original);
+			return game::AllocValue(inst, AllocValue_hook.get_original());
 #else
 			return codsrc::AllocValue(inst);
 #endif
@@ -564,7 +458,7 @@ namespace re_cscr_variable
 		unsigned int AllocEntity_call(game::classNum_e classnum, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, int entnum, unsigned int clientnum)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::AllocEntity(classnum, inst, entnum, clientnum, AllocEntity_original);
+			return game::AllocEntity(classnum, inst, entnum, clientnum, AllocEntity_hook.get_original());
 #else
 			return codsrc::AllocEntity(classnum, inst, entnum, clientnum);
 #endif
@@ -586,7 +480,7 @@ namespace re_cscr_variable
 		unsigned int Scr_AllocArray_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_AllocArray(a1, Scr_AllocArray_original);
+			return game::Scr_AllocArray(a1, Scr_AllocArray_hook.get_original());
 #else
 			return codsrc::Scr_AllocArray(a1);
 #endif
@@ -607,7 +501,7 @@ namespace re_cscr_variable
 		unsigned int AllocChildThread_call(game::scriptInstance_t inst, unsigned int a2, [[maybe_unused]] void* caller_addr, unsigned int a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::AllocChildThread(inst, a2, a3, AllocChildThread_original);
+			return game::AllocChildThread(inst, a2, a3, AllocChildThread_hook.get_original());
 #else
 			return codsrc::AllocChildThread(inst, a2, a3);
 #endif
@@ -629,7 +523,7 @@ namespace re_cscr_variable
 		void FreeValue_call(unsigned int id, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::FreeValue(id, inst, FreeValue_original);
+			game::FreeValue(id, inst, FreeValue_hook.get_original());
 #else
 			codsrc::FreeValue(id, inst);
 #endif
@@ -650,7 +544,7 @@ namespace re_cscr_variable
 		void RemoveRefToObject_call(unsigned int id, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::RemoveRefToObject(id, inst, RemoveRefToObject_original);
+			game::RemoveRefToObject(id, inst, RemoveRefToObject_hook.get_original());
 #else
 			codsrc::RemoveRefToObject(id, inst);
 #endif
@@ -672,7 +566,7 @@ namespace re_cscr_variable
 		float * Scr_AllocVector_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_AllocVector(a1, Scr_AllocVector_original);
+			return game::Scr_AllocVector(a1, Scr_AllocVector_hook.get_original());
 #else
 			return codsrc::Scr_AllocVector(a1);
 #endif
@@ -693,7 +587,7 @@ namespace re_cscr_variable
 		void RemoveRefToVector_call(const float* vecVal, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::RemoveRefToVector(vecVal, inst, RemoveRefToVector_original);
+			game::RemoveRefToVector(vecVal, inst, RemoveRefToVector_hook.get_original());
 #else
 			codsrc::RemoveRefToVector(vecVal, inst);
 #endif
@@ -714,7 +608,7 @@ namespace re_cscr_variable
 		void AddRefToValue_call(game::scriptInstance_t inst, game::VariableType type_, [[maybe_unused]] void* caller_addr, game::VariableUnion u)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::AddRefToValue(inst, type_, u, AddRefToValue_original);
+			game::AddRefToValue(inst, type_, u, AddRefToValue_hook.get_original());
 #else
 			codsrc::AddRefToValue(inst, type_, u);
 #endif
@@ -745,7 +639,7 @@ namespace re_cscr_variable
 		int FindArrayVariable_call(unsigned int id, unsigned int intvalue, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::FindArrayVariable(id, intvalue, inst, FindArrayVariable_original);
+			return game::FindArrayVariable(id, intvalue, inst, FindArrayVariable_hook.get_original());
 #else
 			return codsrc::FindArrayVariable(id, intvalue, inst);
 #endif
@@ -767,7 +661,7 @@ namespace re_cscr_variable
 		int FindVariable_call(int name, int a2, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::FindVariable(name, a2, inst, FindVariable_original);
+			return game::FindVariable(name, a2, inst, FindVariable_hook.get_original());
 #else
 			return codsrc::FindVariable(name, a2, inst);
 #endif
@@ -789,7 +683,7 @@ namespace re_cscr_variable
 		unsigned int GetArrayVariableIndex_call(unsigned int unsignedValue, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, unsigned int parentId)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::GetArrayVariableIndex(unsignedValue, inst, parentId, GetArrayVariableIndex_original);
+			return game::GetArrayVariableIndex(unsignedValue, inst, parentId, GetArrayVariableIndex_hook.get_original());
 #else
 			return codsrc::GetArrayVariableIndex(unsignedValue, inst, parentId);
 #endif
@@ -810,7 +704,7 @@ namespace re_cscr_variable
 		unsigned int Scr_GetVariableFieldIndex_call(game::scriptInstance_t a1, unsigned int name, [[maybe_unused]] void* caller_addr, unsigned int parentId)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_GetVariableFieldIndex(a1, name, parentId, Scr_GetVariableFieldIndex_original);
+			return game::Scr_GetVariableFieldIndex(a1, name, parentId, Scr_GetVariableFieldIndex_hook.get_original());
 #else
 			return codsrc::Scr_GetVariableFieldIndex(a1, name, parentId);
 #endif
@@ -832,7 +726,7 @@ namespace re_cscr_variable
 		game::VariableValue Scr_FindVariableField_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, unsigned int parentId, unsigned int name)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_FindVariableField(inst, parentId, name, Scr_FindVariableField_original);
+			return game::Scr_FindVariableField(inst, parentId, name, Scr_FindVariableField_hook.get_original());
 #else
 			return codsrc::Scr_FindVariableField(inst, parentId, name);
 #endif
@@ -853,7 +747,7 @@ namespace re_cscr_variable
 		void ClearVariableField_call(game::scriptInstance_t inst, unsigned int id, [[maybe_unused]] void* caller_addr, unsigned int name, game::VariableValue * value)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::ClearVariableField(inst, id, name, value, ClearVariableField_original);
+			game::ClearVariableField(inst, id, name, value, ClearVariableField_hook.get_original());
 #else
 			codsrc::ClearVariableField(inst, id, name, value);
 #endif
@@ -875,7 +769,7 @@ namespace re_cscr_variable
 		unsigned int GetVariable_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr, unsigned int parentId, unsigned int name)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::GetVariable(a1, parentId, name, GetVariable_original);
+			return game::GetVariable(a1, parentId, name, GetVariable_hook.get_original());
 #else
 			return codsrc::GetVariable(a1, parentId, name);
 #endif
@@ -896,7 +790,7 @@ namespace re_cscr_variable
 		unsigned int GetNewVariable_call(game::scriptInstance_t a1, unsigned int a2, unsigned int a3, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::GetNewVariable(a1, a2, a3, GetNewVariable_original);
+			return game::GetNewVariable(a1, a2, a3, GetNewVariable_hook.get_original());
 #else
 			return codsrc::GetNewVariable(a1, a2, a3);
 #endif
@@ -919,7 +813,7 @@ namespace re_cscr_variable
 		unsigned int GetObjectVariable_call(unsigned int a1, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, unsigned int parentId)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::GetObjectVariable(a1, inst, parentId, GetObjectVariable_original);
+			return game::GetObjectVariable(a1, inst, parentId, GetObjectVariable_hook.get_original());
 #else
 			return codsrc::GetObjectVariable(a1, inst, parentId);
 #endif
@@ -940,7 +834,7 @@ namespace re_cscr_variable
 		unsigned int GetNewObjectVariable_call(game::scriptInstance_t inst, unsigned int name, unsigned int parentId, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::GetNewObjectVariable(inst, name, parentId, GetNewObjectVariable_original);
+			return game::GetNewObjectVariable(inst, name, parentId, GetNewObjectVariable_hook.get_original());
 #else
 			return codsrc::GetNewObjectVariable(inst, name, parentId);
 #endif
@@ -963,7 +857,7 @@ namespace re_cscr_variable
 		void RemoveVariable_call(unsigned int name, unsigned int a2, game::scriptInstance_t a3, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::RemoveVariable(name, a2, a3, RemoveVariable_original);
+			game::RemoveVariable(name, a2, a3, RemoveVariable_hook.get_original());
 #else
 			codsrc::RemoveVariable(name, a2, a3);
 #endif
@@ -986,7 +880,7 @@ namespace re_cscr_variable
 		void RemoveNextVariable_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr, unsigned int parentId)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::RemoveNextVariable(a1, parentId, RemoveNextVariable_original);
+			game::RemoveNextVariable(a1, parentId, RemoveNextVariable_hook.get_original());
 #else
 			codsrc::RemoveNextVariable(a1, parentId);
 #endif
@@ -1007,7 +901,7 @@ namespace re_cscr_variable
 		void SafeRemoveVariable_call(unsigned int unsignedValue, unsigned int parentId, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::SafeRemoveVariable(unsignedValue, parentId, inst, SafeRemoveVariable_original);
+			game::SafeRemoveVariable(unsignedValue, parentId, inst, SafeRemoveVariable_hook.get_original());
 #else
 			codsrc::SafeRemoveVariable(unsignedValue, parentId, inst);
 #endif
@@ -1039,7 +933,7 @@ namespace re_cscr_variable
 		void SetVariableValue_call(game::scriptInstance_t a1, game::VariableValue * a2, [[maybe_unused]] void* caller_addr, unsigned int a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::SetVariableValue(a1, a2, a3, SetVariableValue_original);
+			game::SetVariableValue(a1, a2, a3, SetVariableValue_hook.get_original());
 #else
 			codsrc::SetVariableValue(a1, a2, a3);
 #endif
@@ -1070,7 +964,7 @@ namespace re_cscr_variable
 		game::VariableValue Scr_EvalVariable_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr, unsigned int a2)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_EvalVariable(a1, a2, Scr_EvalVariable_original);
+			return game::Scr_EvalVariable(a1, a2, Scr_EvalVariable_hook.get_original());
 #else
 			return codsrc::Scr_EvalVariable(a1, a2);
 #endif
@@ -1091,7 +985,7 @@ namespace re_cscr_variable
 		unsigned int Scr_EvalVariableObject_call(game::scriptInstance_t inst, int a2, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_EvalVariableObject(inst, a2, Scr_EvalVariableObject_original);
+			return game::Scr_EvalVariableObject(inst, a2, Scr_EvalVariableObject_hook.get_original());
 #else
 			return codsrc::Scr_EvalVariableObject(inst, a2);
 #endif
@@ -1113,7 +1007,7 @@ namespace re_cscr_variable
 		game::VariableValue Scr_EvalVariableEntityField_call(unsigned int entId, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, unsigned int name)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_EvalVariableEntityField(entId, inst, name, Scr_EvalVariableEntityField_original);
+			return game::Scr_EvalVariableEntityField(entId, inst, name, Scr_EvalVariableEntityField_hook.get_original());
 #else
 			return codsrc::Scr_EvalVariableEntityField(entId, inst, name);
 #endif
@@ -1134,7 +1028,7 @@ namespace re_cscr_variable
 		game::VariableValue Scr_EvalVariableField_call(game::scriptInstance_t inst, unsigned int id, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_EvalVariableField(inst, id, Scr_EvalVariableField_original);
+			return game::Scr_EvalVariableField(inst, id, Scr_EvalVariableField_hook.get_original());
 #else
 			return codsrc::Scr_EvalVariableField(inst, id);
 #endif
@@ -1156,7 +1050,7 @@ namespace re_cscr_variable
 		void Scr_EvalSizeValue_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr, game::VariableValue * value)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalSizeValue(a1, value, Scr_EvalSizeValue_original);
+			game::Scr_EvalSizeValue(a1, value, Scr_EvalSizeValue_hook.get_original());
 #else
 			codsrc::Scr_EvalSizeValue(a1, value);
 #endif
@@ -1177,7 +1071,7 @@ namespace re_cscr_variable
 		unsigned int GetObject_call(game::scriptInstance_t a1, unsigned int a2, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::GetObject(a1, a2, GetObject_original);
+			return game::GetObject(a1, a2, GetObject_hook.get_original());
 #else
 			return codsrc::GetObject(a1, a2);
 #endif
@@ -1199,7 +1093,7 @@ namespace re_cscr_variable
 		unsigned int GetArray_call(game::scriptInstance_t inst, unsigned int a2, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::GetArray(inst, a2, GetArray_original);
+			return game::GetArray(inst, a2, GetArray_hook.get_original());
 #else
 			return codsrc::GetArray(inst, a2);
 #endif
@@ -1221,7 +1115,7 @@ namespace re_cscr_variable
 		void Scr_EvalBoolComplement_call(game::scriptInstance_t a1, game::VariableValue * a2, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalBoolComplement(a1, a2, Scr_EvalBoolComplement_original);
+			game::Scr_EvalBoolComplement(a1, a2, Scr_EvalBoolComplement_hook.get_original());
 #else
 			codsrc::Scr_EvalBoolComplement(a1, a2);
 #endif
@@ -1243,7 +1137,7 @@ namespace re_cscr_variable
 		void Scr_CastBool_call(game::scriptInstance_t a1, game::VariableValue * a2, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_CastBool(a1, a2, Scr_CastBool_original);
+			game::Scr_CastBool(a1, a2, Scr_CastBool_hook.get_original());
 #else
 			codsrc::Scr_CastBool(a1, a2);
 #endif
@@ -1265,7 +1159,7 @@ namespace re_cscr_variable
 		char Scr_CastString_call(game::scriptInstance_t a1, game::VariableValue * a2, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_CastString(a1, a2, Scr_CastString_original);
+			return game::Scr_CastString(a1, a2, Scr_CastString_hook.get_original());
 #else
 			return codsrc::Scr_CastString(a1, a2);
 #endif
@@ -1287,7 +1181,7 @@ namespace re_cscr_variable
 		void Scr_CastDebugString_call(game::scriptInstance_t a1, game::VariableValue * a2, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_CastDebugString(a1, a2, Scr_CastDebugString_original);
+			game::Scr_CastDebugString(a1, a2, Scr_CastDebugString_hook.get_original());
 #else
 			codsrc::Scr_CastDebugString(a1, a2);
 #endif
@@ -1318,7 +1212,7 @@ namespace re_cscr_variable
 		void Scr_CastVector_call(game::scriptInstance_t a1, game::VariableValue * a2, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_CastVector(a1, a2, Scr_CastVector_original);
+			game::Scr_CastVector(a1, a2, Scr_CastVector_hook.get_original());
 #else
 			codsrc::Scr_CastVector(a1, a2);
 #endif
@@ -1340,7 +1234,7 @@ namespace re_cscr_variable
 		game::VariableUnion Scr_EvalFieldObject_call(game::VariableValue * a1, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, int a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_EvalFieldObject(a1, inst, a3, Scr_EvalFieldObject_original);
+			return game::Scr_EvalFieldObject(a1, inst, a3, Scr_EvalFieldObject_hook.get_original());
 #else
 			return codsrc::Scr_EvalFieldObject(a1, inst, a3);
 #endif
@@ -1361,7 +1255,7 @@ namespace re_cscr_variable
 		void Scr_UnmatchingTypesError_call(game::scriptInstance_t a1, game::VariableValue * a2, [[maybe_unused]] void* caller_addr, game::VariableValue * value)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_UnmatchingTypesError(a1, a2, value, Scr_UnmatchingTypesError_original);
+			game::Scr_UnmatchingTypesError(a1, a2, value, Scr_UnmatchingTypesError_hook.get_original());
 #else
 			codsrc::Scr_UnmatchingTypesError(a1, a2, value);
 #endif
@@ -1383,7 +1277,7 @@ namespace re_cscr_variable
 		void Scr_CastWeakerPair_call(game::VariableValue * a1, game::VariableValue * a2, game::scriptInstance_t a3, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_CastWeakerPair(a1, a2, a3, Scr_CastWeakerPair_original);
+			game::Scr_CastWeakerPair(a1, a2, a3, Scr_CastWeakerPair_hook.get_original());
 #else
 			codsrc::Scr_CastWeakerPair(a1, a2, a3);
 #endif
@@ -1406,7 +1300,7 @@ namespace re_cscr_variable
 		void Scr_CastWeakerStringPair_call(game::VariableValue * a1, game::VariableValue * a2, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_CastWeakerStringPair(a1, a2, inst, Scr_CastWeakerStringPair_original);
+			game::Scr_CastWeakerStringPair(a1, a2, inst, Scr_CastWeakerStringPair_hook.get_original());
 #else
 			codsrc::Scr_CastWeakerStringPair(a1, a2, inst);
 #endif
@@ -1428,7 +1322,7 @@ namespace re_cscr_variable
 		void Scr_EvalOr_call(game::VariableValue * result, game::VariableValue * a2, [[maybe_unused]] void* caller_addr, game::scriptInstance_t a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalOr(result, a2, a3, Scr_EvalOr_original);
+			game::Scr_EvalOr(result, a2, a3, Scr_EvalOr_hook.get_original());
 #else
 			codsrc::Scr_EvalOr(result, a2, a3);
 #endif
@@ -1450,7 +1344,7 @@ namespace re_cscr_variable
 		void Scr_EvalExOr_call(game::VariableValue * result, game::VariableValue * a2, [[maybe_unused]] void* caller_addr, game::scriptInstance_t a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalExOr(result, a2, a3, Scr_EvalExOr_original);
+			game::Scr_EvalExOr(result, a2, a3, Scr_EvalExOr_hook.get_original());
 #else
 			codsrc::Scr_EvalExOr(result, a2, a3);
 #endif
@@ -1472,7 +1366,7 @@ namespace re_cscr_variable
 		void Scr_EvalAnd_call(game::VariableValue * result, game::VariableValue * a2, [[maybe_unused]] void* caller_addr, game::scriptInstance_t a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalAnd(result, a2, a3, Scr_EvalAnd_original);
+			game::Scr_EvalAnd(result, a2, a3, Scr_EvalAnd_hook.get_original());
 #else
 			codsrc::Scr_EvalAnd(result, a2, a3);
 #endif
@@ -1494,7 +1388,7 @@ namespace re_cscr_variable
 		void Scr_EvalEquality_call(game::VariableValue * a1, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, game::VariableValue * a4)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalEquality(a1, inst, a4, Scr_EvalEquality_original);
+			game::Scr_EvalEquality(a1, inst, a4, Scr_EvalEquality_hook.get_original());
 #else
 			codsrc::Scr_EvalEquality(a1, inst, a4);
 #endif
@@ -1515,7 +1409,7 @@ namespace re_cscr_variable
 		void Scr_EvalLess_call(game::VariableValue * a1, game::VariableValue * a2, [[maybe_unused]] void* caller_addr, game::scriptInstance_t a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalLess(a1, a2, a3, Scr_EvalLess_original);
+			game::Scr_EvalLess(a1, a2, a3, Scr_EvalLess_hook.get_original());
 #else
 			codsrc::Scr_EvalLess(a1, a2, a3);
 #endif
@@ -1537,7 +1431,7 @@ namespace re_cscr_variable
 		void Scr_EvalGreaterEqual_call(game::scriptInstance_t a1, game::VariableValue * a2, [[maybe_unused]] void* caller_addr, game::VariableValue * a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalGreaterEqual(a1, a2, a3, Scr_EvalGreaterEqual_original);
+			game::Scr_EvalGreaterEqual(a1, a2, a3, Scr_EvalGreaterEqual_hook.get_original());
 #else
 			codsrc::Scr_EvalGreaterEqual(a1, a2, a3);
 #endif
@@ -1559,7 +1453,7 @@ namespace re_cscr_variable
 		void Scr_EvalGreater_call(game::VariableValue * a1, game::VariableValue * a2, [[maybe_unused]] void* caller_addr, game::scriptInstance_t a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalGreater(a1, a2, a3, Scr_EvalGreater_original);
+			game::Scr_EvalGreater(a1, a2, a3, Scr_EvalGreater_hook.get_original());
 #else
 			codsrc::Scr_EvalGreater(a1, a2, a3);
 #endif
@@ -1581,7 +1475,7 @@ namespace re_cscr_variable
 		void Scr_EvalLessEqual_call(game::scriptInstance_t a1, game::VariableValue * a2, [[maybe_unused]] void* caller_addr, game::VariableValue * a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalLessEqual(a1, a2, a3, Scr_EvalLessEqual_original);
+			game::Scr_EvalLessEqual(a1, a2, a3, Scr_EvalLessEqual_hook.get_original());
 #else
 			codsrc::Scr_EvalLessEqual(a1, a2, a3);
 #endif
@@ -1603,7 +1497,7 @@ namespace re_cscr_variable
 		void Scr_EvalShiftLeft_call(game::VariableValue * result, game::VariableValue * a2, [[maybe_unused]] void* caller_addr, game::scriptInstance_t a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalShiftLeft(result, a2, a3, Scr_EvalShiftLeft_original);
+			game::Scr_EvalShiftLeft(result, a2, a3, Scr_EvalShiftLeft_hook.get_original());
 #else
 			codsrc::Scr_EvalShiftLeft(result, a2, a3);
 #endif
@@ -1625,7 +1519,7 @@ namespace re_cscr_variable
 		void Scr_EvalShiftRight_call(game::VariableValue * result, game::VariableValue * a2, [[maybe_unused]] void* caller_addr, game::scriptInstance_t a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalShiftRight(result, a2, a3, Scr_EvalShiftRight_original);
+			game::Scr_EvalShiftRight(result, a2, a3, Scr_EvalShiftRight_hook.get_original());
 #else
 			codsrc::Scr_EvalShiftRight(result, a2, a3);
 #endif
@@ -1647,7 +1541,7 @@ namespace re_cscr_variable
 		void Scr_EvalPlus_call(game::scriptInstance_t a, [[maybe_unused]] void* caller_addr, game::VariableValue * a1, game::VariableValue * a2)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalPlus(a, a1, a2, Scr_EvalPlus_original);
+			game::Scr_EvalPlus(a, a1, a2, Scr_EvalPlus_hook.get_original());
 #else
 			codsrc::Scr_EvalPlus(a, a1, a2);
 #endif
@@ -1668,7 +1562,7 @@ namespace re_cscr_variable
 		void Scr_EvalMinus_call(game::VariableValue * a1, [[maybe_unused]] void* caller_addr, game::scriptInstance_t a2, game::VariableValue * a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalMinus(a1, a2, a3, Scr_EvalMinus_original);
+			game::Scr_EvalMinus(a1, a2, a3, Scr_EvalMinus_hook.get_original());
 #else
 			codsrc::Scr_EvalMinus(a1, a2, a3);
 #endif
@@ -1689,7 +1583,7 @@ namespace re_cscr_variable
 		void Scr_EvalMultiply_call(game::VariableValue * a1, [[maybe_unused]] void* caller_addr, game::scriptInstance_t a2, game::VariableValue * a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalMultiply(a1, a2, a3, Scr_EvalMultiply_original);
+			game::Scr_EvalMultiply(a1, a2, a3, Scr_EvalMultiply_hook.get_original());
 #else
 			codsrc::Scr_EvalMultiply(a1, a2, a3);
 #endif
@@ -1710,7 +1604,7 @@ namespace re_cscr_variable
 		void Scr_EvalDivide_call(game::VariableValue * a1, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, game::VariableValue * a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalDivide(a1, inst, a3, Scr_EvalDivide_original);
+			game::Scr_EvalDivide(a1, inst, a3, Scr_EvalDivide_hook.get_original());
 #else
 			codsrc::Scr_EvalDivide(a1, inst, a3);
 #endif
@@ -1731,7 +1625,7 @@ namespace re_cscr_variable
 		void Scr_EvalMod_call(game::scriptInstance_t a1, game::VariableValue * a2, [[maybe_unused]] void* caller_addr, game::VariableValue * a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalMod(a1, a2, a3, Scr_EvalMod_original);
+			game::Scr_EvalMod(a1, a2, a3, Scr_EvalMod_hook.get_original());
 #else
 			codsrc::Scr_EvalMod(a1, a2, a3);
 #endif
@@ -1753,7 +1647,7 @@ namespace re_cscr_variable
 		void Scr_EvalBinaryOperator_call(game::scriptInstance_t a1, game::VariableValue * a2, [[maybe_unused]] void* caller_addr, game::OpcodeVM a4, game::VariableValue * a5)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalBinaryOperator(a1, a2, a4, a5, Scr_EvalBinaryOperator_original);
+			game::Scr_EvalBinaryOperator(a1, a2, a4, a5, Scr_EvalBinaryOperator_hook.get_original());
 #else
 			codsrc::Scr_EvalBinaryOperator(a1, a2, a4, a5);
 #endif
@@ -1775,7 +1669,7 @@ namespace re_cscr_variable
 		void Scr_FreeEntityNum_call(game::scriptInstance_t inst, game::classNum_e classnum, [[maybe_unused]] void* caller_addr, unsigned int entnum)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_FreeEntityNum(inst, classnum, entnum, Scr_FreeEntityNum_original);
+			game::Scr_FreeEntityNum(inst, classnum, entnum, Scr_FreeEntityNum_hook.get_original());
 #else
 			codsrc::Scr_FreeEntityNum(inst, classnum, entnum);
 #endif
@@ -1815,7 +1709,7 @@ namespace re_cscr_variable
 		void Scr_SetClassMap_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr, game::classNum_e a2)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_SetClassMap(a1, a2, Scr_SetClassMap_original);
+			game::Scr_SetClassMap(a1, a2, Scr_SetClassMap_hook.get_original());
 #else
 			codsrc::Scr_SetClassMap(a1, a2);
 #endif
@@ -1836,7 +1730,7 @@ namespace re_cscr_variable
 		void Scr_RemoveClassMap_call(game::classNum_e result, game::scriptInstance_t a2, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_RemoveClassMap(result, a2, Scr_RemoveClassMap_original);
+			game::Scr_RemoveClassMap(result, a2, Scr_RemoveClassMap_hook.get_original());
 #else
 			codsrc::Scr_RemoveClassMap(result, a2);
 #endif
@@ -1858,7 +1752,7 @@ namespace re_cscr_variable
 		void Scr_AddClassField_call(game::scriptInstance_t inst, game::classNum_e a2, [[maybe_unused]] void* caller_addr, const char * name, unsigned int a4)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_AddClassField(inst, a2, name, a4, Scr_AddClassField_original);
+			game::Scr_AddClassField(inst, a2, name, a4, Scr_AddClassField_hook.get_original());
 #else
 			codsrc::Scr_AddClassField(inst, a2, name, a4);
 #endif
@@ -1880,7 +1774,7 @@ namespace re_cscr_variable
 		game::VariableUnion Scr_GetOffset_call(const char* name, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::classNum_e classNum)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_GetOffset(name, inst, classNum, Scr_GetOffset_original);
+			return game::Scr_GetOffset(name, inst, classNum, Scr_GetOffset_hook.get_original());
 #else
 			return codsrc::Scr_GetOffset(name, inst, classNum);
 #endif
@@ -1902,7 +1796,7 @@ namespace re_cscr_variable
 		unsigned int FindEntityId_call(unsigned int entClass, int entNum, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::FindEntityId(entClass, entNum, inst, FindEntityId_original);
+			return game::FindEntityId(entClass, entNum, inst, FindEntityId_hook.get_original());
 #else
 			return codsrc::FindEntityId(entClass, entNum, inst);
 #endif
@@ -1925,7 +1819,7 @@ namespace re_cscr_variable
 		unsigned int Scr_GetEntityId_call(int entNum, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, game::classNum_e classnum, int clientnum)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_GetEntityId(entNum, inst, classnum, clientnum, Scr_GetEntityId_original);
+			return game::Scr_GetEntityId(entNum, inst, classnum, clientnum, Scr_GetEntityId_hook.get_original());
 #else
 			return codsrc::Scr_GetEntityId(entNum, inst, classnum, clientnum);
 #endif
@@ -1946,7 +1840,7 @@ namespace re_cscr_variable
 		unsigned int Scr_FindArrayIndex_call(game::scriptInstance_t a1, game::VariableValue * a2, [[maybe_unused]] void* caller_addr, int a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_FindArrayIndex(a1, a2, a3, Scr_FindArrayIndex_original);
+			return game::Scr_FindArrayIndex(a1, a2, a3, Scr_FindArrayIndex_hook.get_original());
 #else
 			return codsrc::Scr_FindArrayIndex(a1, a2, a3);
 #endif
@@ -1968,7 +1862,7 @@ namespace re_cscr_variable
 		void Scr_EvalArray_call(game::scriptInstance_t a2, game::VariableValue * eax0, [[maybe_unused]] void* caller_addr, game::VariableValue * a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_EvalArray(a2, eax0, a3, Scr_EvalArray_original);
+			game::Scr_EvalArray(a2, eax0, a3, Scr_EvalArray_hook.get_original());
 #else
 			codsrc::Scr_EvalArray(a2, eax0, a3);
 #endif
@@ -1990,7 +1884,7 @@ namespace re_cscr_variable
 		unsigned int Scr_EvalArrayRef_call(game::scriptInstance_t a2, unsigned int eax0, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_EvalArrayRef(a2, eax0, Scr_EvalArrayRef_original);
+			return game::Scr_EvalArrayRef(a2, eax0, Scr_EvalArrayRef_hook.get_original());
 #else
 			return codsrc::Scr_EvalArrayRef(a2, eax0);
 #endif
@@ -2012,7 +1906,7 @@ namespace re_cscr_variable
 		void ClearArray_call(unsigned int parentId, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::VariableValue * value)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::ClearArray(parentId, inst, value, ClearArray_original);
+			game::ClearArray(parentId, inst, value, ClearArray_hook.get_original());
 #else
 			codsrc::ClearArray(parentId, inst, value);
 #endif
@@ -2034,7 +1928,7 @@ namespace re_cscr_variable
 		void SetEmptyArray_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr, unsigned int a2)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::SetEmptyArray(a1, a2, SetEmptyArray_original);
+			game::SetEmptyArray(a1, a2, SetEmptyArray_hook.get_original());
 #else
 			codsrc::SetEmptyArray(a1, a2);
 #endif
@@ -2064,7 +1958,7 @@ namespace re_cscr_variable
 		game::scr_entref_t * Scr_GetEntityIdRef_call(game::scr_entref_t * result, game::scriptInstance_t a2, [[maybe_unused]] void* caller_addr, unsigned int a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_GetEntityIdRef(result, a2, a3, Scr_GetEntityIdRef_original);
+			return game::Scr_GetEntityIdRef(result, a2, a3, Scr_GetEntityIdRef_hook.get_original());
 #else
 			return codsrc::Scr_GetEntityIdRef(result, a2, a3);
 #endif
@@ -2086,7 +1980,7 @@ namespace re_cscr_variable
 		void CopyEntity_call(unsigned int parentId, [[maybe_unused]] void* caller_addr, unsigned int newParentId)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::CopyEntity(parentId, newParentId, CopyEntity_original);
+			game::CopyEntity(parentId, newParentId, CopyEntity_hook.get_original());
 #else
 			codsrc::CopyEntity(parentId, newParentId);
 #endif
@@ -2107,7 +2001,7 @@ namespace re_cscr_variable
 		float Scr_GetEndonUsage_call(unsigned int a1, game::scriptInstance_t a2, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_GetEndonUsage(a1, a2, Scr_GetEndonUsage_original);
+			return game::Scr_GetEndonUsage(a1, a2, Scr_GetEndonUsage_hook.get_original());
 #else
 			return codsrc::Scr_GetEndonUsage(a1, a2);
 #endif
@@ -2138,7 +2032,7 @@ namespace re_cscr_variable
 		float Scr_GetThreadUsage_call(game::VariableStackBuffer * a1, game::scriptInstance_t a2, [[maybe_unused]] void* caller_addr, float * a3)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_GetThreadUsage(a1, a2, a3, Scr_GetThreadUsage_original);
+			return game::Scr_GetThreadUsage(a1, a2, a3, Scr_GetThreadUsage_hook.get_original());
 #else
 			return codsrc::Scr_GetThreadUsage(a1, a2, a3);
 #endif
@@ -2167,7 +2061,7 @@ namespace re_cscr_variable
 		int Scr_FindField_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, const char * name, int * type)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_FindField(inst, name, type, Scr_FindField_original);
+			return game::Scr_FindField(inst, name, type, Scr_FindField_hook.get_original());
 #else
 			return codsrc::Scr_FindField(inst, name, type);
 #endif
@@ -2242,7 +2136,7 @@ namespace re_cscr_variable
 		void Scr_FreeGameVariable_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr, int bComplete)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			game::Scr_FreeGameVariable(a1, bComplete, Scr_FreeGameVariable_original);
+			game::Scr_FreeGameVariable(a1, bComplete, Scr_FreeGameVariable_hook.get_original());
 #else
 			codsrc::Scr_FreeGameVariable(a1, bComplete);
 #endif
@@ -2263,7 +2157,7 @@ namespace re_cscr_variable
 		bool Scr_SLHasLowercaseString_call(unsigned int a1, const char * a2, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
-			return game::Scr_SLHasLowercaseString(a1, a2, Scr_SLHasLowercaseString_original);
+			return game::Scr_SLHasLowercaseString(a1, a2, Scr_SLHasLowercaseString_hook.get_original());
 #else
 			return codsrc::Scr_SLHasLowercaseString(a1, a2);
 #endif
@@ -2288,218 +2182,116 @@ namespace re_cscr_variable
 	public:
 		void post_unpack() override
 		{
-			ThreadInfoCompare_hook.create(game::ThreadInfoCompare.get(), ThreadInfoCompare_stub);
-			Scr_DumpScriptThreads_hook.create(game::Scr_DumpScriptThreads.get(), Scr_DumpScriptThreads_stub);
-			Scr_InitVariableRange_hook.create(game::Scr_InitVariableRange_ADDR(), Scr_InitVariableRange_stub);
-			Scr_InitClassMap_hook.create(game::Scr_InitClassMap_ADDR(), Scr_InitClassMap_stub);
-			GetNewVariableIndexInternal3_hook.create(game::GetNewVariableIndexInternal3.get(), GetNewVariableIndexInternal3_stub);
-			GetNewVariableIndexInternal2_hook.create(game::GetNewVariableIndexInternal2_ADDR(), GetNewVariableIndexInternal2_stub);
-			GetNewVariableIndexReverseInternal2_hook.create(game::GetNewVariableIndexReverseInternal2_ADDR(), GetNewVariableIndexReverseInternal2_stub);
-			MakeVariableExternal_hook.create(game::MakeVariableExternal_ADDR(), MakeVariableExternal_stub);
-			FreeChildValue_hook.create(game::FreeChildValue_ADDR(), FreeChildValue_stub);
-			ClearObjectInternal_hook.create(game::ClearObjectInternal.get(), ClearObjectInternal_stub);
-			ClearObject_hook.create(game::ClearObject_ADDR(), ClearObject_stub);
-			Scr_StopThread_hook.create(game::Scr_StopThread_ADDR(), Scr_StopThread_stub);
-			GetSafeParentLocalId_hook.create(game::GetSafeParentLocalId_ADDR(), GetSafeParentLocalId_stub);
-			GetStartLocalId_hook.create(game::GetStartLocalId_ADDR(), GetStartLocalId_stub);
-			Scr_KillThread_hook.create(game::Scr_KillThread_ADDR(), Scr_KillThread_stub);
-			AllocVariable_hook.create(game::AllocVariable_ADDR(), AllocVariable_stub);
-			FreeVariable_hook.create(game::FreeVariable_ADDR(), FreeVariable_stub);
-			AllocValue_hook.create(game::AllocValue_ADDR(), AllocValue_stub);
-			AllocEntity_hook.create(game::AllocEntity_ADDR(), AllocEntity_stub);
-			Scr_AllocArray_hook.create(game::Scr_AllocArray_ADDR(), Scr_AllocArray_stub);
-			AllocChildThread_hook.create(game::AllocChildThread_ADDR(), AllocChildThread_stub);
-			FreeValue_hook.create(game::FreeValue_ADDR(), FreeValue_stub);
-			RemoveRefToObject_hook.create(game::RemoveRefToObject_ADDR(), RemoveRefToObject_stub);
-			Scr_AllocVector_hook.create(game::Scr_AllocVector_ADDR(), Scr_AllocVector_stub);
-			RemoveRefToVector_hook.create(game::RemoveRefToVector_ADDR(), RemoveRefToVector_stub);
-			AddRefToValue_hook.create(game::AddRefToValue_ADDR(), AddRefToValue_stub);
-			RemoveRefToValueInternal_hook.create(game::RemoveRefToValueInternal.get(), RemoveRefToValueInternal_stub);
-			FindArrayVariable_hook.create(game::FindArrayVariable_ADDR(), FindArrayVariable_stub);
-			FindVariable_hook.create(game::FindVariable_ADDR(), FindVariable_stub);
-			GetArrayVariableIndex_hook.create(game::GetArrayVariableIndex_ADDR(), GetArrayVariableIndex_stub);
-			Scr_GetVariableFieldIndex_hook.create(game::Scr_GetVariableFieldIndex_ADDR(), Scr_GetVariableFieldIndex_stub);
-			Scr_FindVariableField_hook.create(game::Scr_FindVariableField_ADDR(), Scr_FindVariableField_stub);
-			ClearVariableField_hook.create(game::ClearVariableField_ADDR(), ClearVariableField_stub);
-			GetVariable_hook.create(game::GetVariable_ADDR(), GetVariable_stub);
-			GetNewVariable_hook.create(game::GetNewVariable_ADDR(), GetNewVariable_stub);
-			GetObjectVariable_hook.create(game::GetObjectVariable_ADDR(), GetObjectVariable_stub);
-			GetNewObjectVariable_hook.create(game::GetNewObjectVariable_ADDR(), GetNewObjectVariable_stub);
-			RemoveVariable_hook.create(game::RemoveVariable_ADDR(), RemoveVariable_stub);
-			RemoveNextVariable_hook.create(game::RemoveNextVariable_ADDR(), RemoveNextVariable_stub);
-			SafeRemoveVariable_hook.create(game::SafeRemoveVariable_ADDR(), SafeRemoveVariable_stub);
-			CopyArray_hook.create(game::CopyArray.get(), CopyArray_stub);
-			SetVariableValue_hook.create(game::SetVariableValue_ADDR(), SetVariableValue_stub);
-			SetVariableEntityFieldValue_hook.create(game::SetVariableEntityFieldValue.get(), SetVariableEntityFieldValue_stub);
-			Scr_EvalVariable_hook.create(game::Scr_EvalVariable_ADDR(), Scr_EvalVariable_stub);
-			Scr_EvalVariableObject_hook.create(game::Scr_EvalVariableObject_ADDR(), Scr_EvalVariableObject_stub);
-			Scr_EvalVariableEntityField_hook.create(game::Scr_EvalVariableEntityField_ADDR(), Scr_EvalVariableEntityField_stub);
-			Scr_EvalVariableField_hook.create(game::Scr_EvalVariableField_ADDR(), Scr_EvalVariableField_stub);
-			Scr_EvalSizeValue_hook.create(game::Scr_EvalSizeValue_ADDR(), Scr_EvalSizeValue_stub);
-			GetObject_hook.create(game::GetObject_ADDR(), GetObject_stub);
-			GetArray_hook.create(game::GetArray_ADDR(), GetArray_stub);
-			Scr_EvalBoolComplement_hook.create(game::Scr_EvalBoolComplement_ADDR(), Scr_EvalBoolComplement_stub);
-			Scr_CastBool_hook.create(game::Scr_CastBool_ADDR(), Scr_CastBool_stub);
-			Scr_CastString_hook.create(game::Scr_CastString_ADDR(), Scr_CastString_stub);
-			Scr_CastDebugString_hook.create(game::Scr_CastDebugString_ADDR(), Scr_CastDebugString_stub);
-			Scr_ClearVector_hook.create(game::Scr_ClearVector.get(), Scr_ClearVector_stub);
-			Scr_CastVector_hook.create(game::Scr_CastVector_ADDR(), Scr_CastVector_stub);
-			Scr_EvalFieldObject_hook.create(game::Scr_EvalFieldObject_ADDR(), Scr_EvalFieldObject_stub);
-			Scr_UnmatchingTypesError_hook.create(game::Scr_UnmatchingTypesError_ADDR(), Scr_UnmatchingTypesError_stub);
-			Scr_CastWeakerPair_hook.create(game::Scr_CastWeakerPair_ADDR(), Scr_CastWeakerPair_stub);
-			Scr_CastWeakerStringPair_hook.create(game::Scr_CastWeakerStringPair_ADDR(), Scr_CastWeakerStringPair_stub);
-			Scr_EvalOr_hook.create(game::Scr_EvalOr_ADDR(), Scr_EvalOr_stub);
-			Scr_EvalExOr_hook.create(game::Scr_EvalExOr_ADDR(), Scr_EvalExOr_stub);
-			Scr_EvalAnd_hook.create(game::Scr_EvalAnd_ADDR(), Scr_EvalAnd_stub);
-			Scr_EvalEquality_hook.create(game::Scr_EvalEquality_ADDR(), Scr_EvalEquality_stub);
-			Scr_EvalLess_hook.create(game::Scr_EvalLess_ADDR(), Scr_EvalLess_stub);
-			Scr_EvalGreaterEqual_hook.create(game::Scr_EvalGreaterEqual_ADDR(), Scr_EvalGreaterEqual_stub);
-			Scr_EvalGreater_hook.create(game::Scr_EvalGreater_ADDR(), Scr_EvalGreater_stub);
-			Scr_EvalLessEqual_hook.create(game::Scr_EvalLessEqual_ADDR(), Scr_EvalLessEqual_stub);
-			Scr_EvalShiftLeft_hook.create(game::Scr_EvalShiftLeft_ADDR(), Scr_EvalShiftLeft_stub);
-			Scr_EvalShiftRight_hook.create(game::Scr_EvalShiftRight_ADDR(), Scr_EvalShiftRight_stub);
-			Scr_EvalPlus_hook.create(game::Scr_EvalPlus_ADDR(), Scr_EvalPlus_stub);
-			Scr_EvalMinus_hook.create(game::Scr_EvalMinus_ADDR(), Scr_EvalMinus_stub);
-			Scr_EvalMultiply_hook.create(game::Scr_EvalMultiply_ADDR(), Scr_EvalMultiply_stub);
-			Scr_EvalDivide_hook.create(game::Scr_EvalDivide_ADDR(), Scr_EvalDivide_stub);
-			Scr_EvalMod_hook.create(game::Scr_EvalMod_ADDR(), Scr_EvalMod_stub);
-			Scr_EvalBinaryOperator_hook.create(game::Scr_EvalBinaryOperator_ADDR(), Scr_EvalBinaryOperator_stub);
-			Scr_FreeEntityNum_hook.create(game::Scr_FreeEntityNum_ADDR(), Scr_FreeEntityNum_stub);
-			Scr_FreeEntityList_hook.create(game::Scr_FreeEntityList.get(), Scr_FreeEntityList_stub);
-			Scr_FreeObjects_hook.create(game::Scr_FreeObjects.get(), Scr_FreeObjects_stub);
-			Scr_SetClassMap_hook.create(game::Scr_SetClassMap_ADDR(), Scr_SetClassMap_stub);
-			Scr_RemoveClassMap_hook.create(game::Scr_RemoveClassMap_ADDR(), Scr_RemoveClassMap_stub);
-			Scr_AddClassField_hook.create(game::Scr_AddClassField_ADDR(), Scr_AddClassField_stub);
-			Scr_GetOffset_hook.create(game::Scr_GetOffset_ADDR(), Scr_GetOffset_stub);
-			FindEntityId_hook.create(game::FindEntityId_ADDR(), FindEntityId_stub);
-			Scr_GetEntityId_hook.create(game::Scr_GetEntityId_ADDR(), Scr_GetEntityId_stub);
-			Scr_FindArrayIndex_hook.create(game::Scr_FindArrayIndex_ADDR(), Scr_FindArrayIndex_stub);
-			Scr_EvalArray_hook.create(game::Scr_EvalArray_ADDR(), Scr_EvalArray_stub);
-			Scr_EvalArrayRef_hook.create(game::Scr_EvalArrayRef_ADDR(), Scr_EvalArrayRef_stub);
-			ClearArray_hook.create(game::ClearArray_ADDR(), ClearArray_stub);
-			SetEmptyArray_hook.create(game::SetEmptyArray_ADDR(), SetEmptyArray_stub);
-			Scr_AddArrayKeys_hook.create(game::Scr_AddArrayKeys.get(), Scr_AddArrayKeys_stub);
-			Scr_GetEntityIdRef_hook.create(game::Scr_GetEntityIdRef_ADDR(), Scr_GetEntityIdRef_stub);
-			CopyEntity_hook.create(game::CopyEntity_ADDR(), CopyEntity_stub);
-			Scr_GetEndonUsage_hook.create(game::Scr_GetEndonUsage_ADDR(), Scr_GetEndonUsage_stub);
-			Scr_GetObjectUsage_hook.create(game::Scr_GetObjectUsage.get(), Scr_GetObjectUsage_stub);
-			Scr_GetThreadUsage_hook.create(game::Scr_GetThreadUsage_ADDR(), Scr_GetThreadUsage_stub);
-			Scr_FindField_hook.create(game::Scr_FindField_ADDR(), Scr_FindField_stub);
-			Scr_GetSourceFile_LoadObj_hook.create(game::Scr_GetSourceFile_LoadObj.get(), Scr_GetSourceFile_LoadObj_stub);
-			Scr_GetSourceFile_FastFile_hook.create(game::Scr_GetSourceFile_FastFile.get(), Scr_GetSourceFile_FastFile_stub);
-			Scr_AddFieldsForFile_hook.create(game::Scr_AddFieldsForFile.get(), Scr_AddFieldsForFile_stub);
-			Scr_AddFields_LoadObj_hook.create(game::Scr_AddFields_LoadObj.get(), Scr_AddFields_LoadObj_stub);
-			Scr_AddFields_FastFile_hook.create(game::Scr_AddFields_FastFile.get(), Scr_AddFields_FastFile_stub);
-			Scr_MakeValuePrimitive_hook.create(game::Scr_MakeValuePrimitive.get(), Scr_MakeValuePrimitive_stub);
-			Scr_FreeGameVariable_hook.create(game::Scr_FreeGameVariable_ADDR(), Scr_FreeGameVariable_stub);
-			Scr_SLHasLowercaseString_hook.create(game::Scr_SLHasLowercaseString_ADDR(), Scr_SLHasLowercaseString_stub);
+			bool quick = true;
+#ifdef RE_CSCR_VARIABLE_USE_WRAPPERS
+			quick = false;
+#endif
 
-			//Original hook function addresses
-			ThreadInfoCompare_original = ThreadInfoCompare_hook.get_original();
-			Scr_DumpScriptThreads_original = Scr_DumpScriptThreads_hook.get_original();
-			Scr_InitVariableRange_original = Scr_InitVariableRange_hook.get_original();
-			Scr_InitClassMap_original = Scr_InitClassMap_hook.get_original();
-			GetNewVariableIndexInternal3_original = GetNewVariableIndexInternal3_hook.get_original();
-			GetNewVariableIndexInternal2_original = GetNewVariableIndexInternal2_hook.get_original();
-			GetNewVariableIndexReverseInternal2_original = GetNewVariableIndexReverseInternal2_hook.get_original();
-			MakeVariableExternal_original = MakeVariableExternal_hook.get_original();
-			FreeChildValue_original = FreeChildValue_hook.get_original();
-			ClearObjectInternal_original = ClearObjectInternal_hook.get_original();
-			ClearObject_original = ClearObject_hook.get_original();
-			Scr_StopThread_original = Scr_StopThread_hook.get_original();
-			GetSafeParentLocalId_original = GetSafeParentLocalId_hook.get_original();
-			GetStartLocalId_original = GetStartLocalId_hook.get_original();
-			Scr_KillThread_original = Scr_KillThread_hook.get_original();
-			AllocVariable_original = AllocVariable_hook.get_original();
-			FreeVariable_original = FreeVariable_hook.get_original();
-			AllocValue_original = AllocValue_hook.get_original();
-			AllocEntity_original = AllocEntity_hook.get_original();
-			Scr_AllocArray_original = Scr_AllocArray_hook.get_original();
-			AllocChildThread_original = AllocChildThread_hook.get_original();
-			FreeValue_original = FreeValue_hook.get_original();
-			RemoveRefToObject_original = RemoveRefToObject_hook.get_original();
-			Scr_AllocVector_original = Scr_AllocVector_hook.get_original();
-			RemoveRefToVector_original = RemoveRefToVector_hook.get_original();
-			AddRefToValue_original = AddRefToValue_hook.get_original();
-			RemoveRefToValueInternal_original = RemoveRefToValueInternal_hook.get_original();
-			FindArrayVariable_original = FindArrayVariable_hook.get_original();
-			FindVariable_original = FindVariable_hook.get_original();
-			GetArrayVariableIndex_original = GetArrayVariableIndex_hook.get_original();
-			Scr_GetVariableFieldIndex_original = Scr_GetVariableFieldIndex_hook.get_original();
-			Scr_FindVariableField_original = Scr_FindVariableField_hook.get_original();
-			ClearVariableField_original = ClearVariableField_hook.get_original();
-			GetVariable_original = GetVariable_hook.get_original();
-			GetNewVariable_original = GetNewVariable_hook.get_original();
-			GetObjectVariable_original = GetObjectVariable_hook.get_original();
-			GetNewObjectVariable_original = GetNewObjectVariable_hook.get_original();
-			RemoveVariable_original = RemoveVariable_hook.get_original();
-			RemoveNextVariable_original = RemoveNextVariable_hook.get_original();
-			SafeRemoveVariable_original = SafeRemoveVariable_hook.get_original();
-			CopyArray_original = CopyArray_hook.get_original();
-			SetVariableValue_original = SetVariableValue_hook.get_original();
-			SetVariableEntityFieldValue_original = SetVariableEntityFieldValue_hook.get_original();
-			Scr_EvalVariable_original = Scr_EvalVariable_hook.get_original();
-			Scr_EvalVariableObject_original = Scr_EvalVariableObject_hook.get_original();
-			Scr_EvalVariableEntityField_original = Scr_EvalVariableEntityField_hook.get_original();
-			Scr_EvalVariableField_original = Scr_EvalVariableField_hook.get_original();
-			Scr_EvalSizeValue_original = Scr_EvalSizeValue_hook.get_original();
-			GetObject_original = GetObject_hook.get_original();
-			GetArray_original = GetArray_hook.get_original();
-			Scr_EvalBoolComplement_original = Scr_EvalBoolComplement_hook.get_original();
-			Scr_CastBool_original = Scr_CastBool_hook.get_original();
-			Scr_CastString_original = Scr_CastString_hook.get_original();
-			Scr_CastDebugString_original = Scr_CastDebugString_hook.get_original();
-			Scr_ClearVector_original = Scr_ClearVector_hook.get_original();
-			Scr_CastVector_original = Scr_CastVector_hook.get_original();
-			Scr_EvalFieldObject_original = Scr_EvalFieldObject_hook.get_original();
-			Scr_UnmatchingTypesError_original = Scr_UnmatchingTypesError_hook.get_original();
-			Scr_CastWeakerPair_original = Scr_CastWeakerPair_hook.get_original();
-			Scr_CastWeakerStringPair_original = Scr_CastWeakerStringPair_hook.get_original();
-			Scr_EvalOr_original = Scr_EvalOr_hook.get_original();
-			Scr_EvalExOr_original = Scr_EvalExOr_hook.get_original();
-			Scr_EvalAnd_original = Scr_EvalAnd_hook.get_original();
-			Scr_EvalEquality_original = Scr_EvalEquality_hook.get_original();
-			Scr_EvalLess_original = Scr_EvalLess_hook.get_original();
-			Scr_EvalGreaterEqual_original = Scr_EvalGreaterEqual_hook.get_original();
-			Scr_EvalGreater_original = Scr_EvalGreater_hook.get_original();
-			Scr_EvalLessEqual_original = Scr_EvalLessEqual_hook.get_original();
-			Scr_EvalShiftLeft_original = Scr_EvalShiftLeft_hook.get_original();
-			Scr_EvalShiftRight_original = Scr_EvalShiftRight_hook.get_original();
-			Scr_EvalPlus_original = Scr_EvalPlus_hook.get_original();
-			Scr_EvalMinus_original = Scr_EvalMinus_hook.get_original();
-			Scr_EvalMultiply_original = Scr_EvalMultiply_hook.get_original();
-			Scr_EvalDivide_original = Scr_EvalDivide_hook.get_original();
-			Scr_EvalMod_original = Scr_EvalMod_hook.get_original();
-			Scr_EvalBinaryOperator_original = Scr_EvalBinaryOperator_hook.get_original();
-			Scr_FreeEntityNum_original = Scr_FreeEntityNum_hook.get_original();
-			Scr_FreeEntityList_original = Scr_FreeEntityList_hook.get_original();
-			Scr_FreeObjects_original = Scr_FreeObjects_hook.get_original();
-			Scr_SetClassMap_original = Scr_SetClassMap_hook.get_original();
-			Scr_RemoveClassMap_original = Scr_RemoveClassMap_hook.get_original();
-			Scr_AddClassField_original = Scr_AddClassField_hook.get_original();
-			Scr_GetOffset_original = Scr_GetOffset_hook.get_original();
-			FindEntityId_original = FindEntityId_hook.get_original();
-			Scr_GetEntityId_original = Scr_GetEntityId_hook.get_original();
-			Scr_FindArrayIndex_original = Scr_FindArrayIndex_hook.get_original();
-			Scr_EvalArray_original = Scr_EvalArray_hook.get_original();
-			Scr_EvalArrayRef_original = Scr_EvalArrayRef_hook.get_original();
-			ClearArray_original = ClearArray_hook.get_original();
-			SetEmptyArray_original = SetEmptyArray_hook.get_original();
-			Scr_AddArrayKeys_original = Scr_AddArrayKeys_hook.get_original();
-			Scr_GetEntityIdRef_original = Scr_GetEntityIdRef_hook.get_original();
-			CopyEntity_original = CopyEntity_hook.get_original();
-			Scr_GetEndonUsage_original = Scr_GetEndonUsage_hook.get_original();
-			Scr_GetObjectUsage_original = Scr_GetObjectUsage_hook.get_original();
-			Scr_GetThreadUsage_original = Scr_GetThreadUsage_hook.get_original();
-			Scr_FindField_original = Scr_FindField_hook.get_original();
-			Scr_GetSourceFile_LoadObj_original = Scr_GetSourceFile_LoadObj_hook.get_original();
-			Scr_GetSourceFile_FastFile_original = Scr_GetSourceFile_FastFile_hook.get_original();
-			Scr_AddFieldsForFile_original = Scr_AddFieldsForFile_hook.get_original();
-			Scr_AddFields_LoadObj_original = Scr_AddFields_LoadObj_hook.get_original();
-			Scr_AddFields_FastFile_original = Scr_AddFields_FastFile_hook.get_original();
-			Scr_MakeValuePrimitive_original = Scr_MakeValuePrimitive_hook.get_original();
-			Scr_FreeGameVariable_original = Scr_FreeGameVariable_hook.get_original();
-			Scr_SLHasLowercaseString_original = Scr_SLHasLowercaseString_hook.get_original();
+			ThreadInfoCompare_hook.create(game::ThreadInfoCompare.get(), ThreadInfoCompare_stub, quick);
+			Scr_DumpScriptThreads_hook.create(game::Scr_DumpScriptThreads.get(), Scr_DumpScriptThreads_stub, quick);
+			Scr_InitVariableRange_hook.create(game::Scr_InitVariableRange_ADDR(), Scr_InitVariableRange_stub, quick);
+			Scr_InitClassMap_hook.create(game::Scr_InitClassMap_ADDR(), Scr_InitClassMap_stub, quick);
+			GetNewVariableIndexInternal3_hook.create(game::GetNewVariableIndexInternal3.get(), GetNewVariableIndexInternal3_stub, quick);
+			GetNewVariableIndexInternal2_hook.create(game::GetNewVariableIndexInternal2_ADDR(), GetNewVariableIndexInternal2_stub, quick);
+			GetNewVariableIndexReverseInternal2_hook.create(game::GetNewVariableIndexReverseInternal2_ADDR(), GetNewVariableIndexReverseInternal2_stub, quick);
+			MakeVariableExternal_hook.create(game::MakeVariableExternal_ADDR(), MakeVariableExternal_stub, quick);
+			FreeChildValue_hook.create(game::FreeChildValue_ADDR(), FreeChildValue_stub, quick);
+			ClearObjectInternal_hook.create(game::ClearObjectInternal.get(), ClearObjectInternal_stub, quick);
+			ClearObject_hook.create(game::ClearObject_ADDR(), ClearObject_stub, quick);
+			Scr_StopThread_hook.create(game::Scr_StopThread_ADDR(), Scr_StopThread_stub, quick);
+			GetSafeParentLocalId_hook.create(game::GetSafeParentLocalId_ADDR(), GetSafeParentLocalId_stub, quick);
+			GetStartLocalId_hook.create(game::GetStartLocalId_ADDR(), GetStartLocalId_stub, quick);
+			Scr_KillThread_hook.create(game::Scr_KillThread_ADDR(), Scr_KillThread_stub, quick);
+			AllocVariable_hook.create(game::AllocVariable_ADDR(), AllocVariable_stub, quick);
+			FreeVariable_hook.create(game::FreeVariable_ADDR(), FreeVariable_stub, quick);
+			AllocValue_hook.create(game::AllocValue_ADDR(), AllocValue_stub, quick);
+			AllocEntity_hook.create(game::AllocEntity_ADDR(), AllocEntity_stub, quick);
+			Scr_AllocArray_hook.create(game::Scr_AllocArray_ADDR(), Scr_AllocArray_stub, quick);
+			AllocChildThread_hook.create(game::AllocChildThread_ADDR(), AllocChildThread_stub, quick);
+			FreeValue_hook.create(game::FreeValue_ADDR(), FreeValue_stub, quick);
+			RemoveRefToObject_hook.create(game::RemoveRefToObject_ADDR(), RemoveRefToObject_stub, quick);
+			Scr_AllocVector_hook.create(game::Scr_AllocVector_ADDR(), Scr_AllocVector_stub, quick);
+			RemoveRefToVector_hook.create(game::RemoveRefToVector_ADDR(), RemoveRefToVector_stub, quick);
+			AddRefToValue_hook.create(game::AddRefToValue_ADDR(), AddRefToValue_stub, quick);
+			RemoveRefToValueInternal_hook.create(game::RemoveRefToValueInternal.get(), RemoveRefToValueInternal_stub, quick);
+			FindArrayVariable_hook.create(game::FindArrayVariable_ADDR(), FindArrayVariable_stub, quick);
+			FindVariable_hook.create(game::FindVariable_ADDR(), FindVariable_stub, quick);
+			GetArrayVariableIndex_hook.create(game::GetArrayVariableIndex_ADDR(), GetArrayVariableIndex_stub, quick);
+			Scr_GetVariableFieldIndex_hook.create(game::Scr_GetVariableFieldIndex_ADDR(), Scr_GetVariableFieldIndex_stub, quick);
+			Scr_FindVariableField_hook.create(game::Scr_FindVariableField_ADDR(), Scr_FindVariableField_stub, quick);
+			ClearVariableField_hook.create(game::ClearVariableField_ADDR(), ClearVariableField_stub, quick);
+			GetVariable_hook.create(game::GetVariable_ADDR(), GetVariable_stub, quick);
+			GetNewVariable_hook.create(game::GetNewVariable_ADDR(), GetNewVariable_stub, quick);
+			GetObjectVariable_hook.create(game::GetObjectVariable_ADDR(), GetObjectVariable_stub, quick);
+			GetNewObjectVariable_hook.create(game::GetNewObjectVariable_ADDR(), GetNewObjectVariable_stub, quick);
+			RemoveVariable_hook.create(game::RemoveVariable_ADDR(), RemoveVariable_stub, quick);
+			RemoveNextVariable_hook.create(game::RemoveNextVariable_ADDR(), RemoveNextVariable_stub, quick);
+			SafeRemoveVariable_hook.create(game::SafeRemoveVariable_ADDR(), SafeRemoveVariable_stub, quick);
+			CopyArray_hook.create(game::CopyArray.get(), CopyArray_stub, quick);
+			SetVariableValue_hook.create(game::SetVariableValue_ADDR(), SetVariableValue_stub, quick);
+			SetVariableEntityFieldValue_hook.create(game::SetVariableEntityFieldValue.get(), SetVariableEntityFieldValue_stub, quick);
+			Scr_EvalVariable_hook.create(game::Scr_EvalVariable_ADDR(), Scr_EvalVariable_stub, quick);
+			Scr_EvalVariableObject_hook.create(game::Scr_EvalVariableObject_ADDR(), Scr_EvalVariableObject_stub, quick);
+			Scr_EvalVariableEntityField_hook.create(game::Scr_EvalVariableEntityField_ADDR(), Scr_EvalVariableEntityField_stub, quick);
+			Scr_EvalVariableField_hook.create(game::Scr_EvalVariableField_ADDR(), Scr_EvalVariableField_stub, quick);
+			Scr_EvalSizeValue_hook.create(game::Scr_EvalSizeValue_ADDR(), Scr_EvalSizeValue_stub, quick);
+			GetObject_hook.create(game::GetObject_ADDR(), GetObject_stub, quick);
+			GetArray_hook.create(game::GetArray_ADDR(), GetArray_stub, quick);
+			Scr_EvalBoolComplement_hook.create(game::Scr_EvalBoolComplement_ADDR(), Scr_EvalBoolComplement_stub, quick);
+			Scr_CastBool_hook.create(game::Scr_CastBool_ADDR(), Scr_CastBool_stub, quick);
+			Scr_CastString_hook.create(game::Scr_CastString_ADDR(), Scr_CastString_stub, quick);
+			Scr_CastDebugString_hook.create(game::Scr_CastDebugString_ADDR(), Scr_CastDebugString_stub, quick);
+			Scr_ClearVector_hook.create(game::Scr_ClearVector.get(), Scr_ClearVector_stub, quick);
+			Scr_CastVector_hook.create(game::Scr_CastVector_ADDR(), Scr_CastVector_stub, quick);
+			Scr_EvalFieldObject_hook.create(game::Scr_EvalFieldObject_ADDR(), Scr_EvalFieldObject_stub, quick);
+			Scr_UnmatchingTypesError_hook.create(game::Scr_UnmatchingTypesError_ADDR(), Scr_UnmatchingTypesError_stub, quick);
+			Scr_CastWeakerPair_hook.create(game::Scr_CastWeakerPair_ADDR(), Scr_CastWeakerPair_stub, quick);
+			Scr_CastWeakerStringPair_hook.create(game::Scr_CastWeakerStringPair_ADDR(), Scr_CastWeakerStringPair_stub, quick);
+			Scr_EvalOr_hook.create(game::Scr_EvalOr_ADDR(), Scr_EvalOr_stub, quick);
+			Scr_EvalExOr_hook.create(game::Scr_EvalExOr_ADDR(), Scr_EvalExOr_stub, quick);
+			Scr_EvalAnd_hook.create(game::Scr_EvalAnd_ADDR(), Scr_EvalAnd_stub, quick);
+			Scr_EvalEquality_hook.create(game::Scr_EvalEquality_ADDR(), Scr_EvalEquality_stub, quick);
+			Scr_EvalLess_hook.create(game::Scr_EvalLess_ADDR(), Scr_EvalLess_stub, quick);
+			Scr_EvalGreaterEqual_hook.create(game::Scr_EvalGreaterEqual_ADDR(), Scr_EvalGreaterEqual_stub, quick);
+			Scr_EvalGreater_hook.create(game::Scr_EvalGreater_ADDR(), Scr_EvalGreater_stub, quick);
+			Scr_EvalLessEqual_hook.create(game::Scr_EvalLessEqual_ADDR(), Scr_EvalLessEqual_stub, quick);
+			Scr_EvalShiftLeft_hook.create(game::Scr_EvalShiftLeft_ADDR(), Scr_EvalShiftLeft_stub, quick);
+			Scr_EvalShiftRight_hook.create(game::Scr_EvalShiftRight_ADDR(), Scr_EvalShiftRight_stub, quick);
+			Scr_EvalPlus_hook.create(game::Scr_EvalPlus_ADDR(), Scr_EvalPlus_stub, quick);
+			Scr_EvalMinus_hook.create(game::Scr_EvalMinus_ADDR(), Scr_EvalMinus_stub, quick);
+			Scr_EvalMultiply_hook.create(game::Scr_EvalMultiply_ADDR(), Scr_EvalMultiply_stub, quick);
+			Scr_EvalDivide_hook.create(game::Scr_EvalDivide_ADDR(), Scr_EvalDivide_stub, quick);
+			Scr_EvalMod_hook.create(game::Scr_EvalMod_ADDR(), Scr_EvalMod_stub, quick);
+			Scr_EvalBinaryOperator_hook.create(game::Scr_EvalBinaryOperator_ADDR(), Scr_EvalBinaryOperator_stub, quick);
+			Scr_FreeEntityNum_hook.create(game::Scr_FreeEntityNum_ADDR(), Scr_FreeEntityNum_stub, quick);
+			Scr_FreeEntityList_hook.create(game::Scr_FreeEntityList.get(), Scr_FreeEntityList_stub, quick);
+			Scr_FreeObjects_hook.create(game::Scr_FreeObjects.get(), Scr_FreeObjects_stub, quick);
+			Scr_SetClassMap_hook.create(game::Scr_SetClassMap_ADDR(), Scr_SetClassMap_stub, quick);
+			Scr_RemoveClassMap_hook.create(game::Scr_RemoveClassMap_ADDR(), Scr_RemoveClassMap_stub, quick);
+			Scr_AddClassField_hook.create(game::Scr_AddClassField_ADDR(), Scr_AddClassField_stub, quick);
+			Scr_GetOffset_hook.create(game::Scr_GetOffset_ADDR(), Scr_GetOffset_stub, quick);
+			FindEntityId_hook.create(game::FindEntityId_ADDR(), FindEntityId_stub, quick);
+			Scr_GetEntityId_hook.create(game::Scr_GetEntityId_ADDR(), Scr_GetEntityId_stub, quick);
+			Scr_FindArrayIndex_hook.create(game::Scr_FindArrayIndex_ADDR(), Scr_FindArrayIndex_stub, quick);
+			Scr_EvalArray_hook.create(game::Scr_EvalArray_ADDR(), Scr_EvalArray_stub, quick);
+			Scr_EvalArrayRef_hook.create(game::Scr_EvalArrayRef_ADDR(), Scr_EvalArrayRef_stub, quick);
+			ClearArray_hook.create(game::ClearArray_ADDR(), ClearArray_stub, quick);
+			SetEmptyArray_hook.create(game::SetEmptyArray_ADDR(), SetEmptyArray_stub, quick);
+			Scr_AddArrayKeys_hook.create(game::Scr_AddArrayKeys.get(), Scr_AddArrayKeys_stub, quick);
+			Scr_GetEntityIdRef_hook.create(game::Scr_GetEntityIdRef_ADDR(), Scr_GetEntityIdRef_stub, quick);
+			CopyEntity_hook.create(game::CopyEntity_ADDR(), CopyEntity_stub, quick);
+			Scr_GetEndonUsage_hook.create(game::Scr_GetEndonUsage_ADDR(), Scr_GetEndonUsage_stub, quick);
+			Scr_GetObjectUsage_hook.create(game::Scr_GetObjectUsage.get(), Scr_GetObjectUsage_stub, quick);
+			Scr_GetThreadUsage_hook.create(game::Scr_GetThreadUsage_ADDR(), Scr_GetThreadUsage_stub, quick);
+			Scr_FindField_hook.create(game::Scr_FindField_ADDR(), Scr_FindField_stub, quick);
+			Scr_GetSourceFile_LoadObj_hook.create(game::Scr_GetSourceFile_LoadObj.get(), Scr_GetSourceFile_LoadObj_stub, quick);
+			Scr_GetSourceFile_FastFile_hook.create(game::Scr_GetSourceFile_FastFile.get(), Scr_GetSourceFile_FastFile_stub, quick);
+			Scr_AddFieldsForFile_hook.create(game::Scr_AddFieldsForFile.get(), Scr_AddFieldsForFile_stub, quick);
+			Scr_AddFields_LoadObj_hook.create(game::Scr_AddFields_LoadObj.get(), Scr_AddFields_LoadObj_stub, quick);
+			Scr_AddFields_FastFile_hook.create(game::Scr_AddFields_FastFile.get(), Scr_AddFields_FastFile_stub, quick);
+			Scr_MakeValuePrimitive_hook.create(game::Scr_MakeValuePrimitive.get(), Scr_MakeValuePrimitive_stub, quick);
+			Scr_FreeGameVariable_hook.create(game::Scr_FreeGameVariable_ADDR(), Scr_FreeGameVariable_stub, quick);
+			Scr_SLHasLowercaseString_hook.create(game::Scr_SLHasLowercaseString_ADDR(), Scr_SLHasLowercaseString_stub, quick);
 		}
 
 	private:

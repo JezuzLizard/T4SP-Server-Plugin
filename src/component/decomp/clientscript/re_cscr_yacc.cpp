@@ -18,25 +18,13 @@ namespace re_cscr_yacc
 	utils::hook::detour yy_flush_buffer_hook;
 	utils::hook::detour ScriptParse_hook;
 
-	void* LowerCase_original;
-	void* yyparse_original;
-	void* StringValue_original;
-	void* yylex_original;
-	void* yy_get_next_buffer_original;
-	void* yy_get_previous_state_original;
-	void* yy_try_NUL_trans_original;
-	void* yyrestart_original;
-	void* yy_create_buffer_original;
-	void* yy_flush_buffer_original;
-	void* ScriptParse_original;
-
 	namespace
 	{
 
 		unsigned int LowerCase_call(unsigned int strVal, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_YACC_USE_WRAPPERS
-			return game::LowerCase(strVal, LowerCase_original);
+			return game::LowerCase(strVal, LowerCase_hook.get_original());
 #else
 			return codsrc::LowerCase(strVal);
 #endif
@@ -66,7 +54,7 @@ namespace re_cscr_yacc
 		int StringValue_call(int len, const char * str_, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_YACC_USE_WRAPPERS
-			return game::StringValue(len, str_, StringValue_original);
+			return game::StringValue(len, str_, StringValue_hook.get_original());
 #else
 			return codsrc::StringValue(len, str_);
 #endif
@@ -115,7 +103,7 @@ namespace re_cscr_yacc
 		int yy_try_NUL_trans_call(int yy_current_state, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_YACC_USE_WRAPPERS
-			return game::yy_try_NUL_trans(yy_current_state, yy_try_NUL_trans_original);
+			return game::yy_try_NUL_trans(yy_current_state, yy_try_NUL_trans_hook.get_original());
 #else
 			return codsrc::yy_try_NUL_trans(yy_current_state);
 #endif
@@ -154,7 +142,7 @@ namespace re_cscr_yacc
 		void yy_flush_buffer_call(game::yy_buffer_state * result, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_YACC_USE_WRAPPERS
-			game::yy_flush_buffer(result, yy_flush_buffer_original);
+			game::yy_flush_buffer(result, yy_flush_buffer_hook.get_original());
 #else
 			codsrc::yy_flush_buffer(result);
 #endif
@@ -175,7 +163,7 @@ namespace re_cscr_yacc
 		void ScriptParse_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr, game::sval_u * parseData)
 		{
 #ifdef RE_CSCR_YACC_USE_WRAPPERS
-			game::ScriptParse(a1, parseData, ScriptParse_original);
+			game::ScriptParse(a1, parseData, ScriptParse_hook.get_original());
 #else
 			codsrc::ScriptParse(a1, parseData);
 #endif
@@ -199,30 +187,22 @@ namespace re_cscr_yacc
 	public:
 		void post_unpack() override
 		{
-			LowerCase_hook.create(game::LowerCase(), LowerCase_stub);
-			yyparse_hook.create(game::yyparse.get(), yyparse_stub);
-			StringValue_hook.create(game::StringValue(), StringValue_stub);
-			yylex_hook.create(game::yylex.get(), yylex_stub);
-			yy_get_next_buffer_hook.create(game::yy_get_next_buffer.get(), yy_get_next_buffer_stub);
-			yy_get_previous_state_hook.create(game::yy_get_previous_state.get(), yy_get_previous_state_stub);
-			yy_try_NUL_trans_hook.create(game::yy_try_NUL_trans(), yy_try_NUL_trans_stub);
-			yyrestart_hook.create(game::yyrestart.get(), yyrestart_stub);
-			yy_create_buffer_hook.create(game::yy_create_buffer.get(), yy_create_buffer_stub);
-			yy_flush_buffer_hook.create(game::yy_flush_buffer(), yy_flush_buffer_stub);
-			ScriptParse_hook.create(game::ScriptParse(), ScriptParse_stub);
+			bool quick = true;
+#ifdef RE_CSCR_YACC_USE_WRAPPERS
+			quick = false;
+#endif
 
-			//Original hook function addresses
-			LowerCase_original = LowerCase_hook.get_original();
-			yyparse_original = yyparse_hook.get_original();
-			StringValue_original = StringValue_hook.get_original();
-			yylex_original = yylex_hook.get_original();
-			yy_get_next_buffer_original = yy_get_next_buffer_hook.get_original();
-			yy_get_previous_state_original = yy_get_previous_state_hook.get_original();
-			yy_try_NUL_trans_original = yy_try_NUL_trans_hook.get_original();
-			yyrestart_original = yyrestart_hook.get_original();
-			yy_create_buffer_original = yy_create_buffer_hook.get_original();
-			yy_flush_buffer_original = yy_flush_buffer_hook.get_original();
-			ScriptParse_original = ScriptParse_hook.get_original();
+			LowerCase_hook.create(game::LowerCase(), LowerCase_stub, quick);
+			yyparse_hook.create(game::yyparse.get(), yyparse_stub, quick);
+			StringValue_hook.create(game::StringValue(), StringValue_stub, quick);
+			yylex_hook.create(game::yylex.get(), yylex_stub, quick);
+			yy_get_next_buffer_hook.create(game::yy_get_next_buffer.get(), yy_get_next_buffer_stub, quick);
+			yy_get_previous_state_hook.create(game::yy_get_previous_state.get(), yy_get_previous_state_stub, quick);
+			yy_try_NUL_trans_hook.create(game::yy_try_NUL_trans(), yy_try_NUL_trans_stub, quick);
+			yyrestart_hook.create(game::yyrestart.get(), yyrestart_stub, quick);
+			yy_create_buffer_hook.create(game::yy_create_buffer.get(), yy_create_buffer_stub, quick);
+			yy_flush_buffer_hook.create(game::yy_flush_buffer(), yy_flush_buffer_stub, quick);
+			ScriptParse_hook.create(game::ScriptParse(), ScriptParse_stub, quick);
 		}
 
 	private:

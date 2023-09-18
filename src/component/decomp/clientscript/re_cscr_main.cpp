@@ -20,26 +20,12 @@ namespace re_cscr_main
 	utils::hook::detour Scr_EndLoadAnimTrees_hook;
 	utils::hook::detour Scr_FreeScripts_hook;
 
-	void* Scr_IsIdentifier_original;
-	void* Scr_GetFunctionHandle_original;
-	void* SL_TransferToCanonicalString_original;
-	void* SL_GetCanonicalString_original;
-	void* Scr_BeginLoadScripts_original;
-	void* Scr_BeginLoadAnimTrees_original;
-	void* Scr_ScanFile_original;
-	void* Scr_LoadScriptInternal_original;
-	void* Scr_LoadScript_original;
-	void* Scr_EndLoadScripts_original;
-	void* Scr_PrecacheAnimTrees_original;
-	void* Scr_EndLoadAnimTrees_original;
-	void* Scr_FreeScripts_original;
-
 	namespace
 	{
 		bool Scr_IsIdentifier_call(char * token, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_MAIN_USE_WRAPPERS
-			return game::Scr_IsIdentifier(token, Scr_IsIdentifier_original);
+			return game::Scr_IsIdentifier(token, Scr_IsIdentifier_hook.get_original());
 #else
 			return codsrc::Scr_IsIdentifier(token);
 #endif
@@ -60,7 +46,7 @@ namespace re_cscr_main
 		unsigned int Scr_GetFunctionHandle_call(const char * file, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, const char * handle)
 		{
 #ifdef RE_CSCR_MAIN_USE_WRAPPERS
-			return game::Scr_GetFunctionHandle(file, inst, handle, Scr_GetFunctionHandle_original);
+			return game::Scr_GetFunctionHandle(file, inst, handle, Scr_GetFunctionHandle_hook.get_original());
 #else
 			return codsrc::Scr_GetFunctionHandle(file, inst, handle);
 #endif
@@ -82,7 +68,7 @@ namespace re_cscr_main
 		unsigned int SL_TransferToCanonicalString_call(game::scriptInstance_t inst, unsigned int stringValue, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_MAIN_USE_WRAPPERS
-			return game::SL_TransferToCanonicalString(inst, stringValue, SL_TransferToCanonicalString_original);
+			return game::SL_TransferToCanonicalString(inst, stringValue, SL_TransferToCanonicalString_hook.get_original());
 #else
 			return codsrc::SL_TransferToCanonicalString(inst, stringValue);
 #endif
@@ -104,7 +90,7 @@ namespace re_cscr_main
 		unsigned int SL_GetCanonicalString_call(char * token, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_MAIN_USE_WRAPPERS
-			return game::SL_GetCanonicalString(token, inst, SL_GetCanonicalString_original);
+			return game::SL_GetCanonicalString(token, inst, SL_GetCanonicalString_hook.get_original());
 #else
 			return codsrc::SL_GetCanonicalString(token, inst);
 #endif
@@ -126,7 +112,7 @@ namespace re_cscr_main
 		void Scr_BeginLoadScripts_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, int user)
 		{
 #ifdef RE_CSCR_MAIN_USE_WRAPPERS
-			game::Scr_BeginLoadScripts(inst, user, Scr_BeginLoadScripts_original);
+			game::Scr_BeginLoadScripts(inst, user, Scr_BeginLoadScripts_hook.get_original());
 #else
 			codsrc::Scr_BeginLoadScripts(inst, user);
 #endif
@@ -147,7 +133,7 @@ namespace re_cscr_main
 		void Scr_BeginLoadAnimTrees_call(game::scriptInstance_t inst, int user, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_MAIN_USE_WRAPPERS
-			game::Scr_BeginLoadAnimTrees(inst, user, Scr_BeginLoadAnimTrees_original);
+			game::Scr_BeginLoadAnimTrees(inst, user, Scr_BeginLoadAnimTrees_hook.get_original());
 #else
 			codsrc::Scr_BeginLoadAnimTrees(inst, user);
 #endif
@@ -169,7 +155,7 @@ namespace re_cscr_main
 		int Scr_ScanFile_call(int max_size, [[maybe_unused]] void* caller_addr, char * buf)
 		{
 #ifdef RE_CSCR_MAIN_USE_WRAPPERS
-			return game::Scr_ScanFile(max_size, buf, Scr_ScanFile_original);
+			return game::Scr_ScanFile(max_size, buf, Scr_ScanFile_hook.get_original());
 #else
 			return codsrc::Scr_ScanFile(max_size, buf);
 #endif
@@ -199,7 +185,7 @@ namespace re_cscr_main
 		unsigned int Scr_LoadScript_call(const char * file, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_MAIN_USE_WRAPPERS
-			return game::Scr_LoadScript(file, inst, Scr_LoadScript_original);
+			return game::Scr_LoadScript(file, inst, Scr_LoadScript_hook.get_original());
 #else
 			return codsrc::Scr_LoadScript(file, inst);
 #endif
@@ -248,7 +234,7 @@ namespace re_cscr_main
 		void Scr_FreeScripts_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_MAIN_USE_WRAPPERS
-			game::Scr_FreeScripts(inst, Scr_FreeScripts_original);
+			game::Scr_FreeScripts(inst, Scr_FreeScripts_hook.get_original());
 #else
 			codsrc::Scr_FreeScripts(inst);
 #endif
@@ -272,34 +258,24 @@ namespace re_cscr_main
 	public:
 		void post_unpack() override
 		{
-			Scr_IsIdentifier_hook.create(game::Scr_IsIdentifier_ADDR(), Scr_IsIdentifier_stub);
-			Scr_GetFunctionHandle_hook.create(game::Scr_GetFunctionHandle_ADDR(), Scr_GetFunctionHandle_stub);
-			SL_TransferToCanonicalString_hook.create(game::SL_TransferToCanonicalString_ADDR(), SL_TransferToCanonicalString_stub);
-			SL_GetCanonicalString_hook.create(game::SL_GetCanonicalString_ADDR(), SL_GetCanonicalString_stub);
-			Scr_BeginLoadScripts_hook.create(game::Scr_BeginLoadScripts_ADDR(), Scr_BeginLoadScripts_stub);
-			Scr_BeginLoadAnimTrees_hook.create(game::Scr_BeginLoadAnimTrees_ADDR(), Scr_BeginLoadAnimTrees_stub);
-			Scr_ScanFile_hook.create(game::Scr_ScanFile_ADDR(), Scr_ScanFile_stub);
-			Scr_LoadScriptInternal_hook.create(game::Scr_LoadScriptInternal.get(), Scr_LoadScriptInternal_stub);
-			Scr_LoadScript_hook.create(game::Scr_LoadScript_ADDR(), Scr_LoadScript_stub);
-			Scr_EndLoadScripts_hook.create(game::Scr_EndLoadScripts.get(), Scr_EndLoadScripts_stub);
-			Scr_PrecacheAnimTrees_hook.create(game::Scr_PrecacheAnimTrees.get(), Scr_PrecacheAnimTrees_stub);
-			Scr_EndLoadAnimTrees_hook.create(game::Scr_EndLoadAnimTrees.get(), Scr_EndLoadAnimTrees_stub);
-			Scr_FreeScripts_hook.create(game::Scr_FreeScripts_ADDR(), Scr_FreeScripts_stub);
+			bool quick = true;
+#ifdef RE_CSCR_MAIN_USE_WRAPPERS
+			quick = false;
+#endif
 
-			//Original hook function addresses
-			Scr_IsIdentifier_original = Scr_IsIdentifier_hook.get_original();
-			Scr_GetFunctionHandle_original = Scr_GetFunctionHandle_hook.get_original();
-			SL_TransferToCanonicalString_original = SL_TransferToCanonicalString_hook.get_original();
-			SL_GetCanonicalString_original = SL_GetCanonicalString_hook.get_original();
-			Scr_BeginLoadScripts_original = Scr_BeginLoadScripts_hook.get_original();
-			Scr_BeginLoadAnimTrees_original = Scr_BeginLoadAnimTrees_hook.get_original();
-			Scr_ScanFile_original = Scr_ScanFile_hook.get_original();
-			Scr_LoadScriptInternal_original = Scr_LoadScriptInternal_hook.get_original();
-			Scr_LoadScript_original = Scr_LoadScript_hook.get_original();
-			Scr_EndLoadScripts_original = Scr_EndLoadScripts_hook.get_original();
-			Scr_PrecacheAnimTrees_original = Scr_PrecacheAnimTrees_hook.get_original();
-			Scr_EndLoadAnimTrees_original = Scr_EndLoadAnimTrees_hook.get_original();
-			Scr_FreeScripts_original = Scr_FreeScripts_hook.get_original();
+			Scr_IsIdentifier_hook.create(game::Scr_IsIdentifier_ADDR(), Scr_IsIdentifier_stub, quick);
+			Scr_GetFunctionHandle_hook.create(game::Scr_GetFunctionHandle_ADDR(), Scr_GetFunctionHandle_stub, quick);
+			SL_TransferToCanonicalString_hook.create(game::SL_TransferToCanonicalString_ADDR(), SL_TransferToCanonicalString_stub, quick);
+			SL_GetCanonicalString_hook.create(game::SL_GetCanonicalString_ADDR(), SL_GetCanonicalString_stub, quick);
+			Scr_BeginLoadScripts_hook.create(game::Scr_BeginLoadScripts_ADDR(), Scr_BeginLoadScripts_stub, quick);
+			Scr_BeginLoadAnimTrees_hook.create(game::Scr_BeginLoadAnimTrees_ADDR(), Scr_BeginLoadAnimTrees_stub, quick);
+			Scr_ScanFile_hook.create(game::Scr_ScanFile_ADDR(), Scr_ScanFile_stub, quick);
+			Scr_LoadScriptInternal_hook.create(game::Scr_LoadScriptInternal.get(), Scr_LoadScriptInternal_stub, quick);
+			Scr_LoadScript_hook.create(game::Scr_LoadScript_ADDR(), Scr_LoadScript_stub, quick);
+			Scr_EndLoadScripts_hook.create(game::Scr_EndLoadScripts.get(), Scr_EndLoadScripts_stub, quick);
+			Scr_PrecacheAnimTrees_hook.create(game::Scr_PrecacheAnimTrees.get(), Scr_PrecacheAnimTrees_stub, quick);
+			Scr_EndLoadAnimTrees_hook.create(game::Scr_EndLoadAnimTrees.get(), Scr_EndLoadAnimTrees_stub, quick);
+			Scr_FreeScripts_hook.create(game::Scr_FreeScripts_ADDR(), Scr_FreeScripts_stub, quick);
 		}
 
 	private:
