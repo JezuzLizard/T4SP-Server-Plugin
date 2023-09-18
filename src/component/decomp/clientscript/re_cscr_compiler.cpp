@@ -157,6 +157,157 @@ namespace re_cscr_compiler
 	utils::hook::detour EmitInclude_hook;
 	utils::hook::detour ScriptCompile_hook;
 
+	void* RemoveRefToValue_original;
+	void* Scr_CompileRemoveRefToString_original;
+	void* EmitCanonicalString_original;
+	void* CompileTransferRefToString_original;
+	void* EmitOpcode_original;
+	void* EmitEnd_original;
+	void* EmitReturn_original;
+	void* EmitCodepos_original;
+	void* EmitShort_original;
+	void* EmitByte_original;
+	void* EmitGetInteger_original;
+	void* EmitGetFloat_original;
+	void* EmitAnimTree_original;
+	void* Scr_FindLocalVarIndex_original;
+	void* EmitCreateLocalVars_original;
+	void* EmitRemoveLocalVars_original;
+	void* EmitNOP2_original;
+	void* Scr_InitFromChildBlocks_original;
+	void* Scr_AppendChildBlocks_original;
+	void* Scr_MergeChildBlocks_original;
+	void* Scr_TransferBlock_original;
+	void* EmitSafeSetVariableField_original;
+	void* EmitSafeSetWaittillVariableField_original;
+	void* EmitGetString_original;
+	void* EmitGetIString_original;
+	void* EmitGetVector_original;
+	void* EmitValue_original;
+	void* Scr_PushValue_original;
+	void* EmitCastBool_original;
+	void* EmitBoolNot_original;
+	void* EmitBoolComplement_original;
+	void* EmitSize_original;
+	void* EmitSelf_original;
+	void* EmitLevel_original;
+	void* EmitGame_original;
+	void* EmitAnim_original;
+	void* EmitSelfObject_original;
+	void* EmitLevelObject_original;
+	void* EmitAnimObject_original;
+	void* EmitLocalVariable_original;
+	void* EmitLocalVariableRef_original;
+	void* Scr_RegisterLocalVar_original;
+	void* EmitGameRef_original;
+	void* EmitClearArray_original;
+	void* EmitEmptyArray_original;
+	void* EmitAnimation_original;
+	void* EmitFieldVariable_original;
+	void* EmitClearFieldVariable_original;
+	void* EmitObject_original;
+	void* EmitDecTop_original;
+	void* EmitCastFieldObject_original;
+	void* EmitArrayVariable_original;
+	void* EmitArrayVariableRef_original;
+	void* EmitClearArrayVariable_original;
+	void* EmitVariableExpression_original;
+	void* EmitExpressionList_original;
+	void* AddExpressionListOpcodePos_original;
+	void* AddFilePrecache_original;
+	void* EmitFunction_original;
+	void* EmitGetFunction_original;
+	void* AddFunction_original;
+	void* EmitPostScriptFunction_original;
+	void* EmitPostScriptFunctionPointer_original;
+	void* EmitPostScriptThread_original;
+	void* EmitPostScriptThreadPointer_original;
+	void* EmitPostScriptFunctionCall_original;
+	void* EmitPostScriptThreadCall_original;
+	void* EmitPreFunctionCall_original;
+	void* EmitPostFunctionCall_original;
+	void* Scr_BeginDevScript_original;
+	void* Scr_EndDevScript_original;
+	void* EmitCallBuiltinOpcode_original;
+	void* EmitCallBuiltinMethodOpcode_original;
+	void* EmitCall_original;
+	void* EmitMethod_original;
+	void* LinkThread_original;
+	void* LinkFile_original;
+	void* CheckThreadPosition_original;
+	void* EmitCallExpression_original;
+	void* EmitCallExpressionFieldObject_original;
+	void* Scr_CreateVector_original;
+	void* EvalPrimitiveExpressionList_original;
+	void* EmitOrEvalPrimitiveExpressionList_original;
+	void* EmitExpressionListFieldObject_original;
+	void* EvalPrimitiveExpression_original;
+	void* EmitOrEvalPrimitiveExpression_original;
+	void* EmitBoolOrExpression_original;
+	void* EmitBoolAndExpression_original;
+	void* EvalBinaryOperatorExpression_original;
+	void* EmitOrEvalBinaryOperatorExpression_original;
+	void* EmitBinaryEqualsOperatorExpression_original;
+	void* Scr_CalcLocalVarsVariableExpressionRef_original;
+	void* EvalExpression_original;
+	void* EmitOrEvalExpression_original;
+	void* EmitExpression_original;
+	void* EmitVariableExpressionRef_original;
+	void* EmitArrayPrimitiveExpressionRef_original;
+	void* Scr_CalcLocalVarsArrayVariableRef_original;
+	void* EmitPrimitiveExpressionFieldObject_original;
+	void* ConnectBreakStatements_original;
+	void* ConnectContinueStatements_original;
+	void* EmitClearVariableExpression_original;
+	void* EmitAssignmentStatement_original;
+	void* EmitCallExpressionStatement_original;
+	void* EmitReturnStatement_original;
+	void* EmitWaitStatement_original;
+	void* EmitWaittillFrameEnd_original;
+	void* EmitIfStatement_original;
+	void* Scr_CalcLocalVarsIfStatement_original;
+	void* EmitIfElseStatement_original;
+	void* Scr_CalcLocalVarsIfElseStatement_original;
+	void* Scr_AddBreakBlock_original;
+	void* Scr_AddContinueBlock_original;
+	void* EmitWhileStatement_original;
+	void* Scr_CalcLocalVarsWhileStatement_original;
+	void* EmitForStatement_original;
+	void* Scr_CalcLocalVarsForStatement_original;
+	void* EmitIncStatement_original;
+	void* EmitDecStatement_original;
+	void* Scr_CalcLocalVarsFormalParameterListInternal_original;
+	void* EmitWaittillStatement_original;
+	void* EmitWaittillmatchStatement_original;
+	void* EmitNotifyStatement_original;
+	void* EmitEndOnStatement_original;
+	void* CompareCaseInfo_original;
+	void* EmitCaseStatement_original;
+	void* EmitSwitchStatementList_original;
+	void* Scr_CalcLocalVarsSwitchStatement_original;
+	void* EmitSwitchStatement_original;
+	void* EmitCaseStatementInfo_original;
+	void* EmitBreakStatement_original;
+	void* EmitContinueStatement_original;
+	void* EmitProfStatement_original;
+	void* EmitStatement_original;
+	void* Scr_CalcLocalVarsStatement_original;
+	void* EmitStatementList_original;
+	void* Scr_CalcLocalVarsStatementList_original;
+	void* Scr_CalcLocalVarsDeveloperStatementList_original;
+	void* EmitDeveloperStatementList_original;
+	void* EmitFormalParameterList_original;
+	void* SpecifyThread_original;
+	void* EmitThreadInternal_original;
+	void* Scr_CalcLocalVarsThread_original;
+	void* InitThread_original;
+	void* EmitNormalThread_original;
+	void* EmitDeveloperThread_original;
+	void* EmitThread_original;
+	void* EmitThreadList_original;
+	void* EmitInclude_original;
+	void* ScriptCompile_original;
+
 	namespace
 	{
 
@@ -172,7 +323,7 @@ namespace re_cscr_compiler
 		void Scr_CompileRemoveRefToString_call(game::scriptInstance_t inst, unsigned int stringVal, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::Scr_CompileRemoveRefToString(inst, stringVal, Scr_CompileRemoveRefToString_hook.get_original());
+			game::Scr_CompileRemoveRefToString(inst, stringVal, Scr_CompileRemoveRefToString_original);
 #else
 			codsrc::Scr_CompileRemoveRefToString(inst, stringVal);
 #endif
@@ -194,7 +345,7 @@ namespace re_cscr_compiler
 		void EmitCanonicalString_call(game::scriptInstance_t inst, unsigned int stringVal, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitCanonicalString(inst, stringVal, EmitCanonicalString_hook.get_original());
+			game::EmitCanonicalString(inst, stringVal, EmitCanonicalString_original);
 #else
 			codsrc::EmitCanonicalString(inst, stringVal);
 #endif
@@ -216,7 +367,7 @@ namespace re_cscr_compiler
 		void CompileTransferRefToString_call(unsigned int stringValue, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, unsigned int user)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::CompileTransferRefToString(stringValue, inst, user, CompileTransferRefToString_hook.get_original());
+			game::CompileTransferRefToString(stringValue, inst, user, CompileTransferRefToString_original);
 #else
 			codsrc::CompileTransferRefToString(stringValue, inst, user);
 #endif
@@ -247,7 +398,7 @@ namespace re_cscr_compiler
 		void EmitEnd_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitEnd(inst, EmitEnd_hook.get_original());
+			game::EmitEnd(inst, EmitEnd_original);
 #else
 			codsrc::EmitEnd(inst);
 #endif
@@ -268,7 +419,7 @@ namespace re_cscr_compiler
 		void EmitReturn_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitReturn(inst, EmitReturn_hook.get_original());
+			game::EmitReturn(inst, EmitReturn_original);
 #else
 			codsrc::EmitReturn(inst);
 #endif
@@ -289,7 +440,7 @@ namespace re_cscr_compiler
 		void EmitCodepos_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, int codepos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitCodepos(inst, codepos, EmitCodepos_hook.get_original());
+			game::EmitCodepos(inst, codepos, EmitCodepos_original);
 #else
 			codsrc::EmitCodepos(inst, codepos);
 #endif
@@ -310,7 +461,7 @@ namespace re_cscr_compiler
 		void EmitShort_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, int value)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitShort(inst, value, EmitShort_hook.get_original());
+			game::EmitShort(inst, value, EmitShort_original);
 #else
 			codsrc::EmitShort(inst, value);
 #endif
@@ -331,7 +482,7 @@ namespace re_cscr_compiler
 		void EmitByte_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, int value)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitByte(inst, value, EmitByte_hook.get_original());
+			game::EmitByte(inst, value, EmitByte_original);
 #else
 			codsrc::EmitByte(inst, value);
 #endif
@@ -352,7 +503,7 @@ namespace re_cscr_compiler
 		void EmitGetInteger_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, int value, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitGetInteger(inst, value, sourcePos, EmitGetInteger_hook.get_original());
+			game::EmitGetInteger(inst, value, sourcePos, EmitGetInteger_original);
 #else
 			codsrc::EmitGetInteger(inst, value, sourcePos);
 #endif
@@ -373,7 +524,7 @@ namespace re_cscr_compiler
 		void EmitGetFloat_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, float value, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitGetFloat(inst, value, sourcePos, EmitGetFloat_hook.get_original());
+			game::EmitGetFloat(inst, value, sourcePos, EmitGetFloat_original);
 #else
 			codsrc::EmitGetFloat(inst, value, sourcePos);
 #endif
@@ -394,7 +545,7 @@ namespace re_cscr_compiler
 		void EmitAnimTree_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitAnimTree(inst, sourcePos, EmitAnimTree_hook.get_original());
+			game::EmitAnimTree(inst, sourcePos, EmitAnimTree_original);
 #else
 			codsrc::EmitAnimTree(inst, sourcePos);
 #endif
@@ -433,7 +584,7 @@ namespace re_cscr_compiler
 		void EmitRemoveLocalVars_call(game::scriptInstance_t inst, game::scr_block_s* outerBlock, [[maybe_unused]] void* caller_addr, game::scr_block_s* block)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitRemoveLocalVars(inst, outerBlock, block, EmitRemoveLocalVars_hook.get_original());
+			game::EmitRemoveLocalVars(inst, outerBlock, block, EmitRemoveLocalVars_original);
 #else
 			codsrc::EmitRemoveLocalVars(inst, outerBlock, block);
 #endif
@@ -455,7 +606,7 @@ namespace re_cscr_compiler
 		void EmitNOP2_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, int lastStatement, unsigned int endSourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitNOP2(block, inst, lastStatement, endSourcePos, EmitNOP2_hook.get_original());
+			game::EmitNOP2(block, inst, lastStatement, endSourcePos, EmitNOP2_original);
 #else
 			codsrc::EmitNOP2(block, inst, lastStatement, endSourcePos);
 #endif
@@ -486,7 +637,7 @@ namespace re_cscr_compiler
 		void Scr_AppendChildBlocks_call(game::scr_block_s* block, [[maybe_unused]] void* caller_addr, game::scr_block_s** childBlocks, int childCount)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::Scr_AppendChildBlocks(block, childBlocks, childCount, Scr_AppendChildBlocks_hook.get_original());
+			game::Scr_AppendChildBlocks(block, childBlocks, childCount, Scr_AppendChildBlocks_original);
 #else
 			codsrc::Scr_AppendChildBlocks(block, childBlocks, childCount);
 #endif
@@ -516,7 +667,7 @@ namespace re_cscr_compiler
 		void Scr_TransferBlock_call(game::scr_block_s* to, [[maybe_unused]] void* caller_addr, game::scr_block_s* from)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::Scr_TransferBlock(to, from, Scr_TransferBlock_hook.get_original());
+			game::Scr_TransferBlock(to, from, Scr_TransferBlock_original);
 #else
 			codsrc::Scr_TransferBlock(to, from);
 #endif
@@ -537,7 +688,7 @@ namespace re_cscr_compiler
 		void EmitSafeSetVariableField_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitSafeSetVariableField(block, inst, expr, sourcePos, EmitSafeSetVariableField_hook.get_original());
+			game::EmitSafeSetVariableField(block, inst, expr, sourcePos, EmitSafeSetVariableField_original);
 #else
 			codsrc::EmitSafeSetVariableField(block, inst, expr, sourcePos);
 #endif
@@ -559,7 +710,7 @@ namespace re_cscr_compiler
 		void EmitSafeSetWaittillVariableField_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitSafeSetWaittillVariableField(block, inst, expr, sourcePos, EmitSafeSetWaittillVariableField_hook.get_original());
+			game::EmitSafeSetWaittillVariableField(block, inst, expr, sourcePos, EmitSafeSetWaittillVariableField_original);
 #else
 			codsrc::EmitSafeSetWaittillVariableField(block, inst, expr, sourcePos);
 #endif
@@ -581,7 +732,7 @@ namespace re_cscr_compiler
 		void EmitGetString_call(unsigned int value, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitGetString(value, inst, sourcePos, EmitGetString_hook.get_original());
+			game::EmitGetString(value, inst, sourcePos, EmitGetString_original);
 #else
 			codsrc::EmitGetString(value, inst, sourcePos);
 #endif
@@ -603,7 +754,7 @@ namespace re_cscr_compiler
 		void EmitGetIString_call(unsigned int value, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitGetIString(value, inst, sourcePos, EmitGetIString_hook.get_original());
+			game::EmitGetIString(value, inst, sourcePos, EmitGetIString_original);
 #else
 			codsrc::EmitGetIString(value, inst, sourcePos);
 #endif
@@ -625,7 +776,7 @@ namespace re_cscr_compiler
 		void EmitGetVector_call(const float* value, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitGetVector(value, inst, sourcePos, EmitGetVector_hook.get_original());
+			game::EmitGetVector(value, inst, sourcePos, EmitGetVector_original);
 #else
 			codsrc::EmitGetVector(value, inst, sourcePos);
 #endif
@@ -655,7 +806,7 @@ namespace re_cscr_compiler
 		void Scr_PushValue_call(game::scriptInstance_t inst, game::VariableCompileValue* constValue, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::Scr_PushValue(inst, constValue, Scr_PushValue_hook.get_original());
+			game::Scr_PushValue(inst, constValue, Scr_PushValue_original);
 #else
 			codsrc::Scr_PushValue(inst, constValue);
 #endif
@@ -677,7 +828,7 @@ namespace re_cscr_compiler
 		void EmitCastBool_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitCastBool(inst, sourcePos, EmitCastBool_hook.get_original());
+			game::EmitCastBool(inst, sourcePos, EmitCastBool_original);
 #else
 			codsrc::EmitCastBool(inst, sourcePos);
 #endif
@@ -698,7 +849,7 @@ namespace re_cscr_compiler
 		void EmitBoolNot_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitBoolNot(inst, sourcePos, EmitBoolNot_hook.get_original());
+			game::EmitBoolNot(inst, sourcePos, EmitBoolNot_original);
 #else
 			codsrc::EmitBoolNot(inst, sourcePos);
 #endif
@@ -719,7 +870,7 @@ namespace re_cscr_compiler
 		void EmitBoolComplement_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitBoolComplement(inst, sourcePos, EmitBoolComplement_hook.get_original());
+			game::EmitBoolComplement(inst, sourcePos, EmitBoolComplement_original);
 #else
 			codsrc::EmitBoolComplement(inst, sourcePos);
 #endif
@@ -740,7 +891,7 @@ namespace re_cscr_compiler
 		void EmitSize_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitSize(block, inst, expr, sourcePos, EmitSize_hook.get_original());
+			game::EmitSize(block, inst, expr, sourcePos, EmitSize_original);
 #else
 			codsrc::EmitSize(block, inst, expr, sourcePos);
 #endif
@@ -762,7 +913,7 @@ namespace re_cscr_compiler
 		void EmitSelf_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitSelf(inst, sourcePos, EmitSelf_hook.get_original());
+			game::EmitSelf(inst, sourcePos, EmitSelf_original);
 #else
 			codsrc::EmitSelf(inst, sourcePos);
 #endif
@@ -783,7 +934,7 @@ namespace re_cscr_compiler
 		void EmitLevel_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitLevel(inst, sourcePos, EmitLevel_hook.get_original());
+			game::EmitLevel(inst, sourcePos, EmitLevel_original);
 #else
 			codsrc::EmitLevel(inst, sourcePos);
 #endif
@@ -804,7 +955,7 @@ namespace re_cscr_compiler
 		void EmitGame_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitGame(inst, sourcePos, EmitGame_hook.get_original());
+			game::EmitGame(inst, sourcePos, EmitGame_original);
 #else
 			codsrc::EmitGame(inst, sourcePos);
 #endif
@@ -825,7 +976,7 @@ namespace re_cscr_compiler
 		void EmitAnim_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitAnim(inst, sourcePos, EmitAnim_hook.get_original());
+			game::EmitAnim(inst, sourcePos, EmitAnim_original);
 #else
 			codsrc::EmitAnim(inst, sourcePos);
 #endif
@@ -846,7 +997,7 @@ namespace re_cscr_compiler
 		void EmitSelfObject_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitSelfObject(inst, sourcePos, EmitSelfObject_hook.get_original());
+			game::EmitSelfObject(inst, sourcePos, EmitSelfObject_original);
 #else
 			codsrc::EmitSelfObject(inst, sourcePos);
 #endif
@@ -867,7 +1018,7 @@ namespace re_cscr_compiler
 		void EmitLevelObject_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitLevelObject(inst, sourcePos, EmitLevelObject_hook.get_original());
+			game::EmitLevelObject(inst, sourcePos, EmitLevelObject_original);
 #else
 			codsrc::EmitLevelObject(inst, sourcePos);
 #endif
@@ -888,7 +1039,7 @@ namespace re_cscr_compiler
 		void EmitAnimObject_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitAnimObject(inst, sourcePos, EmitAnimObject_hook.get_original());
+			game::EmitAnimObject(inst, sourcePos, EmitAnimObject_original);
 #else
 			codsrc::EmitAnimObject(inst, sourcePos);
 #endif
@@ -909,7 +1060,7 @@ namespace re_cscr_compiler
 		void EmitLocalVariable_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitLocalVariable(block, inst, expr, sourcePos, EmitLocalVariable_hook.get_original());
+			game::EmitLocalVariable(block, inst, expr, sourcePos, EmitLocalVariable_original);
 #else
 			codsrc::EmitLocalVariable(block, inst, expr, sourcePos);
 #endif
@@ -931,7 +1082,7 @@ namespace re_cscr_compiler
 		void EmitLocalVariableRef_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitLocalVariableRef(block, inst, expr, sourcePos, EmitLocalVariableRef_hook.get_original());
+			game::EmitLocalVariableRef(block, inst, expr, sourcePos, EmitLocalVariableRef_original);
 #else
 			codsrc::EmitLocalVariableRef(block, inst, expr, sourcePos);
 #endif
@@ -962,7 +1113,7 @@ namespace re_cscr_compiler
 		void EmitGameRef_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitGameRef(inst, sourcePos, EmitGameRef_hook.get_original());
+			game::EmitGameRef(inst, sourcePos, EmitGameRef_original);
 #else
 			codsrc::EmitGameRef(inst, sourcePos);
 #endif
@@ -983,7 +1134,7 @@ namespace re_cscr_compiler
 		void EmitClearArray_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u sourcePos, game::sval_u indexSourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitClearArray(inst, sourcePos, indexSourcePos, EmitClearArray_hook.get_original());
+			game::EmitClearArray(inst, sourcePos, indexSourcePos, EmitClearArray_original);
 #else
 			codsrc::EmitClearArray(inst, sourcePos, indexSourcePos);
 #endif
@@ -1004,7 +1155,7 @@ namespace re_cscr_compiler
 		void EmitEmptyArray_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitEmptyArray(inst, sourcePos, EmitEmptyArray_hook.get_original());
+			game::EmitEmptyArray(inst, sourcePos, EmitEmptyArray_original);
 #else
 			codsrc::EmitEmptyArray(inst, sourcePos);
 #endif
@@ -1025,7 +1176,7 @@ namespace re_cscr_compiler
 		void EmitAnimation_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u anim, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitAnimation(inst, anim, sourcePos, EmitAnimation_hook.get_original());
+			game::EmitAnimation(inst, anim, sourcePos, EmitAnimation_original);
 #else
 			codsrc::EmitAnimation(inst, anim, sourcePos);
 #endif
@@ -1046,7 +1197,7 @@ namespace re_cscr_compiler
 		void EmitFieldVariable_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u field, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitFieldVariable(block, inst, expr, field, sourcePos, EmitFieldVariable_hook.get_original());
+			game::EmitFieldVariable(block, inst, expr, field, sourcePos, EmitFieldVariable_original);
 #else
 			codsrc::EmitFieldVariable(block, inst, expr, field, sourcePos);
 #endif
@@ -1068,7 +1219,7 @@ namespace re_cscr_compiler
 		void EmitClearFieldVariable_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u field, game::sval_u sourcePos, game::sval_u rhsSourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitClearFieldVariable(block, inst, expr, field, sourcePos, rhsSourcePos, EmitClearFieldVariable_hook.get_original());
+			game::EmitClearFieldVariable(block, inst, expr, field, sourcePos, rhsSourcePos, EmitClearFieldVariable_original);
 #else
 			codsrc::EmitClearFieldVariable(block, inst, expr, field, sourcePos, rhsSourcePos);
 #endif
@@ -1090,7 +1241,7 @@ namespace re_cscr_compiler
 		void EmitObject_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitObject(inst, expr, sourcePos, EmitObject_hook.get_original());
+			game::EmitObject(inst, expr, sourcePos, EmitObject_original);
 #else
 			codsrc::EmitObject(inst, expr, sourcePos);
 #endif
@@ -1111,7 +1262,7 @@ namespace re_cscr_compiler
 		void EmitDecTop_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitDecTop(inst, EmitDecTop_hook.get_original());
+			game::EmitDecTop(inst, EmitDecTop_original);
 #else
 			codsrc::EmitDecTop(inst);
 #endif
@@ -1141,7 +1292,7 @@ namespace re_cscr_compiler
 		void EmitArrayVariable_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u index, game::sval_u sourcePos, game::sval_u indexSourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitArrayVariable(block, inst, expr, index, sourcePos, indexSourcePos, EmitArrayVariable_hook.get_original());
+			game::EmitArrayVariable(block, inst, expr, index, sourcePos, indexSourcePos, EmitArrayVariable_original);
 #else
 			codsrc::EmitArrayVariable(block, inst, expr, index, sourcePos, indexSourcePos);
 #endif
@@ -1163,7 +1314,7 @@ namespace re_cscr_compiler
 		void EmitArrayVariableRef_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u index, game::sval_u sourcePos, game::sval_u indexSourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitArrayVariableRef(block, inst, expr, index, sourcePos, indexSourcePos, EmitArrayVariableRef_hook.get_original());
+			game::EmitArrayVariableRef(block, inst, expr, index, sourcePos, indexSourcePos, EmitArrayVariableRef_original);
 #else
 			codsrc::EmitArrayVariableRef(block, inst, expr, index, sourcePos, indexSourcePos);
 #endif
@@ -1185,7 +1336,7 @@ namespace re_cscr_compiler
 		void EmitClearArrayVariable_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u index, game::sval_u sourcePos, game::sval_u indexSourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitClearArrayVariable(block, inst, expr, index, sourcePos, indexSourcePos, EmitClearArrayVariable_hook.get_original());
+			game::EmitClearArrayVariable(block, inst, expr, index, sourcePos, indexSourcePos, EmitClearArrayVariable_original);
 #else
 			codsrc::EmitClearArrayVariable(block, inst, expr, index, sourcePos, indexSourcePos);
 #endif
@@ -1225,7 +1376,7 @@ namespace re_cscr_compiler
 		void AddExpressionListOpcodePos_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u exprlist)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::AddExpressionListOpcodePos(inst, exprlist, AddExpressionListOpcodePos_hook.get_original());
+			game::AddExpressionListOpcodePos(inst, exprlist, AddExpressionListOpcodePos_original);
 #else
 			codsrc::AddExpressionListOpcodePos(inst, exprlist);
 #endif
@@ -1246,7 +1397,7 @@ namespace re_cscr_compiler
 		void AddFilePrecache_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, unsigned int filename, unsigned int sourcePos, int include, unsigned int* filePosId, unsigned int* fileCountId)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::AddFilePrecache(inst, filename, sourcePos, include, filePosId, fileCountId, AddFilePrecache_hook.get_original());
+			game::AddFilePrecache(inst, filename, sourcePos, include, filePosId, fileCountId, AddFilePrecache_original);
 #else
 			codsrc::AddFilePrecache(inst, filename, sourcePos, include, filePosId, fileCountId);
 #endif
@@ -1267,7 +1418,7 @@ namespace re_cscr_compiler
 		void EmitFunction_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u func, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitFunction(inst, func, sourcePos, EmitFunction_hook.get_original());
+			game::EmitFunction(inst, func, sourcePos, EmitFunction_original);
 #else
 			codsrc::EmitFunction(inst, func, sourcePos);
 #endif
@@ -1288,7 +1439,7 @@ namespace re_cscr_compiler
 		void EmitGetFunction_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u func, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitGetFunction(inst, func, sourcePos, EmitGetFunction_hook.get_original());
+			game::EmitGetFunction(inst, func, sourcePos, EmitGetFunction_original);
 #else
 			codsrc::EmitGetFunction(inst, func, sourcePos);
 #endif
@@ -1327,7 +1478,7 @@ namespace re_cscr_compiler
 		void EmitPostScriptFunctionPointer_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, int param_count, int bMethod, game::sval_u nameSourcePos, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitPostScriptFunctionPointer(block, inst, expr, param_count, bMethod, nameSourcePos, sourcePos, EmitPostScriptFunctionPointer_hook.get_original());
+			game::EmitPostScriptFunctionPointer(block, inst, expr, param_count, bMethod, nameSourcePos, sourcePos, EmitPostScriptFunctionPointer_original);
 #else
 			codsrc::EmitPostScriptFunctionPointer(block, inst, expr, param_count, bMethod, nameSourcePos, sourcePos);
 #endif
@@ -1349,7 +1500,7 @@ namespace re_cscr_compiler
 		void EmitPostScriptThread_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u func, int param_count, int bMethod, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitPostScriptThread(inst, func, param_count, bMethod, sourcePos, EmitPostScriptThread_hook.get_original());
+			game::EmitPostScriptThread(inst, func, param_count, bMethod, sourcePos, EmitPostScriptThread_original);
 #else
 			codsrc::EmitPostScriptThread(inst, func, param_count, bMethod, sourcePos);
 #endif
@@ -1370,7 +1521,7 @@ namespace re_cscr_compiler
 		void EmitPostScriptThreadPointer_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, int param_count, int bMethod, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitPostScriptThreadPointer(block, inst, expr, param_count, bMethod, sourcePos, EmitPostScriptThreadPointer_hook.get_original());
+			game::EmitPostScriptThreadPointer(block, inst, expr, param_count, bMethod, sourcePos, EmitPostScriptThreadPointer_original);
 #else
 			codsrc::EmitPostScriptThreadPointer(block, inst, expr, param_count, bMethod, sourcePos);
 #endif
@@ -1392,7 +1543,7 @@ namespace re_cscr_compiler
 		void EmitPostScriptFunctionCall_call(game::scriptInstance_t inst, int bMethod, int param_count, [[maybe_unused]] void* caller_addr, game::sval_u func_name, game::sval_u nameSourcePos, game::scr_block_s* block)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitPostScriptFunctionCall(inst, bMethod, param_count, func_name, nameSourcePos, block, EmitPostScriptFunctionCall_hook.get_original());
+			game::EmitPostScriptFunctionCall(inst, bMethod, param_count, func_name, nameSourcePos, block, EmitPostScriptFunctionCall_original);
 #else
 			codsrc::EmitPostScriptFunctionCall(inst, bMethod, param_count, func_name, nameSourcePos, block);
 #endif
@@ -1415,7 +1566,7 @@ namespace re_cscr_compiler
 		void EmitPostScriptThreadCall_call(game::scriptInstance_t inst, int isMethod, int param_count, [[maybe_unused]] void* caller_addr, game::sval_u func_name, game::sval_u sourcePos, game::sval_u nameSourcePos, game::scr_block_s* block)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitPostScriptThreadCall(inst, isMethod, param_count, func_name, sourcePos, nameSourcePos, block, EmitPostScriptThreadCall_hook.get_original());
+			game::EmitPostScriptThreadCall(inst, isMethod, param_count, func_name, sourcePos, nameSourcePos, block, EmitPostScriptThreadCall_original);
 #else
 			codsrc::EmitPostScriptThreadCall(inst, isMethod, param_count, func_name, sourcePos, nameSourcePos, block);
 #endif
@@ -1438,7 +1589,7 @@ namespace re_cscr_compiler
 		void EmitPreFunctionCall_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitPreFunctionCall(inst, EmitPreFunctionCall_hook.get_original());
+			game::EmitPreFunctionCall(inst, EmitPreFunctionCall_original);
 #else
 			codsrc::EmitPreFunctionCall(inst);
 #endif
@@ -1459,7 +1610,7 @@ namespace re_cscr_compiler
 		void EmitPostFunctionCall_call(game::scriptInstance_t inst, int bMethod, [[maybe_unused]] void* caller_addr, game::sval_u func_name, int param_count, game::scr_block_s* block)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitPostFunctionCall(inst, bMethod, func_name, param_count, block, EmitPostFunctionCall_hook.get_original());
+			game::EmitPostFunctionCall(inst, bMethod, func_name, param_count, block, EmitPostFunctionCall_original);
 #else
 			codsrc::EmitPostFunctionCall(inst, bMethod, func_name, param_count, block);
 #endif
@@ -1481,7 +1632,7 @@ namespace re_cscr_compiler
 		void Scr_BeginDevScript_call(game::scriptInstance_t isnt, int* type_, [[maybe_unused]] void* caller_addr, char** savedPos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::Scr_BeginDevScript(isnt, type_, savedPos, Scr_BeginDevScript_hook.get_original());
+			game::Scr_BeginDevScript(isnt, type_, savedPos, Scr_BeginDevScript_original);
 #else
 			codsrc::Scr_BeginDevScript(isnt, type_, savedPos);
 #endif
@@ -1503,7 +1654,7 @@ namespace re_cscr_compiler
 		void Scr_EndDevScript_call(game::scriptInstance_t inst, char** savedPos, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::Scr_EndDevScript(inst, savedPos, Scr_EndDevScript_hook.get_original());
+			game::Scr_EndDevScript(inst, savedPos, Scr_EndDevScript_original);
 #else
 			codsrc::Scr_EndDevScript(inst, savedPos);
 #endif
@@ -1525,7 +1676,7 @@ namespace re_cscr_compiler
 		void EmitCallBuiltinOpcode_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, int param_count, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitCallBuiltinOpcode(inst, param_count, sourcePos, EmitCallBuiltinOpcode_hook.get_original());
+			game::EmitCallBuiltinOpcode(inst, param_count, sourcePos, EmitCallBuiltinOpcode_original);
 #else
 			codsrc::EmitCallBuiltinOpcode(inst, param_count, sourcePos);
 #endif
@@ -1546,7 +1697,7 @@ namespace re_cscr_compiler
 		void EmitCallBuiltinMethodOpcode_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, int param_count, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitCallBuiltinMethodOpcode(inst, param_count, sourcePos, EmitCallBuiltinMethodOpcode_hook.get_original());
+			game::EmitCallBuiltinMethodOpcode(inst, param_count, sourcePos, EmitCallBuiltinMethodOpcode_original);
 #else
 			codsrc::EmitCallBuiltinMethodOpcode(inst, param_count, sourcePos);
 #endif
@@ -1567,7 +1718,7 @@ namespace re_cscr_compiler
 		void EmitCall_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u func_name, game::sval_u params, int bStatement, game::scr_block_s* block)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitCall(inst, func_name, params, bStatement, block, EmitCall_hook.get_original());
+			game::EmitCall(inst, func_name, params, bStatement, block, EmitCall_original);
 #else
 			codsrc::EmitCall(inst, func_name, params, bStatement, block);
 #endif
@@ -1597,7 +1748,7 @@ namespace re_cscr_compiler
 		void LinkThread_call(game::scriptInstance_t inst, unsigned int threadCountId, [[maybe_unused]] void* caller_addr, game::VariableValue* pos, int allowFarCall)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::LinkThread(inst, threadCountId, pos, allowFarCall, LinkThread_hook.get_original());
+			game::LinkThread(inst, threadCountId, pos, allowFarCall, LinkThread_original);
 #else
 			codsrc::LinkThread(inst, threadCountId, pos, allowFarCall);
 #endif
@@ -1619,7 +1770,7 @@ namespace re_cscr_compiler
 		void LinkFile_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, unsigned int filePosId, unsigned int fileCountId)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::LinkFile(inst, filePosId, fileCountId, LinkFile_hook.get_original());
+			game::LinkFile(inst, filePosId, fileCountId, LinkFile_original);
 #else
 			codsrc::LinkFile(inst, filePosId, fileCountId);
 #endif
@@ -1649,7 +1800,7 @@ namespace re_cscr_compiler
 		void EmitCallExpression_call(game::scriptInstance_t inst, game::scr_block_s* block, [[maybe_unused]] void* caller_addr, game::sval_u expr, int bStatement)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitCallExpression(inst, block, expr, bStatement, EmitCallExpression_hook.get_original());
+			game::EmitCallExpression(inst, block, expr, bStatement, EmitCallExpression_original);
 #else
 			codsrc::EmitCallExpression(inst, block, expr, bStatement);
 #endif
@@ -1671,7 +1822,7 @@ namespace re_cscr_compiler
 		void EmitCallExpressionFieldObject_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitCallExpressionFieldObject(block, inst, expr, EmitCallExpressionFieldObject_hook.get_original());
+			game::EmitCallExpressionFieldObject(block, inst, expr, EmitCallExpressionFieldObject_original);
 #else
 			codsrc::EmitCallExpressionFieldObject(block, inst, expr);
 #endif
@@ -1693,7 +1844,7 @@ namespace re_cscr_compiler
 		void Scr_CreateVector_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::VariableCompileValue* constValue, game::VariableValue* value)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::Scr_CreateVector(inst, constValue, value, Scr_CreateVector_hook.get_original());
+			game::Scr_CreateVector(inst, constValue, value, Scr_CreateVector_original);
 #else
 			codsrc::Scr_CreateVector(inst, constValue, value);
 #endif
@@ -1723,7 +1874,7 @@ namespace re_cscr_compiler
 		bool EmitOrEvalPrimitiveExpressionList_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u exprlist, game::sval_u sourcePos, game::VariableCompileValue* constValue, game::scr_block_s* a5)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			return game::EmitOrEvalPrimitiveExpressionList(inst, exprlist, sourcePos, constValue, a5, EmitOrEvalPrimitiveExpressionList_hook.get_original());
+			return game::EmitOrEvalPrimitiveExpressionList(inst, exprlist, sourcePos, constValue, a5, EmitOrEvalPrimitiveExpressionList_original);
 #else
 			return codsrc::EmitOrEvalPrimitiveExpressionList(inst, exprlist, sourcePos, constValue, a5);
 #endif
@@ -1744,7 +1895,7 @@ namespace re_cscr_compiler
 		void EmitExpressionListFieldObject_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u exprlist, game::sval_u sourcePos, game::scr_block_s* block)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitExpressionListFieldObject(inst, exprlist, sourcePos, block, EmitExpressionListFieldObject_hook.get_original());
+			game::EmitExpressionListFieldObject(inst, exprlist, sourcePos, block, EmitExpressionListFieldObject_original);
 #else
 			codsrc::EmitExpressionListFieldObject(inst, exprlist, sourcePos, block);
 #endif
@@ -1783,7 +1934,7 @@ namespace re_cscr_compiler
 		void EmitBoolOrExpression_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr1, game::sval_u expr2, game::sval_u expr1sourcePos, game::sval_u expr2sourcePos, game::scr_block_s* block)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitBoolOrExpression(inst, expr1, expr2, expr1sourcePos, expr2sourcePos, block, EmitBoolOrExpression_hook.get_original());
+			game::EmitBoolOrExpression(inst, expr1, expr2, expr1sourcePos, expr2sourcePos, block, EmitBoolOrExpression_original);
 #else
 			codsrc::EmitBoolOrExpression(inst, expr1, expr2, expr1sourcePos, expr2sourcePos, block);
 #endif
@@ -1804,7 +1955,7 @@ namespace re_cscr_compiler
 		void EmitBoolAndExpression_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr1, game::sval_u expr2, game::sval_u expr1sourcePos, game::sval_u expr2sourcePos, game::scr_block_s* a6)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitBoolAndExpression(inst, expr1, expr2, expr1sourcePos, expr2sourcePos, a6, EmitBoolAndExpression_hook.get_original());
+			game::EmitBoolAndExpression(inst, expr1, expr2, expr1sourcePos, expr2sourcePos, a6, EmitBoolAndExpression_original);
 #else
 			codsrc::EmitBoolAndExpression(inst, expr1, expr2, expr1sourcePos, expr2sourcePos, a6);
 #endif
@@ -1834,7 +1985,7 @@ namespace re_cscr_compiler
 		bool EmitOrEvalBinaryOperatorExpression_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr1, game::sval_u expr2, game::sval_u opcode, game::sval_u sourcePos, game::VariableCompileValue* constValue, game::scr_block_s* a8)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			return game::EmitOrEvalBinaryOperatorExpression(inst, expr1, expr2, opcode, sourcePos, constValue, a8, EmitOrEvalBinaryOperatorExpression_hook.get_original());
+			return game::EmitOrEvalBinaryOperatorExpression(inst, expr1, expr2, opcode, sourcePos, constValue, a8, EmitOrEvalBinaryOperatorExpression_original);
 #else
 			return codsrc::EmitOrEvalBinaryOperatorExpression(inst, expr1, expr2, opcode, sourcePos, constValue, a8);
 #endif
@@ -1855,7 +2006,7 @@ namespace re_cscr_compiler
 		void EmitBinaryEqualsOperatorExpression_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u lhs, game::sval_u rhs, game::sval_u opcode, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitBinaryEqualsOperatorExpression(block, inst, lhs, rhs, opcode, sourcePos, EmitBinaryEqualsOperatorExpression_hook.get_original());
+			game::EmitBinaryEqualsOperatorExpression(block, inst, lhs, rhs, opcode, sourcePos, EmitBinaryEqualsOperatorExpression_original);
 #else
 			codsrc::EmitBinaryEqualsOperatorExpression(block, inst, lhs, rhs, opcode, sourcePos);
 #endif
@@ -1877,7 +2028,7 @@ namespace re_cscr_compiler
 		void Scr_CalcLocalVarsVariableExpressionRef_call(game::scr_block_s* block, [[maybe_unused]] void* caller_addr, game::sval_u expr)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::Scr_CalcLocalVarsVariableExpressionRef(block, expr, Scr_CalcLocalVarsVariableExpressionRef_hook.get_original());
+			game::Scr_CalcLocalVarsVariableExpressionRef(block, expr, Scr_CalcLocalVarsVariableExpressionRef_original);
 #else
 			codsrc::Scr_CalcLocalVarsVariableExpressionRef(block, expr);
 #endif
@@ -1898,7 +2049,7 @@ namespace re_cscr_compiler
 		bool EvalExpression_call(game::VariableCompileValue* constValue, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			return game::EvalExpression(constValue, inst, expr, EvalExpression_hook.get_original());
+			return game::EvalExpression(constValue, inst, expr, EvalExpression_original);
 #else
 			return codsrc::EvalExpression(constValue, inst, expr);
 #endif
@@ -1947,7 +2098,7 @@ namespace re_cscr_compiler
 		void EmitArrayPrimitiveExpressionRef_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u sourcePos, game::scr_block_s* block)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitArrayPrimitiveExpressionRef(inst, expr, sourcePos, block, EmitArrayPrimitiveExpressionRef_hook.get_original());
+			game::EmitArrayPrimitiveExpressionRef(inst, expr, sourcePos, block, EmitArrayPrimitiveExpressionRef_original);
 #else
 			codsrc::EmitArrayPrimitiveExpressionRef(inst, expr, sourcePos, block);
 #endif
@@ -1986,7 +2137,7 @@ namespace re_cscr_compiler
 		void ConnectBreakStatements_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::ConnectBreakStatements(inst, ConnectBreakStatements_hook.get_original());
+			game::ConnectBreakStatements(inst, ConnectBreakStatements_original);
 #else
 			codsrc::ConnectBreakStatements(inst);
 #endif
@@ -2007,7 +2158,7 @@ namespace re_cscr_compiler
 		void ConnectContinueStatements_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::ConnectContinueStatements(inst, ConnectContinueStatements_hook.get_original());
+			game::ConnectContinueStatements(inst, ConnectContinueStatements_original);
 #else
 			codsrc::ConnectContinueStatements(inst);
 #endif
@@ -2028,7 +2179,7 @@ namespace re_cscr_compiler
 		bool EmitClearVariableExpression_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u rhsSourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			return game::EmitClearVariableExpression(block, inst, expr, rhsSourcePos, EmitClearVariableExpression_hook.get_original());
+			return game::EmitClearVariableExpression(block, inst, expr, rhsSourcePos, EmitClearVariableExpression_original);
 #else
 			return codsrc::EmitClearVariableExpression(block, inst, expr, rhsSourcePos);
 #endif
@@ -2050,7 +2201,7 @@ namespace re_cscr_compiler
 		void EmitAssignmentStatement_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u lhs, game::sval_u rhs, game::sval_u sourcePos, game::sval_u rhsSourcePos, game::scr_block_s* block)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitAssignmentStatement(inst, lhs, rhs, sourcePos, rhsSourcePos, block, EmitAssignmentStatement_hook.get_original());
+			game::EmitAssignmentStatement(inst, lhs, rhs, sourcePos, rhsSourcePos, block, EmitAssignmentStatement_original);
 #else
 			codsrc::EmitAssignmentStatement(inst, lhs, rhs, sourcePos, rhsSourcePos, block);
 #endif
@@ -2071,7 +2222,7 @@ namespace re_cscr_compiler
 		void EmitCallExpressionStatement_call(game::scriptInstance_t inst, game::scr_block_s* block, [[maybe_unused]] void* caller_addr, game::sval_u expr)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitCallExpressionStatement(inst, block, expr, EmitCallExpressionStatement_hook.get_original());
+			game::EmitCallExpressionStatement(inst, block, expr, EmitCallExpressionStatement_original);
 #else
 			codsrc::EmitCallExpressionStatement(inst, block, expr);
 #endif
@@ -2093,7 +2244,7 @@ namespace re_cscr_compiler
 		void EmitReturnStatement_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitReturnStatement(block, inst, expr, sourcePos, EmitReturnStatement_hook.get_original());
+			game::EmitReturnStatement(block, inst, expr, sourcePos, EmitReturnStatement_original);
 #else
 			codsrc::EmitReturnStatement(block, inst, expr, sourcePos);
 #endif
@@ -2115,7 +2266,7 @@ namespace re_cscr_compiler
 		void EmitWaitStatement_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u sourcePos, game::sval_u waitSourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitWaitStatement(block, inst, expr, sourcePos, waitSourcePos, EmitWaitStatement_hook.get_original());
+			game::EmitWaitStatement(block, inst, expr, sourcePos, waitSourcePos, EmitWaitStatement_original);
 #else
 			codsrc::EmitWaitStatement(block, inst, expr, sourcePos, waitSourcePos);
 #endif
@@ -2137,7 +2288,7 @@ namespace re_cscr_compiler
 		void EmitWaittillFrameEnd_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitWaittillFrameEnd(inst, sourcePos, EmitWaittillFrameEnd_hook.get_original());
+			game::EmitWaittillFrameEnd(inst, sourcePos, EmitWaittillFrameEnd_original);
 #else
 			codsrc::EmitWaittillFrameEnd(inst, sourcePos);
 #endif
@@ -2158,7 +2309,7 @@ namespace re_cscr_compiler
 		void EmitIfStatement_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u stmt, game::sval_u sourcePos, int lastStatement, unsigned int endSourcePos, game::scr_block_s* block, game::sval_u* ifStatBlock)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitIfStatement(inst, expr, stmt, sourcePos, lastStatement, endSourcePos, block, ifStatBlock, EmitIfStatement_hook.get_original());
+			game::EmitIfStatement(inst, expr, stmt, sourcePos, lastStatement, endSourcePos, block, ifStatBlock, EmitIfStatement_original);
 #else
 			codsrc::EmitIfStatement(inst, expr, stmt, sourcePos, lastStatement, endSourcePos, block, ifStatBlock);
 #endif
@@ -2206,7 +2357,7 @@ namespace re_cscr_compiler
 		void Scr_AddBreakBlock_call(game::scriptInstance_t inst, game::scr_block_s* block, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::Scr_AddBreakBlock(inst, block, Scr_AddBreakBlock_hook.get_original());
+			game::Scr_AddBreakBlock(inst, block, Scr_AddBreakBlock_original);
 #else
 			codsrc::Scr_AddBreakBlock(inst, block);
 #endif
@@ -2228,7 +2379,7 @@ namespace re_cscr_compiler
 		void Scr_AddContinueBlock_call(game::scriptInstance_t inst, game::scr_block_s* block, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::Scr_AddContinueBlock(inst, block, Scr_AddContinueBlock_hook.get_original());
+			game::Scr_AddContinueBlock(inst, block, Scr_AddContinueBlock_original);
 #else
 			codsrc::Scr_AddContinueBlock(inst, block);
 #endif
@@ -2286,7 +2437,7 @@ namespace re_cscr_compiler
 		void EmitIncStatement_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitIncStatement(block, inst, expr, sourcePos, EmitIncStatement_hook.get_original());
+			game::EmitIncStatement(block, inst, expr, sourcePos, EmitIncStatement_original);
 #else
 			codsrc::EmitIncStatement(block, inst, expr, sourcePos);
 #endif
@@ -2308,7 +2459,7 @@ namespace re_cscr_compiler
 		void EmitDecStatement_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitDecStatement(block, inst, expr, sourcePos, EmitDecStatement_hook.get_original());
+			game::EmitDecStatement(block, inst, expr, sourcePos, EmitDecStatement_original);
 #else
 			codsrc::EmitDecStatement(block, inst, expr, sourcePos);
 #endif
@@ -2330,7 +2481,7 @@ namespace re_cscr_compiler
 		void Scr_CalcLocalVarsFormalParameterListInternal_call(game::sval_u* node, game::scr_block_s* block, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::Scr_CalcLocalVarsFormalParameterListInternal(node, block, Scr_CalcLocalVarsFormalParameterListInternal_hook.get_original());
+			game::Scr_CalcLocalVarsFormalParameterListInternal(node, block, Scr_CalcLocalVarsFormalParameterListInternal_original);
 #else
 			codsrc::Scr_CalcLocalVarsFormalParameterListInternal(node, block);
 #endif
@@ -2352,7 +2503,7 @@ namespace re_cscr_compiler
 		void EmitWaittillStatement_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u obj, game::sval_u exprlist, game::sval_u sourcePos, game::sval_u waitSourcePos, game::scr_block_s* block)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitWaittillStatement(inst, obj, exprlist, sourcePos, waitSourcePos, block, EmitWaittillStatement_hook.get_original());
+			game::EmitWaittillStatement(inst, obj, exprlist, sourcePos, waitSourcePos, block, EmitWaittillStatement_original);
 #else
 			codsrc::EmitWaittillStatement(inst, obj, exprlist, sourcePos, waitSourcePos, block);
 #endif
@@ -2373,7 +2524,7 @@ namespace re_cscr_compiler
 		void EmitWaittillmatchStatement_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u obj, game::sval_u exprlist, game::sval_u sourcePos, game::sval_u waitSourcePos, game::scr_block_s* block)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitWaittillmatchStatement(inst, obj, exprlist, sourcePos, waitSourcePos, block, EmitWaittillmatchStatement_hook.get_original());
+			game::EmitWaittillmatchStatement(inst, obj, exprlist, sourcePos, waitSourcePos, block, EmitWaittillmatchStatement_original);
 #else
 			codsrc::EmitWaittillmatchStatement(inst, obj, exprlist, sourcePos, waitSourcePos, block);
 #endif
@@ -2394,7 +2545,7 @@ namespace re_cscr_compiler
 		void EmitNotifyStatement_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u obj, game::sval_u exprlist, game::sval_u sourcePos, game::sval_u notifySourcePos, game::scr_block_s* block)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitNotifyStatement(inst, obj, exprlist, sourcePos, notifySourcePos, block, EmitNotifyStatement_hook.get_original());
+			game::EmitNotifyStatement(inst, obj, exprlist, sourcePos, notifySourcePos, block, EmitNotifyStatement_original);
 #else
 			codsrc::EmitNotifyStatement(inst, obj, exprlist, sourcePos, notifySourcePos, block);
 #endif
@@ -2415,7 +2566,7 @@ namespace re_cscr_compiler
 		void EmitEndOnStatement_call(game::scr_block_s* block, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u obj, game::sval_u expr, game::sval_u sourcePos, game::sval_u exprSourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitEndOnStatement(block, inst, obj, expr, sourcePos, exprSourcePos, EmitEndOnStatement_hook.get_original());
+			game::EmitEndOnStatement(block, inst, obj, expr, sourcePos, exprSourcePos, EmitEndOnStatement_original);
 #else
 			codsrc::EmitEndOnStatement(block, inst, obj, expr, sourcePos, exprSourcePos);
 #endif
@@ -2446,7 +2597,7 @@ namespace re_cscr_compiler
 		void EmitCaseStatement_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u expr, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitCaseStatement(inst, expr, sourcePos, EmitCaseStatement_hook.get_original());
+			game::EmitCaseStatement(inst, expr, sourcePos, EmitCaseStatement_original);
 #else
 			codsrc::EmitCaseStatement(inst, expr, sourcePos);
 #endif
@@ -2494,7 +2645,7 @@ namespace re_cscr_compiler
 		void EmitCaseStatementInfo_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, unsigned int name, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitCaseStatementInfo(inst, name, sourcePos, EmitCaseStatementInfo_hook.get_original());
+			game::EmitCaseStatementInfo(inst, name, sourcePos, EmitCaseStatementInfo_original);
 #else
 			codsrc::EmitCaseStatementInfo(inst, name, sourcePos);
 #endif
@@ -2515,7 +2666,7 @@ namespace re_cscr_compiler
 		void EmitBreakStatement_call(game::scr_block_s* block, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitBreakStatement(block, inst, sourcePos, EmitBreakStatement_hook.get_original());
+			game::EmitBreakStatement(block, inst, sourcePos, EmitBreakStatement_original);
 #else
 			codsrc::EmitBreakStatement(block, inst, sourcePos);
 #endif
@@ -2536,7 +2687,7 @@ namespace re_cscr_compiler
 		void EmitContinueStatement_call(game::scr_block_s* block, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, game::sval_u sourcePos)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitContinueStatement(block, inst, sourcePos, EmitContinueStatement_hook.get_original());
+			game::EmitContinueStatement(block, inst, sourcePos, EmitContinueStatement_original);
 #else
 			codsrc::EmitContinueStatement(block, inst, sourcePos);
 #endif
@@ -2557,7 +2708,7 @@ namespace re_cscr_compiler
 		void EmitProfStatement_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u profileName, game::sval_u sourcePos, game::OpcodeVM op)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitProfStatement(inst, profileName, sourcePos, op, EmitProfStatement_hook.get_original());
+			game::EmitProfStatement(inst, profileName, sourcePos, op, EmitProfStatement_original);
 #else
 			codsrc::EmitProfStatement(inst, profileName, sourcePos, op);
 #endif
@@ -2605,7 +2756,7 @@ namespace re_cscr_compiler
 		void Scr_CalcLocalVarsStatementList_call(game::scr_block_s* block, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, game::sval_u val)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::Scr_CalcLocalVarsStatementList(block, inst, val, Scr_CalcLocalVarsStatementList_hook.get_original());
+			game::Scr_CalcLocalVarsStatementList(block, inst, val, Scr_CalcLocalVarsStatementList_original);
 #else
 			codsrc::Scr_CalcLocalVarsStatementList(block, inst, val);
 #endif
@@ -2644,7 +2795,7 @@ namespace re_cscr_compiler
 		void EmitFormalParameterList_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u exprlist, game::sval_u sourcePos, game::scr_block_s* block)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitFormalParameterList(inst, exprlist, sourcePos, block, EmitFormalParameterList_hook.get_original());
+			game::EmitFormalParameterList(inst, exprlist, sourcePos, block, EmitFormalParameterList_original);
 #else
 			codsrc::EmitFormalParameterList(inst, exprlist, sourcePos, block);
 #endif
@@ -2665,7 +2816,7 @@ namespace re_cscr_compiler
 		void SpecifyThread_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u val)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::SpecifyThread(inst, val, SpecifyThread_hook.get_original());
+			game::SpecifyThread(inst, val, SpecifyThread_original);
 #else
 			codsrc::SpecifyThread(inst, val);
 #endif
@@ -2686,7 +2837,7 @@ namespace re_cscr_compiler
 		void EmitThreadInternal_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u val, game::sval_u sourcePos, game::sval_u endSourcePos, game::scr_block_s* block)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitThreadInternal(inst, val, sourcePos, endSourcePos, block, EmitThreadInternal_hook.get_original());
+			game::EmitThreadInternal(inst, val, sourcePos, endSourcePos, block, EmitThreadInternal_original);
 #else
 			codsrc::EmitThreadInternal(inst, val, sourcePos, endSourcePos, block);
 #endif
@@ -2707,7 +2858,7 @@ namespace re_cscr_compiler
 		void Scr_CalcLocalVarsThread_call(game::sval_u* stmttblock, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, game::sval_u exprlist, game::sval_u stmtlist)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::Scr_CalcLocalVarsThread(stmttblock, inst, exprlist, stmtlist, Scr_CalcLocalVarsThread_hook.get_original());
+			game::Scr_CalcLocalVarsThread(stmttblock, inst, exprlist, stmtlist, Scr_CalcLocalVarsThread_original);
 #else
 			codsrc::Scr_CalcLocalVarsThread(stmttblock, inst, exprlist, stmtlist);
 #endif
@@ -2728,7 +2879,7 @@ namespace re_cscr_compiler
 		void InitThread_call(int type_, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::InitThread(type_, inst, InitThread_hook.get_original());
+			game::InitThread(type_, inst, InitThread_original);
 #else
 			codsrc::InitThread(type_, inst);
 #endif
@@ -2750,7 +2901,7 @@ namespace re_cscr_compiler
 		void EmitNormalThread_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u val, game::sval_u* stmttblock)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitNormalThread(inst, val, stmttblock, EmitNormalThread_hook.get_original());
+			game::EmitNormalThread(inst, val, stmttblock, EmitNormalThread_original);
 #else
 			codsrc::EmitNormalThread(inst, val, stmttblock);
 #endif
@@ -2771,7 +2922,7 @@ namespace re_cscr_compiler
 		void EmitDeveloperThread_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u val, game::sval_u* stmttblock)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitDeveloperThread(inst, val, stmttblock, EmitDeveloperThread_hook.get_original());
+			game::EmitDeveloperThread(inst, val, stmttblock, EmitDeveloperThread_original);
 #else
 			codsrc::EmitDeveloperThread(inst, val, stmttblock);
 #endif
@@ -2792,7 +2943,7 @@ namespace re_cscr_compiler
 		void EmitThread_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u val)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitThread(inst, val, EmitThread_hook.get_original());
+			game::EmitThread(inst, val, EmitThread_original);
 #else
 			codsrc::EmitThread(inst, val);
 #endif
@@ -2822,7 +2973,7 @@ namespace re_cscr_compiler
 		void EmitInclude_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u val)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::EmitInclude(inst, val, EmitInclude_hook.get_original());
+			game::EmitInclude(inst, val, EmitInclude_original);
 #else
 			codsrc::EmitInclude(inst, val);
 #endif
@@ -2843,7 +2994,7 @@ namespace re_cscr_compiler
 		void ScriptCompile_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::sval_u val, unsigned int filePosId, unsigned int fileCountId, unsigned int scriptId, game::PrecacheEntry* entries, int entriesCount)
 		{
 #ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			game::ScriptCompile(inst, val, filePosId, fileCountId, scriptId, entries, entriesCount, ScriptCompile_hook.get_original());
+			game::ScriptCompile(inst, val, filePosId, fileCountId, scriptId, entries, entriesCount, ScriptCompile_original);
 #else
 			codsrc::ScriptCompile(inst, val, filePosId, fileCountId, scriptId, entries, entriesCount);
 #endif
@@ -2867,161 +3018,308 @@ namespace re_cscr_compiler
 	public:
 		void post_unpack() override
 		{
-			bool quick = true;
-#ifdef RE_CSCR_COMPILER_USE_WRAPPERS
-			quick = false;
-#endif
+			RemoveRefToValue_hook.create(game::RemoveRefToValue.get(), RemoveRefToValue_stub);
+			Scr_CompileRemoveRefToString_hook.create(game::Scr_CompileRemoveRefToString_ADDR(), Scr_CompileRemoveRefToString_stub);
+			EmitCanonicalString_hook.create(game::EmitCanonicalString_ADDR(), EmitCanonicalString_stub);
+			CompileTransferRefToString_hook.create(game::CompileTransferRefToString_ADDR(), CompileTransferRefToString_stub);
+			EmitOpcode_hook.create(game::EmitOpcode.get(), EmitOpcode_stub);
+			EmitEnd_hook.create(game::EmitEnd_ADDR(), EmitEnd_stub);
+			EmitReturn_hook.create(game::EmitReturn_ADDR(), EmitReturn_stub);
+			EmitCodepos_hook.create(game::EmitCodepos_ADDR(), EmitCodepos_stub);
+			EmitShort_hook.create(game::EmitShort_ADDR(), EmitShort_stub);
+			EmitByte_hook.create(game::EmitByte_ADDR(), EmitByte_stub);
+			EmitGetInteger_hook.create(game::EmitGetInteger_ADDR(), EmitGetInteger_stub);
+			EmitGetFloat_hook.create(game::EmitGetFloat_ADDR(), EmitGetFloat_stub);
+			EmitAnimTree_hook.create(game::EmitAnimTree_ADDR(), EmitAnimTree_stub);
+			Scr_FindLocalVarIndex_hook.create(game::Scr_FindLocalVarIndex.get(), Scr_FindLocalVarIndex_stub);
+			EmitCreateLocalVars_hook.create(game::EmitCreateLocalVars.get(), EmitCreateLocalVars_stub);
+			EmitRemoveLocalVars_hook.create(game::EmitRemoveLocalVars_ADDR(), EmitRemoveLocalVars_stub);
+			EmitNOP2_hook.create(game::EmitNOP2_ADDR(), EmitNOP2_stub);
+			Scr_InitFromChildBlocks_hook.create(game::Scr_InitFromChildBlocks.get(), Scr_InitFromChildBlocks_stub);
+			Scr_AppendChildBlocks_hook.create(game::Scr_AppendChildBlocks_ADDR(), Scr_AppendChildBlocks_stub);
+			Scr_MergeChildBlocks_hook.create(game::Scr_MergeChildBlocks.get(), Scr_MergeChildBlocks_stub);
+			Scr_TransferBlock_hook.create(game::Scr_TransferBlock_ADDR(), Scr_TransferBlock_stub);
+			EmitSafeSetVariableField_hook.create(game::EmitSafeSetVariableField_ADDR(), EmitSafeSetVariableField_stub);
+			EmitSafeSetWaittillVariableField_hook.create(game::EmitSafeSetWaittillVariableField_ADDR(), EmitSafeSetWaittillVariableField_stub);
+			EmitGetString_hook.create(game::EmitGetString_ADDR(), EmitGetString_stub);
+			EmitGetIString_hook.create(game::EmitGetIString_ADDR(), EmitGetIString_stub);
+			EmitGetVector_hook.create(game::EmitGetVector_ADDR(), EmitGetVector_stub);
+			EmitValue_hook.create(game::EmitValue.get(), EmitValue_stub);
+			Scr_PushValue_hook.create(game::Scr_PushValue_ADDR(), Scr_PushValue_stub);
+			EmitCastBool_hook.create(game::EmitCastBool_ADDR(), EmitCastBool_stub);
+			EmitBoolNot_hook.create(game::EmitBoolNot_ADDR(), EmitBoolNot_stub);
+			EmitBoolComplement_hook.create(game::EmitBoolComplement_ADDR(), EmitBoolComplement_stub);
+			EmitSize_hook.create(game::EmitSize_ADDR(), EmitSize_stub);
+			EmitSelf_hook.create(game::EmitSelf_ADDR(), EmitSelf_stub);
+			EmitLevel_hook.create(game::EmitLevel_ADDR(), EmitLevel_stub);
+			EmitGame_hook.create(game::EmitGame_ADDR(), EmitGame_stub);
+			EmitAnim_hook.create(game::EmitAnim_ADDR(), EmitAnim_stub);
+			EmitSelfObject_hook.create(game::EmitSelfObject_ADDR(), EmitSelfObject_stub);
+			EmitLevelObject_hook.create(game::EmitLevelObject_ADDR(), EmitLevelObject_stub);
+			EmitAnimObject_hook.create(game::EmitAnimObject_ADDR(), EmitAnimObject_stub);
+			EmitLocalVariable_hook.create(game::EmitLocalVariable_ADDR(), EmitLocalVariable_stub);
+			EmitLocalVariableRef_hook.create(game::EmitLocalVariableRef_ADDR(), EmitLocalVariableRef_stub);
+			Scr_RegisterLocalVar_hook.create(game::Scr_RegisterLocalVar.get(), Scr_RegisterLocalVar_stub);
+			EmitGameRef_hook.create(game::EmitGameRef_ADDR(), EmitGameRef_stub);
+			EmitClearArray_hook.create(game::EmitClearArray_ADDR(), EmitClearArray_stub);
+			EmitEmptyArray_hook.create(game::EmitEmptyArray_ADDR(), EmitEmptyArray_stub);
+			EmitAnimation_hook.create(game::EmitAnimation_ADDR(), EmitAnimation_stub);
+			EmitFieldVariable_hook.create(game::EmitFieldVariable_ADDR(), EmitFieldVariable_stub);
+			EmitClearFieldVariable_hook.create(game::EmitClearFieldVariable_ADDR(), EmitClearFieldVariable_stub);
+			EmitObject_hook.create(game::EmitObject_ADDR(), EmitObject_stub);
+			EmitDecTop_hook.create(game::EmitDecTop_ADDR(), EmitDecTop_stub);
+			EmitCastFieldObject_hook.create(game::EmitCastFieldObject.get(), EmitCastFieldObject_stub);
+			EmitArrayVariable_hook.create(game::EmitArrayVariable_ADDR(), EmitArrayVariable_stub);
+			EmitArrayVariableRef_hook.create(game::EmitArrayVariableRef_ADDR(), EmitArrayVariableRef_stub);
+			EmitClearArrayVariable_hook.create(game::EmitClearArrayVariable_ADDR(), EmitClearArrayVariable_stub);
+			EmitVariableExpression_hook.create(game::EmitVariableExpression.get(), EmitVariableExpression_stub);
+			EmitExpressionList_hook.create(game::EmitExpressionList.get(), EmitExpressionList_stub);
+			AddExpressionListOpcodePos_hook.create(game::AddExpressionListOpcodePos_ADDR(), AddExpressionListOpcodePos_stub);
+			AddFilePrecache_hook.create(game::AddFilePrecache_ADDR(), AddFilePrecache_stub);
+			EmitFunction_hook.create(game::EmitFunction_ADDR(), EmitFunction_stub);
+			EmitGetFunction_hook.create(game::EmitGetFunction_ADDR(), EmitGetFunction_stub);
+			AddFunction_hook.create(game::AddFunction.get(), AddFunction_stub);
+			EmitPostScriptFunction_hook.create(game::EmitPostScriptFunction.get(), EmitPostScriptFunction_stub);
+			EmitPostScriptFunctionPointer_hook.create(game::EmitPostScriptFunctionPointer_ADDR(), EmitPostScriptFunctionPointer_stub);
+			EmitPostScriptThread_hook.create(game::EmitPostScriptThread_ADDR(), EmitPostScriptThread_stub);
+			EmitPostScriptThreadPointer_hook.create(game::EmitPostScriptThreadPointer_ADDR(), EmitPostScriptThreadPointer_stub);
+			EmitPostScriptFunctionCall_hook.create(game::EmitPostScriptFunctionCall_ADDR(), EmitPostScriptFunctionCall_stub);
+			EmitPostScriptThreadCall_hook.create(game::EmitPostScriptThreadCall_ADDR(), EmitPostScriptThreadCall_stub);
+			EmitPreFunctionCall_hook.create(game::EmitPreFunctionCall_ADDR(), EmitPreFunctionCall_stub);
+			EmitPostFunctionCall_hook.create(game::EmitPostFunctionCall_ADDR(), EmitPostFunctionCall_stub);
+			Scr_BeginDevScript_hook.create(game::Scr_BeginDevScript_ADDR(), Scr_BeginDevScript_stub);
+			Scr_EndDevScript_hook.create(game::Scr_EndDevScript_ADDR(), Scr_EndDevScript_stub);
+			EmitCallBuiltinOpcode_hook.create(game::EmitCallBuiltinOpcode_ADDR(), EmitCallBuiltinOpcode_stub);
+			EmitCallBuiltinMethodOpcode_hook.create(game::EmitCallBuiltinMethodOpcode_ADDR(), EmitCallBuiltinMethodOpcode_stub);
+			EmitCall_hook.create(game::EmitCall_ADDR(), EmitCall_stub);
+			EmitMethod_hook.create(game::EmitMethod.get(), EmitMethod_stub);
+			LinkThread_hook.create(game::LinkThread_ADDR(), LinkThread_stub);
+			LinkFile_hook.create(game::LinkFile_ADDR(), LinkFile_stub);
+			CheckThreadPosition_hook.create(game::CheckThreadPosition.get(), CheckThreadPosition_stub);
+			EmitCallExpression_hook.create(game::EmitCallExpression_ADDR(), EmitCallExpression_stub);
+			EmitCallExpressionFieldObject_hook.create(game::EmitCallExpressionFieldObject_ADDR(), EmitCallExpressionFieldObject_stub);
+			Scr_CreateVector_hook.create(game::Scr_CreateVector_ADDR(), Scr_CreateVector_stub);
+			EvalPrimitiveExpressionList_hook.create(game::EvalPrimitiveExpressionList.get(), EvalPrimitiveExpressionList_stub);
+			EmitOrEvalPrimitiveExpressionList_hook.create(game::EmitOrEvalPrimitiveExpressionList_ADDR(), EmitOrEvalPrimitiveExpressionList_stub);
+			EmitExpressionListFieldObject_hook.create(game::EmitExpressionListFieldObject_ADDR(), EmitExpressionListFieldObject_stub);
+			EvalPrimitiveExpression_hook.create(game::EvalPrimitiveExpression.get(), EvalPrimitiveExpression_stub);
+			EmitOrEvalPrimitiveExpression_hook.create(game::EmitOrEvalPrimitiveExpression.get(), EmitOrEvalPrimitiveExpression_stub);
+			EmitBoolOrExpression_hook.create(game::EmitBoolOrExpression_ADDR(), EmitBoolOrExpression_stub);
+			EmitBoolAndExpression_hook.create(game::EmitBoolAndExpression_ADDR(), EmitBoolAndExpression_stub);
+			EvalBinaryOperatorExpression_hook.create(game::EvalBinaryOperatorExpression.get(), EvalBinaryOperatorExpression_stub);
+			EmitOrEvalBinaryOperatorExpression_hook.create(game::EmitOrEvalBinaryOperatorExpression_ADDR(), EmitOrEvalBinaryOperatorExpression_stub);
+			EmitBinaryEqualsOperatorExpression_hook.create(game::EmitBinaryEqualsOperatorExpression_ADDR(), EmitBinaryEqualsOperatorExpression_stub);
+			Scr_CalcLocalVarsVariableExpressionRef_hook.create(game::Scr_CalcLocalVarsVariableExpressionRef_ADDR(), Scr_CalcLocalVarsVariableExpressionRef_stub);
+			EvalExpression_hook.create(game::EvalExpression_ADDR(), EvalExpression_stub);
+			EmitOrEvalExpression_hook.create(game::EmitOrEvalExpression.get(), EmitOrEvalExpression_stub);
+			EmitExpression_hook.create(game::EmitExpression.get(), EmitExpression_stub);
+			EmitVariableExpressionRef_hook.create(game::EmitVariableExpressionRef.get(), EmitVariableExpressionRef_stub);
+			EmitArrayPrimitiveExpressionRef_hook.create(game::EmitArrayPrimitiveExpressionRef_ADDR(), EmitArrayPrimitiveExpressionRef_stub);
+			Scr_CalcLocalVarsArrayVariableRef_hook.create(game::Scr_CalcLocalVarsArrayVariableRef.get(), Scr_CalcLocalVarsArrayVariableRef_stub);
+			EmitPrimitiveExpressionFieldObject_hook.create(game::EmitPrimitiveExpressionFieldObject.get(), EmitPrimitiveExpressionFieldObject_stub);
+			ConnectBreakStatements_hook.create(game::ConnectBreakStatements_ADDR(), ConnectBreakStatements_stub);
+			ConnectContinueStatements_hook.create(game::ConnectContinueStatements_ADDR(), ConnectContinueStatements_stub);
+			EmitClearVariableExpression_hook.create(game::EmitClearVariableExpression_ADDR(), EmitClearVariableExpression_stub);
+			EmitAssignmentStatement_hook.create(game::EmitAssignmentStatement_ADDR(), EmitAssignmentStatement_stub);
+			EmitCallExpressionStatement_hook.create(game::EmitCallExpressionStatement_ADDR(), EmitCallExpressionStatement_stub);
+			EmitReturnStatement_hook.create(game::EmitReturnStatement_ADDR(), EmitReturnStatement_stub);
+			EmitWaitStatement_hook.create(game::EmitWaitStatement_ADDR(), EmitWaitStatement_stub);
+			EmitWaittillFrameEnd_hook.create(game::EmitWaittillFrameEnd_ADDR(), EmitWaittillFrameEnd_stub);
+			EmitIfStatement_hook.create(game::EmitIfStatement_ADDR(), EmitIfStatement_stub);
+			Scr_CalcLocalVarsIfStatement_hook.create(game::Scr_CalcLocalVarsIfStatement.get(), Scr_CalcLocalVarsIfStatement_stub);
+			EmitIfElseStatement_hook.create(game::EmitIfElseStatement.get(), EmitIfElseStatement_stub);
+			Scr_CalcLocalVarsIfElseStatement_hook.create(game::Scr_CalcLocalVarsIfElseStatement.get(), Scr_CalcLocalVarsIfElseStatement_stub);
+			Scr_AddBreakBlock_hook.create(game::Scr_AddBreakBlock_ADDR(), Scr_AddBreakBlock_stub);
+			Scr_AddContinueBlock_hook.create(game::Scr_AddContinueBlock_ADDR(), Scr_AddContinueBlock_stub);
+			EmitWhileStatement_hook.create(game::EmitWhileStatement.get(), EmitWhileStatement_stub);
+			Scr_CalcLocalVarsWhileStatement_hook.create(game::Scr_CalcLocalVarsWhileStatement.get(), Scr_CalcLocalVarsWhileStatement_stub);
+			EmitForStatement_hook.create(game::EmitForStatement.get(), EmitForStatement_stub);
+			Scr_CalcLocalVarsForStatement_hook.create(game::Scr_CalcLocalVarsForStatement.get(), Scr_CalcLocalVarsForStatement_stub);
+			EmitIncStatement_hook.create(game::EmitIncStatement_ADDR(), EmitIncStatement_stub);
+			EmitDecStatement_hook.create(game::EmitDecStatement_ADDR(), EmitDecStatement_stub);
+			Scr_CalcLocalVarsFormalParameterListInternal_hook.create(game::Scr_CalcLocalVarsFormalParameterListInternal_ADDR(), Scr_CalcLocalVarsFormalParameterListInternal_stub);
+			EmitWaittillStatement_hook.create(game::EmitWaittillStatement_ADDR(), EmitWaittillStatement_stub);
+			EmitWaittillmatchStatement_hook.create(game::EmitWaittillmatchStatement_ADDR(), EmitWaittillmatchStatement_stub);
+			EmitNotifyStatement_hook.create(game::EmitNotifyStatement_ADDR(), EmitNotifyStatement_stub);
+			EmitEndOnStatement_hook.create(game::EmitEndOnStatement_ADDR(), EmitEndOnStatement_stub);
+			CompareCaseInfo_hook.create(game::CompareCaseInfo.get(), CompareCaseInfo_stub);
+			EmitCaseStatement_hook.create(game::EmitCaseStatement_ADDR(), EmitCaseStatement_stub);
+			EmitSwitchStatementList_hook.create(game::EmitSwitchStatementList.get(), EmitSwitchStatementList_stub);
+			Scr_CalcLocalVarsSwitchStatement_hook.create(game::Scr_CalcLocalVarsSwitchStatement.get(), Scr_CalcLocalVarsSwitchStatement_stub);
+			EmitSwitchStatement_hook.create(game::EmitSwitchStatement.get(), EmitSwitchStatement_stub);
+			EmitCaseStatementInfo_hook.create(game::EmitCaseStatementInfo_ADDR(), EmitCaseStatementInfo_stub);
+			EmitBreakStatement_hook.create(game::EmitBreakStatement_ADDR(), EmitBreakStatement_stub);
+			EmitContinueStatement_hook.create(game::EmitContinueStatement_ADDR(), EmitContinueStatement_stub);
+			EmitProfStatement_hook.create(game::EmitProfStatement_ADDR(), EmitProfStatement_stub);
+			EmitStatement_hook.create(game::EmitStatement.get(), EmitStatement_stub);
+			Scr_CalcLocalVarsStatement_hook.create(game::Scr_CalcLocalVarsStatement.get(), Scr_CalcLocalVarsStatement_stub);
+			EmitStatementList_hook.create(game::EmitStatementList.get(), EmitStatementList_stub);
+			Scr_CalcLocalVarsStatementList_hook.create(game::Scr_CalcLocalVarsStatementList_ADDR(), Scr_CalcLocalVarsStatementList_stub);
+			Scr_CalcLocalVarsDeveloperStatementList_hook.create(game::Scr_CalcLocalVarsDeveloperStatementList.get(), Scr_CalcLocalVarsDeveloperStatementList_stub);
+			EmitDeveloperStatementList_hook.create(game::EmitDeveloperStatementList.get(), EmitDeveloperStatementList_stub);
+			EmitFormalParameterList_hook.create(game::EmitFormalParameterList_ADDR(), EmitFormalParameterList_stub);
+			SpecifyThread_hook.create(game::SpecifyThread_ADDR(), SpecifyThread_stub);
+			EmitThreadInternal_hook.create(game::EmitThreadInternal_ADDR(), EmitThreadInternal_stub);
+			Scr_CalcLocalVarsThread_hook.create(game::Scr_CalcLocalVarsThread_ADDR(), Scr_CalcLocalVarsThread_stub);
+			InitThread_hook.create(game::InitThread_ADDR(), InitThread_stub);
+			EmitNormalThread_hook.create(game::EmitNormalThread_ADDR(), EmitNormalThread_stub);
+			EmitDeveloperThread_hook.create(game::EmitDeveloperThread_ADDR(), EmitDeveloperThread_stub);
+			EmitThread_hook.create(game::EmitThread_ADDR(), EmitThread_stub);
+			EmitThreadList_hook.create(game::EmitThreadList.get(), EmitThreadList_stub);
+			EmitInclude_hook.create(game::EmitInclude_ADDR(), EmitInclude_stub);
+			ScriptCompile_hook.create(game::ScriptCompile_ADDR(), ScriptCompile_stub);
 
-			RemoveRefToValue_hook.create(game::RemoveRefToValue.get(), RemoveRefToValue_stub, quick);
-			Scr_CompileRemoveRefToString_hook.create(game::Scr_CompileRemoveRefToString_ADDR(), Scr_CompileRemoveRefToString_stub, quick);
-			EmitCanonicalString_hook.create(game::EmitCanonicalString_ADDR(), EmitCanonicalString_stub, quick);
-			CompileTransferRefToString_hook.create(game::CompileTransferRefToString_ADDR(), CompileTransferRefToString_stub, quick);
-			EmitOpcode_hook.create(game::EmitOpcode.get(), EmitOpcode_stub, quick);
-			EmitEnd_hook.create(game::EmitEnd_ADDR(), EmitEnd_stub, quick);
-			EmitReturn_hook.create(game::EmitReturn_ADDR(), EmitReturn_stub, quick);
-			EmitCodepos_hook.create(game::EmitCodepos_ADDR(), EmitCodepos_stub, quick);
-			EmitShort_hook.create(game::EmitShort_ADDR(), EmitShort_stub, quick);
-			EmitByte_hook.create(game::EmitByte_ADDR(), EmitByte_stub, quick);
-			EmitGetInteger_hook.create(game::EmitGetInteger_ADDR(), EmitGetInteger_stub, quick);
-			EmitGetFloat_hook.create(game::EmitGetFloat_ADDR(), EmitGetFloat_stub, quick);
-			EmitAnimTree_hook.create(game::EmitAnimTree_ADDR(), EmitAnimTree_stub, quick);
-			Scr_FindLocalVarIndex_hook.create(game::Scr_FindLocalVarIndex.get(), Scr_FindLocalVarIndex_stub, quick);
-			EmitCreateLocalVars_hook.create(game::EmitCreateLocalVars.get(), EmitCreateLocalVars_stub, quick);
-			EmitRemoveLocalVars_hook.create(game::EmitRemoveLocalVars_ADDR(), EmitRemoveLocalVars_stub, quick);
-			EmitNOP2_hook.create(game::EmitNOP2_ADDR(), EmitNOP2_stub, quick);
-			Scr_InitFromChildBlocks_hook.create(game::Scr_InitFromChildBlocks.get(), Scr_InitFromChildBlocks_stub, quick);
-			Scr_AppendChildBlocks_hook.create(game::Scr_AppendChildBlocks_ADDR(), Scr_AppendChildBlocks_stub, quick);
-			Scr_MergeChildBlocks_hook.create(game::Scr_MergeChildBlocks.get(), Scr_MergeChildBlocks_stub, quick);
-			Scr_TransferBlock_hook.create(game::Scr_TransferBlock_ADDR(), Scr_TransferBlock_stub, quick);
-			EmitSafeSetVariableField_hook.create(game::EmitSafeSetVariableField_ADDR(), EmitSafeSetVariableField_stub, quick);
-			EmitSafeSetWaittillVariableField_hook.create(game::EmitSafeSetWaittillVariableField_ADDR(), EmitSafeSetWaittillVariableField_stub, quick);
-			EmitGetString_hook.create(game::EmitGetString_ADDR(), EmitGetString_stub, quick);
-			EmitGetIString_hook.create(game::EmitGetIString_ADDR(), EmitGetIString_stub, quick);
-			EmitGetVector_hook.create(game::EmitGetVector_ADDR(), EmitGetVector_stub, quick);
-			EmitValue_hook.create(game::EmitValue.get(), EmitValue_stub, quick);
-			Scr_PushValue_hook.create(game::Scr_PushValue_ADDR(), Scr_PushValue_stub, quick);
-			EmitCastBool_hook.create(game::EmitCastBool_ADDR(), EmitCastBool_stub, quick);
-			EmitBoolNot_hook.create(game::EmitBoolNot_ADDR(), EmitBoolNot_stub, quick);
-			EmitBoolComplement_hook.create(game::EmitBoolComplement_ADDR(), EmitBoolComplement_stub, quick);
-			EmitSize_hook.create(game::EmitSize_ADDR(), EmitSize_stub, quick);
-			EmitSelf_hook.create(game::EmitSelf_ADDR(), EmitSelf_stub, quick);
-			EmitLevel_hook.create(game::EmitLevel_ADDR(), EmitLevel_stub, quick);
-			EmitGame_hook.create(game::EmitGame_ADDR(), EmitGame_stub, quick);
-			EmitAnim_hook.create(game::EmitAnim_ADDR(), EmitAnim_stub, quick);
-			EmitSelfObject_hook.create(game::EmitSelfObject_ADDR(), EmitSelfObject_stub, quick);
-			EmitLevelObject_hook.create(game::EmitLevelObject_ADDR(), EmitLevelObject_stub, quick);
-			EmitAnimObject_hook.create(game::EmitAnimObject_ADDR(), EmitAnimObject_stub, quick);
-			EmitLocalVariable_hook.create(game::EmitLocalVariable_ADDR(), EmitLocalVariable_stub, quick);
-			EmitLocalVariableRef_hook.create(game::EmitLocalVariableRef_ADDR(), EmitLocalVariableRef_stub, quick);
-			Scr_RegisterLocalVar_hook.create(game::Scr_RegisterLocalVar.get(), Scr_RegisterLocalVar_stub, quick);
-			EmitGameRef_hook.create(game::EmitGameRef_ADDR(), EmitGameRef_stub, quick);
-			EmitClearArray_hook.create(game::EmitClearArray_ADDR(), EmitClearArray_stub, quick);
-			EmitEmptyArray_hook.create(game::EmitEmptyArray_ADDR(), EmitEmptyArray_stub, quick);
-			EmitAnimation_hook.create(game::EmitAnimation_ADDR(), EmitAnimation_stub, quick);
-			EmitFieldVariable_hook.create(game::EmitFieldVariable_ADDR(), EmitFieldVariable_stub, quick);
-			EmitClearFieldVariable_hook.create(game::EmitClearFieldVariable_ADDR(), EmitClearFieldVariable_stub, quick);
-			EmitObject_hook.create(game::EmitObject_ADDR(), EmitObject_stub, quick);
-			EmitDecTop_hook.create(game::EmitDecTop_ADDR(), EmitDecTop_stub, quick);
-			EmitCastFieldObject_hook.create(game::EmitCastFieldObject.get(), EmitCastFieldObject_stub, quick);
-			EmitArrayVariable_hook.create(game::EmitArrayVariable_ADDR(), EmitArrayVariable_stub, quick);
-			EmitArrayVariableRef_hook.create(game::EmitArrayVariableRef_ADDR(), EmitArrayVariableRef_stub, quick);
-			EmitClearArrayVariable_hook.create(game::EmitClearArrayVariable_ADDR(), EmitClearArrayVariable_stub, quick);
-			EmitVariableExpression_hook.create(game::EmitVariableExpression.get(), EmitVariableExpression_stub, quick);
-			EmitExpressionList_hook.create(game::EmitExpressionList.get(), EmitExpressionList_stub, quick);
-			AddExpressionListOpcodePos_hook.create(game::AddExpressionListOpcodePos_ADDR(), AddExpressionListOpcodePos_stub, quick);
-			AddFilePrecache_hook.create(game::AddFilePrecache_ADDR(), AddFilePrecache_stub, quick);
-			EmitFunction_hook.create(game::EmitFunction_ADDR(), EmitFunction_stub, quick);
-			EmitGetFunction_hook.create(game::EmitGetFunction_ADDR(), EmitGetFunction_stub, quick);
-			AddFunction_hook.create(game::AddFunction.get(), AddFunction_stub, quick);
-			EmitPostScriptFunction_hook.create(game::EmitPostScriptFunction.get(), EmitPostScriptFunction_stub, quick);
-			EmitPostScriptFunctionPointer_hook.create(game::EmitPostScriptFunctionPointer_ADDR(), EmitPostScriptFunctionPointer_stub, quick);
-			EmitPostScriptThread_hook.create(game::EmitPostScriptThread_ADDR(), EmitPostScriptThread_stub, quick);
-			EmitPostScriptThreadPointer_hook.create(game::EmitPostScriptThreadPointer_ADDR(), EmitPostScriptThreadPointer_stub, quick);
-			EmitPostScriptFunctionCall_hook.create(game::EmitPostScriptFunctionCall_ADDR(), EmitPostScriptFunctionCall_stub, quick);
-			EmitPostScriptThreadCall_hook.create(game::EmitPostScriptThreadCall_ADDR(), EmitPostScriptThreadCall_stub, quick);
-			EmitPreFunctionCall_hook.create(game::EmitPreFunctionCall_ADDR(), EmitPreFunctionCall_stub, quick);
-			EmitPostFunctionCall_hook.create(game::EmitPostFunctionCall_ADDR(), EmitPostFunctionCall_stub, quick);
-			Scr_BeginDevScript_hook.create(game::Scr_BeginDevScript_ADDR(), Scr_BeginDevScript_stub, quick);
-			Scr_EndDevScript_hook.create(game::Scr_EndDevScript_ADDR(), Scr_EndDevScript_stub, quick);
-			EmitCallBuiltinOpcode_hook.create(game::EmitCallBuiltinOpcode_ADDR(), EmitCallBuiltinOpcode_stub, quick);
-			EmitCallBuiltinMethodOpcode_hook.create(game::EmitCallBuiltinMethodOpcode_ADDR(), EmitCallBuiltinMethodOpcode_stub, quick);
-			EmitCall_hook.create(game::EmitCall_ADDR(), EmitCall_stub, quick);
-			EmitMethod_hook.create(game::EmitMethod.get(), EmitMethod_stub, quick);
-			LinkThread_hook.create(game::LinkThread_ADDR(), LinkThread_stub, quick);
-			LinkFile_hook.create(game::LinkFile_ADDR(), LinkFile_stub, quick);
-			CheckThreadPosition_hook.create(game::CheckThreadPosition.get(), CheckThreadPosition_stub, quick);
-			EmitCallExpression_hook.create(game::EmitCallExpression_ADDR(), EmitCallExpression_stub, quick);
-			EmitCallExpressionFieldObject_hook.create(game::EmitCallExpressionFieldObject_ADDR(), EmitCallExpressionFieldObject_stub, quick);
-			Scr_CreateVector_hook.create(game::Scr_CreateVector_ADDR(), Scr_CreateVector_stub, quick);
-			EvalPrimitiveExpressionList_hook.create(game::EvalPrimitiveExpressionList.get(), EvalPrimitiveExpressionList_stub, quick);
-			EmitOrEvalPrimitiveExpressionList_hook.create(game::EmitOrEvalPrimitiveExpressionList_ADDR(), EmitOrEvalPrimitiveExpressionList_stub, quick);
-			EmitExpressionListFieldObject_hook.create(game::EmitExpressionListFieldObject_ADDR(), EmitExpressionListFieldObject_stub, quick);
-			EvalPrimitiveExpression_hook.create(game::EvalPrimitiveExpression.get(), EvalPrimitiveExpression_stub, quick);
-			EmitOrEvalPrimitiveExpression_hook.create(game::EmitOrEvalPrimitiveExpression.get(), EmitOrEvalPrimitiveExpression_stub, quick);
-			EmitBoolOrExpression_hook.create(game::EmitBoolOrExpression_ADDR(), EmitBoolOrExpression_stub, quick);
-			EmitBoolAndExpression_hook.create(game::EmitBoolAndExpression_ADDR(), EmitBoolAndExpression_stub, quick);
-			EvalBinaryOperatorExpression_hook.create(game::EvalBinaryOperatorExpression.get(), EvalBinaryOperatorExpression_stub, quick);
-			EmitOrEvalBinaryOperatorExpression_hook.create(game::EmitOrEvalBinaryOperatorExpression_ADDR(), EmitOrEvalBinaryOperatorExpression_stub, quick);
-			EmitBinaryEqualsOperatorExpression_hook.create(game::EmitBinaryEqualsOperatorExpression_ADDR(), EmitBinaryEqualsOperatorExpression_stub, quick);
-			Scr_CalcLocalVarsVariableExpressionRef_hook.create(game::Scr_CalcLocalVarsVariableExpressionRef_ADDR(), Scr_CalcLocalVarsVariableExpressionRef_stub, quick);
-			EvalExpression_hook.create(game::EvalExpression_ADDR(), EvalExpression_stub, quick);
-			EmitOrEvalExpression_hook.create(game::EmitOrEvalExpression.get(), EmitOrEvalExpression_stub, quick);
-			EmitExpression_hook.create(game::EmitExpression.get(), EmitExpression_stub, quick);
-			EmitVariableExpressionRef_hook.create(game::EmitVariableExpressionRef.get(), EmitVariableExpressionRef_stub, quick);
-			EmitArrayPrimitiveExpressionRef_hook.create(game::EmitArrayPrimitiveExpressionRef_ADDR(), EmitArrayPrimitiveExpressionRef_stub, quick);
-			Scr_CalcLocalVarsArrayVariableRef_hook.create(game::Scr_CalcLocalVarsArrayVariableRef.get(), Scr_CalcLocalVarsArrayVariableRef_stub, quick);
-			EmitPrimitiveExpressionFieldObject_hook.create(game::EmitPrimitiveExpressionFieldObject.get(), EmitPrimitiveExpressionFieldObject_stub, quick);
-			ConnectBreakStatements_hook.create(game::ConnectBreakStatements_ADDR(), ConnectBreakStatements_stub, quick);
-			ConnectContinueStatements_hook.create(game::ConnectContinueStatements_ADDR(), ConnectContinueStatements_stub, quick);
-			EmitClearVariableExpression_hook.create(game::EmitClearVariableExpression_ADDR(), EmitClearVariableExpression_stub, quick);
-			EmitAssignmentStatement_hook.create(game::EmitAssignmentStatement_ADDR(), EmitAssignmentStatement_stub, quick);
-			EmitCallExpressionStatement_hook.create(game::EmitCallExpressionStatement_ADDR(), EmitCallExpressionStatement_stub, quick);
-			EmitReturnStatement_hook.create(game::EmitReturnStatement_ADDR(), EmitReturnStatement_stub, quick);
-			EmitWaitStatement_hook.create(game::EmitWaitStatement_ADDR(), EmitWaitStatement_stub, quick);
-			EmitWaittillFrameEnd_hook.create(game::EmitWaittillFrameEnd_ADDR(), EmitWaittillFrameEnd_stub, quick);
-			EmitIfStatement_hook.create(game::EmitIfStatement_ADDR(), EmitIfStatement_stub, quick);
-			Scr_CalcLocalVarsIfStatement_hook.create(game::Scr_CalcLocalVarsIfStatement.get(), Scr_CalcLocalVarsIfStatement_stub, quick);
-			EmitIfElseStatement_hook.create(game::EmitIfElseStatement.get(), EmitIfElseStatement_stub, quick);
-			Scr_CalcLocalVarsIfElseStatement_hook.create(game::Scr_CalcLocalVarsIfElseStatement.get(), Scr_CalcLocalVarsIfElseStatement_stub, quick);
-			Scr_AddBreakBlock_hook.create(game::Scr_AddBreakBlock_ADDR(), Scr_AddBreakBlock_stub, quick);
-			Scr_AddContinueBlock_hook.create(game::Scr_AddContinueBlock_ADDR(), Scr_AddContinueBlock_stub, quick);
-			EmitWhileStatement_hook.create(game::EmitWhileStatement.get(), EmitWhileStatement_stub, quick);
-			Scr_CalcLocalVarsWhileStatement_hook.create(game::Scr_CalcLocalVarsWhileStatement.get(), Scr_CalcLocalVarsWhileStatement_stub, quick);
-			EmitForStatement_hook.create(game::EmitForStatement.get(), EmitForStatement_stub, quick);
-			Scr_CalcLocalVarsForStatement_hook.create(game::Scr_CalcLocalVarsForStatement.get(), Scr_CalcLocalVarsForStatement_stub, quick);
-			EmitIncStatement_hook.create(game::EmitIncStatement_ADDR(), EmitIncStatement_stub, quick);
-			EmitDecStatement_hook.create(game::EmitDecStatement_ADDR(), EmitDecStatement_stub, quick);
-			Scr_CalcLocalVarsFormalParameterListInternal_hook.create(game::Scr_CalcLocalVarsFormalParameterListInternal_ADDR(), Scr_CalcLocalVarsFormalParameterListInternal_stub, quick);
-			EmitWaittillStatement_hook.create(game::EmitWaittillStatement_ADDR(), EmitWaittillStatement_stub, quick);
-			EmitWaittillmatchStatement_hook.create(game::EmitWaittillmatchStatement_ADDR(), EmitWaittillmatchStatement_stub, quick);
-			EmitNotifyStatement_hook.create(game::EmitNotifyStatement_ADDR(), EmitNotifyStatement_stub, quick);
-			EmitEndOnStatement_hook.create(game::EmitEndOnStatement_ADDR(), EmitEndOnStatement_stub, quick);
-			CompareCaseInfo_hook.create(game::CompareCaseInfo.get(), CompareCaseInfo_stub, quick);
-			EmitCaseStatement_hook.create(game::EmitCaseStatement_ADDR(), EmitCaseStatement_stub, quick);
-			EmitSwitchStatementList_hook.create(game::EmitSwitchStatementList.get(), EmitSwitchStatementList_stub, quick);
-			Scr_CalcLocalVarsSwitchStatement_hook.create(game::Scr_CalcLocalVarsSwitchStatement.get(), Scr_CalcLocalVarsSwitchStatement_stub, quick);
-			EmitSwitchStatement_hook.create(game::EmitSwitchStatement.get(), EmitSwitchStatement_stub, quick);
-			EmitCaseStatementInfo_hook.create(game::EmitCaseStatementInfo_ADDR(), EmitCaseStatementInfo_stub, quick);
-			EmitBreakStatement_hook.create(game::EmitBreakStatement_ADDR(), EmitBreakStatement_stub, quick);
-			EmitContinueStatement_hook.create(game::EmitContinueStatement_ADDR(), EmitContinueStatement_stub, quick);
-			EmitProfStatement_hook.create(game::EmitProfStatement_ADDR(), EmitProfStatement_stub, quick);
-			EmitStatement_hook.create(game::EmitStatement.get(), EmitStatement_stub, quick);
-			Scr_CalcLocalVarsStatement_hook.create(game::Scr_CalcLocalVarsStatement.get(), Scr_CalcLocalVarsStatement_stub, quick);
-			EmitStatementList_hook.create(game::EmitStatementList.get(), EmitStatementList_stub, quick);
-			Scr_CalcLocalVarsStatementList_hook.create(game::Scr_CalcLocalVarsStatementList_ADDR(), Scr_CalcLocalVarsStatementList_stub, quick);
-			Scr_CalcLocalVarsDeveloperStatementList_hook.create(game::Scr_CalcLocalVarsDeveloperStatementList.get(), Scr_CalcLocalVarsDeveloperStatementList_stub, quick);
-			EmitDeveloperStatementList_hook.create(game::EmitDeveloperStatementList.get(), EmitDeveloperStatementList_stub, quick);
-			EmitFormalParameterList_hook.create(game::EmitFormalParameterList_ADDR(), EmitFormalParameterList_stub, quick);
-			SpecifyThread_hook.create(game::SpecifyThread_ADDR(), SpecifyThread_stub, quick);
-			EmitThreadInternal_hook.create(game::EmitThreadInternal_ADDR(), EmitThreadInternal_stub, quick);
-			Scr_CalcLocalVarsThread_hook.create(game::Scr_CalcLocalVarsThread_ADDR(), Scr_CalcLocalVarsThread_stub, quick);
-			InitThread_hook.create(game::InitThread_ADDR(), InitThread_stub, quick);
-			EmitNormalThread_hook.create(game::EmitNormalThread_ADDR(), EmitNormalThread_stub, quick);
-			EmitDeveloperThread_hook.create(game::EmitDeveloperThread_ADDR(), EmitDeveloperThread_stub, quick);
-			EmitThread_hook.create(game::EmitThread_ADDR(), EmitThread_stub, quick);
-			EmitThreadList_hook.create(game::EmitThreadList.get(), EmitThreadList_stub, quick);
-			EmitInclude_hook.create(game::EmitInclude_ADDR(), EmitInclude_stub, quick);
-			ScriptCompile_hook.create(game::ScriptCompile_ADDR(), ScriptCompile_stub, quick);
+			//Original hook function addresses
+			RemoveRefToValue_original = RemoveRefToValue_hook.get_original();
+			Scr_CompileRemoveRefToString_original = Scr_CompileRemoveRefToString_hook.get_original();
+			EmitCanonicalString_original = EmitCanonicalString_hook.get_original();
+			CompileTransferRefToString_original = CompileTransferRefToString_hook.get_original();
+			EmitOpcode_original = EmitOpcode_hook.get_original();
+			EmitEnd_original = EmitEnd_hook.get_original();
+			EmitReturn_original = EmitReturn_hook.get_original();
+			EmitCodepos_original = EmitCodepos_hook.get_original();
+			EmitShort_original = EmitShort_hook.get_original();
+			EmitByte_original = EmitByte_hook.get_original();
+			EmitGetInteger_original = EmitGetInteger_hook.get_original();
+			EmitGetFloat_original = EmitGetFloat_hook.get_original();
+			EmitAnimTree_original = EmitAnimTree_hook.get_original();
+			Scr_FindLocalVarIndex_original = Scr_FindLocalVarIndex_hook.get_original();
+			EmitCreateLocalVars_original = EmitCreateLocalVars_hook.get_original();
+			EmitRemoveLocalVars_original = EmitRemoveLocalVars_hook.get_original();
+			EmitNOP2_original = EmitNOP2_hook.get_original();
+			Scr_InitFromChildBlocks_original = Scr_InitFromChildBlocks_hook.get_original();
+			Scr_AppendChildBlocks_original = Scr_AppendChildBlocks_hook.get_original();
+			Scr_MergeChildBlocks_original = Scr_MergeChildBlocks_hook.get_original();
+			Scr_TransferBlock_original = Scr_TransferBlock_hook.get_original();
+			EmitSafeSetVariableField_original = EmitSafeSetVariableField_hook.get_original();
+			EmitSafeSetWaittillVariableField_original = EmitSafeSetWaittillVariableField_hook.get_original();
+			EmitGetString_original = EmitGetString_hook.get_original();
+			EmitGetIString_original = EmitGetIString_hook.get_original();
+			EmitGetVector_original = EmitGetVector_hook.get_original();
+			EmitValue_original = EmitValue_hook.get_original();
+			Scr_PushValue_original = Scr_PushValue_hook.get_original();
+			EmitCastBool_original = EmitCastBool_hook.get_original();
+			EmitBoolNot_original = EmitBoolNot_hook.get_original();
+			EmitBoolComplement_original = EmitBoolComplement_hook.get_original();
+			EmitSize_original = EmitSize_hook.get_original();
+			EmitSelf_original = EmitSelf_hook.get_original();
+			EmitLevel_original = EmitLevel_hook.get_original();
+			EmitGame_original = EmitGame_hook.get_original();
+			EmitAnim_original = EmitAnim_hook.get_original();
+			EmitSelfObject_original = EmitSelfObject_hook.get_original();
+			EmitLevelObject_original = EmitLevelObject_hook.get_original();
+			EmitAnimObject_original = EmitAnimObject_hook.get_original();
+			EmitLocalVariable_original = EmitLocalVariable_hook.get_original();
+			EmitLocalVariableRef_original = EmitLocalVariableRef_hook.get_original();
+			Scr_RegisterLocalVar_original = Scr_RegisterLocalVar_hook.get_original();
+			EmitGameRef_original = EmitGameRef_hook.get_original();
+			EmitClearArray_original = EmitClearArray_hook.get_original();
+			EmitEmptyArray_original = EmitEmptyArray_hook.get_original();
+			EmitAnimation_original = EmitAnimation_hook.get_original();
+			EmitFieldVariable_original = EmitFieldVariable_hook.get_original();
+			EmitClearFieldVariable_original = EmitClearFieldVariable_hook.get_original();
+			EmitObject_original = EmitObject_hook.get_original();
+			EmitDecTop_original = EmitDecTop_hook.get_original();
+			EmitCastFieldObject_original = EmitCastFieldObject_hook.get_original();
+			EmitArrayVariable_original = EmitArrayVariable_hook.get_original();
+			EmitArrayVariableRef_original = EmitArrayVariableRef_hook.get_original();
+			EmitClearArrayVariable_original = EmitClearArrayVariable_hook.get_original();
+			EmitVariableExpression_original = EmitVariableExpression_hook.get_original();
+			EmitExpressionList_original = EmitExpressionList_hook.get_original();
+			AddExpressionListOpcodePos_original = AddExpressionListOpcodePos_hook.get_original();
+			AddFilePrecache_original = AddFilePrecache_hook.get_original();
+			EmitFunction_original = EmitFunction_hook.get_original();
+			EmitGetFunction_original = EmitGetFunction_hook.get_original();
+			AddFunction_original = AddFunction_hook.get_original();
+			EmitPostScriptFunction_original = EmitPostScriptFunction_hook.get_original();
+			EmitPostScriptFunctionPointer_original = EmitPostScriptFunctionPointer_hook.get_original();
+			EmitPostScriptThread_original = EmitPostScriptThread_hook.get_original();
+			EmitPostScriptThreadPointer_original = EmitPostScriptThreadPointer_hook.get_original();
+			EmitPostScriptFunctionCall_original = EmitPostScriptFunctionCall_hook.get_original();
+			EmitPostScriptThreadCall_original = EmitPostScriptThreadCall_hook.get_original();
+			EmitPreFunctionCall_original = EmitPreFunctionCall_hook.get_original();
+			EmitPostFunctionCall_original = EmitPostFunctionCall_hook.get_original();
+			Scr_BeginDevScript_original = Scr_BeginDevScript_hook.get_original();
+			Scr_EndDevScript_original = Scr_EndDevScript_hook.get_original();
+			EmitCallBuiltinOpcode_original = EmitCallBuiltinOpcode_hook.get_original();
+			EmitCallBuiltinMethodOpcode_original = EmitCallBuiltinMethodOpcode_hook.get_original();
+			EmitCall_original = EmitCall_hook.get_original();
+			EmitMethod_original = EmitMethod_hook.get_original();
+			LinkThread_original = LinkThread_hook.get_original();
+			LinkFile_original = LinkFile_hook.get_original();
+			CheckThreadPosition_original = CheckThreadPosition_hook.get_original();
+			EmitCallExpression_original = EmitCallExpression_hook.get_original();
+			EmitCallExpressionFieldObject_original = EmitCallExpressionFieldObject_hook.get_original();
+			Scr_CreateVector_original = Scr_CreateVector_hook.get_original();
+			EvalPrimitiveExpressionList_original = EvalPrimitiveExpressionList_hook.get_original();
+			EmitOrEvalPrimitiveExpressionList_original = EmitOrEvalPrimitiveExpressionList_hook.get_original();
+			EmitExpressionListFieldObject_original = EmitExpressionListFieldObject_hook.get_original();
+			EvalPrimitiveExpression_original = EvalPrimitiveExpression_hook.get_original();
+			EmitOrEvalPrimitiveExpression_original = EmitOrEvalPrimitiveExpression_hook.get_original();
+			EmitBoolOrExpression_original = EmitBoolOrExpression_hook.get_original();
+			EmitBoolAndExpression_original = EmitBoolAndExpression_hook.get_original();
+			EvalBinaryOperatorExpression_original = EvalBinaryOperatorExpression_hook.get_original();
+			EmitOrEvalBinaryOperatorExpression_original = EmitOrEvalBinaryOperatorExpression_hook.get_original();
+			EmitBinaryEqualsOperatorExpression_original = EmitBinaryEqualsOperatorExpression_hook.get_original();
+			Scr_CalcLocalVarsVariableExpressionRef_original = Scr_CalcLocalVarsVariableExpressionRef_hook.get_original();
+			EvalExpression_original = EvalExpression_hook.get_original();
+			EmitOrEvalExpression_original = EmitOrEvalExpression_hook.get_original();
+			EmitExpression_original = EmitExpression_hook.get_original();
+			EmitVariableExpressionRef_original = EmitVariableExpressionRef_hook.get_original();
+			EmitArrayPrimitiveExpressionRef_original = EmitArrayPrimitiveExpressionRef_hook.get_original();
+			Scr_CalcLocalVarsArrayVariableRef_original = Scr_CalcLocalVarsArrayVariableRef_hook.get_original();
+			EmitPrimitiveExpressionFieldObject_original = EmitPrimitiveExpressionFieldObject_hook.get_original();
+			ConnectBreakStatements_original = ConnectBreakStatements_hook.get_original();
+			ConnectContinueStatements_original = ConnectContinueStatements_hook.get_original();
+			EmitClearVariableExpression_original = EmitClearVariableExpression_hook.get_original();
+			EmitAssignmentStatement_original = EmitAssignmentStatement_hook.get_original();
+			EmitCallExpressionStatement_original = EmitCallExpressionStatement_hook.get_original();
+			EmitReturnStatement_original = EmitReturnStatement_hook.get_original();
+			EmitWaitStatement_original = EmitWaitStatement_hook.get_original();
+			EmitWaittillFrameEnd_original = EmitWaittillFrameEnd_hook.get_original();
+			EmitIfStatement_original = EmitIfStatement_hook.get_original();
+			Scr_CalcLocalVarsIfStatement_original = Scr_CalcLocalVarsIfStatement_hook.get_original();
+			EmitIfElseStatement_original = EmitIfElseStatement_hook.get_original();
+			Scr_CalcLocalVarsIfElseStatement_original = Scr_CalcLocalVarsIfElseStatement_hook.get_original();
+			Scr_AddBreakBlock_original = Scr_AddBreakBlock_hook.get_original();
+			Scr_AddContinueBlock_original = Scr_AddContinueBlock_hook.get_original();
+			EmitWhileStatement_original = EmitWhileStatement_hook.get_original();
+			Scr_CalcLocalVarsWhileStatement_original = Scr_CalcLocalVarsWhileStatement_hook.get_original();
+			EmitForStatement_original = EmitForStatement_hook.get_original();
+			Scr_CalcLocalVarsForStatement_original = Scr_CalcLocalVarsForStatement_hook.get_original();
+			EmitIncStatement_original = EmitIncStatement_hook.get_original();
+			EmitDecStatement_original = EmitDecStatement_hook.get_original();
+			Scr_CalcLocalVarsFormalParameterListInternal_original = Scr_CalcLocalVarsFormalParameterListInternal_hook.get_original();
+			EmitWaittillStatement_original = EmitWaittillStatement_hook.get_original();
+			EmitWaittillmatchStatement_original = EmitWaittillmatchStatement_hook.get_original();
+			EmitNotifyStatement_original = EmitNotifyStatement_hook.get_original();
+			EmitEndOnStatement_original = EmitEndOnStatement_hook.get_original();
+			CompareCaseInfo_original = CompareCaseInfo_hook.get_original();
+			EmitCaseStatement_original = EmitCaseStatement_hook.get_original();
+			EmitSwitchStatementList_original = EmitSwitchStatementList_hook.get_original();
+			Scr_CalcLocalVarsSwitchStatement_original = Scr_CalcLocalVarsSwitchStatement_hook.get_original();
+			EmitSwitchStatement_original = EmitSwitchStatement_hook.get_original();
+			EmitCaseStatementInfo_original = EmitCaseStatementInfo_hook.get_original();
+			EmitBreakStatement_original = EmitBreakStatement_hook.get_original();
+			EmitContinueStatement_original = EmitContinueStatement_hook.get_original();
+			EmitProfStatement_original = EmitProfStatement_hook.get_original();
+			EmitStatement_original = EmitStatement_hook.get_original();
+			Scr_CalcLocalVarsStatement_original = Scr_CalcLocalVarsStatement_hook.get_original();
+			EmitStatementList_original = EmitStatementList_hook.get_original();
+			Scr_CalcLocalVarsStatementList_original = Scr_CalcLocalVarsStatementList_hook.get_original();
+			Scr_CalcLocalVarsDeveloperStatementList_original = Scr_CalcLocalVarsDeveloperStatementList_hook.get_original();
+			EmitDeveloperStatementList_original = EmitDeveloperStatementList_hook.get_original();
+			EmitFormalParameterList_original = EmitFormalParameterList_hook.get_original();
+			SpecifyThread_original = SpecifyThread_hook.get_original();
+			EmitThreadInternal_original = EmitThreadInternal_hook.get_original();
+			Scr_CalcLocalVarsThread_original = Scr_CalcLocalVarsThread_hook.get_original();
+			InitThread_original = InitThread_hook.get_original();
+			EmitNormalThread_original = EmitNormalThread_hook.get_original();
+			EmitDeveloperThread_original = EmitDeveloperThread_hook.get_original();
+			EmitThread_original = EmitThread_hook.get_original();
+			EmitThreadList_original = EmitThreadList_hook.get_original();
+			EmitInclude_original = EmitInclude_hook.get_original();
+			ScriptCompile_original = ScriptCompile_hook.get_original();
 		}
 
 	private:

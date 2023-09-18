@@ -9,13 +9,16 @@ namespace re_cscr_readwrite
 	utils::hook::detour FindVariableIndexInternal2_hook;
 	utils::hook::detour FindLastSibling_hook;
 
+	void* FindVariableIndexInternal2_original;
+	void* FindLastSibling_original;
+
 	namespace
 	{
 
 		unsigned int FindVariableIndexInternal2_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, unsigned int name, unsigned int index)
 		{
 #ifdef RE_CSCR_READWRITE_USE_WRAPPERS
-			return game::FindVariableIndexInternal2(inst, name, index, FindVariableIndexInternal2_hook.get_original());
+			return game::FindVariableIndexInternal2(inst, name, index, FindVariableIndexInternal2_original);
 #else
 			return codsrc::FindVariableIndexInternal2(inst, name, index);
 #endif
@@ -36,7 +39,7 @@ namespace re_cscr_readwrite
 		unsigned int FindLastSibling_call(unsigned int parentId, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_READWRITE_USE_WRAPPERS
-			return game::FindLastSibling(parentId, inst, FindLastSibling_hook.get_original());
+			return game::FindLastSibling(parentId, inst, FindLastSibling_original);
 #else
 			return codsrc::FindLastSibling(parentId, inst);
 #endif
@@ -61,13 +64,12 @@ namespace re_cscr_readwrite
 	public:
 		void post_unpack() override
 		{
-			bool quick = true;
-#ifdef RE_CSCR_READWRITE_USE_WRAPPERS
-			quick = false;
-#endif
+			FindVariableIndexInternal2_hook.create(game::FindVariableIndexInternal2_ADDR(), FindVariableIndexInternal2_stub);
+			FindLastSibling_hook.create(game::FindLastSibling_ADDR(), FindLastSibling_stub);
 
-			FindVariableIndexInternal2_hook.create(game::FindVariableIndexInternal2_ADDR(), FindVariableIndexInternal2_stub, quick);
-			FindLastSibling_hook.create(game::FindLastSibling_ADDR(), FindLastSibling_stub, quick);
+			//Original hook function addresses
+			FindVariableIndexInternal2_original = FindVariableIndexInternal2_hook.get_original();
+			FindLastSibling_original = FindLastSibling_hook.get_original();
 		}
 
 	private:

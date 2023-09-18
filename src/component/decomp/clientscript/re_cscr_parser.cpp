@@ -30,13 +30,37 @@ namespace re_cscr_parser
 	utils::hook::detour RuntimeErrorInternal_hook;
 	utils::hook::detour RuntimeError_hook;
 
+	void* Scr_InitOpcodeLookup_original;
+	void* Scr_ShutdownOpcodeLookup_original;
+	void* AddOpcodePos_original;
+	void* RemoveOpcodePos_original;
+	void* AddThreadStartOpcodePos_original;
+	void* Scr_GetSourceBuffer_original;
+	void* Scr_GetLineNumInternal_original;
+	void* Scr_GetNewSourceBuffer_original;
+	void* Scr_AddSourceBufferInternal_original;
+	void* Scr_ReadFile_FastFile_original;
+	void* Scr_ReadFile_LoadObj_original;
+	void* Scr_ReadFile_original;
+	void* Scr_AddSourceBuffer_original;
+	void* Scr_CopyFormattedLine_original;
+	void* Scr_GetLineInfo_original;
+	void* Scr_PrintSourcePos_original;
+	void* Scr_GetPrevSourcePosOpcodeLookup_original;
+	void* Scr_GetTextSourcePos_original;
+	void* Scr_PrintPrevCodePos_original;
+	void* CompileError_original;
+	void* CompileError2_original;
+	void* RuntimeErrorInternal_original;
+	void* RuntimeError_original;
+
 	namespace
 	{
 
 		void Scr_InitOpcodeLookup_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			game::Scr_InitOpcodeLookup(a1, Scr_InitOpcodeLookup_hook.get_original());
+			game::Scr_InitOpcodeLookup(a1, Scr_InitOpcodeLookup_original);
 #else
 			codsrc::Scr_InitOpcodeLookup(a1);
 #endif
@@ -57,7 +81,7 @@ namespace re_cscr_parser
 		void Scr_ShutdownOpcodeLookup_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			game::Scr_ShutdownOpcodeLookup(a1, Scr_ShutdownOpcodeLookup_hook.get_original());
+			game::Scr_ShutdownOpcodeLookup(a1, Scr_ShutdownOpcodeLookup_original);
 #else
 			codsrc::Scr_ShutdownOpcodeLookup(a1);
 #endif
@@ -78,7 +102,7 @@ namespace re_cscr_parser
 		void AddOpcodePos_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr, unsigned int sourcePos, int type_)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			game::AddOpcodePos(a1, sourcePos, type_, AddOpcodePos_hook.get_original());
+			game::AddOpcodePos(a1, sourcePos, type_, AddOpcodePos_original);
 #else
 			codsrc::AddOpcodePos(a1, sourcePos, type_);
 #endif
@@ -99,7 +123,7 @@ namespace re_cscr_parser
 		void RemoveOpcodePos_call(game::scriptInstance_t result, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			game::RemoveOpcodePos(result, RemoveOpcodePos_hook.get_original());
+			game::RemoveOpcodePos(result, RemoveOpcodePos_original);
 #else
 			codsrc::RemoveOpcodePos(result);
 #endif
@@ -120,7 +144,7 @@ namespace re_cscr_parser
 		void AddThreadStartOpcodePos_call(game::scriptInstance_t result, [[maybe_unused]] void* caller_addr, unsigned int sourcePos)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			game::AddThreadStartOpcodePos(result, sourcePos, AddThreadStartOpcodePos_hook.get_original());
+			game::AddThreadStartOpcodePos(result, sourcePos, AddThreadStartOpcodePos_original);
 #else
 			codsrc::AddThreadStartOpcodePos(result, sourcePos);
 #endif
@@ -141,7 +165,7 @@ namespace re_cscr_parser
 		unsigned int Scr_GetSourceBuffer_call(game::scriptInstance_t a1, const char * codePos, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			return game::Scr_GetSourceBuffer(a1, codePos, Scr_GetSourceBuffer_hook.get_original());
+			return game::Scr_GetSourceBuffer(a1, codePos, Scr_GetSourceBuffer_original);
 #else
 			return codsrc::Scr_GetSourceBuffer(a1, codePos);
 #endif
@@ -163,7 +187,7 @@ namespace re_cscr_parser
 		unsigned int Scr_GetLineNumInternal_call(const char ** startLine, const char * buf, [[maybe_unused]] void* caller_addr, const char * sourcePos, int * col)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			return game::Scr_GetLineNumInternal(startLine, buf, sourcePos, col, Scr_GetLineNumInternal_hook.get_original());
+			return game::Scr_GetLineNumInternal(startLine, buf, sourcePos, col, Scr_GetLineNumInternal_original);
 #else
 			return codsrc::Scr_GetLineNumInternal(startLine, buf, sourcePos, col);
 #endif
@@ -185,7 +209,7 @@ namespace re_cscr_parser
 		game::SourceBufferInfo * Scr_GetNewSourceBuffer_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			return game::Scr_GetNewSourceBuffer(a1, Scr_GetNewSourceBuffer_hook.get_original());
+			return game::Scr_GetNewSourceBuffer(a1, Scr_GetNewSourceBuffer_original);
 #else
 			return codsrc::Scr_GetNewSourceBuffer(a1);
 #endif
@@ -206,7 +230,7 @@ namespace re_cscr_parser
 		void Scr_AddSourceBufferInternal_call(const char * filename, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, const char * codepos, char * buffer, int len, int archive)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			game::Scr_AddSourceBufferInternal(filename, inst, codepos, buffer, len, archive, Scr_AddSourceBufferInternal_hook.get_original());
+			game::Scr_AddSourceBufferInternal(filename, inst, codepos, buffer, len, archive, Scr_AddSourceBufferInternal_original);
 #else
 			codsrc::Scr_AddSourceBufferInternal(filename, inst, codepos, buffer, len, archive);
 #endif
@@ -245,7 +269,7 @@ namespace re_cscr_parser
 		char * Scr_ReadFile_call(const char * codepos, char * filename, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, int unused)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			return game::Scr_ReadFile(codepos, filename, inst, unused, Scr_ReadFile_hook.get_original());
+			return game::Scr_ReadFile(codepos, filename, inst, unused, Scr_ReadFile_original);
 #else
 			return codsrc::Scr_ReadFile(codepos, filename, inst, unused);
 #endif
@@ -267,7 +291,7 @@ namespace re_cscr_parser
 		char * Scr_AddSourceBuffer_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, int unused_arg1, char * filename, const char * codepos)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			return game::Scr_AddSourceBuffer(inst, unused_arg1, filename, codepos, Scr_AddSourceBuffer_hook.get_original());
+			return game::Scr_AddSourceBuffer(inst, unused_arg1, filename, codepos, Scr_AddSourceBuffer_original);
 #else
 			return codsrc::Scr_AddSourceBuffer(inst, unused_arg1, filename, codepos);
 #endif
@@ -288,7 +312,7 @@ namespace re_cscr_parser
 		void Scr_CopyFormattedLine_call(const char * rawLine, [[maybe_unused]] void* caller_addr, char * line)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			game::Scr_CopyFormattedLine(rawLine, line, Scr_CopyFormattedLine_hook.get_original());
+			game::Scr_CopyFormattedLine(rawLine, line, Scr_CopyFormattedLine_original);
 #else
 			codsrc::Scr_CopyFormattedLine(rawLine, line);
 #endif
@@ -309,7 +333,7 @@ namespace re_cscr_parser
 		unsigned int Scr_GetLineInfo_call(int * col, const char * buf, [[maybe_unused]] void* caller_addr, unsigned int sourcePos, char * line)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			return game::Scr_GetLineInfo(col, buf, sourcePos, line, Scr_GetLineInfo_hook.get_original());
+			return game::Scr_GetLineInfo(col, buf, sourcePos, line, Scr_GetLineInfo_original);
 #else
 			return codsrc::Scr_GetLineInfo(col, buf, sourcePos, line);
 #endif
@@ -331,7 +355,7 @@ namespace re_cscr_parser
 		void Scr_PrintSourcePos_call(unsigned int sourcePos, const char * buf, game::con_channel_e channel, [[maybe_unused]] void* caller_addr, game::scriptInstance_t a4, const char * file)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			game::Scr_PrintSourcePos(sourcePos, buf, channel, a4, file, Scr_PrintSourcePos_hook.get_original());
+			game::Scr_PrintSourcePos(sourcePos, buf, channel, a4, file, Scr_PrintSourcePos_original);
 #else
 			codsrc::Scr_PrintSourcePos(sourcePos, buf, channel, a4, file);
 #endif
@@ -354,7 +378,7 @@ namespace re_cscr_parser
 		game::OpcodeLookup * Scr_GetPrevSourcePosOpcodeLookup_call(game::scriptInstance_t a1, const char * codePos, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			return game::Scr_GetPrevSourcePosOpcodeLookup(a1, codePos, Scr_GetPrevSourcePosOpcodeLookup_hook.get_original());
+			return game::Scr_GetPrevSourcePosOpcodeLookup(a1, codePos, Scr_GetPrevSourcePosOpcodeLookup_original);
 #else
 			return codsrc::Scr_GetPrevSourcePosOpcodeLookup(a1, codePos);
 #endif
@@ -376,7 +400,7 @@ namespace re_cscr_parser
 		void Scr_GetTextSourcePos_call(char * line, const char * codePos, [[maybe_unused]] void* caller_addr, game::scriptInstance_t a3)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			game::Scr_GetTextSourcePos(line, codePos, a3, Scr_GetTextSourcePos_hook.get_original());
+			game::Scr_GetTextSourcePos(line, codePos, a3, Scr_GetTextSourcePos_original);
 #else
 			codsrc::Scr_GetTextSourcePos(line, codePos, a3);
 #endif
@@ -398,7 +422,7 @@ namespace re_cscr_parser
 		void Scr_PrintPrevCodePos_call(const char * codepos, [[maybe_unused]] void* caller_addr, game::scriptInstance_t scriptInstance, game::con_channel_e channel, unsigned int index)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			game::Scr_PrintPrevCodePos(codepos, scriptInstance, channel, index, Scr_PrintPrevCodePos_hook.get_original());
+			game::Scr_PrintPrevCodePos(codepos, scriptInstance, channel, index, Scr_PrintPrevCodePos_original);
 #else
 			codsrc::Scr_PrintPrevCodePos(codepos, scriptInstance, channel, index);
 #endif
@@ -440,7 +464,7 @@ namespace re_cscr_parser
 			_vsnprintf(Buffer, 0x400u, msg, ArgList);
 			va_end(ArgList);
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			game::CompileError2(codePos, a2, CompileError2_hook.get_original(), "%s", Buffer);
+			game::CompileError2(codePos, a2, CompileError2_original, "%s", Buffer);
 #else
 			codsrc::CompileError2(codePos, a2, "%s", Buffer);
 #endif
@@ -463,7 +487,7 @@ namespace re_cscr_parser
 		void RuntimeErrorInternal_call(const char * msg, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, game::con_channel_e channel, const char * codepos, int index)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			game::RuntimeErrorInternal(msg, inst, channel, codepos, index, RuntimeErrorInternal_hook.get_original());
+			game::RuntimeErrorInternal(msg, inst, channel, codepos, index, RuntimeErrorInternal_original);
 #else
 			codsrc::RuntimeErrorInternal(msg, inst, channel, codepos, index);
 #endif
@@ -485,7 +509,7 @@ namespace re_cscr_parser
 		void RuntimeError_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, const char * pos, int error_index, const char * err, const char * err2)
 		{
 #ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			game::RuntimeError(inst, pos, error_index, err, err2, RuntimeError_hook.get_original());
+			game::RuntimeError(inst, pos, error_index, err, err2, RuntimeError_original);
 #else
 			codsrc::RuntimeError(inst, pos, error_index, err, err2);
 #endif
@@ -509,34 +533,54 @@ namespace re_cscr_parser
 	public:
 		void post_unpack() override
 		{
-			bool quick = true;
-#ifdef RE_CSCR_PARSER_USE_WRAPPERS
-			quick = false;
-#endif
+			Scr_InitOpcodeLookup_hook.create(game::Scr_InitOpcodeLookup_ADDR(), Scr_InitOpcodeLookup_stub);
+			Scr_ShutdownOpcodeLookup_hook.create(game::Scr_ShutdownOpcodeLookup_ADDR(), Scr_ShutdownOpcodeLookup_stub);
+			AddOpcodePos_hook.create(game::AddOpcodePos_ADDR(), AddOpcodePos_stub);
+			RemoveOpcodePos_hook.create(game::RemoveOpcodePos_ADDR(), RemoveOpcodePos_stub);
+			AddThreadStartOpcodePos_hook.create(game::AddThreadStartOpcodePos_ADDR(), AddThreadStartOpcodePos_stub);
+			Scr_GetSourceBuffer_hook.create(game::Scr_GetSourceBuffer_ADDR(), Scr_GetSourceBuffer_stub);
+			Scr_GetLineNumInternal_hook.create(game::Scr_GetLineNumInternal_ADDR(), Scr_GetLineNumInternal_stub);
+			Scr_GetNewSourceBuffer_hook.create(game::Scr_GetNewSourceBuffer_ADDR(), Scr_GetNewSourceBuffer_stub);
+			Scr_AddSourceBufferInternal_hook.create(game::Scr_AddSourceBufferInternal_ADDR(), Scr_AddSourceBufferInternal_stub);
+			Scr_ReadFile_FastFile_hook.create(game::Scr_ReadFile_FastFile.get(), Scr_ReadFile_FastFile_stub);
+			Scr_ReadFile_LoadObj_hook.create(game::Scr_ReadFile_LoadObj.get(), Scr_ReadFile_LoadObj_stub);
+			Scr_ReadFile_hook.create(game::Scr_ReadFile_ADDR(), Scr_ReadFile_stub);
+			Scr_AddSourceBuffer_hook.create(game::Scr_AddSourceBuffer_ADDR(), Scr_AddSourceBuffer_stub);
+			Scr_CopyFormattedLine_hook.create(game::Scr_CopyFormattedLine_ADDR(), Scr_CopyFormattedLine_stub);
+			Scr_GetLineInfo_hook.create(game::Scr_GetLineInfo_ADDR(), Scr_GetLineInfo_stub);
+			Scr_PrintSourcePos_hook.create(game::Scr_PrintSourcePos_ADDR(), Scr_PrintSourcePos_stub);
+			Scr_GetPrevSourcePosOpcodeLookup_hook.create(game::Scr_GetPrevSourcePosOpcodeLookup_ADDR(), Scr_GetPrevSourcePosOpcodeLookup_stub);
+			Scr_GetTextSourcePos_hook.create(game::Scr_GetTextSourcePos_ADDR(), Scr_GetTextSourcePos_stub);
+			Scr_PrintPrevCodePos_hook.create(game::Scr_PrintPrevCodePos_ADDR(), Scr_PrintPrevCodePos_stub);
+			CompileError_hook.create(game::CompileError.get(), CompileError_stub);
+			CompileError2_hook.create(game::CompileError2_ADDR(), CompileError2_stub);
+			RuntimeErrorInternal_hook.create(game::RuntimeErrorInternal_ADDR(), RuntimeErrorInternal_stub);
+			RuntimeError_hook.create(game::RuntimeError_ADDR(), RuntimeError_stub);
 
-			Scr_InitOpcodeLookup_hook.create(game::Scr_InitOpcodeLookup_ADDR(), Scr_InitOpcodeLookup_stub, quick);
-			Scr_ShutdownOpcodeLookup_hook.create(game::Scr_ShutdownOpcodeLookup_ADDR(), Scr_ShutdownOpcodeLookup_stub, quick);
-			AddOpcodePos_hook.create(game::AddOpcodePos_ADDR(), AddOpcodePos_stub, quick);
-			RemoveOpcodePos_hook.create(game::RemoveOpcodePos_ADDR(), RemoveOpcodePos_stub, quick);
-			AddThreadStartOpcodePos_hook.create(game::AddThreadStartOpcodePos_ADDR(), AddThreadStartOpcodePos_stub, quick);
-			Scr_GetSourceBuffer_hook.create(game::Scr_GetSourceBuffer_ADDR(), Scr_GetSourceBuffer_stub, quick);
-			Scr_GetLineNumInternal_hook.create(game::Scr_GetLineNumInternal_ADDR(), Scr_GetLineNumInternal_stub, quick);
-			Scr_GetNewSourceBuffer_hook.create(game::Scr_GetNewSourceBuffer_ADDR(), Scr_GetNewSourceBuffer_stub, quick);
-			Scr_AddSourceBufferInternal_hook.create(game::Scr_AddSourceBufferInternal_ADDR(), Scr_AddSourceBufferInternal_stub, quick);
-			Scr_ReadFile_FastFile_hook.create(game::Scr_ReadFile_FastFile.get(), Scr_ReadFile_FastFile_stub, quick);
-			Scr_ReadFile_LoadObj_hook.create(game::Scr_ReadFile_LoadObj.get(), Scr_ReadFile_LoadObj_stub, quick);
-			Scr_ReadFile_hook.create(game::Scr_ReadFile_ADDR(), Scr_ReadFile_stub, quick);
-			Scr_AddSourceBuffer_hook.create(game::Scr_AddSourceBuffer_ADDR(), Scr_AddSourceBuffer_stub, quick);
-			Scr_CopyFormattedLine_hook.create(game::Scr_CopyFormattedLine_ADDR(), Scr_CopyFormattedLine_stub, quick);
-			Scr_GetLineInfo_hook.create(game::Scr_GetLineInfo_ADDR(), Scr_GetLineInfo_stub, quick);
-			Scr_PrintSourcePos_hook.create(game::Scr_PrintSourcePos_ADDR(), Scr_PrintSourcePos_stub, quick);
-			Scr_GetPrevSourcePosOpcodeLookup_hook.create(game::Scr_GetPrevSourcePosOpcodeLookup_ADDR(), Scr_GetPrevSourcePosOpcodeLookup_stub, quick);
-			Scr_GetTextSourcePos_hook.create(game::Scr_GetTextSourcePos_ADDR(), Scr_GetTextSourcePos_stub, quick);
-			Scr_PrintPrevCodePos_hook.create(game::Scr_PrintPrevCodePos_ADDR(), Scr_PrintPrevCodePos_stub, quick);
-			CompileError_hook.create(game::CompileError.get(), CompileError_stub, quick);
-			CompileError2_hook.create(game::CompileError2_ADDR(), CompileError2_stub, quick);
-			RuntimeErrorInternal_hook.create(game::RuntimeErrorInternal_ADDR(), RuntimeErrorInternal_stub, quick);
-			RuntimeError_hook.create(game::RuntimeError_ADDR(), RuntimeError_stub, quick);
+			//Original hook function addresses
+			Scr_InitOpcodeLookup_original = Scr_InitOpcodeLookup_hook.get_original();
+			Scr_ShutdownOpcodeLookup_original = Scr_ShutdownOpcodeLookup_hook.get_original();
+			AddOpcodePos_original = AddOpcodePos_hook.get_original();
+			RemoveOpcodePos_original = RemoveOpcodePos_hook.get_original();
+			AddThreadStartOpcodePos_original = AddThreadStartOpcodePos_hook.get_original();
+			Scr_GetSourceBuffer_original = Scr_GetSourceBuffer_hook.get_original();
+			Scr_GetLineNumInternal_original = Scr_GetLineNumInternal_hook.get_original();
+			Scr_GetNewSourceBuffer_original = Scr_GetNewSourceBuffer_hook.get_original();
+			Scr_AddSourceBufferInternal_original = Scr_AddSourceBufferInternal_hook.get_original();
+			Scr_ReadFile_FastFile_original = Scr_ReadFile_FastFile_hook.get_original();
+			Scr_ReadFile_LoadObj_original = Scr_ReadFile_LoadObj_hook.get_original();
+			Scr_ReadFile_original = Scr_ReadFile_hook.get_original();
+			Scr_AddSourceBuffer_original = Scr_AddSourceBuffer_hook.get_original();
+			Scr_CopyFormattedLine_original = Scr_CopyFormattedLine_hook.get_original();
+			Scr_GetLineInfo_original = Scr_GetLineInfo_hook.get_original();
+			Scr_PrintSourcePos_original = Scr_PrintSourcePos_hook.get_original();
+			Scr_GetPrevSourcePosOpcodeLookup_original = Scr_GetPrevSourcePosOpcodeLookup_hook.get_original();
+			Scr_GetTextSourcePos_original = Scr_GetTextSourcePos_hook.get_original();
+			Scr_PrintPrevCodePos_original = Scr_PrintPrevCodePos_hook.get_original();
+			CompileError_original = CompileError_hook.get_original();
+			CompileError2_original = CompileError2_hook.get_original();
+			RuntimeErrorInternal_original = RuntimeErrorInternal_hook.get_original();
+			RuntimeError_original = RuntimeError_hook.get_original();
 		}
 
 	private:

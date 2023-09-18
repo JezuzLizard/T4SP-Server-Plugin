@@ -25,6 +25,25 @@ namespace re_cscr_animtree
 	utils::hook::detour Scr_FindAnimTree_hook;
 	utils::hook::detour Scr_FindAnim_hook;
 
+	void* AnimTreeCompileError_original;
+	void* GetAnimTreeParseProperties_original;
+	void* Scr_EmitAnimationInternal_original;
+	void* AnimTreeParseInternal_original;
+	void* Scr_AnimTreeParse_original;
+	void* Scr_GetAnimTreeSize_original;
+	void* ConnectScriptToAnim_original;
+	void* Scr_GetAnimsIndex_original;
+	void* Scr_CreateAnimationTree_original;
+	void* Scr_CheckAnimsDefined_original;
+	void* Scr_PrecacheAnimationTree_original;
+	void* Scr_UsingTreeInternal_original;
+	void* Scr_UsingTree_original;
+	void* Scr_SetAnimTreeConfigstring_original;
+	void* Scr_LoadAnimTreeInternal_original;
+	void* Scr_LoadAnimTreeAtIndex_original;
+	void* Scr_FindAnimTree_original;
+	void* Scr_FindAnim_original;
+
 	namespace
 	{
 
@@ -49,7 +68,7 @@ namespace re_cscr_animtree
 		void Scr_EmitAnimationInternal_call(game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, const char * pos, unsigned int animName, unsigned int names)
 		{
 #ifdef RE_CSCR_ANIMTREE_USE_WRAPPERS
-			game::Scr_EmitAnimationInternal(inst, pos, animName, names, Scr_EmitAnimationInternal_hook.get_original());
+			game::Scr_EmitAnimationInternal(inst, pos, animName, names, Scr_EmitAnimationInternal_original);
 #else
 			cscr_animtree::Scr_EmitAnimationInternal(inst, pos, animName, names);
 #endif
@@ -79,7 +98,7 @@ namespace re_cscr_animtree
 		void Scr_AnimTreeParse_call(game::scriptInstance_t inst, const char * pos, [[maybe_unused]] void* caller_addr, unsigned int parentNode, unsigned int names)
 		{
 #ifdef RE_CSCR_ANIMTREE_USE_WRAPPERS
-			game::Scr_AnimTreeParse(inst, pos, parentNode, names, Scr_AnimTreeParse_hook.get_original());
+			game::Scr_AnimTreeParse(inst, pos, parentNode, names, Scr_AnimTreeParse_original);
 #else
 			cscr_animtree::Scr_AnimTreeParse(inst, pos, parentNode, names);
 #endif
@@ -110,7 +129,7 @@ namespace re_cscr_animtree
 		void ConnectScriptToAnim_call(unsigned int name, unsigned int names, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, int index, unsigned int filename, int treeIndex)
 		{
 #ifdef RE_CSCR_ANIMTREE_USE_WRAPPERS
-			game::ConnectScriptToAnim(name, names, inst, index, filename, treeIndex, ConnectScriptToAnim_hook.get_original());
+			game::ConnectScriptToAnim(name, names, inst, index, filename, treeIndex, ConnectScriptToAnim_original);
 #else
 			cscr_animtree::ConnectScriptToAnim(name, names, inst, index, filename, treeIndex);
 #endif
@@ -132,7 +151,7 @@ namespace re_cscr_animtree
 		int Scr_GetAnimsIndex_call(game::XAnim_s * anim, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_ANIMTREE_USE_WRAPPERS
-			return game::Scr_GetAnimsIndex(anim, Scr_GetAnimsIndex_hook.get_original());
+			return game::Scr_GetAnimsIndex(anim, Scr_GetAnimsIndex_original);
 #else
 			return cscr_animtree::Scr_GetAnimsIndex(anim);
 #endif
@@ -162,7 +181,7 @@ namespace re_cscr_animtree
 		void Scr_CheckAnimsDefined_call(unsigned int names, game::scriptInstance_t a2, [[maybe_unused]] void* caller_addr, unsigned int filename)
 		{
 #ifdef RE_CSCR_ANIMTREE_USE_WRAPPERS
-			game::Scr_CheckAnimsDefined(names, a2, filename, Scr_CheckAnimsDefined_hook.get_original());
+			game::Scr_CheckAnimsDefined(names, a2, filename, Scr_CheckAnimsDefined_original);
 #else
 			cscr_animtree::Scr_CheckAnimsDefined(names, a2, filename);
 #endif
@@ -193,7 +212,7 @@ namespace re_cscr_animtree
 		unsigned int Scr_UsingTreeInternal_call(const char * filename, int user, [[maybe_unused]] void* caller_addr, game::scriptInstance_t inst, unsigned int * index)
 		{
 #ifdef RE_CSCR_ANIMTREE_USE_WRAPPERS
-			return game::Scr_UsingTreeInternal(filename, user, inst, index, Scr_UsingTreeInternal_hook.get_original());
+			return game::Scr_UsingTreeInternal(filename, user, inst, index, Scr_UsingTreeInternal_original);
 #else
 			return cscr_animtree::Scr_UsingTreeInternal(filename, user, inst, index);
 #endif
@@ -215,7 +234,7 @@ namespace re_cscr_animtree
 		void Scr_UsingTree_call(game::scriptInstance_t a1, [[maybe_unused]] void* caller_addr, const char * filename, unsigned int sourcePos)
 		{
 #ifdef RE_CSCR_ANIMTREE_USE_WRAPPERS
-			game::Scr_UsingTree(a1, filename, sourcePos, Scr_UsingTree_hook.get_original());
+			game::Scr_UsingTree(a1, filename, sourcePos, Scr_UsingTree_original);
 #else
 			cscr_animtree::Scr_UsingTree(a1, filename, sourcePos);
 #endif
@@ -245,7 +264,7 @@ namespace re_cscr_animtree
 		bool Scr_LoadAnimTreeInternal_call(const char * animtreeName, game::scriptInstance_t inst, [[maybe_unused]] void* caller_addr, unsigned int parentNode, unsigned int names)
 		{
 #ifdef RE_CSCR_ANIMTREE_USE_WRAPPERS
-			return game::Scr_LoadAnimTreeInternal(animtreeName, inst, parentNode, names, Scr_LoadAnimTreeInternal_hook.get_original());
+			return game::Scr_LoadAnimTreeInternal(animtreeName, inst, parentNode, names, Scr_LoadAnimTreeInternal_original);
 #else
 			return cscr_animtree::Scr_LoadAnimTreeInternal(animtreeName, inst, parentNode, names);
 #endif
@@ -267,7 +286,7 @@ namespace re_cscr_animtree
 		void Scr_LoadAnimTreeAtIndex_call(game::scriptInstance_t inst, int user, [[maybe_unused]] void* caller_addr, unsigned int index, void *(__cdecl * Alloc)(int), int modCheckSum)
 		{
 #ifdef RE_CSCR_ANIMTREE_USE_WRAPPERS
-			return game::Scr_LoadAnimTreeAtIndex(inst, user, index, Alloc, modCheckSum, Scr_LoadAnimTreeAtIndex_hook.get_original());
+			return game::Scr_LoadAnimTreeAtIndex(inst, user, index, Alloc, modCheckSum, Scr_LoadAnimTreeAtIndex_original);
 #else
 			return cscr_animtree::Scr_LoadAnimTreeAtIndex(inst, user, index, Alloc, modCheckSum);
 #endif
@@ -289,7 +308,7 @@ namespace re_cscr_animtree
 		game::scr_animtree_t Scr_FindAnimTree_call(const char * filename, [[maybe_unused]] void* caller_addr)
 		{
 #ifdef RE_CSCR_ANIMTREE_USE_WRAPPERS
-			return game::Scr_FindAnimTree(filename, Scr_FindAnimTree_hook.get_original());
+			return game::Scr_FindAnimTree(filename, Scr_FindAnimTree_original);
 #else
 			return cscr_animtree::Scr_FindAnimTree(filename);
 #endif
@@ -310,7 +329,7 @@ namespace re_cscr_animtree
 		void Scr_FindAnim_call(const char * animName, [[maybe_unused]] void* caller_addr, game::scr_anim_s a2, int user)
 		{
 #ifdef RE_CSCR_ANIMTREE_USE_WRAPPERS
-			game::Scr_FindAnim(animName, a2, user, Scr_FindAnim_hook.get_original());
+			game::Scr_FindAnim(animName, a2, user, Scr_FindAnim_original);
 #else
 			cscr_animtree::Scr_FindAnim(animName, a2, user);
 #endif
@@ -334,29 +353,44 @@ namespace re_cscr_animtree
 	public:
 		void post_unpack() override
 		{
-			bool quick = true;
-#ifdef RE_CSCR_ANIMTREE_USE_WRAPPERS
-			quick = false;
-#endif
+			AnimTreeCompileError_hook.create(game::AnimTreeCompileError.get(), AnimTreeCompileError_stub);
+			GetAnimTreeParseProperties_hook.create(game::GetAnimTreeParseProperties.get(), GetAnimTreeParseProperties_stub);
+			Scr_EmitAnimationInternal_hook.create(game::Scr_EmitAnimationInternal_ADDR(), Scr_EmitAnimationInternal_stub);
+			AnimTreeParseInternal_hook.create(game::AnimTreeParseInternal.get(), AnimTreeParseInternal_stub);
+			Scr_AnimTreeParse_hook.create(game::Scr_AnimTreeParse_ADDR(), Scr_AnimTreeParse_stub);
+			Scr_GetAnimTreeSize_hook.create(game::Scr_GetAnimTreeSize.get(), Scr_GetAnimTreeSize_stub);
+			ConnectScriptToAnim_hook.create(game::ConnectScriptToAnim_ADDR(), ConnectScriptToAnim_stub);
+			Scr_GetAnimsIndex_hook.create(game::Scr_GetAnimsIndex_ADDR(), Scr_GetAnimsIndex_stub);
+			Scr_CreateAnimationTree_hook.create(game::Scr_CreateAnimationTree.get(), Scr_CreateAnimationTree_stub);
+			Scr_CheckAnimsDefined_hook.create(game::Scr_CheckAnimsDefined_ADDR(), Scr_CheckAnimsDefined_stub);
+			Scr_PrecacheAnimationTree_hook.create(game::Scr_PrecacheAnimationTree.get(), Scr_PrecacheAnimationTree_stub);
+			Scr_UsingTreeInternal_hook.create(game::Scr_UsingTreeInternal_ADDR(), Scr_UsingTreeInternal_stub);
+			Scr_UsingTree_hook.create(game::Scr_UsingTree_ADDR(), Scr_UsingTree_stub);
+			Scr_SetAnimTreeConfigstring_hook.create(game::Scr_SetAnimTreeConfigstring.get(), Scr_SetAnimTreeConfigstring_stub);
+			Scr_LoadAnimTreeInternal_hook.create(game::Scr_LoadAnimTreeInternal_ADDR(), Scr_LoadAnimTreeInternal_stub);
+			Scr_LoadAnimTreeAtIndex_hook.create(game::Scr_LoadAnimTreeAtIndex_ADDR(), Scr_LoadAnimTreeAtIndex_stub);
+			Scr_FindAnimTree_hook.create(game::Scr_FindAnimTree_ADDR(), Scr_FindAnimTree_stub);
+			Scr_FindAnim_hook.create(game::Scr_FindAnim_ADDR(), Scr_FindAnim_stub);
 
-			AnimTreeCompileError_hook.create(game::AnimTreeCompileError.get(), AnimTreeCompileError_stub, quick);
-			GetAnimTreeParseProperties_hook.create(game::GetAnimTreeParseProperties.get(), GetAnimTreeParseProperties_stub, quick);
-			Scr_EmitAnimationInternal_hook.create(game::Scr_EmitAnimationInternal_ADDR(), Scr_EmitAnimationInternal_stub, quick);
-			AnimTreeParseInternal_hook.create(game::AnimTreeParseInternal.get(), AnimTreeParseInternal_stub, quick);
-			Scr_AnimTreeParse_hook.create(game::Scr_AnimTreeParse_ADDR(), Scr_AnimTreeParse_stub, quick);
-			Scr_GetAnimTreeSize_hook.create(game::Scr_GetAnimTreeSize.get(), Scr_GetAnimTreeSize_stub, quick);
-			ConnectScriptToAnim_hook.create(game::ConnectScriptToAnim_ADDR(), ConnectScriptToAnim_stub, quick);
-			Scr_GetAnimsIndex_hook.create(game::Scr_GetAnimsIndex_ADDR(), Scr_GetAnimsIndex_stub, quick);
-			Scr_CreateAnimationTree_hook.create(game::Scr_CreateAnimationTree.get(), Scr_CreateAnimationTree_stub, quick);
-			Scr_CheckAnimsDefined_hook.create(game::Scr_CheckAnimsDefined_ADDR(), Scr_CheckAnimsDefined_stub, quick);
-			Scr_PrecacheAnimationTree_hook.create(game::Scr_PrecacheAnimationTree.get(), Scr_PrecacheAnimationTree_stub, quick);
-			Scr_UsingTreeInternal_hook.create(game::Scr_UsingTreeInternal_ADDR(), Scr_UsingTreeInternal_stub, quick);
-			Scr_UsingTree_hook.create(game::Scr_UsingTree_ADDR(), Scr_UsingTree_stub, quick);
-			Scr_SetAnimTreeConfigstring_hook.create(game::Scr_SetAnimTreeConfigstring.get(), Scr_SetAnimTreeConfigstring_stub, quick);
-			Scr_LoadAnimTreeInternal_hook.create(game::Scr_LoadAnimTreeInternal_ADDR(), Scr_LoadAnimTreeInternal_stub, quick);
-			Scr_LoadAnimTreeAtIndex_hook.create(game::Scr_LoadAnimTreeAtIndex_ADDR(), Scr_LoadAnimTreeAtIndex_stub, quick);
-			Scr_FindAnimTree_hook.create(game::Scr_FindAnimTree_ADDR(), Scr_FindAnimTree_stub, quick);
-			Scr_FindAnim_hook.create(game::Scr_FindAnim_ADDR(), Scr_FindAnim_stub, quick);
+			//Original hook function addresses
+			AnimTreeCompileError_original = AnimTreeCompileError_hook.get_original();
+			GetAnimTreeParseProperties_original = GetAnimTreeParseProperties_hook.get_original();
+			Scr_EmitAnimationInternal_original = Scr_EmitAnimationInternal_hook.get_original();
+			AnimTreeParseInternal_original = AnimTreeParseInternal_hook.get_original();
+			Scr_AnimTreeParse_original = Scr_AnimTreeParse_hook.get_original();
+			Scr_GetAnimTreeSize_original = Scr_GetAnimTreeSize_hook.get_original();
+			ConnectScriptToAnim_original = ConnectScriptToAnim_hook.get_original();
+			Scr_GetAnimsIndex_original = Scr_GetAnimsIndex_hook.get_original();
+			Scr_CreateAnimationTree_original = Scr_CreateAnimationTree_hook.get_original();
+			Scr_CheckAnimsDefined_original = Scr_CheckAnimsDefined_hook.get_original();
+			Scr_PrecacheAnimationTree_original = Scr_PrecacheAnimationTree_hook.get_original();
+			Scr_UsingTreeInternal_original = Scr_UsingTreeInternal_hook.get_original();
+			Scr_UsingTree_original = Scr_UsingTree_hook.get_original();
+			Scr_SetAnimTreeConfigstring_original = Scr_SetAnimTreeConfigstring_hook.get_original();
+			Scr_LoadAnimTreeInternal_original = Scr_LoadAnimTreeInternal_hook.get_original();
+			Scr_LoadAnimTreeAtIndex_original = Scr_LoadAnimTreeAtIndex_hook.get_original();
+			Scr_FindAnimTree_original = Scr_FindAnimTree_hook.get_original();
+			Scr_FindAnim_original = Scr_FindAnim_hook.get_original();
 		}
 
 	private:
