@@ -160,19 +160,24 @@ namespace re_cscr_parsetree
 	public:
 		void post_unpack() override
 		{
-			Scr_InitAllocNode_hook.create(game::Scr_InitAllocNode.get(), Scr_InitAllocNode_stub);
-			node0_hook.create(game::node0.get(), node0_stub);
-			node1_hook.create(game::node1.get(), node1_stub);
-			node2_hook.create(game::node2.get(), node2_stub);
-			node3_hook.create(game::node3.get(), node3_stub);
-			node4_hook.create(game::node4.get(), node4_stub);
-			node5_hook.create(game::node5.get(), node5_stub);
-			node6_hook.create(game::node6.get(), node6_stub);
-			node7_hook.create(game::node7.get(), node7_stub);
-			node8_hook.create(game::node8.get(), node8_stub);
-			linked_list_end_hook.create(game::linked_list_end.get(), linked_list_end_stub);
-			prepend_node_hook.create(game::prepend_node.get(), prepend_node_stub);
-			append_node_hook.create(game::append_node.get(), append_node_stub);
+			bool quick = true;
+#ifdef RE_CSCR_PARSETREE_USE_WRAPPERS
+			quick = false;
+#endif
+
+			Scr_InitAllocNode_hook.create(game::Scr_InitAllocNode.get(), Scr_InitAllocNode_stub, quick);
+			node0_hook.create(game::node0.get(), node0_stub, quick);
+			node1_hook.create(game::node1.get(), node1_stub, quick);
+			node2_hook.create(game::node2.get(), node2_stub, quick);
+			node3_hook.create(game::node3.get(), node3_stub, quick);
+			node4_hook.create(game::node4.get(), node4_stub, quick);
+			node5_hook.create(game::node5.get(), node5_stub, quick);
+			node6_hook.create(game::node6.get(), node6_stub, quick);
+			node7_hook.create(game::node7.get(), node7_stub, quick);
+			node8_hook.create(game::node8.get(), node8_stub, quick);
+			linked_list_end_hook.create(game::linked_list_end.get(), linked_list_end_stub, quick);
+			prepend_node_hook.create(game::prepend_node.get(), prepend_node_stub, quick);
+			append_node_hook.create(game::append_node.get(), append_node_stub, quick);
 
 			//Original hook function addresses
 			Scr_InitAllocNode_original = Scr_InitAllocNode_hook.get_original();

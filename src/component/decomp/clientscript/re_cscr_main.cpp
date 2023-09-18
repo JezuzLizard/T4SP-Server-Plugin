@@ -272,19 +272,24 @@ namespace re_cscr_main
 	public:
 		void post_unpack() override
 		{
-			Scr_IsIdentifier_hook.create(game::Scr_IsIdentifier_ADDR(), Scr_IsIdentifier_stub);
-			Scr_GetFunctionHandle_hook.create(game::Scr_GetFunctionHandle_ADDR(), Scr_GetFunctionHandle_stub);
-			SL_TransferToCanonicalString_hook.create(game::SL_TransferToCanonicalString_ADDR(), SL_TransferToCanonicalString_stub);
-			SL_GetCanonicalString_hook.create(game::SL_GetCanonicalString_ADDR(), SL_GetCanonicalString_stub);
-			Scr_BeginLoadScripts_hook.create(game::Scr_BeginLoadScripts_ADDR(), Scr_BeginLoadScripts_stub);
-			Scr_BeginLoadAnimTrees_hook.create(game::Scr_BeginLoadAnimTrees_ADDR(), Scr_BeginLoadAnimTrees_stub);
-			Scr_ScanFile_hook.create(game::Scr_ScanFile_ADDR(), Scr_ScanFile_stub);
-			Scr_LoadScriptInternal_hook.create(game::Scr_LoadScriptInternal.get(), Scr_LoadScriptInternal_stub);
-			Scr_LoadScript_hook.create(game::Scr_LoadScript_ADDR(), Scr_LoadScript_stub);
-			Scr_EndLoadScripts_hook.create(game::Scr_EndLoadScripts.get(), Scr_EndLoadScripts_stub);
-			Scr_PrecacheAnimTrees_hook.create(game::Scr_PrecacheAnimTrees.get(), Scr_PrecacheAnimTrees_stub);
-			Scr_EndLoadAnimTrees_hook.create(game::Scr_EndLoadAnimTrees.get(), Scr_EndLoadAnimTrees_stub);
-			Scr_FreeScripts_hook.create(game::Scr_FreeScripts_ADDR(), Scr_FreeScripts_stub);
+			bool quick = true;
+#ifdef RE_CSCR_MAIN_USE_WRAPPERS
+			quick = false;
+#endif
+
+			Scr_IsIdentifier_hook.create(game::Scr_IsIdentifier_ADDR(), Scr_IsIdentifier_stub, quick);
+			Scr_GetFunctionHandle_hook.create(game::Scr_GetFunctionHandle_ADDR(), Scr_GetFunctionHandle_stub, quick);
+			SL_TransferToCanonicalString_hook.create(game::SL_TransferToCanonicalString_ADDR(), SL_TransferToCanonicalString_stub, quick);
+			SL_GetCanonicalString_hook.create(game::SL_GetCanonicalString_ADDR(), SL_GetCanonicalString_stub, quick);
+			Scr_BeginLoadScripts_hook.create(game::Scr_BeginLoadScripts_ADDR(), Scr_BeginLoadScripts_stub, quick);
+			Scr_BeginLoadAnimTrees_hook.create(game::Scr_BeginLoadAnimTrees_ADDR(), Scr_BeginLoadAnimTrees_stub, quick);
+			Scr_ScanFile_hook.create(game::Scr_ScanFile_ADDR(), Scr_ScanFile_stub, quick);
+			Scr_LoadScriptInternal_hook.create(game::Scr_LoadScriptInternal.get(), Scr_LoadScriptInternal_stub, quick);
+			Scr_LoadScript_hook.create(game::Scr_LoadScript_ADDR(), Scr_LoadScript_stub, quick);
+			Scr_EndLoadScripts_hook.create(game::Scr_EndLoadScripts.get(), Scr_EndLoadScripts_stub, quick);
+			Scr_PrecacheAnimTrees_hook.create(game::Scr_PrecacheAnimTrees.get(), Scr_PrecacheAnimTrees_stub, quick);
+			Scr_EndLoadAnimTrees_hook.create(game::Scr_EndLoadAnimTrees.get(), Scr_EndLoadAnimTrees_stub, quick);
+			Scr_FreeScripts_hook.create(game::Scr_FreeScripts_ADDR(), Scr_FreeScripts_stub, quick);
 
 			//Original hook function addresses
 			Scr_IsIdentifier_original = Scr_IsIdentifier_hook.get_original();

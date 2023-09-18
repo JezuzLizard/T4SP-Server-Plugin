@@ -64,8 +64,13 @@ namespace re_cscr_readwrite
 	public:
 		void post_unpack() override
 		{
-			FindVariableIndexInternal2_hook.create(game::FindVariableIndexInternal2_ADDR(), FindVariableIndexInternal2_stub);
-			FindLastSibling_hook.create(game::FindLastSibling_ADDR(), FindLastSibling_stub);
+			bool quick = true;
+#ifdef RE_CSCR_READWRITE_USE_WRAPPERS
+			quick = false;
+#endif
+
+			FindVariableIndexInternal2_hook.create(game::FindVariableIndexInternal2_ADDR(), FindVariableIndexInternal2_stub, quick);
+			FindLastSibling_hook.create(game::FindLastSibling_ADDR(), FindLastSibling_stub, quick);
 
 			//Original hook function addresses
 			FindVariableIndexInternal2_original = FindVariableIndexInternal2_hook.get_original();

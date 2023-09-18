@@ -533,29 +533,34 @@ namespace re_cscr_parser
 	public:
 		void post_unpack() override
 		{
-			Scr_InitOpcodeLookup_hook.create(game::Scr_InitOpcodeLookup_ADDR(), Scr_InitOpcodeLookup_stub);
-			Scr_ShutdownOpcodeLookup_hook.create(game::Scr_ShutdownOpcodeLookup_ADDR(), Scr_ShutdownOpcodeLookup_stub);
-			AddOpcodePos_hook.create(game::AddOpcodePos_ADDR(), AddOpcodePos_stub);
-			RemoveOpcodePos_hook.create(game::RemoveOpcodePos_ADDR(), RemoveOpcodePos_stub);
-			AddThreadStartOpcodePos_hook.create(game::AddThreadStartOpcodePos_ADDR(), AddThreadStartOpcodePos_stub);
-			Scr_GetSourceBuffer_hook.create(game::Scr_GetSourceBuffer_ADDR(), Scr_GetSourceBuffer_stub);
-			Scr_GetLineNumInternal_hook.create(game::Scr_GetLineNumInternal_ADDR(), Scr_GetLineNumInternal_stub);
-			Scr_GetNewSourceBuffer_hook.create(game::Scr_GetNewSourceBuffer_ADDR(), Scr_GetNewSourceBuffer_stub);
-			Scr_AddSourceBufferInternal_hook.create(game::Scr_AddSourceBufferInternal_ADDR(), Scr_AddSourceBufferInternal_stub);
-			Scr_ReadFile_FastFile_hook.create(game::Scr_ReadFile_FastFile.get(), Scr_ReadFile_FastFile_stub);
-			Scr_ReadFile_LoadObj_hook.create(game::Scr_ReadFile_LoadObj.get(), Scr_ReadFile_LoadObj_stub);
-			Scr_ReadFile_hook.create(game::Scr_ReadFile_ADDR(), Scr_ReadFile_stub);
-			Scr_AddSourceBuffer_hook.create(game::Scr_AddSourceBuffer_ADDR(), Scr_AddSourceBuffer_stub);
-			Scr_CopyFormattedLine_hook.create(game::Scr_CopyFormattedLine_ADDR(), Scr_CopyFormattedLine_stub);
-			Scr_GetLineInfo_hook.create(game::Scr_GetLineInfo_ADDR(), Scr_GetLineInfo_stub);
-			Scr_PrintSourcePos_hook.create(game::Scr_PrintSourcePos_ADDR(), Scr_PrintSourcePos_stub);
-			Scr_GetPrevSourcePosOpcodeLookup_hook.create(game::Scr_GetPrevSourcePosOpcodeLookup_ADDR(), Scr_GetPrevSourcePosOpcodeLookup_stub);
-			Scr_GetTextSourcePos_hook.create(game::Scr_GetTextSourcePos_ADDR(), Scr_GetTextSourcePos_stub);
-			Scr_PrintPrevCodePos_hook.create(game::Scr_PrintPrevCodePos_ADDR(), Scr_PrintPrevCodePos_stub);
-			CompileError_hook.create(game::CompileError.get(), CompileError_stub);
-			CompileError2_hook.create(game::CompileError2_ADDR(), CompileError2_stub);
-			RuntimeErrorInternal_hook.create(game::RuntimeErrorInternal_ADDR(), RuntimeErrorInternal_stub);
-			RuntimeError_hook.create(game::RuntimeError_ADDR(), RuntimeError_stub);
+			bool quick = true;
+#ifdef RE_CSCR_PARSER_USE_WRAPPERS
+			quick = false;
+#endif
+
+			Scr_InitOpcodeLookup_hook.create(game::Scr_InitOpcodeLookup_ADDR(), Scr_InitOpcodeLookup_stub, quick);
+			Scr_ShutdownOpcodeLookup_hook.create(game::Scr_ShutdownOpcodeLookup_ADDR(), Scr_ShutdownOpcodeLookup_stub, quick);
+			AddOpcodePos_hook.create(game::AddOpcodePos_ADDR(), AddOpcodePos_stub, quick);
+			RemoveOpcodePos_hook.create(game::RemoveOpcodePos_ADDR(), RemoveOpcodePos_stub, quick);
+			AddThreadStartOpcodePos_hook.create(game::AddThreadStartOpcodePos_ADDR(), AddThreadStartOpcodePos_stub, quick);
+			Scr_GetSourceBuffer_hook.create(game::Scr_GetSourceBuffer_ADDR(), Scr_GetSourceBuffer_stub, quick);
+			Scr_GetLineNumInternal_hook.create(game::Scr_GetLineNumInternal_ADDR(), Scr_GetLineNumInternal_stub, quick);
+			Scr_GetNewSourceBuffer_hook.create(game::Scr_GetNewSourceBuffer_ADDR(), Scr_GetNewSourceBuffer_stub, quick);
+			Scr_AddSourceBufferInternal_hook.create(game::Scr_AddSourceBufferInternal_ADDR(), Scr_AddSourceBufferInternal_stub, quick);
+			Scr_ReadFile_FastFile_hook.create(game::Scr_ReadFile_FastFile.get(), Scr_ReadFile_FastFile_stub, quick);
+			Scr_ReadFile_LoadObj_hook.create(game::Scr_ReadFile_LoadObj.get(), Scr_ReadFile_LoadObj_stub, quick);
+			Scr_ReadFile_hook.create(game::Scr_ReadFile_ADDR(), Scr_ReadFile_stub, quick);
+			Scr_AddSourceBuffer_hook.create(game::Scr_AddSourceBuffer_ADDR(), Scr_AddSourceBuffer_stub, quick);
+			Scr_CopyFormattedLine_hook.create(game::Scr_CopyFormattedLine_ADDR(), Scr_CopyFormattedLine_stub, quick);
+			Scr_GetLineInfo_hook.create(game::Scr_GetLineInfo_ADDR(), Scr_GetLineInfo_stub, quick);
+			Scr_PrintSourcePos_hook.create(game::Scr_PrintSourcePos_ADDR(), Scr_PrintSourcePos_stub, quick);
+			Scr_GetPrevSourcePosOpcodeLookup_hook.create(game::Scr_GetPrevSourcePosOpcodeLookup_ADDR(), Scr_GetPrevSourcePosOpcodeLookup_stub, quick);
+			Scr_GetTextSourcePos_hook.create(game::Scr_GetTextSourcePos_ADDR(), Scr_GetTextSourcePos_stub, quick);
+			Scr_PrintPrevCodePos_hook.create(game::Scr_PrintPrevCodePos_ADDR(), Scr_PrintPrevCodePos_stub, quick);
+			CompileError_hook.create(game::CompileError.get(), CompileError_stub, quick);
+			CompileError2_hook.create(game::CompileError2_ADDR(), CompileError2_stub, quick);
+			RuntimeErrorInternal_hook.create(game::RuntimeErrorInternal_ADDR(), RuntimeErrorInternal_stub, quick);
+			RuntimeError_hook.create(game::RuntimeError_ADDR(), RuntimeError_stub, quick);
 
 			//Original hook function addresses
 			Scr_InitOpcodeLookup_original = Scr_InitOpcodeLookup_hook.get_original();

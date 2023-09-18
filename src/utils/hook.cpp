@@ -97,8 +97,15 @@ namespace utils::hook
 		MH_DisableHook(this->place_);
 	}
 
-	void detour::create(void* place, void* target)
+	void detour::create(void* place, void* target, bool quick)
 	{
+		// each detour is ~30ms to install, quick is for instances where we will NEVER need to invoke the original
+		if (quick)
+		{
+			jump(reinterpret_cast<std::uintptr_t>(place), target);
+			return;
+		}
+
 		this->clear();
 		this->place_ = place;
 
@@ -110,9 +117,9 @@ namespace utils::hook
 		this->enable();
 	}
 
-	void detour::create(const size_t place, void* target)
+	void detour::create(const size_t place, void* target, bool quick)
 	{
-		this->create(reinterpret_cast<void*>(place), target);
+		this->create(reinterpret_cast<void*>(place), target, quick);
 	}
 
 	void detour::clear()

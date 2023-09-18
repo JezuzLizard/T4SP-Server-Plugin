@@ -86,8 +86,8 @@ namespace utils::hook
 		void enable() const;
 		void disable() const;
 
-		void create(void* place, void* target);
-		void create(size_t place, void* target);
+		void create(void* place, void* target, bool quick = false);
+		void create(size_t place, void* target, bool quick = false);
 		void clear();
 
 		template <typename T>

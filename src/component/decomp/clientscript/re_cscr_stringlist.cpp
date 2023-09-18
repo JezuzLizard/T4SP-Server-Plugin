@@ -585,34 +585,39 @@ namespace re_cscr_stringlist
 	public:
 		void post_unpack() override
 		{
-			SL_ConvertToString_hook.create(game::SL_ConvertToString_ADDR(), SL_ConvertToString_stub);
-			SL_GetStringLen_hook.create(game::SL_GetStringLen_ADDR(), SL_GetStringLen_stub);
-			GetHashCode_hook.create(game::GetHashCode_ADDR(), GetHashCode_stub);
-			SL_Init_hook.create(game::SL_Init_ADDR(), SL_Init_stub);
-			SL_FindStringOfSize_hook.create(game::SL_FindStringOfSize_ADDR(), SL_FindStringOfSize_stub);
-			SL_FindString_hook.create(game::SL_FindString_ADDR(), SL_FindString_stub);
-			SL_FindLowercaseString_hook.create(game::SL_FindLowercaseString.get(), SL_FindLowercaseString_stub);
-			SL_AddUserInternal_hook.create(game::SL_AddUserInternal_ADDR(), SL_AddUserInternal_stub);
-			Mark_ScriptStringCustom_hook.create(game::Mark_ScriptStringCustom_ADDR(), Mark_ScriptStringCustom_stub);
-			SL_GetStringOfSize_hook.create(game::SL_GetStringOfSize.get(), SL_GetStringOfSize_stub);
-			SL_GetString__hook.create(game::SL_GetString__ADDR(), SL_GetString__stub);
-			SL_GetString__0_hook.create(game::SL_GetString__0_ADDR(), SL_GetString__0_stub);
-			SL_GetLowercaseStringOfLen_hook.create(game::SL_GetLowercaseStringOfLen.get(), SL_GetLowercaseStringOfLen_stub);
-			SL_GetLowercaseString_hook.create(game::SL_GetLowercaseString_ADDR(), SL_GetLowercaseString_stub);
-			SL_ConvertToLowercase_hook.create(game::SL_ConvertToLowercase.get(), SL_ConvertToLowercase_stub);
-			SL_TransferRefToUser_hook.create(game::SL_TransferRefToUser_ADDR(), SL_TransferRefToUser_stub);
-			SL_FreeString_hook.create(game::SL_FreeString.get(), SL_FreeString_stub);
-			SL_RemoveRefToString_hook.create(game::SL_RemoveRefToString_ADDR(), SL_RemoveRefToString_stub);
-			Scr_SetString_hook.create(game::Scr_SetString_ADDR(), Scr_SetString_stub);
-			Scr_SetStringFromCharString_hook.create(game::Scr_SetStringFromCharString_ADDR(), Scr_SetStringFromCharString_stub);
-			GScr_AllocString_hook.create(game::GScr_AllocString_ADDR(), GScr_AllocString_stub);
-			SL_GetStringForFloat_hook.create(game::SL_GetStringForFloat_ADDR(), SL_GetStringForFloat_stub);
-			SL_GetStringForInt_hook.create(game::SL_GetStringForInt_ADDR(), SL_GetStringForInt_stub);
-			SL_GetStringForVector_hook.create(game::SL_GetStringForVector_ADDR(), SL_GetStringForVector_stub);
-			SL_ShutdownSystem_hook.create(game::SL_ShutdownSystem_ADDR(), SL_ShutdownSystem_stub);
-			SL_TransferSystem_hook.create(game::SL_TransferSystem.get(), SL_TransferSystem_stub);
-			SL_CreateCanonicalFilename_hook.create(game::SL_CreateCanonicalFilename_ADDR(), SL_CreateCanonicalFilename_stub);
-			Scr_CreateCanonicalFilename_hook.create(game::Scr_CreateCanonicalFilename.get(), Scr_CreateCanonicalFilename_stub);
+			bool quick = true;
+#ifdef RE_CSCR_STRINGLIST_USE_WRAPPERS
+			quick = false;
+#endif
+
+			SL_ConvertToString_hook.create(game::SL_ConvertToString_ADDR(), SL_ConvertToString_stub, quick);
+			SL_GetStringLen_hook.create(game::SL_GetStringLen_ADDR(), SL_GetStringLen_stub, quick);
+			GetHashCode_hook.create(game::GetHashCode_ADDR(), GetHashCode_stub, quick);
+			SL_Init_hook.create(game::SL_Init_ADDR(), SL_Init_stub, quick);
+			SL_FindStringOfSize_hook.create(game::SL_FindStringOfSize_ADDR(), SL_FindStringOfSize_stub, quick);
+			SL_FindString_hook.create(game::SL_FindString_ADDR(), SL_FindString_stub, quick);
+			SL_FindLowercaseString_hook.create(game::SL_FindLowercaseString.get(), SL_FindLowercaseString_stub, quick);
+			SL_AddUserInternal_hook.create(game::SL_AddUserInternal_ADDR(), SL_AddUserInternal_stub, quick);
+			Mark_ScriptStringCustom_hook.create(game::Mark_ScriptStringCustom_ADDR(), Mark_ScriptStringCustom_stub, quick);
+			SL_GetStringOfSize_hook.create(game::SL_GetStringOfSize.get(), SL_GetStringOfSize_stub, quick);
+			SL_GetString__hook.create(game::SL_GetString__ADDR(), SL_GetString__stub, quick);
+			SL_GetString__0_hook.create(game::SL_GetString__0_ADDR(), SL_GetString__0_stub, quick);
+			SL_GetLowercaseStringOfLen_hook.create(game::SL_GetLowercaseStringOfLen.get(), SL_GetLowercaseStringOfLen_stub, quick);
+			SL_GetLowercaseString_hook.create(game::SL_GetLowercaseString_ADDR(), SL_GetLowercaseString_stub, quick);
+			SL_ConvertToLowercase_hook.create(game::SL_ConvertToLowercase.get(), SL_ConvertToLowercase_stub, quick);
+			SL_TransferRefToUser_hook.create(game::SL_TransferRefToUser_ADDR(), SL_TransferRefToUser_stub, quick);
+			SL_FreeString_hook.create(game::SL_FreeString.get(), SL_FreeString_stub, quick);
+			SL_RemoveRefToString_hook.create(game::SL_RemoveRefToString_ADDR(), SL_RemoveRefToString_stub, quick);
+			Scr_SetString_hook.create(game::Scr_SetString_ADDR(), Scr_SetString_stub, quick);
+			Scr_SetStringFromCharString_hook.create(game::Scr_SetStringFromCharString_ADDR(), Scr_SetStringFromCharString_stub, quick);
+			GScr_AllocString_hook.create(game::GScr_AllocString_ADDR(), GScr_AllocString_stub, quick);
+			SL_GetStringForFloat_hook.create(game::SL_GetStringForFloat_ADDR(), SL_GetStringForFloat_stub, quick);
+			SL_GetStringForInt_hook.create(game::SL_GetStringForInt_ADDR(), SL_GetStringForInt_stub, quick);
+			SL_GetStringForVector_hook.create(game::SL_GetStringForVector_ADDR(), SL_GetStringForVector_stub, quick);
+			SL_ShutdownSystem_hook.create(game::SL_ShutdownSystem_ADDR(), SL_ShutdownSystem_stub, quick);
+			SL_TransferSystem_hook.create(game::SL_TransferSystem.get(), SL_TransferSystem_stub, quick);
+			SL_CreateCanonicalFilename_hook.create(game::SL_CreateCanonicalFilename_ADDR(), SL_CreateCanonicalFilename_stub, quick);
+			Scr_CreateCanonicalFilename_hook.create(game::Scr_CreateCanonicalFilename.get(), Scr_CreateCanonicalFilename_stub, quick);
 
 			//Original hook function addresses
 			SL_ConvertToString_original = SL_ConvertToString_hook.get_original();

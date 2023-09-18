@@ -269,20 +269,25 @@ namespace re_cscr_memorytree
 	public:
 		void post_unpack() override
 		{
-			MT_GetSubTreeSize_hook.create(game::MT_GetSubTreeSize.get(), MT_GetSubTreeSize_stub);
-			MT_DumpTree_hook.create(game::MT_DumpTree.get(), MT_DumpTree_stub);
-			MT_InitBits_hook.create(game::MT_InitBits_ADDR(), MT_InitBits_stub);
-			MT_GetScore_hook.create(game::MT_GetScore_ADDR(), MT_GetScore_stub);
-			MT_AddMemoryNode_hook.create(game::MT_AddMemoryNode.get(), MT_AddMemoryNode_stub);
-			MT_RemoveMemoryNode_hook.create(game::MT_RemoveMemoryNode.get(), MT_RemoveMemoryNode_stub);
-			MT_RemoveHeadMemoryNode_hook.create(game::MT_RemoveHeadMemoryNode.get(), MT_RemoveHeadMemoryNode_stub);
-			MT_Init_hook.create(game::MT_Init_ADDR(), MT_Init_stub);
-			MT_Error_hook.create(game::MT_Error_ADDR(), MT_Error_stub);
-			MT_GetSize_hook.create(game::MT_GetSize_ADDR(), MT_GetSize_stub);
-			MT_AllocIndex_hook.create(game::MT_AllocIndex_ADDR(), MT_AllocIndex_stub);
-			MT_FreeIndex_hook.create(game::MT_FreeIndex_ADDR(), MT_FreeIndex_stub);
-			MT_Alloc_hook.create(game::MT_Alloc_ADDR(), MT_Alloc_stub);
-			MT_Free_hook.create(game::MT_Free.get(), MT_Free_stub);
+			bool quick = true;
+#ifdef RE_CSCR_MEMORYTREE_USE_WRAPPERS
+			quick = false;
+#endif
+
+			MT_GetSubTreeSize_hook.create(game::MT_GetSubTreeSize.get(), MT_GetSubTreeSize_stub, quick);
+			MT_DumpTree_hook.create(game::MT_DumpTree.get(), MT_DumpTree_stub, quick);
+			MT_InitBits_hook.create(game::MT_InitBits_ADDR(), MT_InitBits_stub, quick);
+			MT_GetScore_hook.create(game::MT_GetScore_ADDR(), MT_GetScore_stub, quick);
+			MT_AddMemoryNode_hook.create(game::MT_AddMemoryNode.get(), MT_AddMemoryNode_stub, quick);
+			MT_RemoveMemoryNode_hook.create(game::MT_RemoveMemoryNode.get(), MT_RemoveMemoryNode_stub, quick);
+			MT_RemoveHeadMemoryNode_hook.create(game::MT_RemoveHeadMemoryNode.get(), MT_RemoveHeadMemoryNode_stub, quick);
+			MT_Init_hook.create(game::MT_Init_ADDR(), MT_Init_stub, quick);
+			MT_Error_hook.create(game::MT_Error_ADDR(), MT_Error_stub, quick);
+			MT_GetSize_hook.create(game::MT_GetSize_ADDR(), MT_GetSize_stub, quick);
+			MT_AllocIndex_hook.create(game::MT_AllocIndex_ADDR(), MT_AllocIndex_stub, quick);
+			MT_FreeIndex_hook.create(game::MT_FreeIndex_ADDR(), MT_FreeIndex_stub, quick);
+			MT_Alloc_hook.create(game::MT_Alloc_ADDR(), MT_Alloc_stub, quick);
+			MT_Free_hook.create(game::MT_Free.get(), MT_Free_stub, quick);
 
 			//Original hook function addresses
 			MT_GetSubTreeSize_original = MT_GetSubTreeSize_hook.get_original();
