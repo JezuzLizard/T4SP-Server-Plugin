@@ -21,4 +21,9 @@ namespace scheduler
 		std::chrono::milliseconds delay = 0ms);
 
 	void on_init(const std::function<void()>& callback);
+
+	void on_pre_scr_init_system(const std::function<void(game::scriptInstance_t)>& callback);
+	void on_post_scr_init_system(const std::function<void(game::scriptInstance_t)>& callback);
+	void exec_pre_scr_init_funcs(game::scriptInstance_t inst);
+	void exec_post_scr_init_funcs(game::scriptInstance_t inst);
 }

@@ -124,6 +124,45 @@ namespace scheduler
 			com_init_hook.invoke<void>();
 			on_post_init_hook();
 		}
+
+		std::vector<std::function<void(game::scriptInstance_t)>> pre_scr_init_funcs;
+		std::vector<std::function<void(game::scriptInstance_t)>> post_scr_init_funcs;
+
+		utils::hook::detour pre_scr_init_system_hook;
+		utils::hook::detour post_scr_init_system_hook;
+
+		void* pre_scr_init_system_original;
+		void* post_scr_init_system_original;
+
+		NAKED void pre_scr_init_system_stub()
+		{
+			__asm
+			{
+				pushad;
+				push eax;
+				call exec_pre_scr_init_funcs;
+				add esp, 4;
+				popad;
+
+				push pre_scr_init_system_original;
+				ret;
+			}
+		}
+
+		NAKED void post_scr_init_system_stub()
+		{
+			__asm
+			{
+				pushad;
+				push eax;
+				call exec_post_scr_init_funcs;
+				add esp, 4;
+				popad;
+
+				push post_scr_init_system_original;
+				ret;
+			}
+		}
 	}
 
 	void schedule(const std::function<bool()>& callback, const pipeline type,
@@ -171,6 +210,32 @@ namespace scheduler
 		}
 	}
 
+	void on_pre_scr_init_system(const std::function<void(game::scriptInstance_t)>& callback)
+	{
+		pre_scr_init_funcs.push_back(callback);
+	}
+
+	void on_post_scr_init_system(const std::function<void(game::scriptInstance_t)>& callback)
+	{
+		post_scr_init_funcs.push_back(callback);
+	}
+
+	void exec_pre_scr_init_funcs(game::scriptInstance_t inst)
+	{
+		for (const auto& func : pre_scr_init_funcs)
+		{
+			func(inst);
+		}
+	}
+
+	void exec_post_scr_init_funcs(game::scriptInstance_t inst)
+	{
+		for (const auto& func : post_scr_init_funcs)
+		{
+			func(inst);
+		}
+	}
+
 	class component final : public component_interface
 	{
 	public:
@@ -188,6 +253,12 @@ namespace scheduler
 			com_init_hook.create(SELECT(0x0, 0x59D710), com_init_stub);
 			utils::hook::call(SELECT(0x0, 0x503B5D), execute_server);
 			utils::hook::call(SELECT(0x0, 0x59DCFD), execute_main);
+
+			// for when we dont use decomp
+			pre_scr_init_system_hook.create(0x699865, pre_scr_init_system_stub);
+			pre_scr_init_system_original = pre_scr_init_system_hook.get_original();
+			post_scr_init_system_hook.create(0x699924, post_scr_init_system_stub);
+			post_scr_init_system_original = post_scr_init_system_hook.get_original();
 		}
 	};
 }

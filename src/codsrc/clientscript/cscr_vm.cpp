@@ -1,5 +1,6 @@
 #include <stdinc.hpp>
 #include "clientscript_public.hpp"
+#include <component/scheduler.hpp>
 
 #pragma warning(push)
 #pragma warning(disable: 4244)
@@ -4701,6 +4702,10 @@ namespace codsrc
 	// Decomp Status: Tested, Completed
 	void Scr_InitSystem(game::scriptInstance_t inst)
 	{
+		// our additions
+		scheduler::exec_pre_scr_init_funcs(inst);
+		//
+
 		assert(!game::gScrVarPub[inst].timeArrayId);
 
 		//assert(!game::gScrVarPub[inst].ext_threadcount);
@@ -4726,6 +4731,10 @@ namespace codsrc
 		assert(!game::gScrVarPub[inst].freeEntList);
 
 		game::g_script_error_level[inst] = -1;
+
+		// our additions
+		scheduler::exec_post_scr_init_funcs(inst);
+		//
 	}
 
 	//Restored function
