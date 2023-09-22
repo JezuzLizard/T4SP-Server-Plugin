@@ -116,4 +116,5 @@ namespace codsrc
 	unsigned int GetInternalVariableIndex(game::scriptInstance_t inst, unsigned int unsignedValue);
 	const char* Scr_ReadData(game::scriptInstance_t inst, const char** pos, unsigned int count);
 	void Scr_NotifyNum(int entnum, game::classNum_e classnum, unsigned int stringValue, unsigned int paramcount);
+	unsigned int Scr_GetNumParam(game::scriptInstance_t inst);
 }

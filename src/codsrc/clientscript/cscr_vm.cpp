@@ -5739,5 +5739,11 @@ namespace codsrc
 	{
 		game::Scr_NotifyNum_Internal(game::SCRIPTINSTANCE_SERVER, entnum, classnum, stringValue, paramcount);
 	}
+
+	// Restored
+	unsigned int Scr_GetNumParam(game::scriptInstance_t inst)
+	{
+		return game::gScrVmPub[inst].outparamcount;
+	}
 }
 #pragma warning(pop)

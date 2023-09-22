@@ -178,4 +178,5 @@ namespace game
 	void Scr_EvalBoolNot(scriptInstance_t inst, VariableValue* value);
 	unsigned int GetInternalVariableIndex(scriptInstance_t inst, unsigned int unsignedValue);
 	const char* Scr_ReadData(scriptInstance_t inst, const char** pos, unsigned int count);
+	unsigned int Scr_GetNumParam(game::scriptInstance_t inst);
 }

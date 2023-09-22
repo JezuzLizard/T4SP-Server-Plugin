@@ -981,4 +981,9 @@ namespace game
 	{
 		return codsrc::Scr_ReadData(inst, pos, count);
 	}
+
+	unsigned int Scr_GetNumParam(game::scriptInstance_t inst)
+	{
+		return codsrc::Scr_GetNumParam(inst);
+	}
 }
