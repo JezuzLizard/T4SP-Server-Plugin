@@ -5318,7 +5318,8 @@ namespace game
 		RawFile* rawfile; //OFS: 0x1A SIZE: 0x4
 		StringTable* stringTable; //OFS: 0x1B SIZE: 0x4
 		PackIndex* packIndex; //OFS: 0x1C SIZE: 0x4
-		void* data; //OFS: 0x1D SIZE: 0x4
+		snd_alias_list_t* sound; //OFS: 0x1D SIZE: 0x4
+		void* data; //OFS: 0x1E SIZE: 0x4
 	};
 
 	struct XAsset
@@ -5416,6 +5417,28 @@ namespace game
 	ASSERT_STRUCT_OFFSET(XZone, flags, 0x4);
 	ASSERT_STRUCT_OFFSET(XZone, allocType, 0x8);
 	ASSERT_STRUCT_OFFSET(XZone, blocks, 0xC);
+
+	struct XFile
+	{
+		unsigned int size; //OFS: 0x0 SIZE: 0x4
+		unsigned int externalSize; //OFS: 0x4 SIZE: 0x4
+		unsigned int blockSize[7]; //OFS: 0x8 SIZE: 0x1C
+	};
+	ASSERT_STRUCT_SIZE(XFile, 0x24);
+	ASSERT_STRUCT_OFFSET(XFile, size, 0x0);
+	ASSERT_STRUCT_OFFSET(XFile, externalSize, 0x4);
+	ASSERT_STRUCT_OFFSET(XFile, blockSize, 0x8);
+
+	struct XZoneInfo
+	{
+		char * name; //OFS: 0x0 SIZE: 0x4
+		int allocFlags; //OFS: 0x4 SIZE: 0x4
+		int freeFlags; //OFS: 0x8 SIZE: 0x4
+	};
+	ASSERT_STRUCT_SIZE(XZoneInfo, 0xC);
+	ASSERT_STRUCT_OFFSET(XZoneInfo, name, 0x0);
+	ASSERT_STRUCT_OFFSET(XZoneInfo, allocFlags, 0x4);
+	ASSERT_STRUCT_OFFSET(XZoneInfo, freeFlags, 0x8);
 
 #ifdef __cplusplus
 	WEAK symbol<XAssetHeader(XAssetType type, const char* name, bool errorIfMissing, int waitTime)>DB_FindXAssetHeader{ 0x0, 0x48DA30 };

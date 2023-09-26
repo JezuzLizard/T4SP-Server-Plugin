@@ -3604,17 +3604,6 @@ namespace game
 	ASSERT_STRUCT_OFFSET(TLSData_t, field_38, 0x38);
 	ASSERT_STRUCT_OFFSET(TLSData_t, field_3C, 0x3C);
 
-	struct XZoneInfo
-	{
-		char * name; //OFS: 0x0 SIZE: 0x4
-		int allocFlags; //OFS: 0x4 SIZE: 0x4
-		int freeFlags; //OFS: 0x8 SIZE: 0x4
-	};
-	ASSERT_STRUCT_SIZE(XZoneInfo, 0xC);
-	ASSERT_STRUCT_OFFSET(XZoneInfo, name, 0x0);
-	ASSERT_STRUCT_OFFSET(XZoneInfo, allocFlags, 0x4);
-	ASSERT_STRUCT_OFFSET(XZoneInfo, freeFlags, 0x8);
-
 	union DvarValue
 	{
 		bool enabled; //OFS: 0x0 SIZE: 0x1
@@ -11407,17 +11396,6 @@ namespace game
 	ASSERT_STRUCT_OFFSET(LargeLocal, startPos, 0x0);
 	ASSERT_STRUCT_OFFSET(LargeLocal, size, 0x4);
 
-	struct XFile
-	{
-		unsigned int size; //OFS: 0x0 SIZE: 0x4
-		unsigned int externalSize; //OFS: 0x4 SIZE: 0x4
-		unsigned int blockSize[8]; //OFS: 0x8 SIZE: 0x20
-	};
-	ASSERT_STRUCT_SIZE(XFile, 0x28);
-	ASSERT_STRUCT_OFFSET(XFile, size, 0x0);
-	ASSERT_STRUCT_OFFSET(XFile, externalSize, 0x4);
-	ASSERT_STRUCT_OFFSET(XFile, blockSize, 0x8);
-
 	union pointtrace_or_moveclip_u
 	{
 		pointtrace_t point; //OFS: 0x0 SIZE: 0x40
@@ -12777,21 +12755,6 @@ namespace game
 	ASSERT_STRUCT_OFFSET(GfxCmdStretchPicRotateXY, color, 0x28);
 	ASSERT_STRUCT_OFFSET(GfxCmdStretchPicRotateXY, rotation, 0x2C);
 
-	struct XZoneMemory
-	{
-		XBlock blocks[9]; //OFS: 0x0 SIZE: 0x48
-		char * lockedVertexData; //OFS: 0x48 SIZE: 0x4
-		char * lockedIndexData; //OFS: 0x4C SIZE: 0x4
-		void * vertexBuffer; //OFS: 0x50 SIZE: 0x4
-		void * indexBuffer; //OFS: 0x54 SIZE: 0x4
-	};
-	ASSERT_STRUCT_SIZE(XZoneMemory, 0x58);
-	ASSERT_STRUCT_OFFSET(XZoneMemory, blocks, 0x0);
-	ASSERT_STRUCT_OFFSET(XZoneMemory, lockedVertexData, 0x48);
-	ASSERT_STRUCT_OFFSET(XZoneMemory, lockedIndexData, 0x4C);
-	ASSERT_STRUCT_OFFSET(XZoneMemory, vertexBuffer, 0x50);
-	ASSERT_STRUCT_OFFSET(XZoneMemory, indexBuffer, 0x54);
-
 	struct SaveMemoryGlob
 	{
 		SaveGame * committedGameSave; //OFS: 0x0 SIZE: 0x4
@@ -13324,7 +13287,64 @@ namespace game
 	ASSERT_STRUCT_OFFSET(DynEnt_FadeData, id, 0x0);
 	ASSERT_STRUCT_OFFSET(DynEnt_FadeData, startTime, 0x4);
 
+	struct __declspec(align(2)) GfxMetrics
+	{
+		unsigned __int16 cubemapShotRes;
+		unsigned __int16 cubemapShotPixelBorder;
+		bool hasAnisotropicMinFilter;
+		bool hasAnisotropicMagFilter;
+		int maxAnisotropy;
+		int maxClipPlanes;
+		unsigned __int8 shadowmapSamplerState;
+		bool slopeScaleDepthBias;
+		bool canMipCubemaps;
+	};
 
+	// cCurve
+
+	struct CommonFastFileLoad
+	{
+		int code_post_gfx_flags;
+		int patch_flags;
+		int ui_flags;
+		int common_flags;
+		int flags5;
+		int localized_common_flags;
+		const char *code_post_gfx;
+		const char *patch;
+		const char *ui;
+		const char *common;
+		int filename4;
+		const char *localized_common;
+		const char *mod;
+	};
+
+	struct GfxWindowParms
+	{
+		HWND__ *hwnd;
+		int hz;
+		bool fullscreen;
+		int x;
+		int y;
+		int sceneWidth;
+		int sceneHeight;
+		int displayWidth;
+		int displayHeight;
+		int aaSamples;
+	};
+
+	struct stream_source_info_t
+	{
+		char Stream;
+		char Offset;
+		char Type;
+	};
+
+	struct stream_dest_info_t
+	{
+		char Usage;
+		char UsageIndex;
+	};
 
 #ifdef __cplusplus
 }

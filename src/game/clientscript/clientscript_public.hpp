@@ -384,6 +384,44 @@ namespace game
 		VAR_ENDON_LIST = 0x18,
 	};
 
+	enum scr_builtin_type_t
+	{
+		BUILTIN_ANY = 0x0,
+		BUILTIN_DEVELOPER_ONLY = 0x1,
+	};
+
+	enum Scr_SourceType_t
+	{
+		SOURCE_TYPE_NONE = 0x0,
+		SOURCE_TYPE_BREAKPOINT = 0x1,
+		SOURCE_TYPE_CALL = 0x2,
+	};
+
+	enum scr_abort_t
+	{
+		SCR_ABORT_NONE = 0x0,
+		SCR_ABORT_CONTINUE = 0x1,
+		SCR_ABORT_BREAK = 0x2,
+		SCR_ABORT_RETURN = 0x3,
+		SCR_ABORT_MAX = 0x3,
+	};
+
+	enum scr_call_type_t
+	{
+		CALL_NONE = 0x0,
+		CALL_BUILTIN = 0x1,
+		CALL_THREAD = 0x2,
+		CALL_FUNCTION = 0x3,
+	};
+
+	enum sl_user_type_e
+	{
+		SL_USER_GAME = 0x1,
+		SL_USER_TEMP = 0x2,
+		SL_USER_XZONE = 0x4,
+		SL_USER_XZONE_TEMP = 0x8,
+	};
+
 #pragma endregion
 
 #pragma region "structs"

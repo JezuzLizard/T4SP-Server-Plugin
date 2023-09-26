@@ -10,6 +10,7 @@
 #pragma warning(disable: 4324)
 #pragma warning(disable: 4459)
 #pragma warning(disable: 4611)
+#pragma warning(disable: 4359)
 #pragma warning(error: 4409)
 
 #define DLL_EXPORT extern "C" __declspec(dllexport)
