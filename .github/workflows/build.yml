@@ -58,6 +58,7 @@ jobs:
           name: ${{matrix.configuration}} binaries
           path: |
             build/bin/${{matrix.configuration}}/t4sp-server-plugin.dll
+            build/bin/${{matrix.configuration}}/t4sp-server-plugin.pdb
 
   deploy:
     name: Deploy release
@@ -82,3 +83,4 @@ jobs:
           draft: true
           files: |
             t4sp-server-plugin.dll
+            t4sp-server-plugin.pdb
