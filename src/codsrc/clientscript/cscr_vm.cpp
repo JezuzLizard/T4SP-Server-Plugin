@@ -4890,20 +4890,24 @@ namespace codsrc
 			return result;
 		}
 
-		result.u.linkPointer = (const char*)value->u.intValue;
+		result = value->u.anim;
 		if ( !animTreeInputForValidation )
 		{
 			return result;
 		}
 
-		animTreeAnimPtr = animTreeInputForValidation->anims;
-		animPtr = game::gScrAnimPub[inst].xanim_lookup[user][(unsigned int)result.u.linkPointer >> 16].anims;
+		assert(animTreeInputForValidation);
+		animTreeAnimPtr = animTreeInputForValidation->anims; // XAnimGetAnims(inst, animTreeInputForValidation);
+
+		assert(result.u.s.tree > 0 && result.u.s.tree < game::gScrAnimPub[inst].xanim_num[user]);
+		animPtr = game::gScrAnimPub[inst].xanim_lookup[user][result.u.s.tree].anims; // Scr_GetAnims(inst, user, result.u.s.tree);
+
 		if ( animPtr == animTreeAnimPtr )
 		{
 			return result;
 		}
 
-		debugMsg = game::XAnimGetAnimDebugName(value->u.intValue, animPtr);
+		debugMsg = game::XAnimGetAnimDebugName(result.u.s.index, animPtr);
 		game::gScrVarPub[inst].error_message = (char*)game::va("anim '%s' in animtree '%s' does not belong to the entity's animtree '%s'", debugMsg, animTreeAnimPtr->debugName, animTreeAnimPtr->debugName);
 		game::RemoveRefToValueInternal(game::SCRIPTINSTANCE_SERVER, value->type, value->u);
 		value->type = game::VAR_UNDEFINED;
