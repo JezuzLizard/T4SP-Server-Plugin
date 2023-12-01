@@ -123,7 +123,9 @@ namespace fileio
 
 			if (!utils::io::write_file(scr_fhs[fh].full_path.string(), to_write, true))
 			{
-				game::Scr_Error("File write failed", game::SCRIPTINSTANCE_SERVER, false);
+				game::Com_PrintWarning(game::CON_CHANNEL_SCRIPT, "Failed to write file: %s\n", scr_fhs[fh].base_path.c_str());
+				game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, 0);
+				return;
 			}
 
 			game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, 1);
@@ -133,7 +135,10 @@ namespace fileio
 		{
 			scheduler::on_pre_scr_init_system([]([[maybe_unused]] game::scriptInstance_t inst)
 				{
-					if (inst != game::SCRIPTINSTANCE_SERVER) return;
+					if (inst != game::SCRIPTINSTANCE_SERVER)
+					{
+						return;
+					}
 
 					close_all_scr_fh();
 				});
@@ -192,7 +197,9 @@ namespace fileio
 
 						if (!fd || file_length < 0)
 						{
-							game::Scr_Error("Failed to open file", game::SCRIPTINSTANCE_SERVER, false);
+							game::Com_PrintWarning(game::CON_CHANNEL_SCRIPT, "Failed to open file for reading: %s\n", fpath.c_str());
+							game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, 0);
+							return;
 						}
 
 						scr_fhs[i].file_buff = std::make_unique<char[]>(file_length + 1);
@@ -205,7 +212,9 @@ namespace fileio
 						if (bytes_read < 0)
 						{
 							scr_fhs[i].file_buff = {};
-							game::Scr_Error("Failed to read file", game::SCRIPTINSTANCE_SERVER, false);
+							game::Com_PrintWarning(game::CON_CHANNEL_SCRIPT, "Failed to read file: %s\n", fpath.c_str());
+							game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, 0);
+							return;
 						}
 
 						scr_fhs[i].type = scr_fh_type_e::READ;
@@ -219,7 +228,9 @@ namespace fileio
 
 						if (!utils::io::write_file(full_path.string(), "", (mode == "append"s)))
 						{
-							game::Scr_Error("Failed to open the file for writing", game::SCRIPTINSTANCE_SERVER, false);
+							game::Com_PrintWarning(game::CON_CHANNEL_SCRIPT, "Failed to open file for writing: %s\n", fpath.c_str());
+							game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, 0);
+							return;
 						}
 
 						scr_fhs[i].type = scr_fh_type_e::WRITE;
@@ -382,7 +393,9 @@ namespace fileio
 
 					if (!utils::io::remove_file(full_path.string()))
 					{
-						game::Scr_Error(utils::string::va("Failed to delete file: %s", fpath.c_str()), game::SCRIPTINSTANCE_SERVER, false);
+						game::Com_PrintWarning(game::CON_CHANNEL_SCRIPT, "Failed to delete file: %s\n", fpath.c_str());
+						game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, 0);
+						return;
 					}
 
 					game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, 1);
