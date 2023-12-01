@@ -234,7 +234,7 @@ namespace fileio
 #ifdef DEBUG
 					printf("gscr_fs_fopen: opening %s, mode %s\n", fpath.c_str(), mode);
 #endif
-					game::Scr_AddInt(i + 1);
+					game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, i + 1);
 				});
 
 			gsc::function::add("fs_write", []()
