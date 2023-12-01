@@ -42,6 +42,7 @@ All files will be closed upon GSC restart (map_restart or fast_restart or missio
 * `<int> FS_FOpen(<filename string>, <mode string>)` Tries to open the file, mode is one of `read`, `write` (clears the file), `append` (appends to the file), returns the filehandle. Will return `0` if failed to open.
 * `FS_FClose(<filehandle int>)` Closes the file pointed by the filehandle given, which was returned from `FS_FOpen`.
   ```gsc
+  // opens "scriptdata/test.txt", all io will take place inside the "scriptdata" folder
   f = FS_FOpen("test.txt", "read"); // can be "read" "write" or "append"
 
   if (!f)
