@@ -48,10 +48,13 @@ All files will be closed upon GSC restart (map_restart or fast_restart or missio
   {
     PrintConsole("test.txt failed to be opened for reading!");
   }
+  else
+  {
+    // do stuff with the file
 
-  // do stuff
+    FS_FClose(f); // make sure to close it
+  }
 
-  FS_FClose(f); // make sure to close it
   ```
 
 * `<string> FS_ReadLine(<filehandle int>)` Reads a line from the file pointed by the filehandle, removes the newline char. Returns `undefined` when nothing is left to read. Will not read more than 8192 characters at once. Filehandle must be opened for reading.
