@@ -57,7 +57,7 @@ namespace fileio
 				game::Scr_Error(utils::string::va("Invalid path: %s", path.c_str()), game::SCRIPTINSTANCE_SERVER, false);
 			}
 
-			return "scriptdata/" + path;
+			return path.starts_with("scriptdata/") ? path : "scriptdata/" + path;
 		}
 
 		std::filesystem::path build_full_path(const std::string& path)
