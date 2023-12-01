@@ -72,7 +72,7 @@ namespace fileio
 
 			if (!fs_gamedir)
 			{
-				fs_gamedir = game::Dvar_FindVar("fs_gamedir");
+				fs_gamedir = game::Dvar_FindVar("fs_game");
 			}
 
 			return std::filesystem::path(fs_localAppData->current.string) / (*fs_gamedir->current.string ? fs_gamedir->current.string : "raw") / path;
@@ -234,6 +234,7 @@ namespace fileio
 #ifdef DEBUG
 					printf("gscr_fs_fopen: opening %s, mode %s\n", fpath.c_str(), mode);
 #endif
+					game::Scr_AddInt(i + 1);
 				});
 
 			gsc::function::add("fs_write", []()
