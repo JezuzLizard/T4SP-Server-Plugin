@@ -4,26 +4,85 @@ A plugin that has code that hopefully compiles and the game will load it to do t
 Requires Git (https://git-scm.com/), Premake5 (https://premake.github.io/), and MSVC 2022 (https://visualstudio.microsoft.com/vs/features/cplusplus/) to build.
 
 # Features
+
+Detours and reimplements the entire GSC VM + compiler.
+
+Adds custom GSC functions.
+
 ## FileIO
 This plugin provides FileIO interface to GSC for reading and writing files, this is exact to [CoD4x's](https://github.com/callofduty4x/CoD4x_Server/blob/master/scriptdocumentation/script_functions_reference.md#file-operations) interface.
 
 However, all reads and writes will take place strictly and only in the `scriptdata` folder.
 
-All files will be closed upon GSC restart (map_restart or fast_restart or missionfailed, etc).
+All files will be closed upon GSC restart (map_restart or fast_restart or missionfailed, etc), only a maximum of 10 files may be opened at once.
 
-* `<int> FS_TestFile(<filename string>)` Returns `true` if the file exists, `false` otherwise.
+* `<bool> FS_TestFile(<filename string>)` Returns `true` if the file exists, `false` otherwise.
   ```gsc
   if (FS_TestFile("test.txt"))
   {
     PrintConsole("Found test.txt!");
   }
   ```
-* `<int> FS_Remove(<filename string>)` Deletes the file, return `true` if successful.
+
+* `<bool> FS_Remove(<filename string>)` Deletes the file, return `true` if successful.
   ```gsc
   if (FS_Remove("test.txt"))
   {
     PrintConsole("test.txt was deleted!");
   }
+  ```
+
+* `FS_FCloseAll()` Closes every full file.
+  ```gsc
+  // open some files
+
+  FS_FCloseAll(); // close them all
+  ```
+
+* `<int> FS_FOpen(<filename string>, <mode string>)` Tries to open the file, mode is one of `read`, `write` (clears the file), `append` (appends to the file), returns the filehandle. Will return `0` if failed to open.
+* `FS_FClose(<filehandle int>)` Closes the file pointed by the filehandle given, which was returned from `FS_FOpen`.
+  ```gsc
+  f = FS_FOpen("test.txt", "read"); // can be "read" "write" or "append"
+
+  if (!f)
+  {
+    PrintConsole("test.txt failed to be opened for reading!");
+  }
+
+  // do stuff
+
+  FS_FClose(f); // make sure to close it
+  ```
+
+* `<string> FS_ReadLine(<filehandle int>)` Reads a line from the file pointed by the filehandle, removes the newline char. Returns `undefined` when nothing is left to read. Will not read more than 8192 characters at once. Filehandle must be opened for reading.
+* `<string> FS_Read(<filehandle int>, <bytes int>(optional))` Reads number of bytes from the file. If bytes is `undefined`, reads the entire file. No more than 8192 characters will be read at once. Returns `undefined` if there are nothing left to read.
+  ```gsc
+  // open the file for reading
+
+  line = FS_ReadLine(f);
+  while (isDefined(line))
+  {
+    // do something with line
+
+    line = FS_ReadLine(f);
+  }
+
+  // entire file is read
+
+  // close the file
+  ```
+
+* `<bool> FS_WriteLine(<filehandle int>, <contents string>)` Writes to the file pointed by the filehandle. Appends a newline character. Returns `true` if successful. Filehandle must be opened for writing.
+* `<bool> FS_Write(<filehandle int>, <contents string>)` Same as above, does not add a newline character.
+  ```gsc
+  // open the file for writing
+
+  FS_WriteLine(f, "writing some text with newline added");
+
+  FS_Write(f, "no newline here");
+  FS_Write(f, "i manually add a newline\n");
+
+  // close the file
   ```
 
 # Installation
