@@ -10,6 +10,7 @@ namespace fileio
 	namespace
 	{
 		static constexpr size_t max_fhs = 10;
+		static constexpr size_t max_gsc_string = 0x10000 - 1;
 
 		enum class scr_fh_type_e
 		{
@@ -293,10 +294,10 @@ namespace fileio
 						}
 					}
 
-					if (bytes_to_read > 8191)
+					if (bytes_to_read > max_gsc_string)
 					{
 						found_nl = false;
-						bytes_to_read = 8191;
+						bytes_to_read = max_gsc_string;
 
 						game::Com_PrintWarning(game::CON_CHANNEL_SCRIPT, "Line was too long in file %s, truncating\n", scr_fhs[fh].base_path.c_str());
 					}
@@ -348,9 +349,9 @@ namespace fileio
 						}
 					}
 
-					if (bytes_to_read > 8191)
+					if (bytes_to_read > max_gsc_string)
 					{
-						bytes_to_read = 8191;
+						bytes_to_read = max_gsc_string;
 
 						game::Com_PrintWarning(game::CON_CHANNEL_SCRIPT, "Line was too long in file %s, truncating\n", scr_fhs[fh].base_path.c_str());
 					}
