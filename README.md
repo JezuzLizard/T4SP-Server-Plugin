@@ -58,8 +58,8 @@ All files will be closed upon GSC restart (map_restart or fast_restart or missio
 
   ```
 
-* `<string> FS_ReadLine(<filehandle int>)` Reads a line from the file pointed by the filehandle, removes the newline char. Returns `undefined` when nothing is left to read. Will not read more than 8192 characters at once. Filehandle must be opened for reading.
-* `<string> FS_Read(<filehandle int>, <bytes int>(optional))` Reads number of bytes from the file. If bytes is `undefined`, reads the entire file. No more than 8192 characters will be read at once. Returns `undefined` if there are nothing left to read.
+* `<string> FS_ReadLine(<filehandle int>)` Reads a line from the file pointed by the filehandle, removes the newline char. Returns `undefined` when nothing is left to read. Will not read more than 65536 characters at once. Filehandle must be opened for reading.
+* `<string> FS_Read(<filehandle int>, <bytes int>(optional))` Reads number of bytes from the file. If bytes is `undefined`, reads the entire file. No more than 65536 characters will be read at once. Returns `undefined` if there are nothing left to read.
   ```gsc
   // open the file for reading
 
