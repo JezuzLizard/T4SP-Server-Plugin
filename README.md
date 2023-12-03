@@ -89,13 +89,13 @@ All files will be closed upon GSC restart (map_restart or fast_restart or missio
   // close the file
   ```
 
-* `<array of strings> FS_ListFiles(<folder string>, <recurse bool>(optional))` Returns a list of files inside of the folder given. Can recurse if set to `true`.
+* `<array of strings> FS_ListFiles(<folder string>)` Returns a list of files inside of the folder given.
   ```gsc
   files = FS_ListFiles("testfolder/");
 
   for (i = 0; i < files.size; i++)
   {
-    file - files[i]; // will be "testfolder/<filename>"
+    file = files[i]; // will be "testfolder/<filename>"
 
     // do something with the filename
   }
