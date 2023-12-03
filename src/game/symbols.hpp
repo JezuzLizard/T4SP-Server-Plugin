@@ -78,6 +78,9 @@ namespace game
 	void Sys_EnterCriticalSection(CriticalSection critSect);
 	void Sys_LeaveCriticalSection(CriticalSection critSect);
 
+	const char** FS_ListFiles(const char* path, const char* extension, FsListBehavior_e behavior, int* numfiles);
+	void FS_FreeFileList(const char** list);
+
 	// Variables
 	WEAK symbol<CRITICAL_SECTION> s_criticalSection{ 0x0, 0x2298D08 };
 	WEAK symbol<HunkUser*> g_DebugHunkUser{ 0x0, 0x212B2EC };

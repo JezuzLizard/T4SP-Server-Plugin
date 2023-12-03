@@ -232,6 +232,21 @@ namespace game
 	}
 
 	// restored
+	const char** FS_ListFiles(const char* path, const char* extension, FsListBehavior_e behavior, int* numfiles)
+	{
+		return FS_ListFilteredFiles(*fs_searchpaths, path, extension, nullptr, behavior, numfiles);
+	}
+
+	// restored
+	void FS_FreeFileList(const char** list)
+	{
+		if ( list )
+		{
+			Hunk_UserDestroy((HunkUser*)*(list - 1));
+		}
+	}
+
+	// restored
 	void Sys_EnterCriticalSection(CriticalSection critSect)
 	{
 		EnterCriticalSection(&s_criticalSection[critSect]);

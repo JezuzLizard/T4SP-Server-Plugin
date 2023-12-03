@@ -401,6 +401,23 @@ namespace fileio
 
 					game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, 1);
 				});
+
+			gsc::function::add("fs_listfiles", []()
+				{
+					auto fpath = build_base_path(game::Scr_GetString(0, game::SCRIPTINSTANCE_SERVER));
+
+					int numfiles;
+					auto* files = game::FS_ListFiles(fpath.c_str(), "", game::FS_LIST_ALL, &numfiles);
+
+					game::Scr_MakeArray(game::SCRIPTINSTANCE_SERVER);
+					for (int i = 0; i < numfiles; i++)
+					{
+						game::Scr_AddString(game::SCRIPTINSTANCE_SERVER, files[i]);
+						game::Scr_AddArray(game::SCRIPTINSTANCE_SERVER);
+					}
+
+					game::FS_FreeFileList(files);
+				});
 		}
 	}
 
