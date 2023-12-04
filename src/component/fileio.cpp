@@ -405,6 +405,12 @@ namespace fileio
 			gsc::function::add("fs_listfiles", []()
 				{
 					std::string dir = game::Scr_GetString(0, game::SCRIPTINSTANCE_SERVER);
+
+					if (dir.ends_with("\\") || dir.ends_with("/"))
+					{
+						dir = dir.substr(0, dir.length() - 1);
+					}
+
 					auto fpath = build_base_path(dir);
 
 					int numfiles;
