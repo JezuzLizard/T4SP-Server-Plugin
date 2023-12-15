@@ -67,11 +67,18 @@ namespace codsrc
 	{
 		int len;
 
-		for ( len = refString->u.s.byteLen - 1;
-			refString->str[len];
-			len += 256 )
+		if (!refString->u.s.byteLen)
 		{
-			;
+			len = 256 - 1; //Bugfix for 256 % 256 = 0 or 512 % 256 = 0 or... Just promote it to 256
+		}
+		else
+		{
+			len = refString->u.s.byteLen - 1;
+		}
+
+		while (refString->str[len])
+		{
+			len += 256;
 		}
 
 		return len;
