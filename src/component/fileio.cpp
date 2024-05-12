@@ -62,6 +62,7 @@ namespace fileio
 				game::Scr_ParamError(0, game::SCRIPTINSTANCE_SERVER, utils::string::va("Invalid path: %s", path_.c_str()));
 			}
 
+			// its sandboxed, but what about symlinks?
 			return path.starts_with("scriptdata/") ? path : "scriptdata/" + path;
 		}
 
