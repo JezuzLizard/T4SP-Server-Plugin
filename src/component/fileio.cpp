@@ -34,15 +34,16 @@ namespace fileio
 
 		bool validate_scr_path(const std::string& fpath)
 		{
-			if (fpath.empty())
-			{
-				return true;
-			}
+			auto toks = utils::string::split(fpath, '/');
 
-			constexpr static std::array bad_strings { R"(..)", R"(../)", R"(..\)" };
-			for (auto i = 0u; i < bad_strings.size(); i++)
+			for (const auto& tok : toks)
 			{
-				if (fpath.find(bad_strings[i]) != std::string::npos)
+				if (tok == "." || tok == "..")
+				{
+					return false;
+				}
+
+				if (tok.find(":") != std::string::npos)
 				{
 					return false;
 				}
@@ -51,11 +52,14 @@ namespace fileio
 			return true;
 		}
 
-		std::string build_base_path(const std::string& path)
+		std::string build_base_path(const std::string& path_)
 		{
+			auto path = path_;
+			std::replace(path.begin(), path.end(), '\\', '/');
+
 			if (!validate_scr_path(path))
 			{
-				game::Scr_Error(utils::string::va("Invalid path: %s", path.c_str()), game::SCRIPTINSTANCE_SERVER, false);
+				game::Scr_ParamError(0, game::SCRIPTINSTANCE_SERVER, utils::string::va("Invalid path: %s", path_.c_str()));
 			}
 
 			return path.starts_with("scriptdata/") ? path : "scriptdata/" + path;
@@ -102,18 +106,25 @@ namespace fileio
 			}
 		}
 
-		void fwrite_to_file(bool append_newline)
+		int scr_get_fh()
 		{
 			auto fh = game::Scr_GetInt(game::SCRIPTINSTANCE_SERVER, 0) - 1;
 
 			if (fh < 0 || fh >= max_fhs)
 			{
-				game::Scr_Error("fs_fwrite: invalid filehandle", game::SCRIPTINSTANCE_SERVER, false);
+				game::Scr_ParamError(0, game::SCRIPTINSTANCE_SERVER, "fs_fwrite: invalid filehandle");
 			}
+
+			return fh;
+		}
+
+		void fwrite_to_file(bool append_newline)
+		{
+			auto fh = scr_get_fh();
 
 			if (scr_fhs[fh].type != scr_fh_type_e::WRITE && scr_fhs[fh].type != scr_fh_type_e::APPEND)
 			{
-				game::Scr_Error("File not opened for writing", game::SCRIPTINSTANCE_SERVER, false);
+				game::Scr_ParamError(0, game::SCRIPTINSTANCE_SERVER, "File not opened for writing");
 			}
 
 			std::string to_write = game::Scr_GetString(1, game::SCRIPTINSTANCE_SERVER);
@@ -170,7 +181,7 @@ namespace fileio
 					{
 						if (scr_fd.type != scr_fh_type_e::UNUSED && scr_fd.base_path == fpath)
 						{
-							game::Scr_Error("File already opened", game::SCRIPTINSTANCE_SERVER, false);
+							game::Scr_ParamError(0, game::SCRIPTINSTANCE_SERVER, "File already opened");
 						}
 					}
 
@@ -186,7 +197,7 @@ namespace fileio
 
 					if (i >= max_fhs)
 					{
-						game::Scr_Error("Too many files opened", game::SCRIPTINSTANCE_SERVER, false);
+						game::Scr_ParamError(0, game::SCRIPTINSTANCE_SERVER, "Too many files opened");
 					}
 
 					// check mode
@@ -240,7 +251,7 @@ namespace fileio
 					}
 					else
 					{
-						game::Scr_Error(utils::string::va("Invalid mode: %s", mode), game::SCRIPTINSTANCE_SERVER, false);
+						game::Scr_ParamError(1, game::SCRIPTINSTANCE_SERVER, utils::string::va("Invalid mode: %s", mode));
 					}
 
 #ifdef DEBUG
@@ -261,16 +272,11 @@ namespace fileio
 
 			gsc::function::add("fs_readline", []()
 				{
-					auto fh = game::Scr_GetInt(game::SCRIPTINSTANCE_SERVER, 0) - 1;
-
-					if (fh < 0 || fh >= max_fhs)
-					{
-						game::Scr_Error("Invalid filehandle", game::SCRIPTINSTANCE_SERVER, false);
-					}
+					auto fh = scr_get_fh();
 
 					if (scr_fhs[fh].type != scr_fh_type_e::READ)
 					{
-						game::Scr_Error("File not opened for reading", game::SCRIPTINSTANCE_SERVER, false);
+						game::Scr_ParamError(0, game::SCRIPTINSTANCE_SERVER, "File not opened for reading");
 					}
 
 					// file is completed being read
@@ -319,16 +325,11 @@ namespace fileio
 
 			gsc::function::add("fs_read", []()
 				{
-					auto fh = game::Scr_GetInt(game::SCRIPTINSTANCE_SERVER, 0) - 1;
-
-					if (fh < 0 || fh >= max_fhs)
-					{
-						game::Scr_Error("Invalid filehandle", game::SCRIPTINSTANCE_SERVER, false);
-					}
+					auto fh = scr_get_fh();
 
 					if (scr_fhs[fh].type != scr_fh_type_e::READ)
 					{
-						game::Scr_Error("File not opened for reading", game::SCRIPTINSTANCE_SERVER, false);
+						game::Scr_ParamError(0, game::SCRIPTINSTANCE_SERVER, "File not opened for reading");
 					}
 
 					// file is completed being read
@@ -345,7 +346,7 @@ namespace fileio
 
 						if (bytes_to_read <= 0)
 						{
-							game::Scr_Error("Trying to read <1 bytes", game::SCRIPTINSTANCE_SERVER, false);
+							game::Scr_ParamError(1, game::SCRIPTINSTANCE_SERVER, "Trying to read <1 bytes");
 						}
 					}
 
@@ -370,16 +371,11 @@ namespace fileio
 
 			gsc::function::add("fs_fclose", []()
 				{
-					auto fh = game::Scr_GetInt(game::SCRIPTINSTANCE_SERVER, 0) - 1;
-
-					if (fh < 0 || fh >= max_fhs)
-					{
-						game::Scr_Error("Invalid filehandle", game::SCRIPTINSTANCE_SERVER, false);
-					}
+					auto fh = scr_get_fh();
 
 					if (scr_fhs[fh].type == scr_fh_type_e::UNUSED)
 					{
-						game::Scr_Error("File not opened", game::SCRIPTINSTANCE_SERVER, false);
+						game::Scr_ParamError(0, game::SCRIPTINSTANCE_SERVER, "File not opened");
 					}
 
 					free_scr_fh(scr_fhs[fh]);
