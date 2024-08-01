@@ -9,6 +9,9 @@ Detours and reimplements the entire GSC VM + compiler.
 
 Adds custom GSC functions.
 
+# Installation
+Move the `t4sp-server-plugin.dll` to `%LOCALAPPDATA%\Plutonium\storage\t4\plugins\`, the plugin will be loaded when you start up a dedicated server for Plutonium T4SP.
+
 ## FileIO
 This plugin provides FileIO interface to GSC for reading and writing files, this is exact to [CoD4x's](https://github.com/callofduty4x/CoD4x_Server/blob/master/scriptdocumentation/script_functions_reference.md#file-operations) interface.
 
@@ -17,7 +20,7 @@ However, all reads and writes will take place strictly and only in the `scriptda
 All files will be closed upon GSC restart (map_restart or fast_restart or missionfailed, etc), only a maximum of 10 files may be opened at once.
 
 * `<bool> FS_TestFile(<filename string>)` Returns `true` if the file exists, `false` otherwise.
-* `<bool> FS_Remove(<filename string>)` Deletes the file, return `true` if successful, `false` otherwise.
+* `<bool> FS_Remove(<filename string>, <(optional) use_global bool>)` Deletes the file, return `true` if successful, `false` otherwise. `use_global` will use non mod specific folder.
   ```gsc
   // test to see if "scriptdata/test.txt" file exists
   if (FS_TestFile("test.txt")) // not a typo, all file io will take place inside the "scriptdata" folder
@@ -39,7 +42,7 @@ All files will be closed upon GSC restart (map_restart or fast_restart or missio
   FS_FCloseAll(); // close them all
   ```
 
-* `<int> FS_FOpen(<filename string>, <mode string>)` Tries to open the file, mode must be one of `read`, `write` (clears the file), `append` (appends to the file), returns the filehandle. Will return `0` if failed to open.
+* `<int> FS_FOpen(<filename string>, <mode string>, <(optional) use_global bool>)` Tries to open the file, mode must be one of `read`, `write` (clears the file), `append` (appends to the file), returns the filehandle. Will return `0` if failed to open. `use_global` will use non mod specific folder (only applies to `write` mode).
 * `FS_FClose(<filehandle int>)` Closes the file pointed by the filehandle given, which was returned from `FS_FOpen`.
   ```gsc
   // opens "scriptdata/test.txt", all io will take place inside the "scriptdata" folder
@@ -101,10 +104,11 @@ All files will be closed upon GSC restart (map_restart or fast_restart or missio
     // do something with the filename
     filepath = folder + filename;
   }
+  
+* `<int> FS_Length(<filehandle int>)` Returns the length in bytes of the open'd file.
+* `<int> FS_GetSeek(<filehandle int>)` Returns the seek of the open'd file (only for reading).
+* `<int> FS_Seek(<filehandle int>, <seek int>)` Sets the seek of the open'd file (only for reading).
   ```
-
-# Installation
-Move the `t4sp-server-plugin.dll` to `%LOCALAPPDATA%\Plutonium\storage\t4\plugins\`, the plugin will be loaded when you start up a dedicated server for Plutonium T4SP.
 
 # Credits
 - momo5502 (https://github.com/momo5502)

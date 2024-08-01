@@ -66,7 +66,7 @@ namespace fileio
 			return path.starts_with("scriptdata/") ? path : "scriptdata/" + path;
 		}
 
-		std::filesystem::path build_full_path(const std::string& path)
+		std::filesystem::path build_full_path(const std::string& path, bool use_global)
 		{
 			static game::dvar_s* fs_localAppData = nullptr;
 			static game::dvar_s* fs_gamedir = nullptr;
@@ -81,7 +81,7 @@ namespace fileio
 				fs_gamedir = game::Dvar_FindVar("fs_game");
 			}
 
-			return std::filesystem::path(fs_localAppData->current.string) / (*fs_gamedir->current.string ? fs_gamedir->current.string : "raw") / path;
+			return std::filesystem::path(fs_localAppData->current.string) / (!use_global && *fs_gamedir->current.string ? fs_gamedir->current.string : "raw") / path;
 		}
 
 		void free_scr_fh(scr_fh_t& scr_fh)
@@ -237,7 +237,7 @@ namespace fileio
 					}
 					else if (mode == "write"s || mode == "append"s)
 					{
-						auto full_path = build_full_path(fpath);
+						auto full_path = build_full_path(fpath, game::Scr_GetNumParam(game::SCRIPTINSTANCE_SERVER) >= 3 && game::Scr_GetType(game::SCRIPTINSTANCE_SERVER, 2) == game::VAR_INTEGER && game::Scr_GetInt(game::SCRIPTINSTANCE_SERVER, 2));
 
 						if (!utils::io::write_file(full_path.string(), "", (mode == "append"s)))
 						{
@@ -384,10 +384,48 @@ namespace fileio
 					game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, 1);
 				});
 
+			gsc::function::add("fs_length", []()
+				{
+					auto fh = scr_get_fh();
+
+					if (scr_fhs[fh].type == scr_fh_type_e::UNUSED)
+					{
+						game::Scr_ParamError(0, game::SCRIPTINSTANCE_SERVER, "File not opened");
+					}
+
+					game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, scr_fhs[fh].file_length);
+				});
+
+			gsc::function::add("fs_getseek", []()
+				{
+					auto fh = scr_get_fh();
+
+					// write seek would require completely redoing how we write files...
+					if (scr_fhs[fh].type != scr_fh_type_e::READ)
+					{
+						game::Scr_ParamError(0, game::SCRIPTINSTANCE_SERVER, "File not opened for reading");
+					}
+
+					game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, scr_fhs[fh].seek);
+				});
+
+			gsc::function::add("fs_seek", []()
+				{
+					auto fh = scr_get_fh();
+
+					if (scr_fhs[fh].type != scr_fh_type_e::READ)
+					{
+						game::Scr_ParamError(0, game::SCRIPTINSTANCE_SERVER, "File not opened for reading");
+					}
+
+					scr_fhs[fh].seek = std::clamp(game::Scr_GetInt(game::SCRIPTINSTANCE_SERVER, 1), 0, scr_fhs[fh].file_length);
+					game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, 1);
+				});
+
 			gsc::function::add("fs_remove", []()
 				{
 					auto fpath = build_base_path(game::Scr_GetString(0, game::SCRIPTINSTANCE_SERVER));
-					auto full_path = build_full_path(fpath);
+					auto full_path = build_full_path(fpath, game::Scr_GetNumParam(game::SCRIPTINSTANCE_SERVER) >= 2 && game::Scr_GetType(game::SCRIPTINSTANCE_SERVER, 1) == game::VAR_INTEGER && game::Scr_GetInt(game::SCRIPTINSTANCE_SERVER, 1));
 
 					if (!utils::io::remove_file(full_path.string()))
 					{
