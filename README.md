@@ -104,11 +104,11 @@ All files will be closed upon GSC restart (map_restart or fast_restart or missio
     // do something with the filename
     filepath = folder + filename;
   }
+  ```
   
 * `<int> FS_Length(<filehandle int>)` Returns the length in bytes of the open'd file.
 * `<int> FS_GetSeek(<filehandle int>)` Returns the seek of the open'd file (only for reading).
 * `<int> FS_Seek(<filehandle int>, <seek int>)` Sets the seek of the open'd file (only for reading).
-  ```
 
 # Credits
 - momo5502 (https://github.com/momo5502)
