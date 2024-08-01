@@ -29,3 +29,6 @@
 [submodule "deps/SQLiteCpp"]
 	path = deps/SQLiteCpp
 	url = https://github.com/SRombauts/SQLiteCpp
+[submodule "deps/plutonium-sdk"]
+	path = deps/plutonium-sdk
+	url = https://github.com/plutoniummod/plutonium-sdk.git
