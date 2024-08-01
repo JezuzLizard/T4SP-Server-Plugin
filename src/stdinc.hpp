@@ -71,6 +71,8 @@
 #include "game/structs.hpp"
 #include "game/symbols.hpp"
 
+#include "plugin.hpp"
+
 std::string build_gsc_dump(game::scriptInstance_t inst);
 void push_opcode_history(game::scriptInstance_t inst, game::OpcodeVM op);
 void push_builtin_history(game::scriptInstance_t inst, int idx);
