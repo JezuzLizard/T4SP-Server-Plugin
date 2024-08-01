@@ -10,7 +10,7 @@ Detours and reimplements the entire GSC VM + compiler.
 Adds custom GSC functions.
 
 # Installation
-Move the `t4sp-server-plugin.dll` to `%LOCALAPPDATA%\Plutonium\storage\t4\plugins\`, the plugin will be loaded when you start up a dedicated server for Plutonium T4SP.
+Move the `t4sp-server-plugin.dll` to `%LOCALAPPDATA%\Plutonium\plugins\`, the plugin will be loaded when you start up a dedicated server for Plutonium T4SP.
 
 ## FileIO
 This plugin provides FileIO interface to GSC for reading and writing files, this is exact to [CoD4x's](https://github.com/callofduty4x/CoD4x_Server/blob/master/scriptdocumentation/script_functions_reference.md#file-operations) interface.
