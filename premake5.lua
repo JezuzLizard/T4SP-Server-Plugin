@@ -114,7 +114,7 @@ workspace "t4sp-server-plugin"
 			
 			filter "configurations:Debug"
 				postbuildcommands {
-					"if \"%COMPUTERNAME%\" == \"\" ( copy /y \"$(TargetPath)\" \"$(CODWAW_PATH)\\Plutonium-staging\\plugins\\\" )"
+					"if \"%COMPUTERNAME%\" == \"\" ( copy /y \"$(TargetPath)\" \"$(LOCALAPPDATA)\\Plutonium-staging\\plugins\\\" )"
 				}
 			filter {}
 		end
