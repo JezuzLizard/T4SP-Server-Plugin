@@ -3,14 +3,14 @@ A plugin that has code that hopefully compiles and the game will load it to do t
 
 Requires Git (https://git-scm.com/), Premake5 (https://premake.github.io/), and MSVC 2022 (https://visualstudio.microsoft.com/vs/features/cplusplus/) to build.
 
+# Installation
+Move the `t4sp-server-plugin.dll` to `%LOCALAPPDATA%\Plutonium\plugins\`, the plugin will be loaded when you start up a dedicated server for Plutonium T4SP.
+
 # Features
 
 Detours and reimplements the entire GSC VM + compiler.
 
 Adds custom GSC functions.
-
-# Installation
-Move the `t4sp-server-plugin.dll` to `%LOCALAPPDATA%\Plutonium\plugins\`, the plugin will be loaded when you start up a dedicated server for Plutonium T4SP.
 
 ## FileIO
 This plugin provides FileIO interface to GSC for reading and writing files, this is exact to [CoD4x's](https://github.com/callofduty4x/CoD4x_Server/blob/master/scriptdocumentation/script_functions_reference.md#file-operations) interface.
