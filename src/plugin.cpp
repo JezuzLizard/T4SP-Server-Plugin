@@ -43,11 +43,6 @@ namespace plugin
 			return;
 		}
 
-		if (game::plutonium::printf.get() != nullptr)
-		{
-			utils::hook::jump(reinterpret_cast<uintptr_t>(&printf), game::plutonium::printf);
-		}
-
 		component_loader::post_unpack();
 	}
 

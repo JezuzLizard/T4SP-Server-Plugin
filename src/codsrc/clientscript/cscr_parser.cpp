@@ -723,19 +723,20 @@ namespace codsrc
 			{
 				if (game::Scr_IsInOpcodeMemory(scriptInstance, codepos - 1))
 				{
-					// pluto
 					const char* s;
+
+					// pluto
 					if (game::plutonium::at_codepose_va != nullptr)
 					{
 						s = game::plutonium::at_codepose_va(scriptInstance, codepos - game::gScrVarPub[scriptInstance].programBuffer);
 					}
+					//
 					else
 					{
 						s = game::va("@ %d\n", codepos - game::gScrVarPub[scriptInstance].programBuffer);
 					}
 
 					game::Com_PrintMessage(channel, s, 0);
-					//
 					return;
 				}
 			}

@@ -304,7 +304,6 @@ namespace codsrc
 		{
 			game::plutonium::script_preprocess(sourceBuffer, inst, &parseData); // the pluto hook will call ScriptParse, so we dont have to
 		}
-
 		//
 		else
 		{

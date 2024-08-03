@@ -96,8 +96,6 @@ namespace game
 
 	namespace plutonium
 	{
-		WEAK symbol<int(const char* fmt, ...)> printf{0x0, 0x0};
-
 		WEAK symbol<void(scriptInstance_t)> load_custom_script_func{0x0, 0x0};
 		WEAK symbol<void(char*, game::scriptInstance_t, sval_u*)> script_preprocess{0x0, 0x0};
 		WEAK symbol<void(game::scriptInstance_t)> vm_execute_update_codepos{0x0, 0x0};

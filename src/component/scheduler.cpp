@@ -4,8 +4,8 @@
 
 namespace scheduler
 {
-	void on_scr_execute(const std::function<void()>& callback)
+	void on_scr_execute(void(*callback)())
 	{
-		plugin::get()->get_interface()->callbacks()->on_scripts_execute((plutonium::sdk::v1::interfaces::callbacks::on_scripts_execute_callback)&callback);
+		plugin::get()->get_interface()->callbacks()->on_scripts_execute(callback);
 	}
 }
