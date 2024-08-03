@@ -146,13 +146,8 @@ namespace fileio
 
 		void add_file_io()
 		{
-			scheduler::on_pre_scr_init_system([]([[maybe_unused]] game::scriptInstance_t inst)
+			scheduler::on_scr_execute([]()
 				{
-					if (inst != game::SCRIPTINSTANCE_SERVER)
-					{
-						return;
-					}
-
 					close_all_scr_fh();
 				});
 

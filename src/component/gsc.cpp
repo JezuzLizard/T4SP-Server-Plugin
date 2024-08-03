@@ -1,5 +1,5 @@
 #include <stdinc.hpp>
-#include "loader/component_loader.hpp"
+
 #include "gsc.hpp"
 
 namespace gsc
