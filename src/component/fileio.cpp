@@ -87,7 +87,7 @@ namespace fileio
 		void free_scr_fh(scr_fh_t& scr_fh)
 		{
 #ifdef DEBUG
-			printf("free_scr_fh: closing %s\n", scr_fh.base_path.c_str());
+			plugin::get()->get_interface()->logging()->info(utils::string::va("free_scr_fh: closing %s\n", scr_fh.base_path.c_str()));
 #endif
 
 			scr_fh = {};
@@ -251,7 +251,7 @@ namespace fileio
 					}
 
 #ifdef DEBUG
-					printf("gscr_fs_fopen: opening %s, mode %s\n", fpath.c_str(), mode);
+					plugin::get()->get_interface()->logging()->info(utils::string::va("gscr_fs_fopen: opening %s, mode %s\n", fpath.c_str(), mode));
 #endif
 					game::Scr_AddInt(game::SCRIPTINSTANCE_SERVER, i + 1);
 				});
