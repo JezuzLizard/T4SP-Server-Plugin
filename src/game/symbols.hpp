@@ -107,9 +107,6 @@ namespace game
 
 		WEAK symbol<const char*(game::scriptInstance_t, unsigned int)> at_codepose_va{ 0x0, 0x0 };
 
-		WEAK symbol<void()> scr_get_method_stub{ 0x0, 0x0 };
-		WEAK symbol<void()> scr_get_function_stub{ 0x0, 0x0 };
-
 		WEAK symbol<game::BuiltinMethod(const char** name, int* type)> scr_get_method_hook{ 0x0, 0x0 };
 		WEAK symbol<game::BuiltinFunction(const char** name, int* type)> scr_get_function_hook{ 0x0, 0x0 };
 		WEAK symbol<game::BuiltinMethod(const char** name, int* type)> cscr_get_method_hook{ 0x0, 0x0 };

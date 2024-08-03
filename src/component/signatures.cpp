@@ -216,8 +216,6 @@ namespace signatures
 		SAFE_SET_PLUTO_SYMBOL_DOUBLE(store_func_codepos, 0x688909, 0x3);
 
 		SAFE_SET_PLUTO_SYMBOL(cscr_get_function_hook, 0x682DC0);
-		SAFE_SET_PLUTO_SYMBOL(scr_get_function_stub, 0x682D99);
-		SAFE_SET_PLUTO_SYMBOL(scr_get_method_stub, 0x683043);
 		SAFE_SET_PLUTO_SYMBOL(cscr_get_method_hook, 0x68305C);
 		SAFE_SET_PLUTO_SYMBOL_DOUBLE(scr_get_method_hook, 0x683043, 0x4);
 		SAFE_SET_PLUTO_SYMBOL_DOUBLE(scr_get_function_hook, 0x682D99, 0x8);
