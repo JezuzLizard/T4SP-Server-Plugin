@@ -42,7 +42,7 @@ All files will be closed upon GSC restart (map_restart or fast_restart or missio
   FS_FCloseAll(); // close them all
   ```
 
-* `<int> FS_FOpen(<filename string>, <mode string>, <(optional) use_global bool>)` Tries to open the file, mode must be one of `read`, `write` (clears the file), `append` (appends to the file), returns the filehandle. Will return `0` if failed to open. `use_global` will use non mod specific folder (only applies to `write` mode).
+* `<int> FS_FOpen(<filename string>, <mode string>, <(optional) use_global bool>)` Tries to open the file, mode must be one of `read`, `write` (clears the file), `append` (appends to the file), returns the filehandle. Will return `0` if failed to open. `use_global` will use non mod specific folder (only applies to `write` mode.
 * `FS_FClose(<filehandle int>)` Closes the file pointed by the filehandle given, which was returned from `FS_FOpen`.
   ```gsc
   // opens "scriptdata/test.txt", all io will take place inside the "scriptdata" folder
