@@ -1,5 +1,4 @@
 #include <stdinc.hpp>
-#include "codsrc/clientscript/cscr_vm.hpp"
 
 namespace game
 {
@@ -784,206 +783,438 @@ namespace game
 
 	void SetVariableFieldValue(scriptInstance_t inst, unsigned int id, VariableValue* value)
 	{
-		codsrc::SetVariableFieldValue(inst, id, value);
+		if (id)
+		{
+			game::SetVariableValue(inst, value, id);
+		}
+		else
+		{
+			game::SetVariableEntityFieldValue(inst, game::gScrVarPub[inst].entId, game::gScrVarPub[inst].entFieldName, value);
+		}
 	}
 
 	void SetNewVariableValue(scriptInstance_t inst, unsigned int id, VariableValue* value)
 	{
-		codsrc::SetNewVariableValue(inst, id, value);
+		game::VariableValueInternal* entryValue;
+
+		assert(value->type < game::VAR_THREAD);
+
+		entryValue = &game::gScrVarGlob[inst].childVariables[id];
+
+		assert((entryValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		assert(!IsObject(entryValue));
+
+		assert(value->type >= game::VAR_UNDEFINED && value->type < game::VAR_COUNT);
+
+		assert((entryValue->w.type & VAR_MASK) == game::VAR_UNDEFINED);
+
+		assert((value->type != game::VAR_POINTER) || ((entryValue->w.type & VAR_MASK) < game::FIRST_DEAD_OBJECT));
+
+		entryValue->w.status |= value->type;
+		entryValue->u.u.intValue = value->u.intValue;
 	}
 
 	void Scr_ClearErrorMessage(scriptInstance_t inst)
 	{
-		codsrc::Scr_ClearErrorMessage(inst);
+		game::gScrVarPub[inst].error_message = 0;
+		game::gScrVmGlob[inst].dialog_error_message = 0;
+		game::gScrVarPub[inst].error_index = 0;
 	}
 
 	void VM_Shutdown(scriptInstance_t inst)
 	{
-		codsrc::VM_Shutdown(inst);
+		if (game::gScrVarPub[inst].tempVariable)
+		{
+			game::FreeValue(game::gScrVarPub[inst].tempVariable, inst);
+			game::gScrVarPub[inst].tempVariable = 0;
+		}
 	}
 
 	void Scr_ShutdownVariables(scriptInstance_t inst)
 	{
-		codsrc::Scr_ShutdownVariables(inst);
+		if (game::gScrVarPub[inst].gameId)
+		{
+			game::FreeValue(game::gScrVarPub[inst].gameId, inst);
+			game::gScrVarPub[inst].gameId = 0;
+		}
 	}
 
 	void ClearVariableValue(scriptInstance_t inst, unsigned int id)
 	{
-		codsrc::ClearVariableValue(inst, id);
+		game::VariableValueInternal* entryValue;
+
+		assert(id);
+
+		entryValue = &game::gScrVarGlob[inst].childVariables[id];
+
+		assert((entryValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		assert(!IsObject(entryValue));
+
+		assert((entryValue->w.type & VAR_MASK) != game::VAR_STACK);
+
+		game::RemoveRefToValueInternal(inst, (game::VariableType)(entryValue->w.status & VAR_MASK), entryValue->u.u);
+		entryValue->w.status &= ~VAR_MASK;
+
+		assert((entryValue->w.type & VAR_MASK) == game::VAR_UNDEFINED);
 	}
 
 	unsigned int Scr_GetThreadNotifyName(scriptInstance_t inst, unsigned int startLocalId)
 	{
-		return codsrc::Scr_GetThreadNotifyName(inst, startLocalId);
+		assert((game::gScrVarGlob[inst].parentVariables[startLocalId + 1].w.type & VAR_STAT_MASK) == VAR_STAT_EXTERNAL);
+
+		assert((game::gScrVarGlob[inst].parentVariables[startLocalId + 1].w.type & VAR_MASK) == game::VAR_NOTIFY_THREAD);
+
+		assert((game::gScrVarGlob[inst].parentVariables[startLocalId + 1].w.notifyName >> VAR_NAME_BIT_SHIFT) < VARIABLELIST_CHILD_SIZE);
+
+		return game::gScrVarGlob[inst].parentVariables[startLocalId + 1].w.status >> VAR_NAME_BIT_SHIFT;
 	}
 
 	void Scr_RemoveThreadNotifyName(scriptInstance_t inst, unsigned int startLocalId)
 	{
-		codsrc::Scr_RemoveThreadNotifyName(inst, startLocalId);
+		unsigned __int16 stringValue;
+		game::VariableValueInternal* entryValue;
+
+		entryValue = &game::gScrVarGlob[inst].parentVariables[startLocalId + 1];
+
+		assert((entryValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		assert((entryValue->w.type & VAR_MASK) == game::VAR_NOTIFY_THREAD);
+
+		stringValue = (unsigned short)game::Scr_GetThreadNotifyName(inst, startLocalId);
+
+		assert(stringValue);
+
+		game::SL_RemoveRefToString(stringValue, inst);
+		entryValue->w.status &= ~VAR_MASK;
+		entryValue->w.status |= game::VAR_THREAD;
 	}
 
 	unsigned int GetArraySize(scriptInstance_t inst, unsigned int id)
 	{
-		return codsrc::GetArraySize(inst, id);
+		game::VariableValueInternal* entryValue;
+
+		assert(id);
+
+		entryValue = &game::gScrVarGlob[inst].parentVariables[id + 1];
+
+		assert((entryValue->w.type & VAR_MASK) == game::VAR_ARRAY);
+
+		return entryValue->u.o.u.entnum;
 	}
 
 	void IncInParam(scriptInstance_t inst)
 	{
-		codsrc::IncInParam(inst);
+		assert(((game::gScrVmPub[inst].top >= game::gScrVmGlob[inst].eval_stack - 1) && (game::gScrVmPub[inst].top <= game::gScrVmGlob[inst].eval_stack)) ||
+			((game::gScrVmPub[inst].top >= game::gScrVmPub[inst].stack) && (game::gScrVmPub[inst].top <= game::gScrVmPub[inst].maxstack)));
+
+		game::Scr_ClearOutParams(inst);
+
+		if (game::gScrVmPub[inst].top == game::gScrVmPub[inst].maxstack)
+		{
+			game::Sys_Error("Internal script stack overflow");
+		}
+
+		++game::gScrVmPub[inst].top;
+		++game::gScrVmPub[inst].inparamcount;
+
+		assert(((game::gScrVmPub[inst].top >= game::gScrVmGlob[inst].eval_stack) && (game::gScrVmPub[inst].top <= game::gScrVmGlob[inst].eval_stack + 1)) ||
+			((game::gScrVmPub[inst].top >= game::gScrVmPub[inst].stack) && (game::gScrVmPub[inst].top <= game::gScrVmPub[inst].maxstack)));
 	}
 
 	unsigned int GetParentLocalId(scriptInstance_t inst, unsigned int threadId)
 	{
-		return codsrc::GetParentLocalId(inst, threadId);
+		assert((game::gScrVarGlob[inst].parentVariables[threadId + 1].w.status & VAR_STAT_MASK) == VAR_STAT_EXTERNAL);
+
+		assert((game::gScrVarGlob[inst].parentVariables[threadId + 1].w.type & VAR_MASK) == game::VAR_CHILD_THREAD);
+
+		return game::gScrVarGlob[inst].parentVariables[threadId + 1].w.status >> VAR_NAME_BIT_SHIFT;
 	}
 
 	void Scr_ClearWaitTime(scriptInstance_t inst, unsigned int startLocalId)
 	{
-		codsrc::Scr_ClearWaitTime(inst, startLocalId);
+		game::VariableValueInternal* entryValue;
+
+		entryValue = &game::gScrVarGlob[inst].parentVariables[startLocalId + 1];
+
+		assert(((entryValue->w.status & VAR_STAT_MASK) == VAR_STAT_EXTERNAL));
+
+		assert((entryValue->w.type & VAR_MASK) == game::VAR_TIME_THREAD);
+
+		entryValue->w.status &= ~VAR_MASK;
+		entryValue->w.status |= game::VAR_THREAD;
 	}
 
 	void Scr_SetThreadWaitTime(scriptInstance_t inst, unsigned int startLocalId, unsigned int waitTime)
 	{
-		codsrc::Scr_SetThreadWaitTime(inst, startLocalId, waitTime);
+		game::VariableValueInternal* entryValue;
+
+		entryValue = &game::gScrVarGlob[inst].parentVariables[startLocalId + 1];
+
+		assert(((entryValue->w.status & VAR_STAT_MASK) == VAR_STAT_EXTERNAL));
+
+		assert(((entryValue->w.type & VAR_MASK) == game::VAR_THREAD) || !game::Scr_GetThreadNotifyName(inst, startLocalId));
+
+		entryValue->w.status &= ~VAR_MASK;
+		entryValue->w.status = (unsigned __int8)entryValue->w.status;
+		entryValue->w.status |= game::VAR_TIME_THREAD;
+		game::gScrVarGlob[inst].parentVariables[startLocalId + 1].w.status |= waitTime << 8;
 	}
 
 	void Scr_SetThreadNotifyName(scriptInstance_t inst, unsigned int startLocalId, unsigned int stringValue)
 	{
-		codsrc::Scr_SetThreadNotifyName(inst, startLocalId, stringValue);
+		game::VariableValueInternal* entryValue;
+
+		entryValue = &game::gScrVarGlob[inst].parentVariables[startLocalId + 1];
+
+		assert((entryValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		assert(((entryValue->w.type & VAR_MASK) == game::VAR_THREAD));
+
+		entryValue->w.status &= ~VAR_MASK;
+		entryValue->w.status = (unsigned __int8)entryValue->w.status;
+		entryValue->w.status |= game::VAR_NOTIFY_THREAD;
+		entryValue->w.status |= stringValue << 8;
 	}
 
 	void Scr_DebugTerminateThread(scriptInstance_t inst, int topThread)
 	{
-		codsrc::Scr_DebugTerminateThread(inst, topThread);
+		// if ( topThread != game::gScrVmPub[inst].function_count )
+		{
+			game::gScrVmPub[inst].function_frame_start[topThread].fs.pos = game::g_EndPos.get();
+		}
 	}
 
 	unsigned int Scr_GetThreadWaitTime(scriptInstance_t inst, unsigned int startLocalId)
 	{
-		return codsrc::Scr_GetThreadWaitTime(inst, startLocalId);
+		assert((game::gScrVarGlob[inst].parentVariables[startLocalId + 1].w.status & VAR_STAT_MASK) == VAR_STAT_EXTERNAL);
+
+		assert((game::gScrVarGlob[inst].parentVariables[startLocalId + 1].w.type & VAR_MASK) == game::VAR_TIME_THREAD);
+
+		return game::gScrVarGlob[inst].parentVariables[startLocalId + 1].w.status >> 8;
 	}
 
-	const char* Scr_GetStackThreadPos(scriptInstance_t inst, unsigned int endLocalId, VariableStackBuffer* stackValue, bool killThread)
+	const char* Scr_GetStackThreadPos(scriptInstance_t inst, unsigned int, VariableStackBuffer*, bool)
 	{
-		return codsrc::Scr_GetStackThreadPos(inst, endLocalId, stackValue, killThread);
+		assert(game::gScrVarPub[inst].developer);
+
+		return 0;
 	}
 
 	unsigned int Scr_GetSelf(scriptInstance_t inst, unsigned int threadId)
 	{
-		return codsrc::Scr_GetSelf(inst, threadId);
+		assert((game::gScrVarGlob[inst].parentVariables[threadId + 1].w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		assert(((game::gScrVarGlob[inst].parentVariables[threadId + 1].w.type & VAR_MASK) >= game::VAR_THREAD) &&
+			((game::gScrVarGlob[inst].parentVariables[threadId + 1].w.type & VAR_MASK) <= game::VAR_CHILD_THREAD));
+
+		return game::gScrVarGlob[inst].parentVariables[threadId + 1].u.o.u.self;
 	}
 
 	unsigned int GetVariableKeyObject(scriptInstance_t inst, unsigned int id)
 	{
-		return codsrc::GetVariableKeyObject(inst, id);
+		game::VariableValueInternal* entryValue;
+
+		entryValue = &game::gScrVarGlob[inst].childVariables[id];
+
+		assert((entryValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		assert(!IsObject(entryValue));
+
+		return (game::gScrVarGlob[inst].childVariables[id].w.status >> 8) - 0x10000;
 	}
 
 	int MT_Realloc(scriptInstance_t inst, int oldNumBytes, int newNumbytes)
 	{
-		return codsrc::MT_Realloc(inst, oldNumBytes, newNumbytes);
+		int size;
+
+		size = game::MT_GetSize(oldNumBytes, inst);
+		return size >= game::MT_GetSize(newNumbytes, inst);
 	}
 
 	void CScr_GetObjectField(classNum_e classnum, int entnum, int clientNum, int offset)
 	{
-		codsrc::CScr_GetObjectField(classnum, entnum, clientNum, offset);
+		if (classnum > game::CLASS_NUM_ENTITY)
+		{
+			//assertMsg("bad classnum");
+			assert(false);
+		}
+		else
+		{
+			game::CScr_GetEntityField(offset, entnum, clientNum);
+		}
 	}
 
 	int CScr_SetObjectField(classNum_e classnum, int entnum, int clientNum, int offset)
 	{
-		return codsrc::CScr_SetObjectField(classnum, entnum, clientNum, offset);
+		if (classnum > game::CLASS_NUM_ENTITY)
+		{
+			//assertMsg("bad classnum");
+			assert(false);
+			return 1;
+		}
+		else
+		{
+			return game::CScr_SetEntityField(offset, entnum, clientNum);
+		}
 	}
 
 	void Scr_SetErrorMessage(scriptInstance_t inst, const char* error)
 	{
-		codsrc::Scr_SetErrorMessage(inst, error);
+		if (!game::gScrVarPub[inst].error_message)
+		{
+			game::I_strncpyz(game::error_message_buff.get(), error, 1023u);
+			game::error_message_buff[1023] = '\0';
+			game::gScrVarPub[inst].error_message = game::error_message_buff.get();
+		}
 	}
 
 	bool Scr_IsStackClear(scriptInstance_t inst)
 	{
-		return codsrc::Scr_IsStackClear(inst);
+		return game::gScrVmPub[inst].top == game::gScrVmPub[inst].stack;
 	}
 
-	void SL_CheckExists(scriptInstance_t inst, unsigned int stringValue)
+	void SL_CheckExists(scriptInstance_t, unsigned int)
 	{
-		codsrc::SL_CheckExists(inst, stringValue);
 	}
 
-	const char* Scr_ReadCodePos(scriptInstance_t inst, const char** pos)
+	const char* Scr_ReadCodePos(scriptInstance_t, const char** pos)
 	{
-		return codsrc::Scr_ReadCodePos(inst, pos);
+		int ans;
+
+		ans = *(int*)*pos;
+		*pos += 4;
+		return (const char*)ans;
 	}
 
-	unsigned int Scr_ReadUnsignedInt(scriptInstance_t inst, const char** pos)
+	unsigned int Scr_ReadUnsignedInt(scriptInstance_t, const char** pos)
 	{
-		return codsrc::Scr_ReadUnsignedInt(inst, pos);
+		unsigned int ans;
+
+		ans = *(unsigned int*)*pos;
+		*pos += 4;
+		return ans;
 	}
 
-	unsigned short Scr_ReadUnsignedShort(scriptInstance_t inst, const char** pos)
+	unsigned short Scr_ReadUnsignedShort(scriptInstance_t, const char** pos)
 	{
-		return codsrc::Scr_ReadUnsignedShort(inst, pos);
+		unsigned short ans;
+
+		ans = *(unsigned short*)*pos;
+		*pos += 2;
+		return ans;
 	}
 
-	unsigned char Scr_ReadUnsignedByte(scriptInstance_t inst, const char** pos)
+	unsigned char Scr_ReadUnsignedByte(scriptInstance_t, const char** pos)
 	{
-		return codsrc::Scr_ReadUnsignedByte(inst, pos);
+		unsigned char ans;
+
+		ans = *(unsigned char*)*pos;
+		*pos += 1;
+		return ans;
 	}
 
-	float Scr_ReadFloat(scriptInstance_t inst, const char** pos)
+	float Scr_ReadFloat(scriptInstance_t, const char** pos)
 	{
-		return codsrc::Scr_ReadFloat(inst, pos);
+		float ans;
+
+		ans = *(float*)*pos;
+		*pos += 4;
+		return ans;
 	}
 
-	const float* Scr_ReadVector(scriptInstance_t inst, const char** pos)
+	const float* Scr_ReadVector(scriptInstance_t, const char** pos)
 	{
-		return codsrc::Scr_ReadVector(inst, pos);
+		float* ans;
+
+		ans = (float*)*pos;
+		*pos += 12;
+		return ans;
 	}
 
 	BOOL IsFieldObject(scriptInstance_t inst, unsigned int id)
 	{
-		return codsrc::IsFieldObject(inst, id);
+		game::VariableValueInternal* entryValue;
+
+		assert(id);
+
+		entryValue = &game::gScrVarGlob[inst].parentVariables[id + 1];
+
+		assert((entryValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+		assert(IsObject(entryValue));
+
+		return (game::VariableType)(entryValue->w.status & VAR_MASK) < game::VAR_ARRAY;
 	}
 
 	void RemoveVariableValue(scriptInstance_t inst, unsigned int parentId, unsigned int index)
 	{
-		codsrc::RemoveVariableValue(inst, parentId, index);
+		unsigned int id;
+
+		assert(index);
+		id = game::gScrVarGlob[inst].childVariables[index].hash.id;
+
+		assert(id);
+
+		game::MakeVariableExternal(&game::gScrVarGlob[inst].parentVariables[parentId + 1], inst, index);
+		game::FreeChildValue(id, inst, parentId);
 	}
 
 	VariableStackBuffer* GetRefVariableStackBuffer(scriptInstance_t inst, int id)
 	{
-		return codsrc::GetRefVariableStackBuffer(inst, id);
+		assert(id);
+
+		assert((id * MT_NODE_SIZE) < MT_SIZE);
+
+		return (game::VariableStackBuffer*)&game::gScrMemTreePub[inst].mt_buffer->nodes[id];
 	}
 
 	unsigned int GetNewVariableIndexReverseInternal(scriptInstance_t inst, unsigned int parentId, unsigned int name)
 	{
-		return codsrc::GetNewVariableIndexReverseInternal(inst, parentId, name);
+		assert(!game::FindVariableIndexInternal(inst, parentId, name));
+
+		return game::GetNewVariableIndexReverseInternal2(name, inst, parentId, (parentId + name) % 0xFFFD + 1);
 	}
 
 	unsigned int GetNewObjectVariableReverse(scriptInstance_t inst, unsigned int parentId, unsigned int id)
 	{
-		return codsrc::GetNewObjectVariableReverse(inst, parentId, id);
+		assert((game::gScrVarGlob[inst].parentVariables[parentId + 1].w.status & VAR_MASK) == game::VAR_ARRAY);
+
+		return game::gScrVarGlob[inst].childVariables[game::GetNewVariableIndexReverseInternal(inst, parentId, id + 0x10000)].hash.id;
 	}
 
 	unsigned int Scr_GetLocalVar(scriptInstance_t inst, int pos)
 	{
-		return codsrc::Scr_GetLocalVar(inst, pos);
+		return game::gScrVmPub[inst].localVars[-pos];
 	}
 
 	void Scr_EvalBoolNot(scriptInstance_t inst, VariableValue* value)
 	{
-		codsrc::Scr_EvalBoolNot(inst, value);
+		game::Scr_CastBool(inst, value);
+
+		if (value->type == game::VAR_INTEGER)
+		{
+			value->u.intValue = value->u.intValue == 0;
+		}
 	}
 
 	unsigned int GetInternalVariableIndex(scriptInstance_t inst, unsigned int unsignedValue)
 	{
-		return codsrc::GetInternalVariableIndex(inst, unsignedValue);
+		assert(game::IsValidArrayIndex(inst, unsignedValue));
+		return (unsignedValue + 0x800000) & 0xFFFFFF;
 	}
 
-	const char* Scr_ReadData(scriptInstance_t inst, const char** pos, unsigned int count)
+	const char* Scr_ReadData(scriptInstance_t, const char** pos, unsigned int count)
 	{
-		return codsrc::Scr_ReadData(inst, pos, count);
+		const char* result;
+
+		result = *pos;
+		*pos += count;
+		return result;
 	}
 
 	unsigned int Scr_GetNumParam(game::scriptInstance_t inst)
 	{
-		return codsrc::Scr_GetNumParam(inst);
+		return game::gScrVmPub[inst].outparamcount;
 	}
 }

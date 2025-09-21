@@ -1,5 +1,4 @@
 #include <stdinc.hpp>
-#include "codsrc/clientscript/cscr_variable.hpp"
 
 namespace game
 {
@@ -1287,151 +1286,452 @@ namespace game
 
 	unsigned int FindObject(scriptInstance_t inst, unsigned int id)
 	{
-		return codsrc::FindObject(inst, id);
+		game::VariableValueInternal* entryValue;
+
+		assert(id);
+
+		entryValue = &game::gScrVarGlob[inst].childVariables[id];
+
+		assert((entryValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		assert((entryValue->w.type & VAR_MASK) == game::VAR_POINTER);
+
+		return entryValue->u.u.pointerValue;
 	}
 
 	float Scr_GetEntryUsageInternal(scriptInstance_t inst, unsigned int type, VariableUnion u)
 	{
-		return codsrc::Scr_GetEntryUsageInternal(inst, type, u);
+		float result;
+		game::VariableValueInternal* parentValue;
+
+		if (type != game::VAR_POINTER)
+		{
+			return 0.0f;
+		}
+
+		parentValue = &game::gScrVarGlob[inst].parentVariables[u.intValue + 1];
+
+		assert((parentValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		assert(IsObject(parentValue));
+
+		if ((parentValue->w.status & VAR_MASK) == game::VAR_ARRAY)
+		{
+			result = game::Scr_GetObjectUsage(inst, u.stringValue) / ((float)parentValue->u.o.refCount + 1.0f);
+		}
+		else
+		{
+			result = 0.0f;
+		}
+		return result;
 	}
 
 	float Scr_GetEntryUsage(scriptInstance_t inst, VariableValueInternal* entryValue)
 	{
-		return codsrc::Scr_GetEntryUsage(inst, entryValue);
+		return game::Scr_GetEntryUsageInternal(inst, entryValue->w.status & 0x1F, entryValue->u.u) + 1.0f;
 	}
 
 	unsigned int FindFirstSibling(scriptInstance_t inst, unsigned int id)
 	{
-		return codsrc::FindFirstSibling(inst, id);
+		game::VariableValueInternal* entryValue;
+
+		entryValue = &game::gScrVarGlob[inst].parentVariables[id + 1];
+
+		assert((entryValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		assert(IsObject(entryValue));
+
+		return entryValue->nextSibling;
 	}
 
 	unsigned int FindNextSibling(scriptInstance_t inst, unsigned int id)
 	{
-		return codsrc::FindNextSibling(inst, id);
+		unsigned int nextSibling;
+		game::VariableValueInternal* list;
+		unsigned int childId;
+		game::VariableValueInternal* entryValue;
+		game::VariableValueInternal* childValue;
+
+		list = game::gScrVarGlob[inst].childVariables;
+		entryValue = &list[id];
+
+		assert((entryValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		assert(!IsObject(entryValue));
+
+		nextSibling = entryValue->nextSibling;
+
+		if (!nextSibling)
+		{
+			return 0;
+		}
+
+		childId = list[nextSibling].hash.id;
+
+		assert((entryValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		childValue = &list[childId];
+
+		assert(!IsObject(childValue));
+
+		return childId;
 	}
 
-	VariableValue Scr_GetArrayIndexValue(scriptInstance_t inst, unsigned int name)
+	VariableValue Scr_GetArrayIndexValue(scriptInstance_t, unsigned int name)
 	{
-		return codsrc::Scr_GetArrayIndexValue(inst, name);
+		game::VariableValue value;
+
+		assert(name);
+
+		if (name >= SL_MAX_STRING_INDEX)
+		{
+			if (name >= OBJECT_STACK)
+			{
+				value.type = game::VAR_INTEGER;
+				value.u.intValue = name - 0x800000;
+			}
+			else
+			{
+				value.type = game::VAR_POINTER;
+				value.u.intValue = name - SL_MAX_STRING_INDEX;
+			}
+		}
+		else
+		{
+			value.type = game::VAR_STRING;
+			value.u.intValue = (unsigned short)name;
+		}
+
+		return value;
 	}
 
 	void AddRefToObject(scriptInstance_t inst, unsigned int id)
 	{
-		codsrc::AddRefToObject(inst, id);
+		game::VariableValueInternal* entryValue;
+
+		assert(id >= 1 && id < VARIABLELIST_CHILD_BEGIN);
+
+		assert((game::gScrVarGlob[inst].parentVariables[id + 1].w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		entryValue = &game::gScrVarGlob[inst].parentVariables[id + 1];
+
+		assert((entryValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		assert(IsObject(entryValue));
+
+		++entryValue->u.o.refCount;
+
+		assert(entryValue->u.o.refCount);
 	}
 
 	void RemoveRefToEmptyObject(scriptInstance_t inst, unsigned int id)
 	{
-		codsrc::RemoveRefToEmptyObject(inst, id);
+		game::VariableValueInternal* entryValue;
+
+		entryValue = &game::gScrVarGlob[inst].parentVariables[id + 1];
+
+		assert(((entryValue->w.status & VAR_STAT_MASK) == VAR_STAT_EXTERNAL));
+
+		assert((entryValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		assert(IsObject(entryValue));
+
+		assert(!entryValue->nextSibling);
+
+		if (entryValue->u.o.refCount)
+		{
+			assert(id >= 1 && id < VARIABLELIST_CHILD_BEGIN);
+
+			--entryValue->u.o.refCount;
+		}
+		else
+		{
+			game::FreeVariable(id, inst);
+		}
 	}
 
 	void Scr_ClearThread(scriptInstance_t inst, unsigned int parentId)
 	{
-		codsrc::Scr_ClearThread(inst, parentId);
+		game::VariableValueInternal* parentValue;
+
+		assert(parentId);
+
+		parentValue = &game::gScrVarGlob[inst].parentVariables[parentId + 1];
+
+		assert((parentValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		assert(((parentValue->w.type & VAR_MASK) >= game::VAR_THREAD) && ((parentValue->w.type & VAR_MASK) <= game::VAR_CHILD_THREAD));
+
+		assert(!game::FindVariable(OBJECT_STACK, parentId, inst));
+
+		if (parentValue->nextSibling)
+		{
+			game::ClearObjectInternal(inst, parentId);
+		}
+
+		game::RemoveRefToObject(parentValue->u.o.u.nextEntId, inst);
 	}
 
 	unsigned int FindObjectVariable(scriptInstance_t inst, unsigned int parentId, unsigned int id)
 	{
-		return codsrc::FindObjectVariable(inst, parentId, id);
+		return game::gScrVarGlob[inst].childVariables[game::FindVariableIndexInternal(inst, parentId, id + SL_MAX_STRING_INDEX)].hash.id;
 	}
 
 	void RemoveObjectVariable(scriptInstance_t inst, unsigned int parentId, unsigned int id)
 	{
-		codsrc::RemoveObjectVariable(inst, parentId, id);
+		assert((game::gScrVarGlob[inst].parentVariables[parentId + 1].w.type & VAR_MASK) == game::VAR_ARRAY);
+
+		game::RemoveVariable(id + SL_MAX_STRING_INDEX, parentId, inst);
 	}
 
 	VariableValueInternal_u* GetVariableValueAddress(scriptInstance_t inst, unsigned int id)
 	{
-		return codsrc::GetVariableValueAddress(inst, id);
+		game::VariableValueInternal* entryValue;
+
+		assert(id);
+
+		entryValue = &game::gScrVarGlob[inst].childVariables[id];
+
+		assert((entryValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		assert((entryValue->w.type & VAR_MASK) != game::VAR_UNDEFINED);
+
+		assert((entryValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		assert(!IsObject(entryValue));
+
+		return &entryValue->u;
 	}
 
 	void Scr_KillEndonThread(scriptInstance_t inst, unsigned int threadId)
 	{
-		codsrc::Scr_KillEndonThread(inst, threadId);
+		game::VariableValueInternal* parentValue;
+
+		parentValue = &game::gScrVarGlob[inst].parentVariables[threadId + 1];
+
+		assert((parentValue->w.status & VAR_STAT_MASK) == VAR_STAT_EXTERNAL);
+
+		assert((parentValue->w.type & VAR_MASK) == game::VAR_THREAD);
+
+		assert(!parentValue->nextSibling);
+
+		game::RemoveRefToObject(parentValue->u.o.u.nextEntId, inst);
+
+		assert(!game::FindObjectVariable(inst, game::gScrVarPub[inst].pauseArrayId, threadId));
+
+		parentValue->w.status &= ~0xAu;
+		parentValue->w.status |= game::VAR_DEAD_THREAD;
 	}
 
-	BOOL IsValidArrayIndex(scriptInstance_t inst, unsigned int unsignedValue)
+	BOOL IsValidArrayIndex(scriptInstance_t, unsigned int unsignedValue)
 	{
-		return codsrc::IsValidArrayIndex(inst, unsignedValue);
+		return (unsignedValue + 0x7EA002) <= 0xFEA001;
 	}
 
 	void RemoveArrayVariable(scriptInstance_t inst, unsigned int parentId, unsigned int unsignedValue)
 	{
-		codsrc::RemoveArrayVariable(inst, parentId, unsignedValue);
+		assert(game::IsValidArrayIndex(inst, unsignedValue));
+
+		game::RemoveVariable((unsignedValue + 0x800000) & 0xFFFFFF, parentId, inst);
 	}
 
 	void SafeRemoveArrayVariable(scriptInstance_t inst, unsigned int parentId, unsigned int unsignedValue)
 	{
-		codsrc::SafeRemoveArrayVariable(inst, parentId, unsignedValue);
+		assert(game::IsValidArrayIndex(inst, unsignedValue));
+
+		game::SafeRemoveVariable((unsignedValue + 0x800000) & 0xFFFFFF, parentId, inst);
 	}
 
-	void AddRefToVector(scriptInstance_t inst, const float* floatVal)
+	void AddRefToVector(scriptInstance_t, const float* floatVal)
 	{
-		codsrc::AddRefToVector(inst, floatVal);
+		game::RefVector* rf = (game::RefVector*)(floatVal - 1);
+
+		if (!rf->u.s.length)
+		{
+			++rf->u.s.refCount;
+
+			assert(rf->u.s.refCount);
+		}
 	}
 
 	unsigned int FindArrayVariableIndex(scriptInstance_t inst, unsigned int parentId, unsigned int unsignedValue)
 	{
-		return codsrc::FindArrayVariableIndex(inst, parentId, unsignedValue);
+		assert(game::IsValidArrayIndex(inst, unsignedValue));
+
+		return game::FindVariableIndexInternal(inst, parentId, (unsignedValue + 0x800000) & 0xFFFFFF); // - ??
 	}
 
 	unsigned int GetVariableIndexInternal(scriptInstance_t inst, unsigned int parentId, unsigned int name)
 	{
-		return codsrc::GetVariableIndexInternal(inst, parentId, name);
+		unsigned int newIndex;
+		game::VariableValueInternal* parentValue;
+
+		assert(parentId);
+
+		parentValue = &game::gScrVarGlob[inst].parentVariables[parentId + 1];
+
+		assert((parentValue->w.status & VAR_STAT_MASK) == VAR_STAT_EXTERNAL);
+
+		assert((parentValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		assert(IsObject(parentValue));
+
+		newIndex = game::FindVariableIndexInternal2(inst, name, (parentId + name) % 0xFFFD + 1);
+		if (newIndex)
+		{
+			return newIndex;
+		}
+
+		return game::GetNewVariableIndexInternal2(name, inst, parentId, (parentId + name) % 0xFFFD + 1);
 	}
 
 	unsigned int GetNewVariableIndexInternal(scriptInstance_t inst, unsigned int parentId, unsigned int name)
 	{
-		return codsrc::GetNewVariableIndexInternal(inst, parentId, name);
+		assert(!game::FindVariableIndexInternal(inst, parentId, name));
+
+		return game::GetNewVariableIndexInternal2(name, inst, parentId, (parentId + name) % 0xFFFD + 1);
 	}
 
 	unsigned int AllocObject(scriptInstance_t inst)
 	{
-		return codsrc::AllocObject(inst);
+		game::VariableValueInternal* entryValue;
+		unsigned int id;
+
+		id = game::AllocVariable(inst);
+		entryValue = &game::gScrVarGlob[inst].parentVariables[id + 1];
+		entryValue->w.status = VAR_STAT_EXTERNAL;
+
+		assert((entryValue->w.type & VAR_MASK) == game::VAR_UNDEFINED);
+
+		entryValue->w.status |= game::VAR_OBJECT;
+		entryValue->u.o.refCount = 0;
+		return id;
 	}
 
 	VariableType GetValueType(scriptInstance_t inst, unsigned int id)
 	{
-		return codsrc::GetValueType(inst, id);
+		assert((game::gScrVarGlob[inst].childVariables[id].w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		return (game::VariableType)(game::gScrVarGlob[inst].childVariables[id].w.status & VAR_MASK);
 	}
 
 	VariableType GetObjectType(scriptInstance_t inst, unsigned int id)
 	{
-		return codsrc::GetObjectType(inst, id);
+		assert((game::gScrVarGlob[inst].parentVariables[id + 1].w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		return (game::VariableType)(game::gScrVarGlob[inst].parentVariables[id + 1].w.status & VAR_MASK);
 	}
 
 	float* Scr_AllocVector_(scriptInstance_t inst, const float* v)
 	{
-		return codsrc::Scr_AllocVector_(inst, v);
+		float* vectorValue;
+
+		vectorValue = game::Scr_AllocVector(inst);
+		vectorValue[0] = v[0];
+		vectorValue[1] = v[1];
+		vectorValue[2] = v[2];
+		return vectorValue;
 	}
 
 	void Scr_EvalInequality(scriptInstance_t inst, VariableValue* value1, VariableValue* value2)
 	{
-		codsrc::Scr_EvalInequality(inst, value1, value2);
+		game::Scr_EvalEquality(value1, inst, value2);
+
+		assert((value1->type == game::VAR_INTEGER) || (value1->type == game::VAR_UNDEFINED));
+
+		value1->u.intValue = value1->u.intValue == 0;
 	}
 
 	unsigned int Scr_EvalArrayRefInternal(scriptInstance_t inst, VariableValue* varValue, VariableValueInternal* parentValue)
 	{
-		return codsrc::Scr_EvalArrayRefInternal(inst, varValue, parentValue);
+		game::VariableValueInternal* entryValue;
+		unsigned int result;
+		unsigned int id;
+
+		if (varValue->type == game::VAR_POINTER)
+		{
+			entryValue = &game::gScrVarGlob[inst].parentVariables[varValue->u.intValue + 1];
+
+			assert((entryValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+			assert(IsObject(entryValue));
+
+			if ((entryValue->w.status & VAR_MASK) == game::VAR_ARRAY)
+			{
+				if (entryValue->u.o.refCount)
+				{
+					id = varValue->u.intValue;
+					game::RemoveRefToObject(varValue->u.stringValue, inst);
+					varValue->u.intValue = game::Scr_AllocArray(inst);
+					game::CopyArray(inst, id, varValue->u.stringValue);
+					parentValue->u.u.intValue = varValue->u.intValue;
+				}
+				result = varValue->u.intValue;
+			}
+			else
+			{
+				game::gScrVarPub[inst].error_index = 1;
+				game::Scr_Error(game::va("%s is not an array", game::var_typename[entryValue->w.status & VAR_MASK]), inst, 0);
+				result = 0;
+			}
+		}
+		else
+		{
+			assert(varValue->type != game::VAR_STACK);
+
+			game::gScrVarPub[inst].error_index = 1;
+			if (varValue->type == game::VAR_STRING)
+			{
+				game::Scr_Error("string characters cannot be individually changed", inst, 0);
+				result = 0;
+			}
+			else
+			{
+				if (varValue->type == game::VAR_VECTOR)
+				{
+					game::Scr_Error("vector components cannot be individually changed", inst, 0);
+				}
+				else
+				{
+					game::Scr_Error(game::va("%s is not an array", game::var_typename[varValue->type]), inst, 0);
+				}
+				result = 0;
+			}
+		}
+		return result;
 	}
 
 	unsigned int GetNewArrayVariableIndex(scriptInstance_t inst, unsigned int parentId, unsigned int unsignedValue)
 	{
-		return codsrc::GetNewArrayVariableIndex(inst, parentId, unsignedValue);
+		assert(game::IsValidArrayIndex(inst, unsignedValue));
+
+		return game::GetNewVariableIndexInternal(inst, parentId, (unsignedValue + 0x800000) & 0xFFFFFF);
 	}
 
 	unsigned int GetNewArrayVariable(scriptInstance_t inst, unsigned int parentId, unsigned int unsignedValue)
 	{
-		return codsrc::GetNewArrayVariable(inst, parentId, unsignedValue);
+		return game::gScrVarGlob[inst].childVariables[game::GetNewArrayVariableIndex(inst, parentId, unsignedValue)].hash.id;
 	}
 
 	unsigned int GetArrayVariable(scriptInstance_t inst, unsigned int parentId, unsigned int unsignedValue)
 	{
-		return codsrc::GetArrayVariable(inst, parentId, unsignedValue);
+		return game::gScrVarGlob[inst].childVariables[game::GetArrayVariableIndex(unsignedValue, inst, parentId)].hash.id;
 	}
 
 	unsigned int AllocThread(scriptInstance_t inst, unsigned int self)
 	{
-		return codsrc::AllocThread(inst, self);
+		game::VariableValueInternal* entryValue;
+		unsigned int id;
+
+		id = game::AllocVariable(inst);
+		entryValue = &game::gScrVarGlob[inst].parentVariables[id + 1];
+		entryValue->w.status = VAR_STAT_EXTERNAL;
+
+		assert((entryValue->w.type & VAR_MASK) == game::VAR_UNDEFINED);
+
+		entryValue->w.status |= game::VAR_THREAD;
+		entryValue->u.o.refCount = 0;
+		entryValue->u.o.u.self = (unsigned short)self;
+		return id;
 	}
 }

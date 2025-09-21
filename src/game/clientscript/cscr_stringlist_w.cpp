@@ -1,5 +1,4 @@
 #include <stdinc.hpp>
-#include "codsrc/clientscript/cscr_stringlist.hpp"
 
 namespace game
 {
@@ -325,46 +324,88 @@ namespace game
 
 	RefString* GetRefString(scriptInstance_t inst, unsigned int id)
 	{
-		return codsrc::GetRefString(inst, id);
+		assert(id);
+
+		assert((id * MT_NODE_SIZE) < MT_SIZE);
+
+		return (game::RefString*)&game::gScrMemTreePub[inst].mt_buffer->nodes[id];
 	}
 
 	void SL_AddRefToString(scriptInstance_t inst, unsigned int stringValue)
 	{
-		codsrc::SL_AddRefToString(inst, stringValue);
+		game::RefString* refStr = game::GetRefString(inst, stringValue);
+		InterlockedExchangeAdd((volatile unsigned int*)&refStr->u.data, 1u);
 	}
 
 	void SL_RemoveRefToStringOfSize(scriptInstance_t inst, unsigned int stringValue, unsigned int len)
 	{
-		codsrc::SL_RemoveRefToStringOfSize(inst, stringValue, len);
+		game::RefString* refStr;
+
+		refStr = game::GetRefString(inst, stringValue);
+		if (!(unsigned __int16)InterlockedDecrement((volatile unsigned int*)&refStr->u.data))
+		{
+			game::SL_FreeString(inst, stringValue, refStr, len);
+		}
 	}
 
 	int SL_GetRefStringLen(RefString* refString)
 	{
-		return codsrc::SL_GetRefStringLen(refString);
+		int len;
+
+		if (!refString->u.s.byteLen)
+		{
+			len = 256 - 1; //Bugfix for 256 % 256 = 0 or 512 % 256 = 0 or... Just promote it to 256
+		}
+		else
+		{
+			len = refString->u.s.byteLen - 1;
+		}
+
+		while (refString->str[len])
+		{
+			len += 256;
+		}
+
+		return len;
 	}
 
 	void SL_AddUser(unsigned int stringValue, unsigned int user, scriptInstance_t inst)
 	{
-		codsrc::SL_AddUser(stringValue, user, inst);
+		game::RefString* refStr;
+
+		refStr = game::GetRefString(inst, stringValue);
+		game::SL_AddUserInternal(user, refStr);
 	}
 
 	int SL_ConvertFromString(scriptInstance_t inst, const char* str)
 	{
-		return codsrc::SL_ConvertFromString(inst, str);
+		game::RefString* v2;
+
+		assert(str);
+
+		v2 = game::GetRefString_0(inst, str);
+		return game::SL_ConvertFromRefString(inst, v2);
 	}
 
 	int SL_ConvertFromRefString(scriptInstance_t inst, RefString* refString)
 	{
-		return codsrc::SL_ConvertFromRefString(inst, refString);
+		return ((char*)refString - (char*)game::gScrMemTreePub[inst].mt_buffer) / MT_NODE_SIZE;
 	}
 
 	RefString* GetRefString_0(scriptInstance_t inst, const char* str)
 	{
-		return codsrc::GetRefString_0(inst, str);
+		assert(str >= (char*)game::gScrMemTreePub[inst].mt_buffer && str < (char*)(game::gScrMemTreePub[inst].mt_buffer + MT_SIZE));
+
+		return (game::RefString*)(str - 4);
 	}
 
 	const char* SL_ConvertToStringSafe(unsigned int id, game::scriptInstance_t inst)
 	{
-		return codsrc::SL_ConvertToStringSafe(id, inst);
+		if (!id)
+		{
+			return "(NULL)";
+		}
+
+		return game::GetRefString(inst, id)->str;
 	}
 }

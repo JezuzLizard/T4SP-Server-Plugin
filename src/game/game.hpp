@@ -10,41 +10,6 @@
 #define ARRAY_COUNT(arrayn) \
 	((sizeof(arrayn)) / (sizeof(arrayn[0])))
 
-#ifndef NDEBUG
-#undef assert
-#define assert(expr) \
-	if (!!!(expr)) \
-	{ \
-		utils::io::write_file("t4sp-server-plugin/gsc_state_assert.json", build_gsc_dump(game::SCRIPTINSTANCE_SERVER)); \
-		_wassert(_CRT_WIDE(#expr), _CRT_WIDE(__FILE__), (unsigned)(__LINE__)); \
-	}
-#endif
-
-
-#define RE_CSCR_ANIMTREE_USE_WRAPPERS
-//#define RE_CSCR_COMPILER_USE_WRAPPERS
-//#define RE_CSCR_MAIN_USE_WRAPPERS
-//#define RE_CSCR_MEMORYTREE_USE_WRAPPERS
-//#define RE_CSCR_PARSER_USE_WRAPPERS
-//#define RE_CSCR_PARSETREE_USE_WRAPPERS
-//#define RE_CSCR_READWRITE_USE_WRAPPERS
-//#define RE_CSCR_STRINGLIST_USE_WRAPPERS
-//#define RE_CSCR_VARIABLE_USE_WRAPPERS
-//#define RE_CSCR_VM_USE_WRAPPERS
-//#define RE_CSCR_YACC_USE_WRAPPERS
-
-//#define DISABLE_RE_CSCR_ANIMTREE
-//#define DISABLE_RE_CSCR_COMPILER
-//#define DISABLE_RE_CSCR_MAIN
-//#define DISABLE_RE_CSCR_MEMORYTREE
-//#define DISABLE_RE_CSCR_PARSER
-//#define DISABLE_RE_CSCR_PARSETREE
-//#define DISABLE_RE_CSCR_READWRITE
-//#define DISABLE_RE_CSCR_STRINGLIST
-//#define DISABLE_RE_CSCR_VARIABLE
-//#define DISABLE_RE_CSCR_VM
-//#define DISABLE_RE_CSCR_YACC
-
 
 namespace game
 {

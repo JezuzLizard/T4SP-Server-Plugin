@@ -1,10 +1,11 @@
 #include <stdinc.hpp>
-#include "codsrc/clientscript/cscr_parsetree.hpp"
 
 namespace game
 {
 	sval_u* Scr_AllocNode(scriptInstance_t inst, int size)
 	{
-		return codsrc::Scr_AllocNode(inst, size);
+		assert(game::g_allocNodeUser[inst]);
+
+		return (game::sval_u*)game::Hunk_UserAlloc(game::g_allocNodeUser[inst], 4 * size, 4);
 	}
 }

@@ -1,5 +1,4 @@
 #include <stdinc.hpp>
-#include "codsrc/clientscript/cscr_memorytree.hpp"
 
 namespace game
 {
@@ -117,6 +116,10 @@ namespace game
 	
 	RefVector* GetRefVector(scriptInstance_t inst, unsigned int id)
 	{
-		return codsrc::GetRefVector(inst, id);
+		assert(id);
+
+		assert((id * MT_NODE_SIZE) < MT_SIZE);
+
+		return (game::RefVector*)&game::gScrMemTreePub[inst].mt_buffer->nodes[id];
 	}
 }

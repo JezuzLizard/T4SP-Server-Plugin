@@ -1,5 +1,4 @@
 #include <stdinc.hpp>
-#include "codsrc/clientscript/cscr_readwrite.hpp"
 
 namespace game
 {
@@ -39,6 +38,18 @@ namespace game
 
 	unsigned int FindVariableIndexInternal(scriptInstance_t inst, unsigned int parentId, unsigned int name)
 	{
-		return codsrc::FindVariableIndexInternal(inst, parentId, name);
+		game::VariableValueInternal* parentValue;
+
+		assert(parentId);
+
+		parentValue = &game::gScrVarGlob[inst].parentVariables[parentId + 1];
+
+		assert((parentValue->w.status & VAR_STAT_MASK) == VAR_STAT_EXTERNAL);
+
+		assert((parentValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+
+		assert(IsObject(parentValue));
+
+		return game::FindVariableIndexInternal2(inst, name, (parentId + name) % 0xFFFD + 1);
 	}
 }

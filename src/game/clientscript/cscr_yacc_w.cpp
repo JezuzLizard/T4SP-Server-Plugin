@@ -1,5 +1,4 @@
 #include <stdinc.hpp>
-#include "codsrc/clientscript/cscr_yacc.hpp"
 
 namespace game
 {
@@ -73,21 +72,33 @@ namespace game
 
 	FILE* yy_load_buffer_state()
 	{
-		return codsrc::yy_load_buffer_state();
+		FILE* result;
+
+		*game::yy_n_chars = (*game::yy_current_buffer)->yy_n_chars;
+		*game::yy_c_buf_p = (*game::yy_current_buffer)->yy_buf_pos;
+		*game::yytext = *game::yy_c_buf_p;
+		result = (*game::yy_current_buffer)->yy_input_file;
+		*game::yyin = (*game::yy_current_buffer)->yy_input_file;
+		*game::yy_hold_char = *(*game::yy_c_buf_p);
+		return result;
 	}
 
 	void yy_fatal_error(const char* err)
 	{
-		codsrc::yy_fatal_error(err);
+		game::_fprintf(game::__iob_func() + 2, "%s\n", err);
+		game::_exit(2);
 	}
 
 	void* yy_flex_realloc(void* ptr, unsigned int size)
 	{
-		return codsrc::yy_flex_realloc(ptr, size);
+		return game::_realloc(ptr, size);
 	}
 
 	void yy_init_buffer(yy_buffer_state* b, FILE* file)
 	{
-		codsrc::yy_init_buffer(b, file);
+		game::yy_flush_buffer(b);
+		b->yy_input_file = file;
+		b->yy_fill_buffer = 1;
+		b->yy_is_interactive = 0;
 	}
 }

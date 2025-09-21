@@ -1,5 +1,4 @@
 #include <stdinc.hpp>
-#include "codsrc/clientscript/cscr_main.hpp"
 
 namespace game
 {
@@ -136,16 +135,20 @@ namespace game
 
 	int Scr_IsInOpcodeMemory(scriptInstance_t inst, const char* pos)
 	{
-		return codsrc::Scr_IsInOpcodeMemory(inst, pos);
+		assert(game::gScrVarPub[inst].programBuffer);
+		assert(pos);
+
+		return (unsigned int)(pos - game::gScrVarPub[inst].programBuffer) < game::gScrCompilePub[inst].programLen;
 	}
 
 	void SL_BeginLoadScripts(scriptInstance_t inst)
 	{
-		codsrc::SL_BeginLoadScripts(inst);
+		memset(game::gScrCompilePub[inst].canonicalStrings, 0, sizeof(game::gScrCompilePub[inst].canonicalStrings));
+		game::gScrVarPub[inst].canonicalStrCount = 0;
 	}
 
 	void Scr_SetLoadedImpureScript(bool loadedImpureScript)
 	{
-		codsrc::Scr_SetLoadedImpureScript(loadedImpureScript);
+		*game::loadedImpureScript = loadedImpureScript;
 	}
 }

@@ -1,5 +1,4 @@
 #include <stdinc.hpp>
-#include "codsrc/clientscript/cscr_parser.hpp"
 
 namespace game
 {
@@ -306,11 +305,15 @@ namespace game
 
 	unsigned int Scr_GetPrevSourcePos(scriptInstance_t inst, const char* codePos, unsigned int index)
 	{
-		return codsrc::Scr_GetPrevSourcePos(inst, codePos, index);
+		return game::gScrParserGlob[inst].sourcePosLookup[index + game::Scr_GetPrevSourcePosOpcodeLookup(inst, codePos)->sourcePosIndex].sourcePos;
 	}
 
 	void Scr_ShutdownAllocNode(scriptInstance_t inst)
 	{
-		codsrc::Scr_ShutdownAllocNode(inst);
+		if (game::g_allocNodeUser[inst])
+		{
+			game::Hunk_UserDestroy(game::g_allocNodeUser[inst]);
+			game::g_allocNodeUser[inst] = 0;
+		}
 	}
 }

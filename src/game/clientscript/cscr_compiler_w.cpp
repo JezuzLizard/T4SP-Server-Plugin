@@ -1,5 +1,4 @@
 #include <stdinc.hpp>
-#include "codsrc/clientscript/cscr_compiler.hpp"
 
 namespace game
 {
@@ -1482,231 +1481,461 @@ namespace game
 
 	void EmitFloat(scriptInstance_t inst, float value)
 	{
-		codsrc::EmitFloat(inst, value);
+		game::gScrCompileGlob[inst].codePos = game::TempMalloc(4);
+		*(float*)game::gScrCompileGlob[inst].codePos = value;
 	}
 
 	void EmitCanonicalStringConst(scriptInstance_t inst, unsigned int stringValue)
 	{
-		codsrc::EmitCanonicalStringConst(inst, stringValue);
+		bool bConstRefCount;
+
+		bConstRefCount = game::gScrCompileGlob[inst].bConstRefCount;
+		game::gScrCompileGlob[inst].bConstRefCount = 1;
+		game::EmitCanonicalString(inst, stringValue);
+		game::gScrCompileGlob[inst].bConstRefCount = bConstRefCount;
 	}
 
 	int Scr_FindLocalVar(scr_block_s* block, int startIndex, unsigned int name)
 	{
-		return codsrc::Scr_FindLocalVar(block, startIndex, name);
+		while (startIndex < block->localVarsCount)
+		{
+			if (block->localVars[startIndex].name == name)
+			{
+				return startIndex;
+			}
+
+			++startIndex;
+		}
+
+		return -1;
 	}
 
 	void Scr_CheckLocalVarsCount(int localVarsCount)
 	{
-		codsrc::Scr_CheckLocalVarsCount(localVarsCount);
+		if (localVarsCount >= 64)
+		{
+			game::Com_Error(game::ERR_DROP, "LOCAL_game::VAR_STACK_SIZE exceeded");
+		}
 	}
 
 	void EmitGetUndefined(scriptInstance_t inst, sval_u sourcePos)
 	{
-		codsrc::EmitGetUndefined(inst, sourcePos);
+		game::EmitOpcode(inst, game::OP_GetUndefined, 1, 0);
+		game::AddOpcodePos(inst, sourcePos.stringValue, 1);
 	}
 
 	void EmitPrimitiveExpression(scriptInstance_t inst, sval_u expr, scr_block_s* block)
 	{
-		codsrc::EmitPrimitiveExpression(inst, expr, block);
+		game::VariableCompileValue constValue;
+
+		if (game::EmitOrEvalPrimitiveExpression(inst, expr, &constValue, block))
+		{
+			game::EmitValue(inst, &constValue);
+		}
 	}
 
 	void Scr_EmitAnimation(scriptInstance_t inst, char* pos, unsigned int animName, unsigned int sourcePos)
 	{
-		codsrc::Scr_EmitAnimation(inst, pos, animName, sourcePos);
+		if (game::gScrAnimPub[inst].animTreeNames)
+		{
+			game::Scr_EmitAnimationInternal(inst, pos, animName, game::gScrAnimPub[inst].animTreeNames);
+		}
+		else
+		{
+			game::CompileError(inst, sourcePos, "#using_animtree was not specified");
+		}
 	}
 
 	void EmitEvalArray(scriptInstance_t inst, sval_u sourcePos, sval_u indexSourcePos)
 	{
-		codsrc::EmitEvalArray(inst, sourcePos, indexSourcePos);
+		game::EmitOpcode(inst, game::OP_EvalArray, -1, 0);
+		game::AddOpcodePos(inst, indexSourcePos.stringValue, 0);
+		game::AddOpcodePos(inst, sourcePos.stringValue, 1);
 	}
 
 	void EmitEvalArrayRef(scriptInstance_t inst, sval_u sourcePos, sval_u indexSourcePos)
 	{
-		codsrc::EmitEvalArrayRef(inst, sourcePos, indexSourcePos);
+		game::EmitOpcode(inst, game::OP_EvalArrayRef, -1, 0);
+		game::AddOpcodePos(inst, indexSourcePos.stringValue, 0);
+		game::AddOpcodePos(inst, sourcePos.stringValue, 1);
 	}
 
 	unsigned int Scr_GetBuiltin(scriptInstance_t inst, sval_u func_name)
 	{
-		return codsrc::Scr_GetBuiltin(inst, func_name);
+		game::sval_u func_namea;
+		game::sval_u func_nameb;
+
+		if (func_name.node[0].type != game::ENUM_script_call)
+		{
+			return 0;
+		}
+
+		func_namea = func_name.node[1];
+		if (func_namea.node[0].type != game::ENUM_function)
+		{
+			return 0;
+		}
+
+		func_nameb = func_namea.node[1];
+		if (func_nameb.node[0].type != game::ENUM_local_function)
+		{
+			return 0;
+		}
+
+		if ( /*game::gScrCompilePub[inst].developer_statement == 3 ||*/ !game::FindVariable(func_nameb.node[1].stringValue, game::gScrCompileGlob[inst].filePosId, inst))
+		{
+			return func_nameb.node[1].stringValue;
+		}
+
+		return 0;
 	}
 
 	int Scr_GetUncacheType(int type)
 	{
-		return codsrc::Scr_GetUncacheType(type);
+		if (type == game::VAR_CODEPOS)
+		{
+			return 0;
+		}
+
+		assert(type == game::VAR_DEVELOPER_CODEPOS);
+		return 1;
 	}
 
 	int Scr_GetCacheType(int type)
 	{
-		return codsrc::Scr_GetCacheType(type);
+		if (!type)
+		{
+			return game::VAR_CODEPOS;
+		}
+
+		assert(type == 1);  // BUILTIN_DEVELOPER_ONLY
+
+		return game::VAR_DEVELOPER_CODEPOS;
 	}
 
 	BuiltinFunction Scr_GetFunction(const char** pName, int* type)
 	{
-		return codsrc::Scr_GetFunction(pName, type);
+		game::BuiltinFunction answer;
+
+		answer = game::Sentient_GetFunction(pName);
+
+		if (answer)
+		{
+			return answer;
+		}
+
+		return game::BuiltIn_GetFunction(pName, type);
 	}
 
 	BuiltinFunction GetFunction(scriptInstance_t inst, const char** pName, int* type)
 	{
-		return codsrc::GetFunction(inst, pName, type);
+		if (inst)
+		{
+			return game::CScr_GetFunction(pName, type);
+		}
+
+		return game::Scr_GetFunction(pName, type);
 	}
 
 	BuiltinMethod GetMethod(scriptInstance_t inst, const char** pName, int* type)
 	{
-		return codsrc::GetMethod(inst, pName, type);
+		if (inst)
+		{
+			return game::CScr_GetMethod(pName, type);
+		}
+
+		return game::Scr_GetMethod(type, pName);
 	}
 
 	unsigned int GetVariableName(scriptInstance_t inst, unsigned int id)
 	{
-		return codsrc::GetVariableName(inst, id);
+		game::VariableValueInternal* entryValue;
+
+		entryValue = &game::gScrVarGlob[inst].childVariables[id];
+
+		assert((entryValue->w.status & VAR_STAT_MASK) != VAR_STAT_FREE);
+		assert(!IsObject(entryValue));
+
+		return entryValue->w.status >> 8;
 	}
 
 	int GetExpressionCount(sval_u exprlist)
 	{
-		return codsrc::GetExpressionCount(exprlist);
+		game::sval_u* node;
+		int expr_count;
+
+		expr_count = 0;
+		for (node = exprlist.node->node;
+			node;
+			node = node[1].node)
+		{
+			++expr_count;
+		}
+
+		return expr_count;
 	}
 
 	sval_u* GetSingleParameter(sval_u exprlist)
 	{
-		return codsrc::GetSingleParameter(exprlist);
+		if (!exprlist.node->node)
+		{
+			return 0;
+		}
+
+		if (exprlist.node->node[1].node)
+		{
+			return 0;
+		}
+
+		return exprlist.node->node;
 	}
 
 	void EmitExpressionFieldObject(scriptInstance_t inst, sval_u expr, sval_u sourcePos, scr_block_s* block)
 	{
-		codsrc::EmitExpressionFieldObject(inst, expr, sourcePos, block);
+		if (expr.node[0].type == game::ENUM_primitive_expression)
+		{
+			game::EmitPrimitiveExpressionFieldObject(inst, expr.node[1], expr.node[2], block);
+		}
+		else
+		{
+			game::CompileError(inst, sourcePos.stringValue, "not an object");
+		}
 	}
 
 	void EvalInteger(int value, sval_u sourcePos, VariableCompileValue* constValue)
 	{
-		codsrc::EvalInteger(value, sourcePos, constValue);
+		assert(constValue);
+
+		constValue->value.type = game::VAR_INTEGER;
+		constValue->value.u.intValue = value;
+		constValue->sourcePos = sourcePos;
 	}
 
 	void EvalFloat(float value, sval_u sourcePos, VariableCompileValue* constValue)
 	{
-		codsrc::EvalFloat(value, sourcePos, constValue);
+		assert(constValue);
+
+		constValue->value.type = game::VAR_FLOAT;
+		constValue->value.u.floatValue = value;
+		constValue->sourcePos = sourcePos;
 	}
 
 	void EvalString(unsigned int value, sval_u sourcePos, VariableCompileValue* constValue)
 	{
-		codsrc::EvalString(value, sourcePos, constValue);
+		assert(constValue);
+
+		constValue->value.type = game::VAR_STRING;
+		constValue->value.u.stringValue = value;
+		constValue->sourcePos = sourcePos;
 	}
 
 	void EvalIString(unsigned int value, sval_u sourcePos, VariableCompileValue* constValue)
 	{
-		codsrc::EvalIString(value, sourcePos, constValue);
+		assert(constValue);
+
+		constValue->value.type = game::VAR_ISTRING;
+		constValue->value.u.stringValue = value;
+		constValue->sourcePos = sourcePos;
 	}
 
 	void EvalUndefined(sval_u sourcePos, VariableCompileValue* constValue)
 	{
-		codsrc::EvalUndefined(sourcePos, constValue);
+		assert(constValue);
+
+		constValue->value.type = game::VAR_UNDEFINED;
+		constValue->sourcePos = sourcePos;
 	}
 
 	void Scr_PopValue(scriptInstance_t inst)
 	{
-		codsrc::Scr_PopValue(inst);
+		assert(game::gScrCompilePub[inst].value_count);
+		--game::gScrCompilePub[inst].value_count;
 	}
 
 	void EmitSetVariableField(scriptInstance_t inst, sval_u sourcePos)
 	{
-		codsrc::EmitSetVariableField(inst, sourcePos);
+		game::EmitOpcode(inst, game::OP_SetVariableField, -1, 0);
+		game::AddOpcodePos(inst, sourcePos.stringValue, 0);
+		// game::EmitAssignmentPos(inst);
 	}
 
 	void EmitFieldVariableRef(scriptInstance_t inst, sval_u expr, sval_u field, sval_u sourcePos, scr_block_s* block)
 	{
-		codsrc::EmitFieldVariableRef(inst, expr, field, sourcePos, block);
+		game::EmitPrimitiveExpressionFieldObject(inst, expr, sourcePos, block);
+		game::EmitOpcode(inst, game::OP_EvalFieldVariableRef, 0, 0);
+		game::EmitCanonicalString(inst, field.stringValue);
 	}
 
 	void Scr_CalcLocalVarsArrayPrimitiveExpressionRef(sval_u expr, scr_block_s* block)
 	{
-		codsrc::Scr_CalcLocalVarsArrayPrimitiveExpressionRef(expr, block);
+		if (expr.node[0].type == game::ENUM_variable)
+		{
+			game::Scr_CalcLocalVarsVariableExpressionRef(block, expr.node[1]);
+		}
 	}
 
 	BOOL IsUndefinedPrimitiveExpression(sval_u expr)
 	{
-		return codsrc::IsUndefinedPrimitiveExpression(expr);
+		return expr.node[0].type == game::ENUM_undefined;
 	}
 
 	bool IsUndefinedExpression(sval_u expr)
 	{
-		return codsrc::IsUndefinedExpression(expr);
+		if (expr.node[0].type == game::ENUM_primitive_expression)
+		{
+			return game::IsUndefinedPrimitiveExpression(expr.node[1]);
+		}
+
+		return 0;
 	}
 
 	void Scr_CopyBlock(scr_block_s* from, scr_block_s** to)
 	{
-		codsrc::Scr_CopyBlock(from, to);
+		if (!*to)
+		{
+			*to = (game::scr_block_s*)game::Hunk_AllocateTempMemoryHigh(sizeof(game::scr_block_s));
+		}
+
+		memcpy(*to, from, sizeof(game::scr_block_s));
+		(*to)->localVarsPublicCount = 0;
 	}
 
 	void Scr_CheckMaxSwitchCases(int count)
 	{
-		codsrc::Scr_CheckMaxSwitchCases(count);
+		if (count >= 512)
+		{
+			game::Com_Error(game::ERR_DROP, "MAX_SWITCH_CASES exceeded");
+		}
 	}
 
 	void Scr_CalcLocalVarsSafeSetVariableField(sval_u expr, sval_u sourcePos, scr_block_s* block)
 	{
-		codsrc::Scr_CalcLocalVarsSafeSetVariableField(expr, sourcePos, block);
+		game::Scr_RegisterLocalVar(expr.stringValue, sourcePos, block);
 	}
 
 	void EmitFormalWaittillParameterListRefInternal(scriptInstance_t inst, sval_u* node, scr_block_s* block)
 	{
-		codsrc::EmitFormalWaittillParameterListRefInternal(inst, node, block);
+		while (1)
+		{
+			node = node[1].node;
+			if (!node)
+			{
+				break;
+			}
+
+			game::EmitSafeSetWaittillVariableField(block, inst, *node->node, node->node[1]);
+		}
 	}
 
 	void EmitDefaultStatement(scriptInstance_t inst, sval_u sourcePos)
 	{
-		codsrc::EmitDefaultStatement(inst, sourcePos);
+		game::EmitCaseStatementInfo(inst, 0, sourcePos);
 	}
 
 	char Scr_IsLastStatement(scriptInstance_t inst, sval_u* node)
 	{
-		return codsrc::Scr_IsLastStatement(inst, node);
+		if (!node)
+		{
+			return 1;
+		}
+
+		if (game::gScrVarPub[inst].developer_script)
+		{
+			return 0;
+		}
+
+		while (node)
+		{
+			if (node->node[0].type != game::ENUM_developer_statement_list)
+			{
+				return 0;
+			}
+
+			node = node[1].node;
+		}
+
+		return 1;
 	}
 
 	void EmitEndStatement(scriptInstance_t inst, sval_u sourcePos, scr_block_s* block)
 	{
-		codsrc::EmitEndStatement(inst, sourcePos, block);
+		if (!block->abortLevel)
+		{
+			block->abortLevel = 3;
+		}
+
+		game::EmitEnd(inst);
+		game::AddOpcodePos(inst, sourcePos.stringValue, 1);
 	}
 
 	void EmitProfBeginStatement(scriptInstance_t inst, sval_u profileName, sval_u sourcePos)
 	{
-		codsrc::EmitProfBeginStatement(inst, profileName, sourcePos);
+		game::EmitProfStatement(inst, profileName, sourcePos, game::OP_prof_begin);
 	}
 
 	void EmitProfEndStatement(scriptInstance_t inst, sval_u profileName, sval_u sourcePos)
 	{
-		codsrc::EmitProfEndStatement(inst, profileName, sourcePos);
+		game::EmitProfStatement(inst, profileName, sourcePos, game::OP_prof_end);
 	}
 
 	void Scr_CalcLocalVarsIncStatement(sval_u expr, scr_block_s* block)
 	{
-		codsrc::Scr_CalcLocalVarsIncStatement(expr, block);
+		game::Scr_CalcLocalVarsVariableExpressionRef(block, expr);
 	}
 
 	void Scr_CalcLocalVarsWaittillStatement(sval_u exprlist, scr_block_s* block)
 	{
-		codsrc::Scr_CalcLocalVarsWaittillStatement(exprlist, block);
+		game::sval_u* node;
+
+		node = exprlist.node->node[1].node;
+		assert(node);
+		game::Scr_CalcLocalVarsFormalParameterListInternal(node, block);
 	}
 
 	void EmitFormalParameterListInternal(scriptInstance_t inst, sval_u* node, scr_block_s* block)
 	{
-		codsrc::EmitFormalParameterListInternal(inst, node, block);
+		while (1)
+		{
+			node = node[1].node;
+			if (!node)
+			{
+				break;
+			}
+
+			game::EmitSafeSetVariableField(block, inst, *node->node, node->node[1]);
+		}
 	}
 
 	unsigned int SpecifyThreadPosition(scriptInstance_t inst, unsigned int posId, unsigned int name, unsigned int sourcePos, int type)
 	{
-		return codsrc::SpecifyThreadPosition(inst, posId, name, sourcePos, type);
+		game::VariableValue pos;
+
+		game::CheckThreadPosition(inst, posId, name, sourcePos);
+		pos.type = (game::VariableType)type;
+		pos.u.intValue = 0;
+		game::SetNewVariableValue(inst, posId, &pos);
+		return posId;
 	}
 
 	void Scr_CalcLocalVarsFormalParameterList(sval_u exprlist, scr_block_s* block)
 	{
-		codsrc::Scr_CalcLocalVarsFormalParameterList(exprlist, block);
+		game::Scr_CalcLocalVarsFormalParameterListInternal(exprlist.node->node, block);
 	}
 
 	void SetThreadPosition(scriptInstance_t inst, unsigned int posId)
 	{
-		codsrc::SetThreadPosition(inst, posId);
+		game::GetVariableValueAddress(inst, posId)->u.intValue = (unsigned int)game::TempMalloc(0);
 	}
 
 	void EmitIncludeList(scriptInstance_t inst, sval_u val)
 	{
-		codsrc::EmitIncludeList(inst, val);
+		game::sval_u* node;
+
+		for (node = val.node->node[1].node;
+			node;
+			node = node[1].node)
+		{
+			game::EmitInclude(inst, *node);
+		}
 	}
 }

@@ -14,15 +14,6 @@ namespace test
 	public:
 		void post_unpack() override
 		{
-			//Disable AI print spam
-			utils::hook::nop(0x4BAB7D, 5);
-			utils::hook::nop(0x4BAAFA, 5);
-
-			//Disable asset loading print spam
-			utils::hook::nop(0x48D9D9, 5);
-
-			//Disable unknown dvar spam
-			utils::hook::nop(0x5F04AF, 5);
 		}
 
 	private:
