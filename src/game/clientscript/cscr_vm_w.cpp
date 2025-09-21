@@ -995,7 +995,7 @@ namespace game
 		return game::gScrVarGlob[inst].parentVariables[startLocalId + 1].w.status >> 8;
 	}
 
-	const char* Scr_GetStackThreadPos(scriptInstance_t inst, unsigned int, VariableStackBuffer*, bool)
+	const char* Scr_GetStackThreadPos([[maybe_unused]]scriptInstance_t inst, unsigned int, VariableStackBuffer*, bool)
 	{
 		assert(game::gScrVarPub[inst].developer);
 
@@ -1198,7 +1198,7 @@ namespace game
 		}
 	}
 
-	unsigned int GetInternalVariableIndex(scriptInstance_t inst, unsigned int unsignedValue)
+	unsigned int GetInternalVariableIndex([[maybe_unused]]scriptInstance_t inst, unsigned int unsignedValue)
 	{
 		assert(game::IsValidArrayIndex(inst, unsignedValue));
 		return (unsignedValue + 0x800000) & 0xFFFFFF;

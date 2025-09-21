@@ -392,7 +392,7 @@ namespace game
 		return ((char*)refString - (char*)game::gScrMemTreePub[inst].mt_buffer) / MT_NODE_SIZE;
 	}
 
-	RefString* GetRefString_0(scriptInstance_t inst, const char* str)
+	RefString* GetRefString_0([[maybe_unused]]scriptInstance_t inst, const char* str)
 	{
 		assert(str >= (char*)game::gScrMemTreePub[inst].mt_buffer && str < (char*)(game::gScrMemTreePub[inst].mt_buffer + MT_SIZE));
 
