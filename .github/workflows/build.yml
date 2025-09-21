@@ -53,7 +53,7 @@ jobs:
         run: msbuild /m /v:minimal /p:Configuration=${{matrix.configuration}} /p:PlatformTarget=x86 build/t4sp-server-plugin.sln
 
       - name: Upload ${{matrix.configuration}} binaries
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: ${{matrix.configuration}} binaries
           path: |
@@ -71,7 +71,7 @@ jobs:
         uses: actions/checkout@v3.5.3
 
       - name: Download Binaries
-        uses: actions/download-artifact@v3.0.2
+        uses: actions/download-artifact@v4.3.0
         with:
           name: Release binaries
 
